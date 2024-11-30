@@ -13,7 +13,7 @@
         "outputPath": "dist/apps/transporter",
         "index": "apps/transporter/src/index.html",
         "browser": "apps/transporter/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [],
         "tsConfig": "apps/transporter/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -52,7 +52,7 @@
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
-        "port": 5000
+        "port": 6003
       },
       "configurations": {
         "production": {
@@ -84,7 +84,7 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "transporter:build",
-        "port": 5000,
+        "port": 6003,
         "staticFilePath": "dist/apps/transporter/browser",
         "spa": true
       }

@@ -40,6 +40,78 @@
       "options": {
         "jestConfig": "apps/backend/jest.config.ts"
       }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/backend/Dockerfile . -t backend"
+    },
+    "migration:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "sequelize-cli migration:generate --migrations-path libs/backend/db/src/lib/migrations --config apps/backend/sequelize.config.js"
+        ]
+      }
+    },
+    "db:migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "sequelize-cli db:migrate --migrations-path libs/backend/db/src/lib/migrations --config apps/backend/sequelize.config.js"
+        ]
+      }
+    },
+    "db:migrate:status": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "sequelize-cli db:migrate:status --migrations-path libs/backend/db/src/lib/migrations --config apps/backend/sequelize.config.js"
+        ]
+      }
+    },
+    "db:seed:all": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "sequelize-cli db:seed:all --seeders-path libs/backend/db/src/lib/seeders --migrations-path libs/backend/db/src/lib/migrations --config apps/backend/sequelize.config.js"
+        ]
+      }
+    },
+    "db:migrate:undo": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "sequelize-cli db:migrate:undo --migrations-path libs/backend/db/src/lib/migrations --config apps/backend/sequelize.config.js"
+        ]
+      }
+    },
+    "db:seed:undo:all": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "sequelize-cli db:seed:undo:all --seeders-path libs/backend/db/src/lib/seeders --config apps/backend/sequelize.config.js"
+        ]
+      }
+    },
+    "db:migrate:undo:all": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "sequelize-cli db:migrate:undo:all --migrations-path libs/backend/db/src/lib/migrations --config apps/backend/sequelize.config.js"
+        ]
+      }
+    },
+    "docker-compose:up": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["docker compose -f apps/backend/docker-compose.yaml up -d"]
+      }
+    },
+    "docker-compose:down": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["docker compose -f apps/backend/docker-compose.yaml down"]
+      }
     }
   }
 }

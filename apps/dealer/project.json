@@ -13,7 +13,7 @@
         "outputPath": "dist/apps/dealer",
         "index": "apps/dealer/src/index.html",
         "browser": "apps/dealer/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [],
         "tsConfig": "apps/dealer/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -52,7 +52,7 @@
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
-        "port": 5000
+        "port": 6004
       },
       "configurations": {
         "production": {
@@ -84,7 +84,7 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "dealer:build",
-        "port": 5000,
+        "port": 6004,
         "staticFilePath": "dist/apps/dealer/browser",
         "spa": true
       }

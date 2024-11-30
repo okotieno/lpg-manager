@@ -13,7 +13,7 @@
         "outputPath": "dist/apps/depot",
         "index": "apps/depot/src/index.html",
         "browser": "apps/depot/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [],
         "tsConfig": "apps/depot/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -52,7 +52,7 @@
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
-        "port": 5000
+        "port": 6002
       },
       "configurations": {
         "production": {
@@ -84,7 +84,7 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "depot:build",
-        "port": 5000,
+        "port": 6002,
         "staticFilePath": "dist/apps/depot/browser",
         "spa": true
       }
