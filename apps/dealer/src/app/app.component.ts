@@ -10,5 +10,5 @@ import { NxWelcomeComponent } from './nx-welcome.component';
   styles: ``,
 })
 export class AppComponent {
-  title = 'depot';
+  title = 'dealer';
 }

@@ -1,28 +1,28 @@
 {
-  "name": "depot",
+  "name": "admin-portal",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "lpg",
-  "sourceRoot": "apps/depot/src",
+  "sourceRoot": "apps/admin-portal/src",
   "tags": [],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/depot",
-        "index": "apps/depot/src/index.html",
-        "browser": "apps/depot/src/main.ts",
+        "outputPath": "dist/apps/admin-portal",
+        "index": "apps/admin-portal/src/index.html",
+        "browser": "apps/admin-portal/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "apps/depot/tsconfig.app.json",
+        "tsConfig": "apps/admin-portal/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/depot/public"
+            "input": "apps/admin-portal/public"
           }
         ],
-        "styles": ["apps/depot/src/styles.scss"],
+        "styles": ["apps/admin-portal/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
@@ -56,10 +56,10 @@
       },
       "configurations": {
         "production": {
-          "buildTarget": "depot:build:production"
+          "buildTarget": "admin-portal:build:production"
         },
         "development": {
-          "buildTarget": "depot:build:development"
+          "buildTarget": "admin-portal:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -67,7 +67,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "buildTarget": "depot:build"
+        "buildTarget": "admin-portal:build"
       }
     },
     "lint": {
@@ -77,15 +77,15 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/depot/jest.config.ts"
+        "jestConfig": "apps/admin-portal/jest.config.ts"
       }
     },
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "depot:build",
+        "buildTarget": "admin-portal:build",
         "port": 5000,
-        "staticFilePath": "dist/apps/depot/browser",
+        "staticFilePath": "dist/apps/admin-portal/browser",
         "spa": true
       }
     }
