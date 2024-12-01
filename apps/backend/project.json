@@ -9,7 +9,24 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "webpack-cli build",
-        "args": ["node-env=production"]
+        "args": ["node-env=production"],
+        "assets": [
+          {
+            "glob": "**/*.json",
+            "input": "apps/backend/src/i18n/",
+            "output": "i18n"
+          },
+          {
+            "glob": "**/*.graphql",
+            "input": "libs/backend/graphql/src/lib/schemas/",
+            "output": "schemas"
+          },
+          {
+            "glob": "**/*.hbs",
+            "input": "libs/backend/services/email/src/lib/templates/",
+            "output": "templates"
+          }
+        ]
       },
       "configurations": {
         "development": {

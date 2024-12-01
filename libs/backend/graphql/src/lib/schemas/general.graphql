@@ -1,0 +1,54 @@
+enum QueryOperatorEnum {
+  EQUALS
+  IN
+  CONTAINS
+  LESS_THAN
+  GREATER_THAN
+  BETWEEN
+}
+
+enum SortByEnum {
+  ASC
+  DESC
+}
+
+input QueryParamsFilter {
+  field: String
+  operator: QueryOperatorEnum
+  value: String
+  values: [String]
+}
+
+
+input QueryParams {
+  searchTerm: String
+  currentPage: Int
+  pageSize: Int
+  sortBy: String
+  sortByDirection: SortByEnum
+  filters: [QueryParamsFilter]
+}
+type SuccessResponse {
+  success: Boolean!
+  message: String!
+}
+
+type CreateSuccessStringIdResponse  {
+  message: String!
+  id: String!
+}
+type DeleteSuccessResponse  {
+  message: String!
+}
+
+input SelectCategory {
+  id: Int!
+}
+
+input SelectCategoryString {
+  id: String!
+}
+
+type Pagination {
+  totalItems: Int!
+}

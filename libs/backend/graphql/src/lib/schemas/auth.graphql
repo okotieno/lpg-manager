@@ -1,0 +1,59 @@
+type LoginResponse {
+  accessToken: String!
+  refreshToken: String!
+  refreshTokenKey: String!
+  user: UserModel
+}
+
+type AccessToken {
+  accessToken: String
+}
+
+type NotificationKey {
+  notificationKey: String!
+}
+
+type ValidatePasswordResetTokenResponse {
+  user: UserModel
+}
+
+extend type Mutation {
+  signInWithGoogle(token: String!): LoginResponse
+  signupGoogleUser(token: String!): LoginResponse
+  continueWithGoogle(token: String!): LoginResponse
+  loginWithToken(token: String!): LoginResponse
+  loginWithResetPasswordToken(token: String!): LoginResponse
+  requestAccessToken(refreshToken: String!): AccessToken
+  register(
+    firstName: String!
+    lastName: String!
+    email: String!
+    password: String!
+    passwordConfirmation: String!
+    acceptTerms: Boolean!
+  ): LoginResponse
+  loginWithPassword(email: String!, password: String!): LoginResponse
+  sendPasswordResetLinkEmail(email: String!): SuccessResponse
+  sendVerificationLinkEmail: SuccessResponse
+  verifyEmail(token: String!): SuccessResponse
+  sendPasswordResetOtpEmail(email: String!): SuccessResponse
+  validateOtp(identifier: String!, token: String!): LoginResponse
+  changePassword(
+    oldPassword: String
+    password: String!
+    passwordConfirmation: String!
+  ): SuccessResponse
+
+  changePasswordUsingResetToken(
+    token: String!
+    password: String!
+    passwordConfirmation: String!
+  ): LoginResponse
+
+  validatePasswordResetToken(token: String): ValidatePasswordResetTokenResponse
+}
+
+extend type Subscription {
+  refreshedAccessToken(refreshToken: String!): AccessToken
+  resetPasswordNotification(notificationKey: String): SuccessResponse
+}

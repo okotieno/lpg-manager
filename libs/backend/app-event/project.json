@@ -1,0 +1,9 @@
+{
+  "name": "app-event",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/app-event/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project app-event --web",
+  "targets": {}
+}

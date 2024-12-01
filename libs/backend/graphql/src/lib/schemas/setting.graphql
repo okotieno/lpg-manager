@@ -1,0 +1,38 @@
+type SettingModel {
+  id: Int!
+  name: String!
+}
+
+input CreateSettingInput {
+  name: String
+}
+
+input UpdateSettingInput {
+  name: String
+}
+
+type PaginatedSetting {
+  items: [SettingModel]
+  meta: Pagination
+}
+
+type CreateSettingSuccessResponse {
+  message: String!
+  data: SettingModel!
+}
+
+extend type Query {
+  settings(query: QueryParams): PaginatedSetting!
+  setting(id: Int!): SettingModel
+}
+
+extend type Mutation {
+  updateSetting(
+    id: Int!
+    params: UpdateSettingInput
+  ): CreateSettingSuccessResponse
+
+  createSetting(params: CreateSettingInput): CreateSettingSuccessResponse
+
+  deleteSetting(id: Int!): DeleteSuccessResponse
+}

@@ -1,0 +1,86 @@
+type NotificationModel {
+  id: Int!
+  title: String!
+  description: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type NotificationUserModel {
+  id: Int!
+  title: String!
+  createdAt: String!
+  updatedAt: String!
+  description: String!
+  isRead: Boolean!
+}
+
+input CreateNotificationInput {
+  title: String!
+  description: String!
+}
+
+input UpdateNotificationInput {
+  title: String!
+  description: String!
+}
+
+type PaginatedNotification {
+  items: [NotificationModel]
+  meta: Pagination
+}
+type PaginatedUserNotification {
+  items: [NotificationUserModel]
+  meta: Pagination
+}
+
+type CreateNotificationSuccessResponse {
+  message: String!
+  data: NotificationModel!
+}
+
+type NotificationStat {
+  total: Int!
+  unread: Int!
+  read: Int!
+}
+
+type NotificationCreatedResponse {
+  stats: NotificationStat
+  notification: NotificationUserModel
+}
+
+type NotificationMarkedAsReadResponse {
+  data: NotificationStat
+  message: String
+}
+
+extend type Query {
+  notifications(query: QueryParams): PaginatedNotification!
+  notification(id: Int!): NotificationModel
+  authenticatedUserNotifications(query: QueryParams): PaginatedUserNotification
+  authenticatedUserNotificationStats: NotificationStat
+}
+
+extend type Mutation {
+  updateNotification(
+    id: Int!
+    params: UpdateNotificationInput
+  ): CreateNotificationSuccessResponse
+
+  createNotification(
+    params: CreateNotificationInput
+  ): CreateNotificationSuccessResponse
+
+  deleteNotification(id: Int!): DeleteSuccessResponse
+
+  markNotificationAsRead(
+    notifications: [SelectCategory]!
+  ): NotificationMarkedAsReadResponse
+
+  testNotification: String
+}
+
+extend type Subscription {
+  notificationCreated: NotificationCreatedResponse
+}

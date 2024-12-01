@@ -1,0 +1,65 @@
+enum ActivityLogType {
+  INFO
+  WARNING
+  ERROR
+  SUCCESS
+}
+type ActivityLogModel {
+  id: Int!
+  userId: Int!
+  action: String!
+  description: String!
+  createdAt: String!
+  type: ActivityLogType
+}
+type ActivityLogUserModel {
+  id: Int!
+  userId: Int!
+  action: String!
+  description: String!
+  createdAt: String!
+  type: ActivityLogType
+}
+
+input CreateActivityLogInput {
+  name: String
+}
+
+input UpdateActivityLogInput {
+  name: String
+}
+
+type PaginatedActivityLogUserModel {
+  items: [ActivityLogUserModel]
+  meta: Pagination
+}
+type PaginatedActivityLog {
+  items: [ActivityLogModel]
+  meta: Pagination
+}
+
+type CreateActivityLogSuccessResponse {
+  message: String!
+  data: ActivityLogModel!
+}
+
+extend type Query {
+  activityLogs(query: QueryParams): PaginatedActivityLog!
+  activityLog(id: Int!): ActivityLogModel
+  authenticatedUserActivityLogs(
+    query: QueryParams
+  ): PaginatedActivityLogUserModel!
+}
+
+extend type Mutation {
+  updateActivityLog(
+    id: Int!
+    params: UpdateActivityLogInput
+  ): CreateActivityLogSuccessResponse
+
+  createActivityLog(
+    params: CreateActivityLogInput
+  ): CreateActivityLogSuccessResponse
+
+  deleteActivityLog(id: Int!): DeleteSuccessResponse
+}

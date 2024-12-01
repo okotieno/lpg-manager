@@ -1,0 +1,17 @@
+{
+  "name": "graphql",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/graphql/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "graphql-codegen": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "graphql-codegen --config ./libs/backend/graphql/graphql-codegen.ts"
+        ]
+      }
+    }
+  }
+}

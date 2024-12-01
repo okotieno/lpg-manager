@@ -1,0 +1,28 @@
+scalar Upload
+
+type FileUploadModel {
+  id: Int!
+  name: String!
+  originalName: String
+  mimetype: String
+  size: Int
+  url: String
+}
+
+type UploadSuccessResponse {
+  message: String,
+  data: FileUploadModel
+}
+
+type PaginatedFileUpload {
+  items: [FileUploadModel]
+  meta: Pagination
+}
+
+extend type Query {
+  fileUploads(query: QueryParams): PaginatedFileUpload!
+}
+
+extend type Mutation {
+  uploadSingleFile(file: Upload!): UploadSuccessResponse!
+}

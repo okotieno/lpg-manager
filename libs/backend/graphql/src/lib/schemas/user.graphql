@@ -1,0 +1,61 @@
+type UserModel {
+  id: Int!
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String
+  emailVerifiedAt: String
+  phoneVerifiedAt: String
+  profilePhotoLink: String
+  createdAt: String
+  updatedAt: String
+}
+
+type PaginatedUser {
+  items: [UserModel]
+  meta: Pagination
+}
+type PaginatedUserRoles {
+  items: [RoleModel]
+  meta: Pagination
+}
+
+extend type Query {
+  users(query: QueryParams): PaginatedUser!
+  user(id: Int!): UserModel
+
+  userRoles(userId: Int): PaginatedUserRoles
+}
+
+input UpdateUserInput {
+  firstName : String!
+  middleName: String
+  lastName : String!
+  email : String!
+  phone : String
+}
+
+type CreateUserSuccessResponse  {
+  message: String!
+  data: UserModel!
+}
+
+input CountriesLanguagesInput {
+  countryId: Int!
+  languageId: Int!
+}
+
+extend type Mutation {
+  updateUser(id: Int!, params: UpdateUserInput): CreateUserSuccessResponse
+
+  createUser(
+    firstName : String!
+    middleName: String
+    lastName : String!
+    email : String!
+    phone : String
+
+  ): CreateUserSuccessResponse
+
+  deleteUser(id: Int!): DeleteSuccessResponse
+}

@@ -1,0 +1,9 @@
+{
+  "name": "auth-service-backend",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/services/auth/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project auth-service-backend --web",
+  "targets": {}
+}

@@ -1,0 +1,9 @@
+{
+  "name": "password-reset-backend-service",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/services/password-reset/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project password-reset-backend-service --web",
+  "targets": {}
+}

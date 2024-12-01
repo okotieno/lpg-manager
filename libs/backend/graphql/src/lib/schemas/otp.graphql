@@ -1,0 +1,35 @@
+type OtpModel {
+  id: Int!
+  name: String!
+}
+
+input CreateOtpInput {
+  name: String
+}
+
+input UpdateOtpInput {
+  name: String
+}
+
+type PaginatedOtp {
+  items: [OtpModel]
+  meta: Pagination
+}
+
+type CreateOtpSuccessResponse {
+  message: String!
+  data: OtpModel!
+}
+
+extend type Query {
+  otps(query: QueryParams): PaginatedOtp!
+  otp(id: Int!): OtpModel
+}
+
+extend type Mutation {
+  updateOtp(id: Int!, params: UpdateOtpInput): CreateOtpSuccessResponse
+
+  createOtp(name: String!): CreateOtpSuccessResponse
+
+  deleteOtp(id: Int!): DeleteSuccessResponse
+}

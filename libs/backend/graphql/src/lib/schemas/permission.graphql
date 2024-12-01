@@ -1,0 +1,38 @@
+type PermissionModel {
+  id: Int!
+  name: String!
+}
+
+input CreatePermissionInput {
+  name: String
+}
+
+input UpdatePermissionInput {
+  name: String
+}
+
+type PaginatedPermission {
+  items: [PermissionModel]
+  meta: Pagination
+}
+
+type CreatePermissionSuccessResponse {
+  message: String!
+  data: PermissionModel!
+}
+
+extend type Query {
+  permissions(query: QueryParams): PaginatedPermission!
+  permission(id: Int!): PermissionModel
+}
+
+extend type Mutation {
+  updatePermission(
+    id: Int!
+    params: UpdatePermissionInput
+  ): CreatePermissionSuccessResponse
+
+  createPermission(name: String!): CreatePermissionSuccessResponse
+
+  deletePermission(id: Int!): DeleteSuccessResponse
+}

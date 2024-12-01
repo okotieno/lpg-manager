@@ -1,0 +1,9 @@
+{
+  "name": "activity-log-backend-service",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/services/activity-log/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project activity-log-backend-service --web",
+  "targets": {}
+}

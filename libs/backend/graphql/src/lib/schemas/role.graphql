@@ -1,0 +1,36 @@
+type RoleModel {
+  id: Int!
+  name: String!
+  permissions: [PermissionModel]
+}
+
+input CreateRoleInput {
+  name: String!
+}
+
+input UpdateRoleInput {
+  name: String!
+}
+
+type PaginatedRole {
+  items: [RoleModel]
+  meta: Pagination
+}
+
+type CreateRoleSuccessResponse {
+  message: String!
+  data: RoleModel!
+}
+
+extend type Query {
+  roles(query: QueryParams): PaginatedRole!
+  role(id: Int!): RoleModel
+}
+
+extend type Mutation {
+  updateRole(id: Int!, params: UpdateRoleInput): CreateRoleSuccessResponse
+
+  createRole(name: String!): CreateRoleSuccessResponse
+
+  deleteRole(id: Int!): DeleteSuccessResponse
+}
