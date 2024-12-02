@@ -37,7 +37,7 @@ export class PasswordResetResolver {
   }
 
   @Query(() => PasswordResetModel)
-  async passwordReset(@Args('id') id: number) {
+  async passwordReset(@Args('id') id: string) {
     return this.passwordResetService.findById(id);
   }
 

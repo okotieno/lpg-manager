@@ -13,30 +13,51 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@lpg-manager/db": ["libs/backend/db/src/index.ts"],
-      "@lpg-manager/auth": ["libs/backend/auth/src/index.ts"],
-      "@lpg-manager/auth-service": ["libs/backend/services/auth/src/index.ts"],
-      "@lpg-manager/app-activity-log": ["libs/backend/app-activity-log/src/index.ts"],
-      "@lpg-manager/activity-log-service": ["libs/backend/services/activity-log/src/index.ts"],
+      "@lpg-manager/activity-log-service": [
+        "libs/backend/services/activity-log/src/index.ts"
+      ],
+      "@lpg-manager/app-activity-log": [
+        "libs/backend/app-activity-log/src/index.ts"
+      ],
       "@lpg-manager/app-cache": ["libs/backend/app-cache/src/index.ts"],
       "@lpg-manager/app-event": ["libs/backend/app-event/src/index.ts"],
       "@lpg-manager/app-queue": ["libs/backend/app-queue/src/index.ts"],
-      "@lpg-manager/crud-abstract": ["libs/backend/services/crud-abstract/src/index.ts"],
-      "@lpg-manager/email-service": ["libs/backend/services/email/src/index.ts"],
-      "@lpg-manager/notification-service": ["libs/backend/services/notification/src/index.ts"],
+      "@lpg-manager/auth": ["libs/backend/auth/src/index.ts"],
+      "@lpg-manager/auth-page": ["libs/shared/pages/auth/src/index.ts"],
+      "@lpg-manager/auth-service": ["libs/backend/services/auth/src/index.ts"],
+      "@lpg-manager/crud-abstract": [
+        "libs/backend/services/crud-abstract/src/index.ts"
+      ],
+      "@lpg-manager/db": ["libs/backend/db/src/index.ts"],
+      "@lpg-manager/email-service": [
+        "libs/backend/services/email/src/index.ts"
+      ],
+      "@lpg-manager/file-upload": ["libs/backend/file-upload/src/index.ts"],
+      "@lpg-manager/graphql": ["libs/backend/graphql/src/index.ts"],
+      "@lpg-manager/icon-service": ["libs/shared/services/icon/src/index.ts"],
+      "@lpg-manager/notification-service": [
+        "libs/backend/services/notification/src/index.ts"
+      ],
       "@lpg-manager/otp-service": ["libs/backend/services/otp/src/index.ts"],
-      "@lpg-manager/password-reset": ["libs/backend/password-reset/src/index.ts"],
-      "@lpg-manager/password-reset-service": ["libs/backend/services/password-reset/src/index.ts"],
-      "@lpg-manager/permission-service": ["libs/backend/services/permission/src/index.ts"],
+      "@lpg-manager/password-reset": [
+        "libs/backend/password-reset/src/index.ts"
+      ],
+      "@lpg-manager/password-reset-service": [
+        "libs/backend/services/password-reset/src/index.ts"
+      ],
+      "@lpg-manager/permission-service": [
+        "libs/backend/services/permission/src/index.ts"
+      ],
       "@lpg-manager/role-service": ["libs/backend/services/role/src/index.ts"],
       "@lpg-manager/setting": ["libs/backend/setting/src/index.ts"],
-      "@lpg-manager/setting-service": ["libs/backend/services/setting/src/index.ts"],
+      "@lpg-manager/setting-service": [
+        "libs/backend/services/setting/src/index.ts"
+      ],
+      "@lpg-manager/theme-service": ["libs/shared/services/theme/src/index.ts"],
+      "@lpg-manager/translation": ["libs/backend/translation/src/index.ts"],
       "@lpg-manager/user-service": ["libs/backend/services/user/src/index.ts"],
       "@lpg-manager/util": ["libs/backend/util/src/index.ts"],
-      "@lpg-manager/translation": ["libs/backend/translation/src/index.ts"],
-      "@lpg-manager/validators": ["libs/backend/validators/src/index.ts"],
-      "@lpg-manager/graphql": ["libs/backend/graphql/src/index.ts"],
-      "@lpg-manager/file-upload": ["libs/backend/file-upload/src/index.ts"]
+      "@lpg-manager/validators": ["libs/backend/validators/src/index.ts"]
     }
   }
 }

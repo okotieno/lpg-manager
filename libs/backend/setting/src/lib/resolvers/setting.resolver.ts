@@ -37,7 +37,7 @@ export class SettingResolver {
   }
 
   @Query(() => SettingModel)
-  async setting(@Args('id') id: number) {
+  async setting(@Args('id') id: string) {
     return this.settingService.findById(id);
   }
 

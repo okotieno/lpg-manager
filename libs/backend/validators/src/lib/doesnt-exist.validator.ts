@@ -24,8 +24,8 @@ export class DoesntExistConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export function DoesntExist(model: ModelType<{ id: number }, {
-  id: number
+export function DoesntExist(model: ModelType<{ id: string }, {
+  id: string
 }>, field = 'id',  where? :Record<string, string | boolean>,  validationOptions?: ValidationOptions) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return function(object: any, propertyName: string) {

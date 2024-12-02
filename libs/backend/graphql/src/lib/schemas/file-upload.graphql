@@ -1,7 +1,7 @@
 scalar Upload
 
 type FileUploadModel {
-  id: Int!
+  id: String!
   name: String!
   originalName: String
   mimetype: String

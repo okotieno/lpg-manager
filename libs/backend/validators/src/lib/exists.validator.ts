@@ -27,8 +27,8 @@ export class ExistsConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export function Exists(model: ModelType<{ id: number }, {
-  id: number
+export function Exists(model: ModelType<{ id: string }, {
+  id: string
 }>, field = 'id', validationOptions?: ValidationOptions) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

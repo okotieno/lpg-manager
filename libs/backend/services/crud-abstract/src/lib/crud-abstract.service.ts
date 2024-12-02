@@ -140,7 +140,7 @@ export abstract class CrudAbstractService<T extends Model> {
     id,
   }: {
     params: T['_creationAttributes'];
-    id: number;
+    id: string;
   }) {
     const item: T = (await this.repository.findOne({
       where: { id } as WhereOptions,

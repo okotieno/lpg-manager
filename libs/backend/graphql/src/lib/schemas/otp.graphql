@@ -1,5 +1,5 @@
 type OtpModel {
-  id: Int!
+  id: String!
   name: String!
 }
 
@@ -23,13 +23,13 @@ type CreateOtpSuccessResponse {
 
 extend type Query {
   otps(query: QueryParams): PaginatedOtp!
-  otp(id: Int!): OtpModel
+  otp(id: String!): OtpModel
 }
 
 extend type Mutation {
-  updateOtp(id: Int!, params: UpdateOtpInput): CreateOtpSuccessResponse
+  updateOtp(id: String!, params: UpdateOtpInput): CreateOtpSuccessResponse
 
   createOtp(name: String!): CreateOtpSuccessResponse
 
-  deleteOtp(id: Int!): DeleteSuccessResponse
+  deleteOtp(id: String!): DeleteSuccessResponse
 }

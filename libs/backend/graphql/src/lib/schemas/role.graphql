@@ -1,5 +1,5 @@
 type RoleModel {
-  id: Int!
+  id: String!
   name: String!
   permissions: [PermissionModel]
 }
@@ -24,13 +24,13 @@ type CreateRoleSuccessResponse {
 
 extend type Query {
   roles(query: QueryParams): PaginatedRole!
-  role(id: Int!): RoleModel
+  role(id: String!): RoleModel
 }
 
 extend type Mutation {
-  updateRole(id: Int!, params: UpdateRoleInput): CreateRoleSuccessResponse
+  updateRole(id: String!, params: UpdateRoleInput): CreateRoleSuccessResponse
 
   createRole(name: String!): CreateRoleSuccessResponse
 
-  deleteRole(id: Int!): DeleteSuccessResponse
+  deleteRole(id: String!): DeleteSuccessResponse
 }

@@ -1,12 +1,21 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IconService } from '@lpg-manager/icon-service';
+import { APP_ICONS } from './app.icons';
 
 @Component({
-  imports: [RouterModule],
+  imports: [IonApp, IonRouterOutlet],
   selector: 'lpg-root',
-  template: `<router-outlet></router-outlet>`,
+  template: `
+    <ion-app>
+      <ion-router-outlet></ion-router-outlet>
+    </ion-app>
+  `,
   styles: ``,
+  standalone: true
 })
 export class AppComponent {
-  title = 'admin-portal';
+  constructor( iconService: IconService) {
+    iconService.registerIcons(APP_ICONS)
+  }
 }

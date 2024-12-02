@@ -1,0 +1,19 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="toggleTheme()">
+        <ion-icon [name]="currentIcon()" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-row>
+    <ion-col sizeLg="8" sizeMd="7">
+      <lpg-landing-page-image />
+    </ion-col>
+    <ion-col sizeLg="4" sizeMd="5">
+      Login content Here
+    </ion-col>
+  </ion-row>
+</ion-content>

@@ -38,7 +38,7 @@ export class ActivityLogResolver {
   }
 
   @Query(() => ActivityLogModel)
-  async activityLog(@Args('id') id: number) {
+  async activityLog(@Args('id') id: string) {
     return this.activityLogService.findById(id);
   }
 

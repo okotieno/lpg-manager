@@ -20,9 +20,18 @@
           {
             "glob": "**/*",
             "input": "apps/admin-portal/public"
+          },
+          {
+            "glob": "**/*",
+            "input": "node_modules/@ionic/angular/css",
+            "output": "./ionic"
           }
         ],
-        "styles": ["apps/admin-portal/src/styles.scss"],
+        "styles": [
+          "apps/admin-portal/src/theme/variables.scss",
+          "node_modules/@ionic/angular/css/ionic.bundle.css",
+          "apps/admin-portal/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -87,6 +96,12 @@
         "port": 6001,
         "staticFilePath": "dist/apps/admin-portal/browser",
         "spa": true
+      }
+    },
+    "copy:icons": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["./apps/admin-portal/copy-icons.sh"]
       }
     }
   }

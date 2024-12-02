@@ -42,7 +42,7 @@ type DeleteSuccessResponse  {
 }
 
 input SelectCategory {
-  id: Int!
+  id: String!
 }
 
 input SelectCategoryString {
