@@ -32,17 +32,17 @@ mutation LoginWithPassword($email: String!, $password: String!) {
 #  }
 #}
 #
-#mutation LoginWithToken($token: String!) {
-#  loginWithToken(token: $token) {
-#    ...AuthDetails
-#  }
-#}
+mutation LoginWithToken($token: String!) {
+  loginWithToken(token: $token) {
+    ...AuthDetails
+  }
+}
 #
-#mutation RequestAccessToken($refreshToken: String!) {
-#  requestAccessToken(refreshToken: $refreshToken) {
-#    accessToken
-#  }
-#}
+mutation RequestAccessToken($refreshToken: String!) {
+  requestAccessToken(refreshToken: $refreshToken) {
+    accessToken
+  }
+}
 #
 #mutation SendPasswordResetEmail($email: String!) {
 #  sendPasswordResetLinkEmail(email: $email) {

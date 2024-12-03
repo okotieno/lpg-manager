@@ -11,6 +11,7 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { IMutationLoginWithPasswordArgs } from '@lpg-manager/types';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-login-page',
@@ -24,6 +25,7 @@ import { IMutationLoginWithPasswordArgs } from '@lpg-manager/types';
     RouterLink,
     IonIcon,
     IonText,
+    JsonPipe,
   ],
   templateUrl: './login-page.component.html',
   styles: [
@@ -39,6 +41,7 @@ export class LoginPageComponent {
   readonly #authStore = inject(AuthStore);
   readonly #fb = inject(FormBuilder);
   readonly #router = inject(Router);
+  user = this.#authStore.loginResponse;
   showPassword = false;
 
   loginForm = this.#fb.nonNullable.group({
@@ -48,6 +51,7 @@ export class LoginPageComponent {
 
   userLoggedInEffect = effect(async () => {
     const userLoggedIn = this.#authStore.isLoggedIn();
+    console.log('logged in', { userLoggedIn });
     await untracked(async () => {
       if (userLoggedIn) {
         await this.#router.navigate(['/dashboard']);

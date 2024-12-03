@@ -15,6 +15,8 @@ import { ENV_VARIABLES } from '@lpg-manager/injection-token';
 import { createClient } from 'graphql-ws';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { AuthStore } from '@lpg-manager/auth-store';
+import { setContext } from '@apollo/client/link/context';
+import { Preferences } from '@capacitor/preferences';
 
 
 export const apolloConfig = ()=> {
@@ -25,6 +27,16 @@ export const apolloConfig = ()=> {
   const http = httpLink.create({
     uri: `${backendUrl}/graphql`,
     extractFiles: (body) => extractFiles(body, isExtractableFile) as any
+  });
+
+  const authLink = setContext(async (_, { headers }) => {
+    const token = await Preferences.get({ key: 'access-token' });
+    return {
+      headers: {
+        ...headers,
+        Authorization: token.value ? `Bearer ${token.value}` : '',
+      },
+    };
   });
 
   const wsLink = new GraphQLWsLink(
@@ -52,7 +64,7 @@ export const apolloConfig = ()=> {
   const combinedLink = ApolloLink.from([
     contextSuccessAlert(toastController),
     multipartFormContext(),
-    link
+    ApolloLink.from([authLink, link]),
   ]);
 
   return {
