@@ -14,7 +14,8 @@
     "db:migrate:undo": "nx db:migrate:undo backend",
     "db:migrate:undo:all": "nx db:migrate:undo:all backend",
     "db:seed:all": "nx db:seed:all backend",
-    "db:seed:undo:all": "nx db:seed:undo:all backend"
+    "db:seed:undo:all": "nx db:seed:undo:all backend",
+    "graphql:codegen": "nx run-many -t graphql-codegen"
   },
   "private": true,
   "dependencies": {
@@ -78,6 +79,9 @@
     "@angular/compiler-cli": "~19.0.0",
     "@angular/language-service": "~19.0.0",
     "@eslint/js": "^9.8.0",
+    "@graphql-codegen/cli": "^5.0.3",
+    "@graphql-codegen/near-operation-file-preset": "^3.0.0",
+    "@graphql-codegen/typescript-apollo-angular": "^4.0.0",
     "@nestjs/schematics": "^10.0.1",
     "@nestjs/testing": "^10.0.2",
     "@nx/angular": "20.1.4",

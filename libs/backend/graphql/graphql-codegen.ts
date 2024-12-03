@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 const config: CodegenConfig = {
   schema: 'libs/backend/graphql/src/lib/schemas',
   generates: {
-    'libs/shared/types/src/lib/types.ts': {
+    'libs/shared/utils/types/src/lib/types.ts': {
       plugins: ['typescript'],
       config: {
         addExplicitOverride: true,
