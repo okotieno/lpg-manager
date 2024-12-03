@@ -67,4 +67,20 @@ ion-input {
   --ion-color-success-rgb: 76, 216, 17;
   --ion-color-success-contrast: #000000;
   --ion-color-success-contrast-rgb: 0, 0, 0;
+  --ion-item-border-color: rgba(255,555,555 , 0.2);
+}
+form {
+  ion-item {
+    --padding-start: 0 !important;
+    margin-bottom: 1rem;
+    ion-input {
+      label {
+        font-size: 1rem;
+      }
+    }
+    input {
+      padding-top: 14px !important;
+      padding-bottom: 14px !important;
+    }
+  }
 }

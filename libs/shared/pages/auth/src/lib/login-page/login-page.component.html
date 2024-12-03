@@ -3,24 +3,27 @@
   <p>Please sign in to continue</p>
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <ion-item>
-        <ion-input
-          label="Email"
-          labelPlacement="floating"
-          type="email"
-          formControlName="email"
-          placeholder="Enter your email">
-        </ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input
-          label="Password"
-          labelPlacement="floating"
-          type="password"
-          formControlName="password"
-          placeholder="Enter your password">
-        </ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-input
+        label="Email"
+        labelPlacement="stacked"
+        type="email"
+        formControlName="email"
+        placeholder="Enter your email">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input
+        label="Password"
+        labelPlacement="stacked"
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password"
+        placeholder="Enter your password">
+      </ion-input>
+      <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()">
+        <ion-icon slot="icon-only" [name]="showPassword ? 'eye' : 'eye-slash'"></ion-icon>
+      </ion-button>
+    </ion-item>
 
     <div class="ion-text-end">
       <a routerLink="../forgot-password">Forgot Password?</a>

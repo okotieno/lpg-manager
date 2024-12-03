@@ -3,7 +3,8 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   IonButton, IonInput,
   IonItem,
-  IonList
+  IonList,
+  IonIcon
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 
@@ -17,29 +18,41 @@ import { RouterLink } from '@angular/router';
     IonItem,
     IonList,
     RouterLink,
+    IonIcon
   ],
   templateUrl: './login-page.component.html',
-  styles: [
-    `
-      :host {
-        /*display: block;*/
-        /*height: 100%;*/
-      }
-    `,
-  ],
+  styles: [`
+    :host {
+      display: block;
+      height: 100%;
+    }
+
+    ion-button[fill="clear"] {
+      --padding-start: 0.5rem;
+      --padding-end: 0.5rem;
+      height: 100%;
+    }
+
+    ion-button[fill="clear"]::part(native) {
+      padding: 0;
+    }
+  `]
 })
 export class LoginPageComponent {
   readonly #fb = inject(FormBuilder);
+  showPassword = false;
+  
   loginForm = this.#fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
-  constructor(private fb: FormBuilder) {}
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   onSubmit() {
     if (this.loginForm.valid) {
-      // Handle login logic
       console.log(this.loginForm.value);
     }
   }

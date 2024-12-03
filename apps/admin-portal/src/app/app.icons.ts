@@ -30,6 +30,7 @@ export const APP_ICONS = [
   'eraser',
   'euro-sign',
   'eye',
+  'eye-slash',
   'file',
   'file-image',
   'file-jpg-downloaded',

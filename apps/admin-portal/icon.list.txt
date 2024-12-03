@@ -29,6 +29,7 @@ earth-africa
 eraser
 euro-sign
 eye
+eye-slash
 file
 file-image
 file-jpg-downloaded
@@ -68,4 +69,3 @@ xmark
 moon
 sun
 desktop
-
