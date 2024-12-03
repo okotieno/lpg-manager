@@ -26,8 +26,9 @@ export const AuthStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withComputed((store) => {
-    const isLoggedIn = computed(() => store.loginResponse.accessToken().length > 0);
-    return { isLoggedIn }
+    const accessToken = computed(() => store.loginResponse.accessToken());
+    const isLoggedIn = computed(() => accessToken().length > 0);
+    return { isLoggedIn, accessToken }
   }),
   withMethods((store, loginWithPasswordGQL = inject(ILoginWithPasswordGQL)) => {
     const loginResource = resource({
