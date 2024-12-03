@@ -7,29 +7,6 @@ ion-input {
 :root {
   --ion-font-family: verdana;
 
-  //--ion-statusbar-padding	Statusbar padding top of the app
-  //--ion-safe-area-top	Adjust the safe area inset top of the app
-  //--ion-safe-area-right	Adjust the safe area inset right of the app
-  //--ion-safe-area-bottom	Adjust the safe area inset bottom of the app
-  //--ion-safe-area-left	Adjust the safe area inset left of the app
-  //--ion-margin	Adjust the margin of the Margin attributes
-  --ion-padding: 78px;
-  //--ion-padding	Adjust the padding of the Padding attributes
-  //--ion-placeholder-opacity	Adjust the opacity of the placeholders used in the input, textarea, searchbar, and select components
-  //Grid Variables
-  //Name	Description
-  //--ion-grid-columns	Number of columns in the grid
-  //--ion-grid-padding-xs	Padding of the grid for xs breakpoints
-  //--ion-grid-padding-sm	Padding of the grid for sm breakpoints
-  //--ion-grid-padding-md	Padding of the grid for md breakpoints
-  //--ion-grid-padding-lg	Padding of the grid for lg breakpoints
-  //--ion-grid-padding-xl	Padding of the grid for xl breakpoints
-  //--ion-grid-column-padding-xs	Padding of the grid columns for xs breakpoints
-  //--ion-grid-column-padding-sm	Padding of the grid columns for sm breakpoints
-  //--ion-grid-column-padding-md	Padding of the grid columns for md breakpoints
-  //--ion-grid-column-padding-lg	Padding of the grid columns for lg breakpoints
-  //--ion-grid-column-padding-xl	Padding of the grid columns for xl breakpoint
-
   --ion-color-primary: #A32A29;
   --ion-color-primary-rgb: 163, 42, 41;
   --ion-color-primary-contrast: #ffffff;
@@ -79,8 +56,24 @@ form {
       }
     }
     input {
-      padding-top: 14px !important;
-      padding-bottom: 14px !important;
+      padding-top: 0.875rem !important;
+      padding-bottom: 0.875rem !important;
     }
   }
+}
+
+.ion-color-lpg-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
+
+  --ion-color-base: var(--ion-text-color);
+  --ion-color-base-rgb: var(--ion-text-color-rgb);
+  --ion-color-contrast: var(--ion-background-color);
+  --ion-color-contrast-rgb: var(-ion-background-color-rgb);
+  --ion-color-shade: var(--ion-color-dark-shade);
+  --ion-color-tint: var(--ion-color-dark-tint);
+}
+.ion-color-medium {
+  margin-bottom: 24px;
 }

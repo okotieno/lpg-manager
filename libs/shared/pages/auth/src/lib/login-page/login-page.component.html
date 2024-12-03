@@ -1,8 +1,16 @@
 <ion-list class="ion-padding">
-  <h1>Welcome Back</h1>
-  <p>Please sign in to continue</p>
+  <h1>
+    <ion-text color="lpg-title">
+      Welcome Back
+    </ion-text>
+  </h1>
+  <p>
+    <ion-text color="medium">
+      Please sign in to continue
+    </ion-text>
+  </p>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="ion-padding-top">
     <ion-item>
       <ion-input
         label="Email"
@@ -20,7 +28,7 @@
         formControlName="password"
         placeholder="Enter your password">
       </ion-input>
-      <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()">
+      <ion-button shape="round" fill="clear" slot="end" (click)="togglePasswordVisibility()">
         <ion-icon slot="icon-only" [name]="showPassword ? 'eye' : 'eye-slash'"></ion-icon>
       </ion-button>
     </ion-item>
@@ -30,7 +38,7 @@
     </div>
 
     <ion-button
-      expand="block"
+      size="large"
       type="submit"
       [disabled]="!loginForm.valid"
       class="ion-margin-top">

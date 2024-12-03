@@ -10,6 +10,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideRouter(appRoutes),
-    provideIonicAngular()
+    provideIonicAngular({
+      useSetInputAPI: true,
+    })
   ],
 };
