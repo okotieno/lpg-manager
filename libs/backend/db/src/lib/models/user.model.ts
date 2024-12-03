@@ -86,13 +86,6 @@ export class UserModel extends Model {
   profileDescription?: string;
 
   @Column({
-    type: DataType.STRING,
-    allowNull: true,
-    field: 'profile_picture_string',
-  })
-  profilePictureString?: string;
-
-  @Column({
     type: DataType.DATE,
     allowNull: true,
     field: 'last_login_at',

@@ -1,12 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, untracked } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-  IonButton, IonInput,
+  IonButton,
+  IonInput,
   IonItem,
   IonList,
-  IonIcon, IonText
+  IonIcon,
+  IonText,
 } from '@ionic/angular/standalone';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { IMutationLoginWithPasswordArgs } from '@lpg-manager/types';
 
@@ -36,11 +38,21 @@ import { IMutationLoginWithPasswordArgs } from '@lpg-manager/types';
 export class LoginPageComponent {
   readonly #authStore = inject(AuthStore);
   readonly #fb = inject(FormBuilder);
+  readonly #router = inject(Router);
   showPassword = false;
 
   loginForm = this.#fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
+  });
+
+  userLoggedInEffect = effect(async () => {
+    const userLoggedIn = this.#authStore.isLoggedIn();
+    await untracked(async () => {
+      if (userLoggedIn) {
+        await this.#router.navigate(['/dashboard']);
+      }
+    });
   });
 
   togglePasswordVisibility() {
@@ -49,7 +61,9 @@ export class LoginPageComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.#authStore.login(this.loginForm.value as IMutationLoginWithPasswordArgs);
+      this.#authStore.login(
+        this.loginForm.value as IMutationLoginWithPasswordArgs
+      );
       console.log(this.loginForm.value);
     }
   }
