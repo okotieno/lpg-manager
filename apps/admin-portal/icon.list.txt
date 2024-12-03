@@ -8,6 +8,7 @@ backward-fast
 backward-step
 bars
 bars-sort
+bell
 boxes-stacked
 caret-down
 caret-right
@@ -40,6 +41,7 @@ filters
 floppy-disk
 forward-fast
 forward-step
+gear
 house
 language
 left-to-line
@@ -48,6 +50,7 @@ minus
 pen
 pen-to-square
 plus
+right-from-bracket
 scale-balanced
 shelves
 shield-check

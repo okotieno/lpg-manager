@@ -12,7 +12,7 @@ module.exports = [
         'error',
         {
           type: 'attribute',
-          prefix: 'lpg',
+          prefix: 'lib',
           style: 'camelCase',
         },
       ],
@@ -20,7 +20,7 @@ module.exports = [
         'error',
         {
           type: 'element',
-          prefix: 'lpg',
+          prefix: 'lib',
           style: 'kebab-case',
         },
       ],

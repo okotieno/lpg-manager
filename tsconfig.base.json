@@ -67,6 +67,7 @@
       "@lpg-manager/translation": ["libs/backend/translation/src/index.ts"],
       "@lpg-manager/types": ["libs/shared/utils/types/src/index.ts"],
       "@lpg-manager/user-service": ["libs/backend/services/user/src/index.ts"],
+      "@lpg-manager/users-page": ["libs/admin-portal/pages/users/src/index.ts"],
       "@lpg-manager/util": ["libs/backend/util/src/index.ts"],
       "@lpg-manager/validators": ["libs/backend/validators/src/index.ts"]
     }

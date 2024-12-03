@@ -6,7 +6,7 @@
     "node": "22.4"
   },
   "scripts": {
-    "serve": "concurrently \"pnpm nx serve backend\" \"pnpm nx serve admin-portal\" \"pnpm nx serve depot\" \"pnpm nx serve dealer\" \"pnpm nx serve transporter\"",
+    "serve": "concurrently \"pnpm nx serve backend\" \"pnpm serve:admin-portal\" \"pnpm nx serve depot\" \"pnpm nx serve dealer\" \"pnpm nx serve transporter\"",
     "serve:admin-portal": "pnpm nx copy:icons admin-portal && pnpm nx serve admin-portal",
     "docker-compose:up": "pnpm nx docker-compose:up backend",
     "docker-compose:down": "pnpm nx docker-compose:down backend",

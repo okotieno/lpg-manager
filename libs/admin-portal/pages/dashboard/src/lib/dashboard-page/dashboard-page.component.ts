@@ -1,11 +1,79 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, inject } from '@angular/core';
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonMenu,
+  IonMenuButton,
+  IonTitle,
+  IonToolbar,
+  IonPopover, IonListHeader
+} from '@ionic/angular/standalone';
+import { ThemeService } from '@lpg-manager/theme-service';
+import { AuthStore } from '@lpg-manager/auth-store';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'lib-dashboard-page',
+  selector: 'lpg-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    IonContent,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonMenu,
+    IonMenuButton,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonPopover,
+    IonListHeader,
+  ],
   templateUrl: './dashboard-page.component.html',
-  styleUrl: './dashboard-page.component.css',
+  styles: `
+    :host {
+      height: 100%;
+    }
+  `,
 })
-export class DashboardComponent {}
+export class DashboardComponent {
+  private themeService = inject(ThemeService);
+  private authStore = inject(AuthStore);
+  private router = inject(Router);
+
+  currentThemeIcon = computed(() => {
+    switch (this.themeService.theme()) {
+      case 'light':
+        return 'sun';
+      case 'dark':
+        return 'moon';
+      default:
+        return 'desktop';
+    }
+  });
+
+  toggleTheme() {
+    const themes = ['system', 'light', 'dark'] as const;
+    const currentIndex = themes.indexOf(this.themeService.theme());
+    const nextTheme = themes[(currentIndex + 1) % themes.length];
+    this.themeService.setTheme(nextTheme);
+  }
+
+  async logout() {
+    // await this.authStore.logout();
+    await this.router.navigate(['/login']);
+  }
+
+  goToProfile() {
+    // Implement profile navigation
+    console.log('Navigate to profile');
+  }
+}
