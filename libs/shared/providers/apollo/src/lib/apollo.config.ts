@@ -3,7 +3,7 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { ApolloLink, InMemoryCache, split } from '@apollo/client/core';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { OperationDefinitionNode } from 'graphql/language';
-import { inject } from '@angular/core';
+import { forwardRef, inject } from '@angular/core';
 import { contextSuccessAlert } from './success-alert.context';
 import { multipartFormContext } from './multipart-form.context';
 
@@ -21,7 +21,7 @@ export const apolloConfig = ()=> {
   const httpLink = inject(HttpLink);
   const backendUrl = inject(ENV_VARIABLES).backendUrl;
   const toastController = inject(ToastController);
-  const token = inject(AuthStore).accessToken;
+
   const http = httpLink.create({
     uri: `${backendUrl}/graphql`,
     extractFiles: (body) => extractFiles(body, isExtractableFile) as any
@@ -30,19 +30,15 @@ export const apolloConfig = ()=> {
   const wsLink = new GraphQLWsLink(
     createClient({
       url: `${backendUrl.replace('http', 'ws') ?? ''}`,
-      shouldRetry: () => true,
-      connectionParams: {
-        Authorization: token() ? `Bearer ${token()}` : '',
+      connectionParams: () => {
+        const authStore = inject(AuthStore).accessToken;
+        return {
+          Authorization: authStore() ? `Bearer ${authStore()}` : '',
+        }
       },
     }),
   );
 
-  // const ws = new WebSocketLink({
-  //   uri: `${backendUrl.replace('http', 'ws')}/graphql`,
-  //   options: {
-  //     reconnect: true
-  //   }
-  // });
 
   const link = split(
     ({ query }) => {
