@@ -23,6 +23,7 @@ import { JwtService } from '@nestjs/jwt';
             extra: unknown;
             connectionParams?: Record<string, unknown>;
           }) => {
+            console.log({connected: true })
             const extractToken = (authHeader: string): string | null => {
               if (!authHeader) return null;
               const parts = authHeader.split(' ');

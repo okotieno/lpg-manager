@@ -61,7 +61,7 @@ module.exports = {
       profilePhotoLink: {
         field: 'profile_photo_link',
         allowNull: true,
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
       },
       lastLoginAt: {
         type: Sequelize.DATE,

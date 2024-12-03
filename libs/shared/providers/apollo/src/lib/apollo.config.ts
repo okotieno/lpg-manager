@@ -23,7 +23,7 @@ export const apolloConfig = ()=> {
   });
 
   const ws = new WebSocketLink({
-    uri: `${backendUrl.replace('http', 'ws') ?? ''}/graphql`,
+    uri: `${backendUrl.replace('http', 'ws')}/graphql`,
     options: {
       reconnect: true
     }
