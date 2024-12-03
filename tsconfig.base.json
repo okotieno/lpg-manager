@@ -32,6 +32,9 @@
       "@lpg-manager/crud-abstract": [
         "libs/backend/services/crud-abstract/src/index.ts"
       ],
+      "@lpg-manager/dashboard-page": [
+        "libs/admin-portal/pages/dashboard/src/index.ts"
+      ],
       "@lpg-manager/db": ["libs/backend/db/src/index.ts"],
       "@lpg-manager/email-service": [
         "libs/backend/services/email/src/index.ts"
@@ -39,7 +42,9 @@
       "@lpg-manager/file-upload": ["libs/backend/file-upload/src/index.ts"],
       "@lpg-manager/graphql": ["libs/backend/graphql/src/index.ts"],
       "@lpg-manager/icon-service": ["libs/shared/services/icon/src/index.ts"],
-      "@lpg-manager/injection-token": ["libs/shared/utils/injection-token/src/index.ts"],
+      "@lpg-manager/injection-token": [
+        "libs/shared/utils/injection-token/src/index.ts"
+      ],
       "@lpg-manager/notification-service": [
         "libs/backend/services/notification/src/index.ts"
       ],
@@ -60,9 +65,9 @@
       ],
       "@lpg-manager/theme-service": ["libs/shared/services/theme/src/index.ts"],
       "@lpg-manager/translation": ["libs/backend/translation/src/index.ts"],
+      "@lpg-manager/types": ["libs/shared/utils/types/src/index.ts"],
       "@lpg-manager/user-service": ["libs/backend/services/user/src/index.ts"],
       "@lpg-manager/util": ["libs/backend/util/src/index.ts"],
-      "@lpg-manager/types": ["libs/shared/utils/types/src/index.ts"],
       "@lpg-manager/validators": ["libs/backend/validators/src/index.ts"]
     }
   }
