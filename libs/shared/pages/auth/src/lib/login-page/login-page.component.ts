@@ -7,6 +7,8 @@ import {
   IonIcon, IonText
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
+import { AuthStore } from '@lpg-manager/auth-store';
+import { IMutationLoginWithPasswordArgs } from '@lpg-manager/types';
 
 @Component({
   selector: 'lpg-login-page',
@@ -32,10 +34,11 @@ import { RouterLink } from '@angular/router';
   ],
 })
 export class LoginPageComponent {
+  readonly #authStore = inject(AuthStore);
   readonly #fb = inject(FormBuilder);
   showPassword = false;
 
-  loginForm = this.#fb.group({
+  loginForm = this.#fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
@@ -46,6 +49,7 @@ export class LoginPageComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
+      this.#authStore.login(this.loginForm.value as IMutationLoginWithPasswordArgs);
       console.log(this.loginForm.value);
     }
   }

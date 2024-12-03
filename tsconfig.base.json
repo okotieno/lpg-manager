@@ -16,6 +16,9 @@
       "@lpg-manager/activity-log-service": [
         "libs/backend/services/activity-log/src/index.ts"
       ],
+      "@lpg-manager/apollo-config": [
+        "libs/shared/providers/apollo/src/index.ts"
+      ],
       "@lpg-manager/app-activity-log": [
         "libs/backend/app-activity-log/src/index.ts"
       ],
@@ -25,6 +28,7 @@
       "@lpg-manager/auth": ["libs/backend/auth/src/index.ts"],
       "@lpg-manager/auth-page": ["libs/shared/pages/auth/src/index.ts"],
       "@lpg-manager/auth-service": ["libs/backend/services/auth/src/index.ts"],
+      "@lpg-manager/auth-store": ["libs/shared/data-access/auth/src/index.ts"],
       "@lpg-manager/crud-abstract": [
         "libs/backend/services/crud-abstract/src/index.ts"
       ],

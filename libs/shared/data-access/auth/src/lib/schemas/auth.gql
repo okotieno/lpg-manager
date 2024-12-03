@@ -1,0 +1,109 @@
+# Common user fields fragment
+fragment UserFields on UserModel {
+  id
+  email
+  firstName
+  lastName
+  phone
+  createdAt
+  updatedAt
+  profilePhotoLink
+}
+
+fragment AuthDetails on LoginResponse {
+  accessToken
+  refreshToken
+  refreshTokenKey
+  user {
+    ...UserFields
+  }
+}
+
+mutation LoginWithPassword($email: String!, $password: String!) {
+  loginWithPassword(email: $email, password: $password) {
+    ...AuthDetails
+  }
+}
+
+## Mutation for login with Google token
+#mutation GoogleSignIn($token: String!) {
+#  signInWithGoogle(token: $token) {
+#    ...AuthDetails
+#  }
+#}
+#
+#mutation LoginWithToken($token: String!) {
+#  loginWithToken(token: $token) {
+#    ...AuthDetails
+#  }
+#}
+#
+#mutation RequestAccessToken($refreshToken: String!) {
+#  requestAccessToken(refreshToken: $refreshToken) {
+#    accessToken
+#  }
+#}
+#
+#mutation SendPasswordResetEmail($email: String!) {
+#  sendPasswordResetLinkEmail(email: $email) {
+#    message
+#  }
+#}
+#
+#mutation ChangePasswordUsingResetToken(
+#  $token: String!
+#  $password: String!
+#  $passwordConfirmation: String!
+#) {
+#  changePasswordUsingResetToken(
+#    token: $token
+#    password: $password
+#    passwordConfirmation: $passwordConfirmation
+#  ) {
+#    accessToken
+#    refreshToken
+#    user {
+#      id
+#      firstName
+#      lastName
+#      email
+#      phone
+#      profilePhotoLink
+#      emailVerifiedAt
+#    }
+#  }
+#}
+#
+#mutation ValidatePasswordResetToken($token: String!) {
+#  validatePasswordResetToken(token: $token) {
+#    user {
+#      firstName
+#    }
+#  }
+#}
+#
+#mutation VerifyEmail($token: String!) {
+#  verifyEmail(token: $token) {
+#    success
+#    message
+#  }
+#}
+#
+#mutation SendVerificationLinkEmail {
+#  sendVerificationLinkEmail {
+#    success
+#    message
+#  }
+#}
+
+#query AuthUserAssignedWarehouses {
+#  authUserAssignedWarehouses {
+#    items {
+#      id
+#      name
+#    }
+#    meta {
+#      totalItems
+#    }
+#  }
+#}
