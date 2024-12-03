@@ -4,8 +4,9 @@ import {
   IonButton,
   IonInput,
   IonItem,
-  IonLabel,
   IonList,
+  IonIcon,
+  IonText
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -16,8 +17,9 @@ import {
     IonButton,
     IonInput,
     IonItem,
-    IonLabel,
-    IonList
+    IonList,
+    IonIcon,
+    IonText
   ],
   templateUrl: './reset-password-page.component.html',
   styles: [`
@@ -25,34 +27,23 @@ import {
       display: block;
       height: 100%;
     }
-
-    h1 {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    p {
-      color: var(--ion-color-medium);
-      margin-bottom: 24px;
-    }
-
-    ion-button {
-      margin-top: 24px;
-    }
   `]
 })
 export class ResetPasswordPageComponent {
   readonly #fb = inject(FormBuilder);
+  showPassword = false;
+  
   resetPasswordForm = this.#fb.group({
     password: ['', [Validators.required, Validators.minLength(8)]],
     confirmPassword: ['', [Validators.required]]
   });
 
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   onSubmit() {
     if (this.resetPasswordForm.valid) {
-      // Handle password reset logic
       console.log(this.resetPasswordForm.value);
     }
   }

@@ -77,3 +77,13 @@ form {
 .ion-color-medium {
   margin-bottom: 24px;
 }
+
+ion-button.button-solid {
+  text-transform: none;
+  --border-radius: 8px;
+  --padding-start: 5rem;
+  --padding-end: 5rem;
+  --padding-top: 1.3rem;
+  --padding-bottom: 1.3rem;
+}
+
