@@ -1,1 +1,1 @@
-export { AuthPageComponent as default} from './lib/auth-page.component';
+export { AUTH_ROUTES } from './lib/auth.routes';

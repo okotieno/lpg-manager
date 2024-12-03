@@ -1,41 +1,70 @@
+ion-input {
+  --ion-padding: 400px;
+  --ion-margin: 400px;
+  --ion-background-color: red;
+}
+
 :root {
-    --ion-color-primary: #A32A29;
-    --ion-color-primary-rgb: 163, 42, 41;
-    --ion-color-primary-contrast: #ffffff;
-    --ion-color-primary-contrast-rgb: 255, 255, 255;
-    --ion-color-primary-shade: #8f2524;
-    --ion-color-primary-tint: #ac3f3e;
+  --ion-font-family: verdana;
 
-    --ion-text-color: #221F1F;
-    --ion-text-color-rgb: 34, 31, 31;
-    --ion-background-color: #ffffff;
-    --ion-background-color-rgb: 255, 255, 255;
+  //--ion-statusbar-padding	Statusbar padding top of the app
+  //--ion-safe-area-top	Adjust the safe area inset top of the app
+  //--ion-safe-area-right	Adjust the safe area inset right of the app
+  //--ion-safe-area-bottom	Adjust the safe area inset bottom of the app
+  //--ion-safe-area-left	Adjust the safe area inset left of the app
+  //--ion-margin	Adjust the margin of the Margin attributes
+  --ion-padding: 78px;
+  //--ion-padding	Adjust the padding of the Padding attributes
+  //--ion-placeholder-opacity	Adjust the opacity of the placeholders used in the input, textarea, searchbar, and select components
+  //Grid Variables
+  //Name	Description
+  //--ion-grid-columns	Number of columns in the grid
+  //--ion-grid-padding-xs	Padding of the grid for xs breakpoints
+  //--ion-grid-padding-sm	Padding of the grid for sm breakpoints
+  //--ion-grid-padding-md	Padding of the grid for md breakpoints
+  //--ion-grid-padding-lg	Padding of the grid for lg breakpoints
+  //--ion-grid-padding-xl	Padding of the grid for xl breakpoints
+  //--ion-grid-column-padding-xs	Padding of the grid columns for xs breakpoints
+  //--ion-grid-column-padding-sm	Padding of the grid columns for sm breakpoints
+  //--ion-grid-column-padding-md	Padding of the grid columns for md breakpoints
+  //--ion-grid-column-padding-lg	Padding of the grid columns for lg breakpoints
+  //--ion-grid-column-padding-xl	Padding of the grid columns for xl breakpoint
 
-    --ion-color-success: #2F9803;
-    --ion-color-success-rgb: 47, 152, 3;
-    --ion-color-success-contrast: #ffffff;
-    --ion-color-success-contrast-rgb: 255, 255, 255;
-    --ion-color-success-shade: #298603;
-    --ion-color-success-tint: #44a21c;
-  }
+  --ion-color-primary: #A32A29;
+  --ion-color-primary-rgb: 163, 42, 41;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #8f2524;
+  --ion-color-primary-tint: #ac3f3e;
 
-  :root .dark {
-    --ion-color-primary: #E85A59;
-    --ion-color-primary-rgb: 232, 90, 89;
-    --ion-color-primary-contrast: #000000;
-    --ion-color-primary-contrast-rgb: 0, 0, 0;
-    --ion-color-primary-shade: #cc4f4e;
-    --ion-color-primary-tint: #ea6b6a;
+  --ion-text-color: #221F1F;
+  --ion-text-color-rgb: 34, 31, 31;
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
 
-    --ion-text-color: #ffffff;
-    --ion-text-color-rgb: 255, 255, 255;
-    --ion-background-color: #221F1F !important;
-    --ion-background-color-rgb: 34, 31, 31;
+  --ion-color-success: #2F9803;
+  --ion-color-success-rgb: 47, 152, 3;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #298603;
+  --ion-color-success-tint: #44a21c;
+}
 
-    --ion-color-success: #4CD811;
-    --ion-color-success-rgb: 76, 216, 17;
-    --ion-color-success-contrast: #000000;
-    --ion-color-success-contrast-rgb: 0, 0, 0;
-    --ion-color-success-shade: #43be0f;
-    --ion-color-success-tint: #5edc29;
-  }
+:root .dark {
+  --ion-color-primary: #E85A59;
+  --ion-color-primary-rgb: 232, 90, 89;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-contrast-rgb: 0, 0, 0;
+  --ion-color-primary-shade: #cc4f4e;
+  --ion-color-primary-tint: #ea6b6a;
+
+  --ion-text-color: #ffffff;
+  --ion-text-color-rgb: 255, 255, 255;
+  --ion-background-color: #221F1F !important;
+  --ion-background-color-rgb: 34, 31, 31;
+
+  --ion-color-success: #4CD811;
+  --ion-color-success-rgb: 76, 216, 17;
+  --ion-color-success-contrast: #000000;
+  --ion-color-success-contrast-rgb: 0, 0, 0;
+}

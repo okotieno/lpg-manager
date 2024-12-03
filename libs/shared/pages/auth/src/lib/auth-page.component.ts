@@ -11,6 +11,7 @@ import {
 } from '@ionic/angular/standalone';
 import { LandingPageImageComponent } from './landing-page-image/landing-page-image.component';
 import { Theme, ThemeService } from '@lpg-manager/theme-service';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -24,6 +25,7 @@ import { Theme, ThemeService } from '@lpg-manager/theme-service';
     IonButton,
     IonIcon,
     IonButtons,
+    RouterOutlet
   ],
   templateUrl: './auth-page.component.html',
   styleUrl: './auth-page.component.css',

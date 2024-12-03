@@ -1,3 +1,11 @@
 @use "./theme/variables";
+@use "./global-styles";
 
 /* You can add global styles to this file, and also import other style files */
+
+form {
+  ion-item {
+    --padding-start: 0 !important;
+    margin-bottom: 1rem;
+  }
+}
