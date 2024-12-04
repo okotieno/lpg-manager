@@ -1,0 +1,124 @@
+mutation CreateUser(
+  $phone: String!
+  $email: String!
+  $firstName: String!
+  $lastName: String!
+  $middleName: String
+) {
+  createUser(
+    phone: $phone
+    lastName: $lastName
+    middleName: $middleName
+    firstName: $firstName
+    email: $email
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+mutation UpdateUser(
+  $userId: Int!
+  $phone: String!
+  $email: String!
+  $firstName: String!
+  $lastName: String!
+  $middleName: String
+) {
+  updateUser(
+    id: $userId,
+    params: {
+      phone: $phone
+      lastName: $lastName
+      middleName: $middleName
+      firstName: $firstName
+      email: $email
+    }
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetUserById($id: String!) {
+  user(id: $id) {
+    phone
+    id
+    email
+    firstName
+    lastName
+    profilePhotoLink
+    createdAt
+  }
+}
+
+query GetUsers($query: QueryParams) {
+  users(query: $query) {
+    items {
+      id
+      firstName
+      lastName
+      email
+      phone
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+mutation AssignRolesToUser(
+  $roles: [SelectCategory]!
+  $userId: String!
+) {
+  assignRoleToUser(roles: $roles, userId: $userId) {
+    message
+  }
+}
+
+mutation DeleteUserById($id: String!) {
+  deleteUser(id: $id) {
+    message
+  }
+}
+
+query UserWithRoles($userId: String!) {
+  user(id: $userId) {
+    phone
+    id
+    email
+    firstName
+    lastName
+    profilePhotoLink
+    createdAt
+  }
+  userRoles(userId: $userId) {
+    items {
+      id
+      name
+      permissions {
+        id
+        name
+      }
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+#mutation AssignCountriesLanguagesToUser($userId: Int!, $countriesLanguages: [CountriesLanguagesInput!]!) {
+#  assignCountriesLanguagesToUser(userId: $userId, countriesLanguages: $countriesLanguages) {
+#    message
+#  }
+#}
+#
+#mutation AllocateWarehouse($userId: Int!, $warehouses: [SelectCategory!]!) {
+#  allocateWarehouseToUser(userId: $userId, warehouses: $warehouses) {
+#    message
+#  }
+#}

@@ -12,11 +12,11 @@ import {
   IonMenuButton,
   IonTitle,
   IonToolbar,
-  IonPopover, IonListHeader
+  IonPopover, IonListHeader,
 } from '@ionic/angular/standalone';
 import { ThemeService } from '@lpg-manager/theme-service';
 import { AuthStore } from '@lpg-manager/auth-store';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'lpg-dashboard',
@@ -36,6 +36,8 @@ import { Router } from '@angular/router';
     IonLabel,
     IonPopover,
     IonListHeader,
+    RouterOutlet,
+    RouterLink,
   ],
   templateUrl: './dashboard-page.component.html',
   styles: `
@@ -44,7 +46,7 @@ import { Router } from '@angular/router';
     }
   `,
 })
-export class DashboardComponent {
+export default class DashboardComponent {
   private themeService = inject(ThemeService);
   private authStore = inject(AuthStore);
   private router = inject(Router);

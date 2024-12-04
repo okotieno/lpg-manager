@@ -21,7 +21,7 @@ export class UserModel extends Model {
     defaultValue: DataType.UUIDV4,
     primaryKey: true,
   })
-  override id!: string;
+  declare id: string;
 
   @Column({
     type: DataType.STRING,

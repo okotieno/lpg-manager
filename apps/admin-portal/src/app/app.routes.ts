@@ -12,6 +12,6 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'dashboard',
-    loadComponent: () => import('@lpg-manager/dashboard-page').then(m => m.DashboardComponent)
+    loadChildren: () => import('@lpg-manager/dashboard-page')
   }
 ];

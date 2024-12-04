@@ -7,6 +7,7 @@ import { DbModule } from '@lpg-manager/db';
 import { AppQueueModule } from '@lpg-manager/app-queue';
 import { KeyvRedisModule } from '@lpg-manager/app-cache';
 import { AppEventModule } from '@lpg-manager/app-event';
+import { UserModule } from '@lpg-manager/user';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { AppEventModule } from '@lpg-manager/app-event';
     DbModule,
     AppQueueModule,
     KeyvRedisModule,
-    AppEventModule
+    AppEventModule,
+    UserModule,
   ],
 })
 export class AppModule {}

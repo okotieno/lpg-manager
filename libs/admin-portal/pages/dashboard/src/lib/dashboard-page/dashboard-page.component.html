@@ -7,7 +7,7 @@
   <ion-content>
     <ion-list>
       <ion-list-header>Administration</ion-list-header>
-      <ion-item button detail>
+      <ion-item button detail [routerLink]="['users']">
         <ion-label>Users Management</ion-label>
       </ion-item>
       <ion-item button detail>
@@ -37,8 +37,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="main-content">
-  <h1>Dashboard Content</h1>
+<ion-content id="main-content" class="ion-padding">
+  <router-outlet />
 </ion-content>
 
 <!-- User Dropdown -->

@@ -24,7 +24,7 @@ extend type Query {
   users(query: QueryParams): PaginatedUser!
   user(id: String!): UserModel
 
-  userRoles(userId: Int): PaginatedUserRoles
+  userRoles(userId: String): PaginatedUserRoles
 }
 
 input UpdateUserInput {
