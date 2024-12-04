@@ -11,7 +11,6 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { IMutationLoginWithPasswordArgs } from '@lpg-manager/types';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-login-page',
@@ -24,8 +23,7 @@ import { JsonPipe } from '@angular/common';
     IonList,
     RouterLink,
     IonIcon,
-    IonText,
-    JsonPipe,
+    IonText
   ],
   templateUrl: './login-page.component.html',
   styles: [

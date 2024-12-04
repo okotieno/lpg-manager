@@ -1,5 +1,6 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
+    <lpg-landing-page-image slot="start" class="ion-hide-md-up ion-margin-start" />
     <ion-buttons slot="end">
       <ion-button color="primary" fill="clear" (click)="toggleTheme()">
         <ion-icon [name]="currentIcon()" slot="icon-only"></ion-icon>
@@ -9,10 +10,10 @@
 </ion-header>
 <ion-content>
   <ion-row>
-    <ion-col sizeLg="8" sizeMd="7">
+    <ion-col sizeXl="8" sizeLg="7" class="ion-hide-md-down">
       <lpg-landing-page-image />
     </ion-col>
-    <ion-col sizeLg="4" sizeMd="5">
+    <ion-col sizeXl="4" sizeLg="5">
       <router-outlet></router-outlet>
     </ion-col>
   </ion-row>
