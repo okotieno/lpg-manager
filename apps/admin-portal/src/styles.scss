@@ -2,3 +2,16 @@
 
 /* You can add global styles to this file, and also import other style files */
 
+table {
+  width: 100%;
+  thead {
+    background: var(--ion-color-primary);
+    color: var(--ion-color-primary-contrast);
+  }
+  th, td {
+    padding: 1rem 1rem;
+    text-align: left;
+    height: 3rem !important;
+    vertical-align: middle;
+  }
+}
