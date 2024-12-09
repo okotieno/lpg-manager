@@ -50,27 +50,7 @@ import { IGetUsersGQL, IGetUsersQuery } from '@lpg-manager/user-store';
   ],
   templateUrl: './users-page.component.html',
   styles: `
-    .user-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-    }
 
-    .user-table th,
-    .user-table td {
-      padding: 1rem;
-      text-align: left;
-      border-bottom: 1px solid var(--ion-color-light);
-    }
-
-    .user-table th {
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .user-table th:hover {
-      background-color: var(--ion-color-light);
-    }
   `,
 })
 export default class UserTableComponent {

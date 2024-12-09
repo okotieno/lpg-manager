@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -35,6 +35,7 @@ import { IGetUserCountGQL } from '@lpg-manager/user-store';
   `,
 })
 export default class UserTableComponent {
+  routeLabel = input();
   private getUserCountGQL = inject(IGetUserCountGQL);
   userCount = signal(0);
 

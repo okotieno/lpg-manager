@@ -4,7 +4,10 @@ export const USERS_ROUTES:Routes = [
   {
     path: '',
     loadComponent: () => import('./users-landing-page/users-landing-page.component'),
-    pathMatch: 'full'
+    pathMatch: 'full',
+    data: {
+      routeLabel: "Users"
+    }
   },
   {
     path: 'users',
