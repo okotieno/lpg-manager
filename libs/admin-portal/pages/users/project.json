@@ -2,7 +2,7 @@
   "name": "users-page",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/admin-portal/pages/users/src",
-  "prefix": "lib",
+  "prefix": "lpg",
   "projectType": "library",
   "tags": [],
   "targets": {

@@ -8,6 +8,8 @@ import { AppQueueModule } from '@lpg-manager/app-queue';
 import { KeyvRedisModule } from '@lpg-manager/app-cache';
 import { AppEventModule } from '@lpg-manager/app-event';
 import { UserModule } from '@lpg-manager/user';
+import { RoleModule } from '@lpg-manager/role';
+import { PermissionModule } from '@lpg-manager/permission';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { UserModule } from '@lpg-manager/user';
     KeyvRedisModule,
     AppEventModule,
     UserModule,
+    RoleModule,
+    PermissionModule,
   ],
 })
 export class AppModule {}

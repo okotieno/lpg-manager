@@ -26,6 +26,8 @@
       "@lpg-manager/app-event": ["libs/backend/app-event/src/index.ts"],
       "@lpg-manager/app-queue": ["libs/backend/app-queue/src/index.ts"],
       "@lpg-manager/auth": ["libs/backend/auth/src/index.ts"],
+      "@lpg-manager/permission": ["libs/backend/permission/src/index.ts"],
+      "@lpg-manager/role": ["libs/backend/role/src/index.ts"],
       "@lpg-manager/auth-page": ["libs/shared/pages/auth/src/index.ts"],
       "@lpg-manager/auth-service": ["libs/backend/services/auth/src/index.ts"],
       "@lpg-manager/auth-store": ["libs/shared/data-access/auth/src/index.ts"],
@@ -60,6 +62,9 @@
       ],
       "@lpg-manager/role-service": ["libs/backend/services/role/src/index.ts"],
       "@lpg-manager/roles-page": ["libs/admin-portal/pages/roles/src/index.ts"],
+      "@lpg-manager/roles-store": [
+        "libs/shared/data-access/roles/src/index.ts"
+      ],
       "@lpg-manager/setting": ["libs/backend/setting/src/index.ts"],
       "@lpg-manager/setting-service": [
         "libs/backend/services/setting/src/index.ts"

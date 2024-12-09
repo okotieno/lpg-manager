@@ -2,7 +2,7 @@
   "name": "icon-service",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/services/icon/src",
-  "prefix": "lib",
+  "prefix": "lpg",
   "projectType": "library",
   "tags": [],
   "targets": {

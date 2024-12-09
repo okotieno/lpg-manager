@@ -2,7 +2,7 @@
   "name": "roles-page",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/admin-portal/pages/roles/src",
-  "prefix": "lib",
+  "prefix": "lpg",
   "projectType": "library",
   "tags": [],
   "targets": {

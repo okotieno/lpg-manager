@@ -1,0 +1,69 @@
+mutation CreateRole(
+  $name: String!
+) {
+  createRole(
+    name: $name
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetRoleById($id: String!) {
+  role(id: $id) {
+    id
+    name
+  }
+}
+
+query GetRoleByIdWithPermission($id: String!) {
+  role(id: $id) {
+    id
+    name
+    permissions {
+      id
+      name
+    }
+  }
+}
+
+query GetRoles($query: QueryParams) {
+  roles(query: $query) {
+    items {
+      id
+      name
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+mutation GivePermissionsToRole(
+  $permissions: [SelectCategory]
+  $roleId: String
+) {
+  givePermissionsToRole(permissions: $permissions, roleId: $roleId) {
+    message
+  }
+}
+
+mutation DeleteRoleById($id: String!) {
+  deleteRole(id: $id) {
+    message
+  }
+}
+
+mutation UpdateRole($id: String!, $name: String!) {
+  updateRole(
+    id: $id
+    params: {name: $name}
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
