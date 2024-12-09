@@ -15,6 +15,10 @@ query GetRoleById($id: String!) {
   role(id: $id) {
     id
     name
+    permissions {
+      id
+      name
+    }
   }
 }
 

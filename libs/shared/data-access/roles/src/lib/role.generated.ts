@@ -15,7 +15,7 @@ export type IGetRoleByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetRoleByIdQuery = { role?: { id: string, name: string } | null };
+export type IGetRoleByIdQuery = { role?: { id: string, name: string, permissions?: Array<{ id: string, name: string } | null> | null } | null };
 
 export type IGetRoleByIdWithPermissionQueryVariables = Types.Exact<{
   id: Types.Scalars['String']['input'];
@@ -80,6 +80,10 @@ export const GetRoleByIdDocument = gql`
   role(id: $id) {
     id
     name
+    permissions {
+      id
+      name
+    }
   }
 }
     `;
