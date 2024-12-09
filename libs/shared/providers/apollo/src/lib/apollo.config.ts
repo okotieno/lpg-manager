@@ -1,9 +1,8 @@
 import { HttpLink } from 'apollo-angular/http';
-import { WebSocketLink } from '@apollo/client/link/ws';
 import { ApolloLink, InMemoryCache, split } from '@apollo/client/core';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { OperationDefinitionNode } from 'graphql/language';
-import { forwardRef, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { contextSuccessAlert } from './success-alert.context';
 import { multipartFormContext } from './multipart-form.context';
 
@@ -17,7 +16,6 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { setContext } from '@apollo/client/link/context';
 import { Preferences } from '@capacitor/preferences';
-
 
 export const apolloConfig = ()=> {
   const httpLink = inject(HttpLink);
@@ -50,7 +48,6 @@ export const apolloConfig = ()=> {
       },
     }),
   );
-
 
   const link = split(
     ({ query }) => {

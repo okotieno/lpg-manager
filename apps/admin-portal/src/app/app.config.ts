@@ -10,6 +10,14 @@ import { provideHttpClient } from '@angular/common/http';
 import { apolloConfig } from '@lpg-manager/apollo-config';
 import { ENV_VARIABLES, IEnvVariable } from '@lpg-manager/injection-token';
 
+declare const process: {
+  env: {
+    ['LPG_ENVIRONMENT']: string;
+    ['LPG_BACKEND_URL']: string;
+    ['LPG_GOOGLE_CLIENT_ID']: string;
+  };
+};
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),

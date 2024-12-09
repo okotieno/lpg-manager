@@ -58,6 +58,7 @@ split
 square
 square-check
 trash-can
+triangle-exclamation
 truck-container
 upload
 user-pen

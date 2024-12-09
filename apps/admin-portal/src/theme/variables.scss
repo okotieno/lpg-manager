@@ -44,7 +44,7 @@ ion-input {
   --ion-color-success-rgb: 76, 216, 17;
   --ion-color-success-contrast: #000000;
   --ion-color-success-contrast-rgb: 0, 0, 0;
-  --ion-item-border-color: rgba(255,555,555 , 0.2);
+  //--ion-item-border-color: rgba(255,555,555 , 0.2);
 }
 form {
   ion-item {
@@ -85,5 +85,13 @@ ion-button.button-solid {
   --padding-end: 5rem;
   --padding-top: 1.3rem;
   --padding-bottom: 1.3rem;
+}
+ion-button {
+  ion-spinner {
+    position: absolute;
+    right: -3rem;
+    width: 2rem;
+    height: 2rem;
+  }
 }
 

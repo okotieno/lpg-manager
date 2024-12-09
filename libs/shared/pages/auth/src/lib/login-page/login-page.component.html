@@ -11,37 +11,60 @@
   </p>
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="ion-padding-top">
-    <ion-item>
+    <ion-item lines="none">
       <ion-input
         label="Email"
         labelPlacement="stacked"
         type="email"
         formControlName="email"
-        placeholder="Enter your email">
+        placeholder="Enter your email"
+        errorText="Email must be a valid email"
+        helperText="&nbsp;"
+      >
       </ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item lines="none">
       <ion-input
         label="Password"
         labelPlacement="stacked"
         [type]="showPassword ? 'text' : 'password'"
         formControlName="password"
-        placeholder="Enter your password">
+        placeholder="Enter your password"
+        errorText="Password field is required"
+        helperText="&nbsp;"
+      >
       </ion-input>
       <ion-button shape="round" fill="clear" slot="end" (click)="togglePasswordVisibility()">
         <ion-icon slot="icon-only" [name]="showPassword ? 'eye' : 'eye-slash'"></ion-icon>
       </ion-button>
     </ion-item>
-
     <div class="ion-text-end">
       <a routerLink="../forgot-password">Forgot Password?</a>
     </div>
 
     <ion-button
+      #submitButton
       type="submit"
-      [disabled]="!loginForm.valid"
+      [disabled]="!loginForm.valid || isLoading()"
       class="ion-margin-top">
-      Sign In
+      @if (isLoading()) {
+        <ion-spinner name="lines-sharp-small" slot="end">home</ion-spinner>
+      }
+      <span>Sign In</span>
+
     </ion-button>
   </form>
+  <ion-toast
+    color="danger"
+    position="top"
+    icon="triangle-exclamation"
+    [isOpen]="!!errorMessage?.()"
+    [message]="errorMessage?.()"
+    [duration]="5000"
+    [positionAnchor]="submitButton.target"
+    (didDismiss)="removeErrorMessage()"
+  >
+    Something
+  </ion-toast>
+
 </ion-list>

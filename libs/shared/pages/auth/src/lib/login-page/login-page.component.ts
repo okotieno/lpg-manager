@@ -7,6 +7,8 @@ import {
   IonList,
   IonIcon,
   IonText,
+  IonSpinner,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { AuthStore } from '@lpg-manager/auth-store';
@@ -23,7 +25,9 @@ import { IMutationLoginWithPasswordArgs } from '@lpg-manager/types';
     IonList,
     RouterLink,
     IonIcon,
-    IonText
+    IonText,
+    IonSpinner,
+    IonToast,
   ],
   templateUrl: './login-page.component.html',
   styles: [
@@ -40,16 +44,28 @@ export class LoginPageComponent {
   readonly #fb = inject(FormBuilder);
   readonly #router = inject(Router);
   user = this.#authStore.loginResponse;
+  isLoading = this.#authStore.isLoading;
+  errorMessage = this.#authStore.errorMessage;
   showPassword = false;
 
   loginForm = this.#fb.nonNullable.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
+    email: ['test@test.cp', [Validators.required, Validators.email]],
+    password: ['sdsd', [Validators.required]],
+  });
+
+  isLoadingEffect = effect(() => {
+    const isLoading = this.#authStore.isLoading();
+    untracked(() => {
+      if (isLoading) {
+        this.loginForm.disable();
+      } else {
+        this.loginForm.enable();
+      }
+    });
   });
 
   userLoggedInEffect = effect(async () => {
     const userLoggedIn = this.#authStore.isLoggedIn();
-    console.log('logged in', { userLoggedIn });
     await untracked(async () => {
       if (userLoggedIn) {
         await this.#router.navigate(['/dashboard']);
@@ -66,7 +82,10 @@ export class LoginPageComponent {
       this.#authStore.login(
         this.loginForm.value as IMutationLoginWithPasswordArgs
       );
-      console.log(this.loginForm.value);
     }
+  }
+
+  removeErrorMessage() {
+    this.#authStore.removeErrorMessage();
   }
 }

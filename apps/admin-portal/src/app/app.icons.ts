@@ -59,6 +59,7 @@ export const APP_ICONS = [
   'square',
   'square-check',
   'trash-can',
+  'triangle-exclamation',
   'truck-container',
   'upload',
   'user-pen',

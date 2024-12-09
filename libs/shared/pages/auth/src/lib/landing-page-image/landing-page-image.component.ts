@@ -1,5 +1,4 @@
-import { Component, effect, HostBinding, input } from '@angular/core';
-import { NgStyle } from '@angular/common';
+import { Component, HostBinding, input } from '@angular/core';
 
 @Component({
   standalone: true,
@@ -7,11 +6,6 @@ import { NgStyle } from '@angular/common';
   selector: 'lpg-landing-page-image',
   templateUrl: './landing-page-image.component.svg',
   styles: `
-    .floating {
-      background: red !important;
-      color: red !important;
-      position: absolute;
-    }
     :host {
       /*width: 100%;*/
       opacity: 0.4;
