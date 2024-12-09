@@ -12,11 +12,9 @@ export const USERS_ROUTES:Routes = [
   {
     path: 'users',
     loadComponent: () => import('./users-page/users-page.component'),
-    pathMatch: 'full'
   },
   {
     path: 'roles',
     loadChildren: () => import('@lpg-manager/roles-page'),
-    pathMatch: 'full'
   }
 ]

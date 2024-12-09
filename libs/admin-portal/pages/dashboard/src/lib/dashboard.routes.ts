@@ -6,7 +6,7 @@ export const DASHBOARD_ROUTES:Routes = [
     loadComponent: () => import('./dashboard-page/dashboard-page.component'),
     children: [
       {
-        path: 'users',
+        path: 'user-management',
         loadChildren: () => import('@lpg-manager/users-page').then(r => r.USERS_ROUTES),
         title: 'LPG - Dashboard',
         data: {

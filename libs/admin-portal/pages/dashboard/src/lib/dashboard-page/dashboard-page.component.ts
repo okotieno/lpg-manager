@@ -47,7 +47,6 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
   `,
 })
 export default class DashboardComponent {
-  routeLabel = input();
   private themeService = inject(ThemeService);
   private authStore = inject(AuthStore);
   private router = inject(Router);
