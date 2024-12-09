@@ -1,9 +1,8 @@
 import * as Types from '@lpg-manager/types';
 
-import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-
+import * as Apollo from 'apollo-angular';
 export type ICreateUserMutationVariables = Types.Exact<{
   phone: Types.Scalars['String']['input'];
   email: Types.Scalars['String']['input'];
@@ -13,10 +12,10 @@ export type ICreateUserMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateUserMutation = { createUser?: { message: string, data: { id?: number | null } } | null };
+export type ICreateUserMutation = { createUser?: { message: string, data: { id: string } } | null };
 
 export type IUpdateUserMutationVariables = Types.Exact<{
-  userId: Types.Scalars['Int']['input'];
+  userId: Types.Scalars['String']['input'];
   phone: Types.Scalars['String']['input'];
   email: Types.Scalars['String']['input'];
   firstName: Types.Scalars['String']['input'];
@@ -25,59 +24,48 @@ export type IUpdateUserMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateUserMutation = { updateUser?: { message: string, data: { id?: number | null } } | null };
+export type IUpdateUserMutation = { updateUser?: { message: string, data: { id: string } } | null };
 
 export type IGetUserByIdQueryVariables = Types.Exact<{
-  id: Types.Scalars['Int']['input'];
+  id: Types.Scalars['String']['input'];
 }>;
 
 
-export type IGetUserByIdQuery = { user?: { phone?: string | null, id?: number | null, email?: string | null, firstName?: string | null, lastName?: string | null, profilePhotoLink?: string | null, createdAt?: string | null } | null };
+export type IGetUserByIdQuery = { user?: { phone?: string | null, id: string, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null } | null };
 
 export type IGetUsersQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetUsersQuery = { users: { items?: Array<{ id?: number | null, firstName?: string | null, lastName?: string | null, email?: string | null, phone?: string | null } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetUsersQuery = { users: { items?: Array<{ id: string, firstName: string, lastName: string, email: string, phone?: string | null } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IAssignRolesToUserMutationVariables = Types.Exact<{
-  roles?: Types.InputMaybe<Array<Types.InputMaybe<Types.ISelectCategory>> | Types.InputMaybe<Types.ISelectCategory>>;
-  userId?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+  roles: Array<Types.InputMaybe<Types.ISelectCategory>> | Types.InputMaybe<Types.ISelectCategory>;
+  userId: Types.Scalars['String']['input'];
 }>;
 
 
 export type IAssignRolesToUserMutation = { assignRoleToUser?: { message: string } | null };
 
 export type IDeleteUserByIdMutationVariables = Types.Exact<{
-  id: Types.Scalars['Int']['input'];
+  id: Types.Scalars['String']['input'];
 }>;
 
 
 export type IDeleteUserByIdMutation = { deleteUser?: { message: string } | null };
 
 export type IUserWithRolesQueryVariables = Types.Exact<{
-  userId: Types.Scalars['Int']['input'];
+  userId: Types.Scalars['String']['input'];
 }>;
 
 
-export type IUserWithRolesQuery = { user?: { phone?: string | null, id?: number | null, email?: string | null, firstName?: string | null, lastName?: string | null, profilePhotoLink?: string | null, createdAt?: string | null } | null, userRoles?: { items?: Array<{ id: number, name: string, permissions?: Array<{ id: number, name: string } | null> | null } | null> | null, meta?: { totalItems: number } | null } | null };
+export type IUserWithRolesQuery = { user?: { phone?: string | null, id: string, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null } | null, userRoles?: { items?: Array<{ id: string, name: string, permissions?: Array<{ id: string, name: string } | null> | null } | null> | null, meta?: { totalItems: number } | null } | null };
 
-export type IAssignCountriesLanguagesToUserMutationVariables = Types.Exact<{
-  userId: Types.Scalars['Int']['input'];
-  countriesLanguages: Array<Types.ICountriesLanguagesInput> | Types.ICountriesLanguagesInput;
-}>;
+export type IGetUserCountQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type IAssignCountriesLanguagesToUserMutation = { assignCountriesLanguagesToUser?: { message: string } | null };
-
-export type IAllocateWarehouseMutationVariables = Types.Exact<{
-  userId: Types.Scalars['Int']['input'];
-  warehouses: Array<Types.ISelectCategory> | Types.ISelectCategory;
-}>;
-
-
-export type IAllocateWarehouseMutation = { allocateWarehouseToUser?: { message: string } | null };
+export type IGetUserCountQuery = { userCount: { count: number } };
 
 export const CreateUserDocument = gql`
     mutation CreateUser($phone: String!, $email: String!, $firstName: String!, $lastName: String!, $middleName: String) {
@@ -101,13 +89,13 @@ export const CreateUserDocument = gql`
   })
   export class ICreateUserGQL extends Apollo.Mutation<ICreateUserMutation, ICreateUserMutationVariables> {
     override document = CreateUserDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
   }
 export const UpdateUserDocument = gql`
-    mutation UpdateUser($userId: Int!, $phone: String!, $email: String!, $firstName: String!, $lastName: String!, $middleName: String) {
+    mutation UpdateUser($userId: String!, $phone: String!, $email: String!, $firstName: String!, $lastName: String!, $middleName: String) {
   updateUser(
     id: $userId
     params: {phone: $phone, lastName: $lastName, middleName: $middleName, firstName: $firstName, email: $email}
@@ -125,13 +113,13 @@ export const UpdateUserDocument = gql`
   })
   export class IUpdateUserGQL extends Apollo.Mutation<IUpdateUserMutation, IUpdateUserMutationVariables> {
     override document = UpdateUserDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
   }
 export const GetUserByIdDocument = gql`
-    query GetUserById($id: Int!) {
+    query GetUserById($id: String!) {
   user(id: $id) {
     phone
     id
@@ -149,7 +137,7 @@ export const GetUserByIdDocument = gql`
   })
   export class IGetUserByIdGQL extends Apollo.Query<IGetUserByIdQuery, IGetUserByIdQueryVariables> {
     override document = GetUserByIdDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -176,13 +164,13 @@ export const GetUsersDocument = gql`
   })
   export class IGetUsersGQL extends Apollo.Query<IGetUsersQuery, IGetUsersQueryVariables> {
     override document = GetUsersDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
   }
 export const AssignRolesToUserDocument = gql`
-    mutation AssignRolesToUser($roles: [SelectCategory], $userId: Int) {
+    mutation AssignRolesToUser($roles: [SelectCategory]!, $userId: String!) {
   assignRoleToUser(roles: $roles, userId: $userId) {
     message
   }
@@ -194,13 +182,13 @@ export const AssignRolesToUserDocument = gql`
   })
   export class IAssignRolesToUserGQL extends Apollo.Mutation<IAssignRolesToUserMutation, IAssignRolesToUserMutationVariables> {
     override document = AssignRolesToUserDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
   }
 export const DeleteUserByIdDocument = gql`
-    mutation DeleteUserById($id: Int!) {
+    mutation DeleteUserById($id: String!) {
   deleteUser(id: $id) {
     message
   }
@@ -212,13 +200,13 @@ export const DeleteUserByIdDocument = gql`
   })
   export class IDeleteUserByIdGQL extends Apollo.Mutation<IDeleteUserByIdMutation, IDeleteUserByIdMutationVariables> {
     override document = DeleteUserByIdDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
   }
 export const UserWithRolesDocument = gql`
-    query UserWithRoles($userId: Int!) {
+    query UserWithRoles($userId: String!) {
   user(id: $userId) {
     phone
     id
@@ -249,18 +237,15 @@ export const UserWithRolesDocument = gql`
   })
   export class IUserWithRolesGQL extends Apollo.Query<IUserWithRolesQuery, IUserWithRolesQueryVariables> {
     override document = UserWithRolesDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
   }
-export const AssignCountriesLanguagesToUserDocument = gql`
-    mutation AssignCountriesLanguagesToUser($userId: Int!, $countriesLanguages: [CountriesLanguagesInput!]!) {
-  assignCountriesLanguagesToUser(
-    userId: $userId
-    countriesLanguages: $countriesLanguages
-  ) {
-    message
+export const GetUserCountDocument = gql`
+    query GetUserCount {
+  userCount {
+    count
   }
 }
     `;
@@ -268,27 +253,9 @@ export const AssignCountriesLanguagesToUserDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class IAssignCountriesLanguagesToUserGQL extends Apollo.Mutation<IAssignCountriesLanguagesToUserMutation, IAssignCountriesLanguagesToUserMutationVariables> {
-    override document = AssignCountriesLanguagesToUserDocument;
-
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
-export const AllocateWarehouseDocument = gql`
-    mutation AllocateWarehouse($userId: Int!, $warehouses: [SelectCategory!]!) {
-  allocateWarehouseToUser(userId: $userId, warehouses: $warehouses) {
-    message
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class IAllocateWarehouseGQL extends Apollo.Mutation<IAllocateWarehouseMutation, IAllocateWarehouseMutationVariables> {
-    override document = AllocateWarehouseDocument;
-
+  export class IGetUserCountGQL extends Apollo.Query<IGetUserCountQuery, IGetUserCountQueryVariables> {
+    override document = GetUserCountDocument;
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

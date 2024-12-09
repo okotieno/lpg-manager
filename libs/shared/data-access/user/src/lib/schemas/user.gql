@@ -20,7 +20,7 @@ mutation CreateUser(
 }
 
 mutation UpdateUser(
-  $userId: Int!
+  $userId: String!
   $phone: String!
   $email: String!
   $firstName: String!
@@ -122,3 +122,9 @@ query UserWithRoles($userId: String!) {
 #    message
 #  }
 #}
+
+query GetUserCount {
+  userCount {
+    count
+  }
+}

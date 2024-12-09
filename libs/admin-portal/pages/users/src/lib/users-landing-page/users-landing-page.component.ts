@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -10,6 +10,8 @@ import {
   IonRow, IonText
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
+import { IGetUserCountGQL } from '@lpg-manager/user-store';
+
 @Component({
   selector: 'lpg-user-table',
   standalone: true,
@@ -32,4 +34,19 @@ import { RouterLink } from '@angular/router';
     }
   `,
 })
-export default class UserTableComponent {}
+export default class UserTableComponent {
+  private getUserCountGQL = inject(IGetUserCountGQL);
+  userCount = signal(0);
+
+  constructor() {
+    this.loadUserCount();
+  }
+
+  loadUserCount() {
+    this.getUserCountGQL.fetch().subscribe((response) => {
+      if (response.data?.userCount) {
+        this.userCount.set(response.data.userCount.count);
+      }
+    });
+  }
+}

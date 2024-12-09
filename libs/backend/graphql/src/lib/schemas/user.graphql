@@ -20,11 +20,17 @@ type PaginatedUserRoles {
   meta: Pagination
 }
 
+type UserCount {
+  count: Int!
+}
+
 extend type Query {
   users(query: QueryParams): PaginatedUser!
   user(id: String!): UserModel
 
   userRoles(userId: String): PaginatedUserRoles
+
+  userCount: UserCount!
 }
 
 input UpdateUserInput {

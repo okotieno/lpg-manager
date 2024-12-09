@@ -569,6 +569,7 @@ export type IQuery = {
   setting?: Maybe<ISettingModel>;
   settings: IPaginatedSetting;
   user?: Maybe<IUserModel>;
+  userCount: IUserCount;
   userRoles?: Maybe<IPaginatedUserRoles>;
   users: IPaginatedUser;
 };
@@ -665,7 +666,7 @@ export type IQueryUserArgs = {
 
 
 export type IQueryUserRolesArgs = {
-  userId?: InputMaybe<Scalars['Int']['input']>;
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -784,6 +785,10 @@ export type IUpdateUserInput = {
 export type IUploadSuccessResponse = {
   data?: Maybe<IFileUploadModel>;
   message?: Maybe<Scalars['String']['output']>;
+};
+
+export type IUserCount = {
+  count: Scalars['Int']['output'];
 };
 
 export type IUserModel = {

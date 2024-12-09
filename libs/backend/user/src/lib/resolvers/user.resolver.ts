@@ -92,4 +92,10 @@ export class UserResolver {
   //     message: 'Successfully assigned user',
   //   }
   // }
+
+  @Query(() => UserModel)
+  async userCount() {
+    const count = await this.userService.model.count();
+    return { count };
+  }
 }
