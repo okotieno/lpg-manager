@@ -29,7 +29,6 @@
       "@lpg-manager/auth-page": ["libs/shared/pages/auth/src/index.ts"],
       "@lpg-manager/auth-service": ["libs/backend/services/auth/src/index.ts"],
       "@lpg-manager/auth-store": ["libs/shared/data-access/auth/src/index.ts"],
-      "@lpg-manager/user-store": ["libs/shared/data-access/user/src/index.ts"],
       "@lpg-manager/crud-abstract": [
         "libs/backend/services/crud-abstract/src/index.ts"
       ],
@@ -60,6 +59,7 @@
         "libs/backend/services/permission/src/index.ts"
       ],
       "@lpg-manager/role-service": ["libs/backend/services/role/src/index.ts"],
+      "@lpg-manager/roles-page": ["libs/admin-portal/pages/roles/src/index.ts"],
       "@lpg-manager/setting": ["libs/backend/setting/src/index.ts"],
       "@lpg-manager/setting-service": [
         "libs/backend/services/setting/src/index.ts"
@@ -67,9 +67,10 @@
       "@lpg-manager/theme-service": ["libs/shared/services/theme/src/index.ts"],
       "@lpg-manager/translation": ["libs/backend/translation/src/index.ts"],
       "@lpg-manager/types": ["libs/shared/utils/types/src/index.ts"],
-      "@lpg-manager/user-service": ["libs/backend/services/user/src/index.ts"],
-      "@lpg-manager/users-page": ["libs/admin-portal/pages/users/src/index.ts"],
       "@lpg-manager/user": ["libs/backend/user/src/index.ts"],
+      "@lpg-manager/user-service": ["libs/backend/services/user/src/index.ts"],
+      "@lpg-manager/user-store": ["libs/shared/data-access/user/src/index.ts"],
+      "@lpg-manager/users-page": ["libs/admin-portal/pages/users/src/index.ts"],
       "@lpg-manager/util": ["libs/backend/util/src/index.ts"],
       "@lpg-manager/validators": ["libs/backend/validators/src/index.ts"]
     }
