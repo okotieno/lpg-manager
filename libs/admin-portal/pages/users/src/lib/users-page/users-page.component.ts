@@ -24,7 +24,6 @@ import { NgForOf } from '@angular/common';
 import { IGetUsersGQL, IGetUsersQuery } from '@lpg-manager/user-store';
 
 @Component({
-  selector: 'lpg-user-table',
   standalone: true,
   imports: [
     ReactiveFormsModule,
