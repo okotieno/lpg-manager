@@ -1,0 +1,32 @@
+mutation CreatePermission(
+  $name: String!
+) {
+  createPermission(
+    name: $name
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetPermissionById($id: String!) {
+  permission(id: $id) {
+    id
+    name
+  }
+}
+
+query GetPermissions($query: QueryParams) {
+  permissions(query: $query) {
+    items {
+      id
+      name
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+

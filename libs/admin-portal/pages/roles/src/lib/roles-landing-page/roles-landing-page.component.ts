@@ -1,8 +1,5 @@
 import { Component, inject } from '@angular/core';
 import {
-  IonCol,
-  IonGrid,
-  IonRow,
   IonCard,
   IonCardContent,
   IonButton,
@@ -17,9 +14,6 @@ import { RouterLink } from '@angular/router';
   selector: 'lpg-roles-page',
   standalone: true,
   imports: [
-    IonGrid,
-    IonRow,
-    IonCol,
     IonCard,
     IonCardContent,
     IonButton,
@@ -33,6 +27,12 @@ import { RouterLink } from '@angular/router';
     <h2>
       <ion-text class="ion-margin-bottom" color="lpg-title">Roles</ion-text>
     </h2>
+    <div class="ion-margin-bottom ion-text-end">
+      <ion-button [routerLink]="['new']">
+        <ion-icon name="shield-plus" slot="start"></ion-icon>
+        Create Role
+      </ion-button>
+    </div>
     <ion-card class="ion-no-margin">
       <ion-card-content>
         <div class="table-container">

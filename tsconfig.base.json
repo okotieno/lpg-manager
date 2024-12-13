@@ -65,6 +65,12 @@
       "@lpg-manager/roles-store": [
         "libs/shared/data-access/roles/src/index.ts"
       ],
+      "@lpg-manager/permission-store": [
+        "libs/shared/data-access/permission/src/index.ts"
+      ],
+      "@lpg-manager/searchable-select": [
+        "libs/shared/components/searchable-select/src/index.ts"
+      ],
       "@lpg-manager/setting": ["libs/backend/setting/src/index.ts"],
       "@lpg-manager/setting-service": [
         "libs/backend/services/setting/src/index.ts"

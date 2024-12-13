@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RolePageComponent } from './role-page.component';
+import RolePageComponent from './role-page.component';
 
 describe('RolesPageComponent', () => {
   let component: RolePageComponent;

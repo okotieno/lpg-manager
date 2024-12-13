@@ -50,12 +50,12 @@ form {
   ion-item {
     --padding-start: 0 !important;
     margin-bottom: 1rem;
-    ion-input {
+    ion-input, ion-textarea {
       label {
         font-size: 1rem;
       }
     }
-    input {
+    input, textarea {
       padding-top: 0.875rem !important;
       padding-bottom: 0.875rem !important;
     }
@@ -78,13 +78,17 @@ form {
   margin-bottom: 24px;
 }
 
-ion-button.button-solid {
+.sc-ion-searchbar-md-h {
+  --border-radius: 20px;
+}
+
+ion-button.button-solid, ion-button.button-outline, ion-button.button-clear:not(.button-has-icon-only) {
   text-transform: none;
   --border-radius: 8px;
-  --padding-start: 5rem;
-  --padding-end: 5rem;
-  --padding-top: 1.3rem;
-  --padding-bottom: 1.3rem;
+  --padding-start: 3rem;
+  --padding-end: 3rem;
+  --padding-top: 1rem;
+  --padding-bottom:1rem;
 }
 ion-button {
   ion-spinner {

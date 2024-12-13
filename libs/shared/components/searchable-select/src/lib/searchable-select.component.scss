@@ -1,0 +1,15 @@
+[aria-selected=true] {
+  ion-icon[name="circle"], ion-icon[name="square"] {
+    display: none;
+  }
+}
+
+[aria-selected=false] {
+  ion-icon[name="circle-check"], ion-icon[name="square-check"] {
+    display: none;
+  }
+}
+
+:host {
+  width: 100%;
+}

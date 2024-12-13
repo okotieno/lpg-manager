@@ -54,6 +54,7 @@ right-from-bracket
 scale-balanced
 shelves
 shield-check
+shield-plus
 split
 square
 square-check

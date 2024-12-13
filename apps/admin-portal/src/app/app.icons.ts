@@ -55,6 +55,7 @@ export const APP_ICONS = [
   'scale-balanced',
   'shelves',
   'shield-check',
+  'shield-plus',
   'split',
   'square',
   'square-check',
