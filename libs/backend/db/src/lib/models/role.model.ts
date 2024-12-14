@@ -11,6 +11,8 @@ import { DataTypes } from 'sequelize';
   deletedAt: true
 })
 export class RoleModel extends Model {
+  @Column({ type: DataTypes.UUID, allowNull: true, primaryKey: true })
+  override id?: string;
 
   @Column({ type: DataTypes.STRING, allowNull: false })
   name?: string;

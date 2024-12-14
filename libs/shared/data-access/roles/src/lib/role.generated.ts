@@ -4,7 +4,7 @@ import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
 export type ICreateRoleMutationVariables = Types.Exact<{
-  name: Types.Scalars['String']['input'];
+  params: Types.ICreateRoleInput;
 }>;
 
 
@@ -55,8 +55,8 @@ export type IUpdateRoleMutationVariables = Types.Exact<{
 export type IUpdateRoleMutation = { updateRole?: { message: string, data: { id: string } } | null };
 
 export const CreateRoleDocument = gql`
-    mutation CreateRole($name: String!) {
-  createRole(name: $name) {
+    mutation CreateRole($params: CreateRoleInput!) {
+  createRole(params: $params) {
     message
     data {
       id

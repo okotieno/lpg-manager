@@ -15,7 +15,8 @@ export class RoleResolver {
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.CreateRole)
-  async createRole(@Body(new ValidationPipe()) input: CreateRoleInputDto) {
+  async createRole(@Body('params', new ValidationPipe()) input: CreateRoleInputDto) {
+    console.log(input);
     const role = await this.roleService.create({
       ...input
     });

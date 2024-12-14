@@ -1,9 +1,3 @@
-ion-input {
-  --ion-padding: 400px;
-  --ion-margin: 400px;
-  --ion-background-color: red;
-}
-
 :root {
   --ion-font-family: verdana;
 
@@ -79,12 +73,13 @@ form {
 }
 
 .sc-ion-searchbar-md-h {
-  --border-radius: 20px;
+  --border-radius: 1rem;
+  --color: var(--ion-text-color);
 }
 
 ion-button.button-solid, ion-button.button-outline, ion-button.button-clear:not(.button-has-icon-only) {
   text-transform: none;
-  --border-radius: 8px;
+  --border-radius: 1rem;
   --padding-start: 3rem;
   --padding-end: 3rem;
   --padding-top: 1rem;
@@ -98,4 +93,6 @@ ion-button {
     height: 2rem;
   }
 }
-
+ion-toast {
+  --border-radius: 1rem;
+}

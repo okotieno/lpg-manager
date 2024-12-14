@@ -3,15 +3,23 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
   input,
   Optional,
+  ResourceRef,
   Self,
+  Signal,
   signal,
   untracked,
-  viewChild
+  viewChild,
 } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormsModule,
+  NgControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import {
   AlertController,
   IonButton,
@@ -29,16 +37,19 @@ import {
   IonSearchbar,
   IonTextarea,
   IonTitle,
-  IonToolbar
+  IonToolbar,
 } from '@ionic/angular/standalone';
 import { CdkListbox, CdkOption } from '@angular/cdk/listbox';
-// import { CrudService } from '@furaha/frontend/list-page';
 import { IQueryParamsFilter } from '@lpg-manager/types';
-import { debounceTime, EMPTY, Observable, take, tap } from 'rxjs';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { IGetPermissionsQuery, IGetPermissionsQueryVariables } from '@lpg-manager/permission-store';
-import { QueryOptionsAlone } from 'apollo-angular/types';
-import { ApolloQueryResult } from '@apollo/client';
+
+export interface PaginatedResource<T> {
+  currentPage: Signal<number>;
+  pageSize: Signal<number>;
+  totalItems: Signal<number>;
+  items: Signal<T[]>;
+  searchItemsByTerm: (searchTem: string) => void;
+  fetchNextPage: () => void;
+}
 
 @Component({
   selector: 'lpg-searchable-select',
@@ -68,18 +79,23 @@ import { ApolloQueryResult } from '@apollo/client';
   styleUrl: './searchable-select.component.scss',
 })
 export class SearchableSelectComponent<T> implements ControlValueAccessor {
+  chipsContainerRef = viewChild.required('chipsContainerRef', {
+    read: ElementRef,
+  });
+
+  itemsStore = input.required<PaginatedResource<T>>();
   helperText = input('\u00A0');
   selectModal = viewChild.required(IonModal);
   alertCtrl = inject(AlertController);
-  pageSize = input(10);
-  cdr = inject(ChangeDetectorRef);
+  pageSize = computed(() => this.itemsStore().pageSize());
   searchTerm = signal('');
-  searchTermChanged = toSignal(
-    toObservable(this.searchTerm).pipe(debounceTime(500))
-  );
+  // searchTermChanged = toSignal(
+  //   toObservable(this.searchTerm).pipe(debounceTime(500))
+  // );
   searchTermChangedEffect = effect(() => {
-    this.searchTermChanged();
+    const searchTerm = this.searchTerm();
     untracked(() => {
+      this.itemsStore().searchItemsByTerm(searchTerm);
       this.currentPage.set(1);
       this.fetchItems();
     });
@@ -91,29 +107,39 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
   fill = input('');
   placeholder = input('--Please Select--');
   // service = input<CrudService<T>>();
-  service =
-    input<
-      (
-        variables?: IGetPermissionsQueryVariables,
-        options?: QueryOptionsAlone<
-          IGetPermissionsQueryVariables,
-          IGetPermissionsQuery
-        >
-      ) => Observable<ApolloQueryResult<IGetPermissionsQuery>>
-    >();
-  idKey = input<number | string>('id');
-  labelKey = input<number | string>('name');
+  // service =
+  //   input<
+  //     (
+  //       variables?: IGetPermissionsQueryVariables,
+  //       options?: QueryOptionsAlone<
+  //         IGetPermissionsQueryVariables,
+  //         IGetPermissionsQuery
+  //       >
+  //     ) => Observable<ApolloQueryResult<IGetPermissionsQuery>>
+  //   >();
+  idKey = input<keyof T>('id' as keyof T);
+  labelKey = input<keyof T>('name' as keyof T);
   preselectedItems: { id: number }[] = [];
-  items = signal<Record<string | number, string | number>[]>([]);
+  items = computed(() => this.itemsStore().items());
+  // items = signal<Record<string | number, string | number>[]>([]);
   selectedItems = signal<T[]>([]);
   selectedItemsActive = signal<T[]>([]);
   selectedItemsDisplayed = computed(() => {
-    // if (this.selectedItemsActive().length < 1) {
-    //   return '--Please Select--';
-    // }
+    if (this.selectedItemsActive().length < 1) {
+      return '';
+    }
     return this.selectedItems()
       .map((item) => item[this.labelKey() as keyof T])
       .join('           ,');
+  });
+
+  rowsCount = computed(() => {
+    this.selectedItems();
+    console.log(   Math.ceil((Math.ceil(this.chipsContainerRef().nativeElement.offsetHeight - 39)) / 19));
+    return Math.max(
+      1,
+      Math.ceil((Math.ceil(this.chipsContainerRef().nativeElement.offsetHeight - 39)) / 19)
+    );
   });
   ionInfiniteScroll = viewChild(IonInfiniteScroll);
   totalItems = computed(() => this.items().length);
@@ -135,10 +161,10 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
     if (obj) {
       untracked(() => {
         this.preselectedItems = Array.isArray(obj) ? obj : [obj];
-        this.items.set(this.preselectedItems);
-        this.selectedItems.set(this.preselectedItems as T[]);
-        this.selectedItemsActive.set(this.selectedItems());
-        this.cdr.detectChanges();
+        // this.items.set(this.preselectedItems);
+        // this.selectedItems.set(this.preselectedItems as T[]);
+        // this.selectedItemsActive.set(this.selectedItems());
+        // this.cdr.detectChanges();
       });
     }
   }
@@ -156,57 +182,58 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
   }
 
   fetchItems() {
-    const searchTerm = this.searchTerm();
-    const currentPage = this.currentPage();
-    const pageSize = this.pageSize();
+    this.itemsStore().fetchNextPage()
+    // const searchTerm = this.searchTerm();
+    // const currentPage = this.currentPage();
+    // const pageSize = this.pageSize();
     const defaultParams = this.defaultParams();
-    if (!this.service()) {
-      return EMPTY;
-    }
-    return this.service()?.({
-      query: {
-        searchTerm: searchTerm ?? '',
-        currentPage: currentPage ?? 1,
-        pageSize: pageSize ?? 20,
-        filters: defaultParams ?? [],
-      },
-    })
-      .pipe(
-        tap((res: any) => {
-          if (res?.items) {
-            this.totalAvailableElements.set(res?.meta?.totalItems ?? 0);
-            if (this.currentPage() <= 1) {
-              this.items.set([
-                ...this.preselectedItems,
-                ...(res.items as Record<string, string>[]),
-              ]);
-            } else {
-              this.items.update((items) => [
-                ...items,
-                ...(res.items as Record<string, string>[]),
-              ]);
-            }
-            this.items.set(
-              this.items().sort((a, b) => (a['name'] < b['name'] ? -1 : 1))
-            );
-            const uniqueData = [];
-            const idSet = new Set();
-
-            for (const item of this.items()) {
-              if (!idSet.has(item['id'])) {
-                idSet.add(item['id']);
-                uniqueData.push(item);
-              }
-            }
-
-            this.items.set([...uniqueData]);
-          }
-
-          this.ionInfiniteScroll()?.complete().then();
-        }),
-        take(1)
-      )
-      .subscribe();
+    // if (!this.service()) {
+    //   return EMPTY;
+    // }
+    // return this.service()?.({
+    //   query: {
+    //     searchTerm: searchTerm ?? '',
+    //     currentPage: currentPage ?? 1,
+    //     pageSize: pageSize ?? 20,
+    //     filters: defaultParams ?? [],
+    //   },
+    // })
+    //   .pipe(
+    //     tap((res: any) => {
+    //       if (res?.items) {
+    //         this.totalAvailableElements.set(res?.meta?.totalItems ?? 0);
+    //         if (this.currentPage() <= 1) {
+    //           this.items.set([
+    //             ...this.preselectedItems,
+    //             ...(res.items as Record<string, string>[]),
+    //           ]);
+    //         } else {
+    //           this.items.update((items) => [
+    //             ...items,
+    //             ...(res.items as Record<string, string>[]),
+    //           ]);
+    //         }
+    //         this.items.set(
+    //           this.items().sort((a, b) => (a['name'] < b['name'] ? -1 : 1))
+    //         );
+    //         const uniqueData = [];
+    //         const idSet = new Set();
+    //
+    //         for (const item of this.items()) {
+    //           if (!idSet.has(item['id'])) {
+    //             idSet.add(item['id']);
+    //             uniqueData.push(item);
+    //           }
+    //         }
+    //
+    //         this.items.set([...uniqueData]);
+    //       }
+    //
+    //       this.ionInfiniteScroll()?.complete().then();
+    //     }),
+    //     take(1)
+    //   )
+    //   .subscribe();
   }
 
   compareIds = (t1: T, t2: T) => {

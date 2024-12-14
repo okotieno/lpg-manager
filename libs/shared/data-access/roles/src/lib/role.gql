@@ -1,8 +1,8 @@
 mutation CreateRole(
-  $name: String!
+  $params: CreateRoleInput!
 ) {
   createRole(
-    name: $name
+    params: $params
   ) {
     message
     data {

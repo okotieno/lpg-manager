@@ -6,6 +6,7 @@ type RoleModel {
 
 input CreateRoleInput {
   name: String!
+  permissions: [SelectCategory]!
 }
 
 input UpdateRoleInput {
@@ -30,7 +31,7 @@ extend type Query {
 extend type Mutation {
   updateRole(id: String!, params: UpdateRoleInput): CreateRoleSuccessResponse
 
-  createRole(name: String!): CreateRoleSuccessResponse
+  createRole(params: CreateRoleInput): CreateRoleSuccessResponse
 
   deleteRole(id: String!): DeleteSuccessResponse
 }

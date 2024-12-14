@@ -97,6 +97,7 @@ export type ICreatePermissionSuccessResponse = {
 
 export type ICreateRoleInput = {
   name: Scalars['String']['input'];
+  permissions: Array<InputMaybe<ISelectCategory>>;
 };
 
 export type ICreateRoleSuccessResponse = {
@@ -244,7 +245,7 @@ export type IMutationCreatePermissionArgs = {
 
 
 export type IMutationCreateRoleArgs = {
-  name: Scalars['String']['input'];
+  params?: InputMaybe<ICreateRoleInput>;
 };
 
 
