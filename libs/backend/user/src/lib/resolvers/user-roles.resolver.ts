@@ -10,7 +10,7 @@ export class UserRolesResolver {
 
   @Query(() => UserModel)
   async userRoles(
-    @Args('userId') userId: number
+    @Args('userId') userId: string
   ) {
     const roles = await this.roleService.getUserRoles(userId);
     return {

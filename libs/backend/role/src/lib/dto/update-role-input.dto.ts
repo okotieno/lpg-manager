@@ -1,16 +1,17 @@
-import { IsInt, ValidateNested } from 'class-validator';
-import { CreateRoleInputDto } from './create-role-input.dto';
+import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { RoleModel } from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
+import { CreateRoleInputDto } from './create-role-input.dto';
 
 export class UpdateRoleInputDto {
-  @IsInt()
-  @Exists(RoleModel, 'name', {
+  @IsString()
+  @IsNotEmpty()
+  @Exists(RoleModel, 'id', {
     message: (validationArguments) =>
-      `User with id  ${validationArguments.value}" not found`
+      `Role with id ${validationArguments.value} not found`
   })
-  id = 0;
+  id!: string;
 
   @ValidateNested()
-  params: CreateRoleInputDto = { name: '' };
+  params!: CreateRoleInputDto;
 }

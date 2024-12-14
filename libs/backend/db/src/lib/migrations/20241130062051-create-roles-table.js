@@ -12,7 +12,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -31,6 +30,16 @@ module.exports = {
         allowNull: true,
         field: 'deleted_at',
       },
+    });
+
+    // Add unique index on name where deleted_at is null
+    await queryInterface.addIndex('roles', {
+      fields: ['name'],
+      unique: true,
+      where: {
+        deleted_at: null
+      },
+      name: 'roles_name_unique_not_deleted'
     });
 
     // Create role_user junction table
@@ -73,7 +82,11 @@ module.exports = {
   },
 
   async down(queryInterface) {
+    // Drop the index first
+    await queryInterface.removeIndex('roles', 'roles_name_unique_not_deleted');
+    
+    // Then drop the tables
     await queryInterface.dropTable('role_user');
     await queryInterface.dropTable('roles');
-  },
+  }
 };

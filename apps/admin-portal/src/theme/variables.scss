@@ -72,6 +72,19 @@ form {
   margin-bottom: 24px;
 }
 
+.ion-color-lpg-subtitle {
+  font-size: 24px;
+  font-weight: normal;
+  margin-bottom: 8px;
+
+  --ion-color-base: var(--ion-text-color);
+  --ion-color-base-rgb: var(--ion-text-color-rgb);
+  --ion-color-contrast: var(--ion-background-color);
+  --ion-color-contrast-rgb: var(-ion-background-color-rgb);
+  --ion-color-shade: var(--ion-color-dark-shade);
+  --ion-color-tint: var(--ion-color-dark-tint);
+}
+
 .sc-ion-searchbar-md-h {
   --border-radius: 1rem;
   --color: var(--ion-text-color);

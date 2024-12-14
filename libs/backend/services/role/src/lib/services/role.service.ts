@@ -1,41 +1,107 @@
 import { Injectable } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { RoleModel, RoleUserModel } from '@lpg-manager/db';
+import { RoleModel, RoleUserModel, PermissionModel } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
+
+interface CreateRoleInputDto {
+  name: string;
+  permissions?: { id: string }[];
+}
 
 @Injectable()
 export class RoleService extends CrudAbstractService<RoleModel> {
   constructor(
     @InjectModel(RoleModel) private roleModel: typeof RoleModel,
-    @InjectModel(RoleUserModel) private roleUserModel: typeof RoleUserModel,
+    @InjectModel(RoleUserModel) private roleUserModel: typeof RoleUserModel
   ) {
     super(roleModel);
   }
 
-  async getUserRoles(userId: number) {
-    const userRoles = await this.roleUserModel.findAll({
-      where: { userId },
-      attributes: ['roleId']
+  override async create(data: CreateRoleInputDto): Promise<RoleModel> {
+    const role = await this.roleModel.create({ name: data.name });
+
+    if (data.permissions?.length) {
+      await this.assignPermissionsToRole(role.id, data.permissions);
+    }
+
+    return (await this.roleModel.findByPk(role.id, {
+      include: [{ model: PermissionModel }],
+    })) as RoleModel;
+  }
+
+  async assignPermissionsToRole(
+    roleId: string,
+    permissions: { id: string }[]
+  ): Promise<void> {
+    const role = await this.roleModel.findByPk(roleId);
+    if (!role) {
+      throw new Error('Role not found');
+    }
+
+    const permissionIds = permissions.map((p) => p.id).filter(Boolean);
+    if (!permissionIds.length) {
+      await role.$set('permissions', []);
+      return;
+    }
+
+    const permissionsToAssign = await PermissionModel.findAll({
+      where: { id: permissionIds },
     });
 
-    const roleIds = userRoles.map(ur => ur.roleId);
+    if (permissionsToAssign.length !== permissionIds.length) {
+      throw new Error('Some permissions were not found');
+    }
+
+    // Use $set instead of $remove and $add
+    await role.$set('permissions', permissionsToAssign);
+  }
+
+  override async update({
+    id,
+    params,
+  }: {
+    id: string;
+    params: CreateRoleInputDto;
+  }): Promise<RoleModel> {
+    const role = await this.roleModel.findByPk(id);
+    if (!role) {
+      throw new Error('Role not found');
+    }
+
+    await role.update({ name: params.name });
+
+    if (params.permissions?.length) {
+      await this.assignPermissionsToRole(role.id, params.permissions);
+    } else {
+      await role.$set('permissions', []);
+    }
+
+    return (await this.roleModel.findByPk(id, {
+      include: [{ model: PermissionModel }],
+    })) as RoleModel;
+  }
+
+  async getUserRoles(userId: string) {
+    const userRoles = await this.roleUserModel.findAll({
+      where: { userId },
+      attributes: ['roleId'],
+    });
+
+    const roleIds = userRoles.map((ur) => ur.roleId);
     if (roleIds.length > 0) {
       return this.roleModel.findAll({
         where: {
-          id: roleIds
+          id: roleIds,
         },
-        include: ['permissions']
+        include: ['permissions'],
       });
-    } else {
-      return [];
     }
+    return [];
   }
 
-  // Modified assignRole function to accept roleName
   async assignRoleToUser(userId: string, roleName: string): Promise<void> {
-    // Find the role by roleName
     const role = await this.roleModel.findOne({
-      where: { name: roleName }
+      where: { name: roleName },
     });
 
     if (!role) {

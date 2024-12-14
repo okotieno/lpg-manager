@@ -1,21 +1,39 @@
-import { BelongsToMany, Column, Model, Table } from 'sequelize-typescript';
+import { BelongsToMany, Column, Model, Table, DataType } from 'sequelize-typescript';
 import { PermissionModel } from './permission.model';
 import { UserModel } from './user.model';
-import { DataTypes } from 'sequelize';
 
 @Table({
   tableName: 'roles',
   underscored: true,
   paranoid: true,
   timestamps: true,
-  deletedAt: true
+  deletedAt: true,
+  indexes: [
+    {
+      unique: true,
+      fields: ['name'],
+      where: {
+        deleted_at: null
+      },
+      name: 'roles_name_unique_not_deleted'
+    }
+  ]
 })
 export class RoleModel extends Model {
-  @Column({ type: DataTypes.UUID, allowNull: true, primaryKey: true })
-  override id?: string;
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
+    allowNull: false,
+    primaryKey: true
+  })
+  override id!: string;
 
-  @Column({ type: DataTypes.STRING, allowNull: false })
-  name?: string;
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    unique: 'roles_name_unique_not_deleted'
+  })
+  name!: string;
 
   @BelongsToMany(() => PermissionModel, {
     foreignKeyConstraint: true,

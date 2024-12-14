@@ -6,42 +6,42 @@ const permissions = [
   'create user',
   'delete user',
   'update user',
-  
+
   // Role Management
   'create role',
   'delete role',
   'update role',
-  
+
   // Permission Management
   'create permission',
   'delete permission',
   'update permission',
   'give permission to role',
-  
+
   // Role Assignment
   'assign role to user',
-  
+
   // OTP Management
   'create otp',
   'delete otp',
   'update otp',
-  
+
   // Password Reset
   'create password-reset',
   'delete password-reset',
   'update password-reset',
-  
+
   // Notification Management
   'create notification',
   'delete notification',
   'update notification',
   'mark notification as read',
-  
+
   // Settings Management
   'create setting',
   'delete setting',
   'update setting',
-  
+
   // Activity Log
   'create activity-log',
   'delete activity-log',
@@ -73,7 +73,6 @@ module.exports = {
 
       // Create permission_role entries for admin role
       const permissionRoleEntries = allPermissions.map(permission => ({
-        id: uuidv4(),
         role_id: adminRole[0].id,
         permission_id: permission.id,
         created_at: new Date(),
@@ -87,10 +86,10 @@ module.exports = {
   async down(queryInterface) {
     // First remove all permission_role entries
     await queryInterface.bulkDelete('permission_role', null, {});
-    
+
     // Then remove all permissions
     await queryInterface.bulkDelete('permissions', {
       name: permissions
     }, {});
   }
-}; 
+};

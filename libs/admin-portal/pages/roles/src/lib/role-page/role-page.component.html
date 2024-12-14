@@ -11,7 +11,11 @@
     <ion-col size="12" size-md="12" class="ion-no-margin">
       <ion-card class="ion-no-margin">
         <ion-card-header>
-          <ion-card-title>Role Details</ion-card-title>
+          <ion-card-title>
+            <ion-text color="lpg-subtitle">
+              Role Details
+            </ion-text>
+          </ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <div class="details-container">
@@ -26,15 +30,19 @@
           </div>
         </ion-card-content>
         <ion-card-header>
-          <ion-card-title>Permissions</ion-card-title>
+          <ion-card-title>
+            <ion-text color="lpg-subtitle">
+              Permissions
+            </ion-text>
+          </ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <div class="permissions-container">
             @if (hasPermissions()) {
               <div class="permissions-grid">
                 @for (permission of role()?.permissions; track permission?.id) {
-                  <ion-chip color="primary">
-                    <ion-icon name="shield-checkmark"></ion-icon>
+                  <ion-chip color="success">
+                    <ion-icon name="shield-check" class="ion-margin-end" />
                     {{ permission?.name | titlecase }}
                   </ion-chip>
                 }

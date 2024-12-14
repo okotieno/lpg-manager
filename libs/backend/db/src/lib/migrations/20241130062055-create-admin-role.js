@@ -20,7 +20,6 @@ module.exports = {
 
     // Create permission_role entries for admin role
     const permissionRoleEntries = permissions.map(permission => ({
-      id: uuidv4(),
       role_id: adminRoleId,
       permission_id: permission.id,
       created_at: new Date(),
@@ -47,4 +46,4 @@ module.exports = {
       name: 'admin'
     });
   }
-}; 
+};
