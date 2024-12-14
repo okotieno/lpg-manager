@@ -30,6 +30,7 @@ import {
   IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
+  IonInput,
   IonItem,
   IonList,
   IonModal,
@@ -74,7 +75,7 @@ export interface PaginatedResource<T> {
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonTextarea,
-    IonChip
+    IonChip,
   ],
   styleUrl: './searchable-select.component.scss',
 })
@@ -138,7 +139,9 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
     console.log(   Math.ceil((Math.ceil(this.chipsContainerRef().nativeElement.offsetHeight - 39)) / 19));
     return Math.max(
       1,
-      Math.ceil((Math.ceil(this.chipsContainerRef().nativeElement.offsetHeight - 39)) / 19)
+      Math.ceil(
+        Math.ceil(this.chipsContainerRef().nativeElement.offsetHeight - 39) / 19
+      )
     );
   });
   ionInfiniteScroll = viewChild(IonInfiniteScroll);
@@ -182,7 +185,7 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
   }
 
   fetchItems() {
-    this.itemsStore().fetchNextPage()
+    this.itemsStore().fetchNextPage();
     // const searchTerm = this.searchTerm();
     // const currentPage = this.currentPage();
     // const pageSize = this.pageSize();

@@ -6,7 +6,7 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { computed, inject, ResourceRef } from '@angular/core';
+import { computed, effect, inject, ResourceRef, untracked } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { ApolloQueryResult } from '@apollo/client';
 import {
@@ -21,6 +21,7 @@ interface PermissionStoreState {
   pageSize: number;
   totalItems: number;
   itemsResource?: ResourceRef<ApolloQueryResult<IGetPermissionsQuery>>;
+  allItems: IPermissionModel[];
 }
 
 const initialState: PermissionStoreState = {
@@ -29,21 +30,18 @@ const initialState: PermissionStoreState = {
   pageSize: 10,
   totalItems: 0,
   itemsResource: undefined,
+  allItems: [],
 };
 
 export const PermissionsStore = signalStore(
   withState(initialState),
   withComputed((store) => {
-    const items = computed(
-      () =>
-        store.itemsResource?.()?.value()?.data.permissions.items ??
-        ([] as IGetPermissionsQuery['permissions']['items'] as IPermissionModel[])
-    );
+    const items = computed(() => store.allItems());
     return { items };
   }),
   withMethods((store) => ({
     searchItemsByTerm(searchTerm: string) {
-      patchState(store, { currentPage: 1, searchTerm });
+      patchState(store, { currentPage: 1, searchTerm, allItems: [] });
       store.itemsResource?.()?.reload();
     },
     setCurrentPage(page: number) {
@@ -71,6 +69,30 @@ export const PermissionsStore = signalStore(
           },
         });
       },
+    });
+
+    // Handle resource updates
+    effect(() => {
+      const result = itemsResource?.value();
+      untracked(() => {
+        if (result) {
+          const newItems = (result.data.permissions.items ?? []) as IPermissionModel[];
+          const currentItems = store.allItems();
+
+          if (store.currentPage() === 1) {
+            // Reset items if it's the first page
+            patchState(store, { allItems: [...newItems] });
+          } else {
+            // Append items for subsequent pages
+            patchState(store, { allItems: [...currentItems, ...newItems] });
+          }
+
+          // Update total items count
+          if (result.data.permissions.meta?.totalItems) {
+            patchState(store, { totalItems: result.data.permissions.meta.totalItems });
+          }
+        }
+      })
     });
 
     patchState(store, { itemsResource });
