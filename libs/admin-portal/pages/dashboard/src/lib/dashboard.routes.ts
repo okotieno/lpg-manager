@@ -12,6 +12,14 @@ export const DASHBOARD_ROUTES:Routes = [
         data: {
           routeLabel: 'Dashboard'
         }
+      },
+      {
+        path: 'administration',
+        loadChildren: () => import('@lpg-manager/administration-page').then(r => r.ADMINISTRATION_ROUTES),
+        title: 'LPG - Administration',
+        data: {
+          routeLabel: 'Administration'
+        }
       }
     ]
   }
