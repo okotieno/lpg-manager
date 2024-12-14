@@ -6,7 +6,7 @@
       </ion-col>
       <ion-col size="auto">
         <ion-button (click)="openNewUserModal()">
-          <ion-icon name="add" slot="start"></ion-icon>
+          <ion-icon name="user-plus" slot="start"></ion-icon>
           Add User
         </ion-button>
       </ion-col>
@@ -30,11 +30,11 @@
       <td>{{user.email}}</td>
       <td>{{user.roles?.join(', ')}}</td>
       <td>
-        <ion-button fill="clear" (click)="editUser(user)">
-          <ion-icon name="create" slot="icon-only"></ion-icon>
+        <ion-button shape="round" fill="clear" (click)="editUser(user)">
+          <ion-icon name="pen-to-square" slot="icon-only"></ion-icon>
         </ion-button>
-        <ion-button fill="clear" color="danger" (click)="confirmDelete(user)">
-          <ion-icon name="trash" slot="icon-only"></ion-icon>
+        <ion-button shape="round" fill="clear" color="danger" (click)="confirmDelete(user)">
+          <ion-icon name="trash-can" slot="icon-only"></ion-icon>
         </ion-button>
       </td>
     </tr>
