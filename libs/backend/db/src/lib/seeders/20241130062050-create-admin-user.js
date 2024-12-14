@@ -7,15 +7,11 @@ module.exports = {
   async up(queryInterface) {
     const hashedPassword = await bcrypt.hash('admin123', 10);
     const adminUserId = uuidv4();
-    const adminRoleId = uuidv4();
 
-    // Create admin role
-    await queryInterface.bulkInsert('roles', [{
-      id: adminRoleId,
-      name: 'admin',
-      created_at: new Date(),
-      updated_at: new Date()
-    }]);
+    // Get admin role ID
+    const [adminRole] = await queryInterface.sequelize.query(
+      `SELECT id FROM roles WHERE name = 'admin' LIMIT 1;`
+    );
 
     // Create admin user
     await queryInterface.bulkInsert('users', [{
@@ -29,18 +25,24 @@ module.exports = {
       updated_at: new Date()
     }]);
 
-    // Assign admin role to user
-    await queryInterface.bulkInsert('role_user', [{
-      user_id: adminUserId,
-      role_id: adminRoleId,
-      created_at: new Date(),
-      updated_at: new Date()
-    }]);
+    // Assign admin role to user if role exists
+    if (adminRole[0]) {
+      await queryInterface.bulkInsert('role_user', [{
+        user_id: adminUserId,
+        role_id: adminRole[0].id,
+        created_at: new Date(),
+        updated_at: new Date()
+      }]);
+    }
   },
 
   async down(queryInterface) {
+    // First remove role assignment
     await queryInterface.bulkDelete('role_user', null, {});
-    await queryInterface.bulkDelete('users', { email: 'admin@example.com' }, {});
-    await queryInterface.bulkDelete('roles', { name: 'admin' }, {});
+    
+    // Then remove admin user
+    await queryInterface.bulkDelete('users', { 
+      email: 'admin@example.com' 
+    }, {});
   }
 }; 
