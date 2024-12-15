@@ -26,4 +26,27 @@ export class BrandModel extends Model {
   })
   name!: string;
 
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  companyName?: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  licenceNumber?: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  licenceDescription?: string;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  licenceExpiry?: Date;
 }

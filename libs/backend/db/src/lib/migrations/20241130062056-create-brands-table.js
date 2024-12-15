@@ -12,31 +12,43 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
         allowNull: false,
-        field: 'name',
       },
-
       companyName: {
+        field: 'company_name',
         type: Sequelize.STRING,
         allowNull: true,
-        field: 'company_name',
       },
-
-      createdAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-        allowNull: false,
-        field: 'created_at',
+      licenceNumber: {
+        field: 'licence_number',
+        type: Sequelize.STRING,
+        allowNull: true,
       },
-      updatedAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-        allowNull: false,
-        field: 'updated_at',
+      licenceDescription: {
+        field: 'licence_description',
+        type: Sequelize.STRING,
+        allowNull: true,
       },
-      deletedAt: {
+      licenceExpiry: {
+        field: 'licence_expiry',
         type: Sequelize.DATE,
         allowNull: true,
+      },
+      createdAt: {
+        field: 'created_at',
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        allowNull: false,
+      },
+      updatedAt: {
+        field: 'updated_at',
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        allowNull: false,
+      },
+      deletedAt: {
         field: 'deleted_at',
+        type: Sequelize.DATE,
+        allowNull: true,
       },
     });
   },
