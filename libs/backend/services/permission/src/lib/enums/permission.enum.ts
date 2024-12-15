@@ -26,4 +26,8 @@ export enum PermissionsEnum {
   CreateActivityLog = 'create activity-log',
   DeleteActivityLog = 'delete activity-log',
   UpdateActivityLog = 'update activity-log',
+  CreateBrand = 'create brand',
+  DeleteBrand = 'delete brand',
+  UpdateBrand = 'update brand',
+
 }

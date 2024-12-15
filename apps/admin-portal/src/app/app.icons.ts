@@ -42,6 +42,7 @@ export const APP_ICONS = [
   'floppy-disk',
   'forward-fast',
   'forward-step',
+  'gas-pump',
   'gear',
   'house',
   'language',

@@ -10,6 +10,7 @@ import { AppEventModule } from '@lpg-manager/app-event';
 import { UserModule } from '@lpg-manager/user';
 import { RoleModule } from '@lpg-manager/role';
 import { PermissionModule } from '@lpg-manager/permission';
+import { BrandModule } from '@lpg-manager/brand';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { PermissionModule } from '@lpg-manager/permission';
     UserModule,
     RoleModule,
     PermissionModule,
+    BrandModule,
   ],
 })
 export class AppModule {}

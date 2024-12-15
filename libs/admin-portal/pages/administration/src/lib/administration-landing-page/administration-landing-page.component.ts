@@ -27,7 +27,7 @@ import { IGetUserCountGQL } from '@lpg-manager/user-store';
     RouterLink,
     IonText,
   ],
-  templateUrl: './users-landing-page.component.html',
+  templateUrl: './administration-landing-page.component.html',
   styles: `
     ion-icon {
       font-size: 100px;
@@ -36,7 +36,7 @@ import { IGetUserCountGQL } from '@lpg-manager/user-store';
 })
 export default class UserTableComponent {
   private getUserCountGQL = inject(IGetUserCountGQL);
-  userCount = signal(0);
+  brandCount = signal(0);
 
   constructor() {
     this.loadUserCount();
@@ -45,7 +45,7 @@ export default class UserTableComponent {
   loadUserCount() {
     this.getUserCountGQL.fetch().subscribe((response) => {
       if (response.data?.userCount) {
-        this.userCount.set(response.data.userCount.count);
+        this.brandCount.set(response.data.userCount.count);
       }
     });
   }

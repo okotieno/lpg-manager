@@ -1,7 +1,7 @@
 {
-  "name": "users-page",
+  "name": "administration-page",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/admin-portal/pages/users/src",
+  "sourceRoot": "libs/admin-portal/pages/administration/src",
   "prefix": "lpg",
   "projectType": "library",
   "tags": [],
@@ -10,7 +10,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/admin-portal/pages/users/jest.config.ts"
+        "jestConfig": "libs/admin-portal/pages/administration/jest.config.ts"
       }
     },
     "lint": {

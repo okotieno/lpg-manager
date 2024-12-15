@@ -40,6 +40,12 @@
       "@lpg-manager/administration-page": [
         "libs/admin-portal/pages/administration/src/index.ts"
       ],
+      "@lpg-manager/brand": [
+        "libs/backend/brand/src/index.ts"
+      ],
+      "@lpg-manager/brand-service": [
+        "libs/backend/services/brand/src/index.ts"
+      ],
       "@lpg-manager/db": ["libs/backend/db/src/index.ts"],
       "@lpg-manager/email-service": [
         "libs/backend/services/email/src/index.ts"

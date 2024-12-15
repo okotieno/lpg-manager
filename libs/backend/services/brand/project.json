@@ -1,0 +1,9 @@
+{
+  "name": "brand-service",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/services/brand/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project brand-service --web",
+  "targets": {}
+}

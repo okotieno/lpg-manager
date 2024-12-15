@@ -1,8 +1,8 @@
 export default {
-  displayName: 'users-page',
+  displayName: 'administration-page',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/admin-portal/pages/users',
+  coverageDirectory: '../../../../coverage/libs/admin-portal/pages/administration',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

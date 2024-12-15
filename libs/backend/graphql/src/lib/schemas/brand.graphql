@@ -1,0 +1,37 @@
+type BrandModel {
+  id: String!
+  name: String!
+  permissions: [PermissionModel]
+}
+
+input CreateBrandInput {
+  name: String!
+  permissions: [SelectCategory]!
+}
+
+input UpdateBrandInput {
+  name: String!
+}
+
+type PaginatedBrand {
+  items: [BrandModel]
+  meta: Pagination
+}
+
+type CreateBrandSuccessResponse {
+  message: String!
+  data: BrandModel!
+}
+
+extend type Query {
+  brands(query: QueryParams): PaginatedBrand!
+  brand(id: String!): BrandModel
+}
+
+extend type Mutation {
+  updateBrand(id: String!, params: UpdateBrandInput): CreateBrandSuccessResponse
+
+  createBrand(params: CreateBrandInput): CreateBrandSuccessResponse
+
+  deleteBrand(id: String!): DeleteSuccessResponse
+}

@@ -18,23 +18,23 @@ import { UserModel } from './user.model';
 export class ActivityLogUserModel extends Model<ActivityLogUserModel> {
   @ForeignKey(() => ActivityLogModel)
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.UUID,
     allowNull: false,
     field: 'activity_log_id',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  activityLogId!: number;
+  activityLogId!: string;
 
   @ForeignKey(() => UserModel)
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.UUID,
     allowNull: false,
     field: 'user_id',
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  userId!: number;
+  userId!: string;
 
   @BelongsTo(() => ActivityLogModel)
   activityLog!: ActivityLogModel;

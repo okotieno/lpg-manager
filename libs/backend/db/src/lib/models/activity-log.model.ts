@@ -16,10 +16,11 @@ import { ActivityLogUserModel } from './activity-log-user.model';
 })
 export class ActivityLogModel extends Model {
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
     allowNull: false,
   })
-  userId!: number;
+  userId!: string;
 
   @Column({
     type: DataType.STRING,

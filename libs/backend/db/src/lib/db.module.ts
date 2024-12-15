@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigService } from '@nestjs/config';
 import {
-  ActivityLogModel, ActivityLogUserModel,
+  ActivityLogModel, ActivityLogUserModel, BrandModel,
   FileUploadModel, NotificationModel,
   OtpModel,
   PasswordResetModel,
@@ -39,6 +39,7 @@ import { SequelizeOptions } from 'sequelize-typescript';
           SettingModel,
           ActivityLogModel,
           ActivityLogUserModel,
+          BrandModel
         ],
       }),
     }),
