@@ -43,9 +43,14 @@ const permissions = [
   'update setting',
 
   // Activity Log
-  'create activity-log',
-  'delete activity-log',
-  'update activity-log',
+  'create activity log',
+  'delete activity log',
+  'update activity log',
+
+  // Brand
+  'create brand',
+  'delete brand',
+  'update brand',
 ];
 
 /** @type {import('sequelize-cli').Migration} */

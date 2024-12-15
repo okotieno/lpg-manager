@@ -43,8 +43,12 @@
       "@lpg-manager/brand": [
         "libs/backend/brand/src/index.ts"
       ],
+      "@lpg-manager/brands-page": ["libs/admin-portal/pages/brands/src/index.ts"],
       "@lpg-manager/brand-service": [
         "libs/backend/services/brand/src/index.ts"
+      ],
+      "@lpg-manager/brand-store": [
+        "libs/shared/data-access/brand/src/index.ts"
       ],
       "@lpg-manager/db": ["libs/backend/db/src/index.ts"],
       "@lpg-manager/email-service": [

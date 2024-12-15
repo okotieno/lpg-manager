@@ -8,5 +8,12 @@ export const ADMINISTRATION_ROUTES:Routes = [
     data: {
       routeLabel: "Administration"
     }
+  },
+  {
+    path: 'brands',
+    loadChildren: () => import('@lpg-manager/brands-page'),
+    data: {
+      routeLabel: "Brands"
+    }
   }
 ]

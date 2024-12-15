@@ -44,6 +44,12 @@ export type IActivityLogUserModel = {
   userId: Scalars['Int']['output'];
 };
 
+export type IBrandModel = {
+  companyName?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+};
+
 export type ICountriesLanguagesInput = {
   countryId: Scalars['Int']['input'];
   languageId: Scalars['Int']['input'];
@@ -55,6 +61,16 @@ export type ICreateActivityLogInput = {
 
 export type ICreateActivityLogSuccessResponse = {
   data: IActivityLogModel;
+  message: Scalars['String']['output'];
+};
+
+export type ICreateBrandInput = {
+  companyName?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+};
+
+export type ICreateBrandSuccessResponse = {
+  data: IBrandModel;
   message: Scalars['String']['output'];
 };
 
@@ -150,6 +166,7 @@ export type IMutation = {
   changePasswordUsingResetToken?: Maybe<ILoginResponse>;
   continueWithGoogle?: Maybe<ILoginResponse>;
   createActivityLog?: Maybe<ICreateActivityLogSuccessResponse>;
+  createBrand?: Maybe<ICreateBrandSuccessResponse>;
   createNotification?: Maybe<ICreateNotificationSuccessResponse>;
   createOtp?: Maybe<ICreateOtpSuccessResponse>;
   createPasswordReset?: Maybe<ICreatePasswordResetSuccessResponse>;
@@ -158,6 +175,7 @@ export type IMutation = {
   createSetting?: Maybe<ICreateSettingSuccessResponse>;
   createUser?: Maybe<ICreateUserSuccessResponse>;
   deleteActivityLog?: Maybe<IDeleteSuccessResponse>;
+  deleteBrand?: Maybe<IDeleteSuccessResponse>;
   deleteNotification?: Maybe<IDeleteSuccessResponse>;
   deleteOtp?: Maybe<IDeleteSuccessResponse>;
   deletePasswordReset?: Maybe<IDeleteSuccessResponse>;
@@ -180,6 +198,7 @@ export type IMutation = {
   signupGoogleUser?: Maybe<ILoginResponse>;
   testNotification?: Maybe<Scalars['String']['output']>;
   updateActivityLog?: Maybe<ICreateActivityLogSuccessResponse>;
+  updateBrand?: Maybe<ICreateBrandSuccessResponse>;
   updateNotification?: Maybe<ICreateNotificationSuccessResponse>;
   updateOtp?: Maybe<ICreateOtpSuccessResponse>;
   updatePasswordReset?: Maybe<ICreatePasswordResetSuccessResponse>;
@@ -224,6 +243,11 @@ export type IMutationCreateActivityLogArgs = {
 };
 
 
+export type IMutationCreateBrandArgs = {
+  params?: InputMaybe<ICreateBrandInput>;
+};
+
+
 export type IMutationCreateNotificationArgs = {
   params?: InputMaybe<ICreateNotificationInput>;
 };
@@ -264,6 +288,11 @@ export type IMutationCreateUserArgs = {
 
 
 export type IMutationDeleteActivityLogArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type IMutationDeleteBrandArgs = {
   id: Scalars['String']['input'];
 };
 
@@ -368,6 +397,12 @@ export type IMutationSignupGoogleUserArgs = {
 export type IMutationUpdateActivityLogArgs = {
   id: Scalars['String']['input'];
   params?: InputMaybe<IUpdateActivityLogInput>;
+};
+
+
+export type IMutationUpdateBrandArgs = {
+  id: Scalars['String']['input'];
+  params?: InputMaybe<IUpdateBrandInput>;
 };
 
 
@@ -485,6 +520,11 @@ export type IPaginatedActivityLogUserModel = {
   meta?: Maybe<IPagination>;
 };
 
+export type IPaginatedBrand = {
+  items?: Maybe<Array<Maybe<IBrandModel>>>;
+  meta?: Maybe<IPagination>;
+};
+
 export type IPaginatedFileUpload = {
   items?: Maybe<Array<Maybe<IFileUploadModel>>>;
   meta?: Maybe<IPagination>;
@@ -555,6 +595,8 @@ export type IQuery = {
   authenticatedUserActivityLogs: IPaginatedActivityLogUserModel;
   authenticatedUserNotificationStats?: Maybe<INotificationStat>;
   authenticatedUserNotifications?: Maybe<IPaginatedUserNotification>;
+  brand?: Maybe<IBrandModel>;
+  brands: IPaginatedBrand;
   fileUploads: IPaginatedFileUpload;
   healthCheck?: Maybe<Scalars['String']['output']>;
   notification?: Maybe<INotificationModel>;
@@ -592,6 +634,16 @@ export type IQueryAuthenticatedUserActivityLogsArgs = {
 
 
 export type IQueryAuthenticatedUserNotificationsArgs = {
+  query?: InputMaybe<IQueryParams>;
+};
+
+
+export type IQueryBrandArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type IQueryBrandsArgs = {
   query?: InputMaybe<IQueryParams>;
 };
 
@@ -748,6 +800,11 @@ export type ISuccessResponse = {
 
 export type IUpdateActivityLogInput = {
   name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type IUpdateBrandInput = {
+  companyName?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
 };
 
 export type IUpdateNotificationInput = {

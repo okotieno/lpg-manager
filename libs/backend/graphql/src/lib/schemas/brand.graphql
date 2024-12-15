@@ -1,16 +1,17 @@
 type BrandModel {
   id: String!
   name: String!
-  permissions: [PermissionModel]
+  companyName: String
 }
 
 input CreateBrandInput {
   name: String!
-  permissions: [SelectCategory]!
+  companyName: String
 }
 
 input UpdateBrandInput {
   name: String!
+  companyName: String
 }
 
 type PaginatedBrand {

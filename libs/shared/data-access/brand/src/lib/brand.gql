@@ -1,0 +1,59 @@
+mutation CreateBrand(
+  $params: CreateBrandInput!
+) {
+  createBrand(
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetBrandById($id: String!) {
+  brand(id: $id) {
+    id
+    name
+    companyName
+  }
+}
+
+query GetBrandByIdWithPermission($id: String!) {
+  brand(id: $id) {
+    id
+    name
+    companyName
+  }
+}
+
+query GetBrands($query: QueryParams) {
+  brands(query: $query) {
+    items {
+      id
+      name
+      companyName
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+mutation DeleteBrandById($id: String!) {
+  deleteBrand(id: $id) {
+    message
+  }
+}
+
+mutation UpdateBrand($id: String!, $params: UpdateBrandInput!) {
+  updateBrand(
+    id: $id
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
