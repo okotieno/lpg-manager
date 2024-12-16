@@ -13,9 +13,11 @@ import {
   IGetPermissionsGQL,
   IGetPermissionsQuery,
 } from './schemas/permission.generated';
-import { IPermissionModel } from '@lpg-manager/types';
+import { IPermissionModel, ISortByEnum } from '@lpg-manager/types';
 
 interface PermissionStoreState {
+  sortBy: string | undefined;
+  sortByDirection: string | undefined;
   searchTerm: string;
   currentPage: number;
   pageSize: number;
@@ -26,6 +28,8 @@ interface PermissionStoreState {
 
 const initialState: PermissionStoreState = {
   searchTerm: '',
+  sortBy: 'id' as any,
+  sortByDirection: ISortByEnum.Asc,
   currentPage: 1,
   pageSize: 10,
   totalItems: 0,

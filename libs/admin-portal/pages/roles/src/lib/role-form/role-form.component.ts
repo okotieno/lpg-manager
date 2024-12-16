@@ -11,11 +11,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICreateRoleGQL, IUpdateRoleGQL } from '@lpg-manager/roles-store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
-  PaginatedResource,
   SearchableSelectComponent,
 } from '@lpg-manager/searchable-select';
 import { PermissionsStore } from '@lpg-manager/permission-store';
 import { IPermissionModel, ISelectCategory } from '@lpg-manager/types';
+import { PaginatedResource } from '@lpg-manager/data-table';
 
 @Component({
   selector: 'lpg-role-form',
@@ -39,7 +39,7 @@ export default class RoleFormComponent {
   private createRoleGQL = inject(ICreateRoleGQL);
   private updateRoleGQL = inject(IUpdateRoleGQL);
   permissionsStore: PaginatedResource<IPermissionModel | null> =
-    inject(PermissionsStore);
+    inject(PermissionsStore) as any;
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 

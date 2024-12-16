@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   computed,
   effect,
@@ -7,9 +6,7 @@ import {
   inject,
   input,
   Optional,
-  ResourceRef,
   Self,
-  Signal,
   signal,
   untracked,
   viewChild,
@@ -42,15 +39,7 @@ import {
 } from '@ionic/angular/standalone';
 import { CdkListbox, CdkOption } from '@angular/cdk/listbox';
 import { IQueryParamsFilter } from '@lpg-manager/types';
-
-export interface PaginatedResource<T> {
-  currentPage: Signal<number>;
-  pageSize: Signal<number>;
-  totalItems: Signal<number>;
-  items: Signal<T[]>;
-  searchItemsByTerm: (searchTem: string) => void;
-  fetchNextPage: () => void;
-}
+import { PaginatedResource } from '../../../data-table/src/lib/paginated-resource.interface';
 
 @Component({
   selector: 'lpg-searchable-select',

@@ -2,11 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
+  inject,
   input,
-  Input,
-  output,
-  signal,
+  linkedSignal,
 } from '@angular/core';
 import {
   IonButton,
@@ -15,6 +13,7 @@ import {
   IonSelect,
   IonSelectOption,
 } from '@ionic/angular/standalone';
+import { DataTableComponent } from '../data-table/data-table.component';
 
 @Component({
   selector: 'lpg-pagination',
@@ -24,39 +23,29 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent {
-
-  constructor() {
-  }
-
-  currentPageIndex = signal(0);
-  pageSize = signal(0);
-  startRange = computed(() =>
+  parentDataTable = inject(DataTableComponent, { host: true });
+  currentPage = linkedSignal(() => this.parentDataTable.store().currentPage());
+  currentPageIndex = linkedSignal(() => this.currentPage() - 1);
+  pageSize = linkedSignal(() => this.parentDataTable.store().pageSize());
+  totalItems = computed(() => this.parentDataTable.store().totalItems());
+    startRange = computed(() =>
     Math.max(this.currentPageIndex() * this.pageSize() + 1, 1)
   );
   disabledNextButtons = computed(() => this.endRange() === this.totalItems());
   disabledPrevButtons = computed(() => this.startRange() === 1);
-  paginationValueChange = output<{
-    currentPage: number;
-    pageSize: number;
-  }>();
   selectOptions = input([10, 20, 50, 100]);
-  paginationValue = input.required<{
-    currentPage: 0;
-    pageSize: 20;
-  }>();
 
-  paginationValueChangeEffect = effect(() => {
-    const value = this.paginationValue();
-    this.currentPageIndex.set(value.currentPage - 1);
-    this.pageSize.set(value.pageSize);
-  });
-
-  private _totalItems = signal(0);
 
   endRange = computed(() =>
-    Math.min(this.startRange() + this.pageSize() - 1, this._totalItems())
+    Math.min(this.startRange() + this.pageSize() - 1, this.totalItems())
   );
-  lastPage = computed(() => Math.ceil(this._totalItems() / this.pageSize()));
+  lastPage = computed(() => Math.ceil(this.totalItems() / this.pageSize()));
 
-  totalItems = input.required<number>();
+  pageSizeChanged(value: number) {
+    this.parentDataTable.store().setPageSize(value)
+  }
+
+  currentPageChanged(value: number) {
+    this.parentDataTable.store().setCurrentPage(value)
+  }
 }

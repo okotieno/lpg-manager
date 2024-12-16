@@ -1,7 +1,7 @@
 <ion-row aria-label="Select page" class="ion-align-items-center ion-justify-content-end ion-padding" role="group">
   <ion-select
     color="primary"
-    (ionChange)="paginationValueChange.emit({ currentPage: 1, pageSize: $event.target.value})"
+    (ionChange)="pageSizeChanged($event.target.value)"
     [value]="pageSize()" class="ion-margin-horizontal" label="Items per page">
     @for (selectOption of selectOptions(); track selectOption) {
       <ion-select-option [value]="selectOption">
@@ -11,25 +11,25 @@
   </ion-select>
   <div aria-live="polite" class="ion-margin-horizontal"> {{ startRange() }} – {{ endRange() }} of {{ totalItems() }}</div>
   <ion-button
-    (click)="paginationValueChange.emit({ currentPage: 1, pageSize: paginationValue().pageSize })"
+    (click)="currentPageChanged(1)"
     [disabled]="disabledPrevButtons()"
     fill="clear" shape="round">
     <ion-icon name="backward-fast" slot="icon-only"></ion-icon>
   </ion-button>
   <ion-button
-    (click)="paginationValueChange.emit({ currentPage: paginationValue().currentPage - 1, pageSize: paginationValue().pageSize })"
+    (click)="currentPageChanged( currentPage() - 1)"
     [disabled]="disabledPrevButtons()"
     fill="clear" shape="round">
     <ion-icon name="backward-step" slot="icon-only"></ion-icon>
   </ion-button>
   <ion-button
-    (click)="paginationValueChange.emit({ currentPage: paginationValue().currentPage + 1, pageSize: paginationValue().pageSize })"
+    (click)="currentPageChanged( currentPage() + 1)"
     [disabled]="disabledNextButtons()"
     fill="clear" shape="round">
     <ion-icon name="forward-step" slot="icon-only"></ion-icon>
   </ion-button>
   <ion-button
-    (click)="paginationValueChange.emit({ currentPage: lastPage(), pageSize: paginationValue().pageSize })"
+    (click)="currentPageChanged(lastPage())"
     [disabled]="disabledNextButtons()"
     fill="clear" shape="round">
     <ion-icon name="forward-fast" slot="icon-only"></ion-icon>
