@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
   providers: [JwtService],
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
+
       debug: process.env['LPG_ENVIRONMENT'] === 'development',
       driver: ApolloDriver,
       playground: process.env['LPG_ENVIRONMENT'] === 'development',
@@ -23,7 +24,7 @@ import { JwtService } from '@nestjs/jwt';
             extra: unknown;
             connectionParams?: Record<string, unknown>;
           }) => {
-            console.log({connected: true })
+            console.log({ connected: true });
             const extractToken = (authHeader: string): string | null => {
               if (!authHeader) return null;
               const parts = authHeader.split(' ');
@@ -33,7 +34,7 @@ import { JwtService } from '@nestjs/jwt';
               return null;
             };
             const authToken = extractToken(
-              connectionParams?.['Authorization'] as string,
+              connectionParams?.['Authorization'] as string
             );
             if (!authToken) {
               throw new Error('Authorization token is required');

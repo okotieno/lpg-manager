@@ -61,6 +61,7 @@
     "googleapis": "^144.0.0",
     "graphql": "^16.9.0",
     "graphql-redis-subscriptions": "^2.6.1",
+    "graphql-scalars": "^1.24.0",
     "graphql-upload": "^14.0.0",
     "graphql-ws": "^5.16.0",
     "handlebars": "^4.7.8",

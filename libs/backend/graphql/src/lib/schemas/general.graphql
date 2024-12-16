@@ -52,3 +52,10 @@ input SelectCategoryString {
 type Pagination {
   totalItems: Int!
 }
+
+scalar DateTime
+scalar URL
+scalar PositiveInt
+scalar PositiveFloat
+scalar EmailAddress
+scalar PhoneNumber

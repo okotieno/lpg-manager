@@ -10,7 +10,12 @@ const config: CodegenConfig = {
         typesPrefix: 'I',
         skipTypename: true,
         scalars: {
-          DateTime: 'string'
+          DateTime: 'string',
+          URL: 'string',
+          PositiveInt: 'number',
+          PositiveFloat: 'number',
+          EmailAddress: 'string',
+          PhoneNumber: 'string',
         }
       },
     },
