@@ -1,10 +1,10 @@
 import {
   patchState,
-  signalStoreFeature,
+  signalStoreFeature, withComputed,
   withMethods,
-  withState,
+  withState
 } from '@ngrx/signals';
-import { effect, inject, ResourceRef, untracked } from '@angular/core';
+import { computed, effect, ResourceRef, untracked } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { ApolloQueryResult } from '@apollo/client';
 import { Query } from 'apollo-angular';
@@ -46,6 +46,9 @@ export const withPaginatedItemsStore = <
       itemsResource: undefined,
       items: [],
     } as StoreState<T, P>),
+    withComputed((store) => ({
+      isLoading: computed(() => !!store.itemsResource?.()?.isLoading()),
+    })),
     withMethods((store) => ({
       _createResource(
         getItemsGQL: Query<IGetItemsQuery<T, P>, V>,

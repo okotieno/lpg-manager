@@ -14,6 +14,7 @@ export interface PaginatedResource<T> {
   setCurrentPage(value: number): void;
   setSortBy(key: keyof T): void;
   setSortByDirection(direction: ISortByEnum): void;
+  isLoading: Signal<boolean>;
 }
 
 
