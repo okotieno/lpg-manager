@@ -37,7 +37,6 @@ import { JsonPipe } from '@angular/common';
     RouterLink,
     FileUploadComponent,
     FileUploadComponent,
-    JsonPipe,
   ],
   templateUrl: './brand-form.component.html',
   providers: [PermissionsStore],
@@ -76,7 +75,7 @@ export default class BrandFormComponent {
             params: {
               name: name as string,
               companyName: companyName as string,
-              imageUrl: { id: imageUrl?.id ?? '' },
+              images: [{ id: imageUrl?.id ?? '' }],
             },
           })
           .subscribe({
@@ -92,7 +91,7 @@ export default class BrandFormComponent {
             params: {
               name: name as string,
               companyName: companyName as string,
-              imageUrl: { id: imageUrl?.id ?? '' },
+              images: [{ id: imageUrl?.id ?? '' }],
             },
           })
           .subscribe({
