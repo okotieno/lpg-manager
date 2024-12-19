@@ -35,9 +35,9 @@ file
 file-check
 file-exclamation
 file-image
-file-jpg-downloaded
-file-png-downloaded
-file-svg-downloaded
+file-jpg
+file-png
+file-svg
 filter
 filter-circle-xmark
 filters

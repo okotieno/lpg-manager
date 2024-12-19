@@ -3,7 +3,6 @@
     {{ isEditing() ? 'Edit Brand' : 'Create Brand' }}
   </ion-text>
 </h2>
-
 <ion-card class="ion-no-margin">
   <ion-card-content>
     <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
@@ -31,7 +30,7 @@
       </ion-item>
 
       <ion-item lines="none">
-        <lpg-file-upload formControlName="imageUrl"></lpg-file-upload>
+        <lpg-file-upload formControlName="imageUrl" [multiple]="false"></lpg-file-upload>
       </ion-item>
 
       <div class="ion-margin-top ion-text-end">

@@ -23,10 +23,10 @@ import {
   IonList,
   IonProgressBar,
   IonRow,
-  IonSkeletonText, IonSpinner,
+  IonSpinner,
   IonText
 } from '@ionic/angular/standalone';
-import { DecimalPipe, PercentPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { FileSizePipe } from './file-size.pipe';
@@ -93,6 +93,8 @@ export class FileUploadComponent implements ControlValueAccessor {
   fileUploadChangeEffect = effect(() => {
     this.uploadedFilesStore.fileUploads();
     const val = this.uploadedFilesStore.fileUploads().map(x => x.fileUpload);
+
+    console.log({ val });
     if (val) {
       this.onChanges?.(val as { id: string }[]);
     } else {

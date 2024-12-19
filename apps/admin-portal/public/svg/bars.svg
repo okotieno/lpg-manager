@@ -1,1 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 64H448V96H0V64zM0 224H448v32H0V224zM448 384v32H0V384H448z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-secondary" d=""/><path class="fa-primary" d="M448 64L0 64l0 64 448 0 0-64zm0 320L0 384l0 64 448 0 0-64z"/></svg>

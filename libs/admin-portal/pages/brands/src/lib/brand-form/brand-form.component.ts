@@ -1,4 +1,11 @@
-import { Component, computed, effect, inject, input, untracked } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  untracked,
+} from '@angular/core';
 import {
   IonButton,
   IonCard,
@@ -12,10 +19,9 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { PermissionsStore } from '@lpg-manager/permission-store';
 import { ICreateBrandGQL, IUpdateBrandGQL } from '@lpg-manager/brand-store';
-import { IBrandModel } from '@lpg-manager/types';
-import {
-  FileUploadComponent
-} from '@lpg-manager/file-upload-component';
+import { IBrandModel, ISelectCategory } from '@lpg-manager/types';
+import { FileUploadComponent } from '@lpg-manager/file-upload-component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-brand-form',
@@ -31,6 +37,7 @@ import {
     RouterLink,
     FileUploadComponent,
     FileUploadComponent,
+    JsonPipe,
   ],
   templateUrl: './brand-form.component.html',
   providers: [PermissionsStore],
@@ -42,7 +49,7 @@ export default class BrandFormComponent {
   brandForm = this.#fb.group({
     name: ['', [Validators.required]],
     companyName: [''],
-    imageUrl: ['']
+    imageUrl: [{ id: '' } as ISelectCategory],
   });
   #router = inject(Router);
   #route = inject(ActivatedRoute);
@@ -60,7 +67,7 @@ export default class BrandFormComponent {
 
   async onSubmit() {
     if (this.brandForm.valid) {
-      const { name, companyName } = this.brandForm.value;
+      const { name, companyName, imageUrl } = this.brandForm.value;
 
       if (this.isEditing() && this.roleId()) {
         this.#updateRoleGQL
@@ -69,6 +76,7 @@ export default class BrandFormComponent {
             params: {
               name: name as string,
               companyName: companyName as string,
+              imageUrl: { id: imageUrl?.id ?? '' },
             },
           })
           .subscribe({
@@ -84,6 +92,7 @@ export default class BrandFormComponent {
             params: {
               name: name as string,
               companyName: companyName as string,
+              imageUrl: { id: imageUrl?.id ?? '' },
             },
           })
           .subscribe({

@@ -16,14 +16,11 @@ query GetBrandById($id: String!) {
     id
     name
     companyName
-  }
-}
-
-query GetBrandByIdWithPermission($id: String!) {
-  brand(id: $id) {
-    id
-    name
-    companyName
+    images {
+      originalName
+      url
+      id
+    }
   }
 }
 

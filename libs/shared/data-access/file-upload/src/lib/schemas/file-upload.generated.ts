@@ -8,14 +8,14 @@ export type IGetFileUploadsQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetFileUploadsQuery = { fileUploads: { items?: Array<{ id: string, name: string, size?: number | null, originalName?: string | null, mimetype?: string | null, url?: string | null } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetFileUploadsQuery = { fileUploads: { items?: Array<{ id: string, name: string, size?: number | null, originalName?: string | null, mimetype?: string | null, url?: any | null } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IUploadFileMutationVariables = Types.Exact<{
   file: Types.Scalars['Upload']['input'];
 }>;
 
 
-export type IUploadFileMutation = { uploadSingleFile: { message?: string | null, data?: { originalName?: string | null, id: string, name: string, size?: number | null, mimetype?: string | null, url?: string | null } | null } };
+export type IUploadFileMutation = { uploadSingleFile: { message?: string | null, data?: { originalName?: string | null, id: string, name: string, size?: number | null, mimetype?: string | null, url?: any | null } | null } };
 
 export const GetFileUploadsDocument = gql`
     query GetFileUploads($query: QueryParams) {
@@ -40,7 +40,7 @@ export const GetFileUploadsDocument = gql`
   })
   export class IGetFileUploadsGQL extends Apollo.Query<IGetFileUploadsQuery, IGetFileUploadsQueryVariables> {
     override document = GetFileUploadsDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -66,7 +66,7 @@ export const UploadFileDocument = gql`
   })
   export class IUploadFileGQL extends Apollo.Mutation<IUploadFileMutation, IUploadFileMutationVariables> {
     override document = UploadFileDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

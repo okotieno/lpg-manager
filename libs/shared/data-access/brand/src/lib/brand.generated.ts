@@ -15,14 +15,7 @@ export type IGetBrandByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetBrandByIdQuery = { brand?: { id: string, name: string, companyName?: string | null } | null };
-
-export type IGetBrandByIdWithPermissionQueryVariables = Types.Exact<{
-  id: Types.Scalars['String']['input'];
-}>;
-
-
-export type IGetBrandByIdWithPermissionQuery = { brand?: { id: string, name: string, companyName?: string | null } | null };
+export type IGetBrandByIdQuery = { brand?: { id: string, name: string, companyName?: string | null, images?: Array<{ originalName?: string | null, url?: any | null, id: string } | null> | null } | null };
 
 export type IGetBrandsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
@@ -73,6 +66,11 @@ export const GetBrandByIdDocument = gql`
     id
     name
     companyName
+    images {
+      originalName
+      url
+      id
+    }
   }
 }
     `;
@@ -82,26 +80,6 @@ export const GetBrandByIdDocument = gql`
   })
   export class IGetBrandByIdGQL extends Apollo.Query<IGetBrandByIdQuery, IGetBrandByIdQueryVariables> {
     override document = GetBrandByIdDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
-export const GetBrandByIdWithPermissionDocument = gql`
-    query GetBrandByIdWithPermission($id: String!) {
-  brand(id: $id) {
-    id
-    name
-    companyName
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class IGetBrandByIdWithPermissionGQL extends Apollo.Query<IGetBrandByIdWithPermissionQuery, IGetBrandByIdWithPermissionQueryVariables> {
-    override document = GetBrandByIdWithPermissionDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

@@ -1,5 +1,4 @@
-import { Column, Model, Table } from 'sequelize-typescript';
-import { DataTypes } from 'sequelize';
+import { Column, Model, Table, DataType } from 'sequelize-typescript';
 
 @Table({
   tableName: 'file_uploads',
@@ -9,18 +8,26 @@ import { DataTypes } from 'sequelize';
   deletedAt: true
 })
 export class FileUploadModel extends Model {
-  @Column({type: DataTypes.STRING})
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
+    primaryKey: true,
+    allowNull: false,
+  })
+  override id!: string;
+
+  @Column({type: DataType.STRING})
   name?: string;
 
-  @Column({type: DataTypes.STRING})
+  @Column({type: DataType.STRING})
   encoding?: string;
 
-  @Column({type: DataTypes.FLOAT})
+  @Column({type: DataType.FLOAT})
   size?: number;
 
-  @Column({type: DataTypes.STRING})
-  mimetype?: string
+  @Column({type: DataType.STRING})
+  mimetype?: string;
 
-  @Column({type: DataTypes.STRING})
-  originalName?: string
+  @Column({type: DataType.STRING})
+  originalName?: string;
 }

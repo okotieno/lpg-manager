@@ -53,6 +53,7 @@ export type IActivityLogUserModel = {
 export type IBrandModel = {
   companyName?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
+  images?: Maybe<Array<Maybe<IFileUploadModel>>>;
   name: Scalars['String']['output'];
 };
 
@@ -72,6 +73,7 @@ export type ICreateActivityLogSuccessResponse = {
 
 export type ICreateBrandInput = {
   companyName?: InputMaybe<Scalars['String']['input']>;
+  images?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
   name: Scalars['String']['input'];
 };
 
@@ -165,7 +167,7 @@ export type IFileUploadModel = {
   name: Scalars['String']['output'];
   originalName?: Maybe<Scalars['String']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
-  url?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['URL']['output']>;
 };
 
 export type ILoginResponse = {
@@ -815,6 +817,7 @@ export type IUpdateActivityLogInput = {
 
 export type IUpdateBrandInput = {
   companyName?: InputMaybe<Scalars['String']['input']>;
+  images?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
   name: Scalars['String']['input'];
 };
 

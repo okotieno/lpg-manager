@@ -6,7 +6,7 @@ type FileUploadModel {
   originalName: String
   mimetype: String
   size: Int
-  url: String
+  url: URL
 }
 
 type UploadSuccessResponse {

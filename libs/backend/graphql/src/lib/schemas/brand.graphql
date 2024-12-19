@@ -2,16 +2,19 @@ type BrandModel {
   id: String!
   name: String!
   companyName: String
+  images: [FileUploadModel]
 }
 
 input CreateBrandInput {
   name: String!
   companyName: String
+  images: [SelectCategory]
 }
 
 input UpdateBrandInput {
   name: String!
   companyName: String
+  images: [SelectCategory]
 }
 
 type PaginatedBrand {
