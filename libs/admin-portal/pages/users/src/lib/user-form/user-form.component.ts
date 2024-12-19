@@ -11,7 +11,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICreateUserGQL, IUpdateUserGQL } from '@lpg-manager/user-store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { RoleStore } from '@lpg-manager/role-store';
-import { ISelectCategory } from '@lpg-manager/types';
+import { IRoleModel, ISelectCategory } from '@lpg-manager/types';
+import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
+import { PaginatedResource } from '@lpg-manager/data-table';
 
 @Component({
   selector: 'lpg-user-form',
@@ -25,9 +27,10 @@ import { ISelectCategory } from '@lpg-manager/types';
     IonButton,
     IonText,
     RouterLink,
+    SearchableSelectComponent,
   ],
   templateUrl: './user-form.component.html',
-  providers: [RoleStore]
+  providers: [RoleStore],
 })
 export default class UserFormComponent {
   #fb = inject(FormBuilder);
@@ -36,10 +39,13 @@ export default class UserFormComponent {
   #router = inject(Router);
   #route = inject(ActivatedRoute);
 
+  rolesStore: PaginatedResource<IRoleModel> = inject(RoleStore);
+
   userForm = this.#fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
+    phone: [''],
     roles: [[] as ISelectCategory[]],
   });
 
@@ -51,13 +57,14 @@ export default class UserFormComponent {
     if (userId) {
       this.isEditing = true;
       this.userId = userId;
-      // Load user data if editing
       const user = this.#route.snapshot.data['user'];
       if (user) {
         this.userForm.patchValue({
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
+          phone: user.phone,
+          roles: user.roles,
         });
       }
     }
@@ -65,7 +72,7 @@ export default class UserFormComponent {
 
   async onSubmit() {
     if (this.userForm.valid) {
-      const { firstName, lastName, email, roles } = this.userForm.value;
+      const { firstName, lastName, email, phone, roles } = this.userForm.value;
 
       if (this.isEditing && this.userId) {
         this.#updateUserGQL
@@ -75,8 +82,9 @@ export default class UserFormComponent {
               firstName: firstName as string,
               lastName: lastName as string,
               email: email as string,
+              phone: phone as string,
               roles: roles as unknown as ISelectCategory[],
-            }
+            },
           })
           .subscribe({
             next: async () => {
@@ -90,6 +98,7 @@ export default class UserFormComponent {
               firstName: firstName as string,
               lastName: lastName as string,
               email: email as string,
+              phone: phone as string,
               roles:
                 this.userForm
                   .get('roles')

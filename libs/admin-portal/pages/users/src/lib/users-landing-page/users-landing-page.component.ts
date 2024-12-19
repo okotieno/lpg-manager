@@ -11,6 +11,7 @@ import {
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { IGetUserCountGQL } from '@lpg-manager/user-store';
+import { DataTableComponent } from '@lpg-manager/data-table';
 
 @Component({
   selector: 'lpg-user-table',
@@ -26,6 +27,7 @@ import { IGetUserCountGQL } from '@lpg-manager/user-store';
     IonCardTitle,
     RouterLink,
     IonText,
+    DataTableComponent,
   ],
   templateUrl: './users-landing-page.component.html',
   styles: `

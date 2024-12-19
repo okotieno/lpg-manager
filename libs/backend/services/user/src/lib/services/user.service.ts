@@ -7,6 +7,7 @@ import { hash } from 'bcrypt';
 
 @Injectable()
 export class UserService extends CrudAbstractService<UserModel> {
+  override globalSearchFields = ['firstName', 'lastName', 'email'];
   constructor(@InjectModel(UserModel) repository: typeof UserModel) {
     super(repository);
   }

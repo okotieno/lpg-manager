@@ -9,18 +9,66 @@
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
       <ion-item lines="none">
         <ion-input
-          label="Name"
+          label="First Name"
           labelPlacement="stacked"
-          formControlName="name"
+          formControlName="firstName"
           placeholder="Enter first name"
-          errorText="Role is required"
+          errorText="First name is required"
           helperText="&nbsp;"
         >
         </ion-input>
       </ion-item>
 
+      <ion-item lines="none">
+        <ion-input
+          label="Last Name"
+          labelPlacement="stacked"
+          formControlName="lastName"
+          placeholder="Enter last name"
+          errorText="Last name is required"
+          helperText="&nbsp;"
+        >
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-input
+          label="Email"
+          labelPlacement="stacked"
+          formControlName="email"
+          type="email"
+          placeholder="Enter email address"
+          errorText="Valid email is required"
+          helperText="&nbsp;"
+        >
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-input
+          label="Phone"
+          labelPlacement="stacked"
+          formControlName="phone"
+          type="tel"
+          placeholder="Enter phone number"
+          helperText="&nbsp;"
+        >
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <lpg-searchable-select
+          [multiple]="true"
+          [itemsStore]="rolesStore"
+          label="Roles"
+          labelPlacement="stacked"
+          formControlName="roles"
+          placeholder="Select roles"
+        ></lpg-searchable-select>
+      </ion-item>
+
       <div class="ion-margin-top ion-text-end">
-        <ion-button fill="clear" type="button" [routerLink]="['/roles']">
+        <ion-button fill="clear" type="button" [routerLink]="['/users']">
           Cancel
         </ion-button>
         <ion-button type="submit" [disabled]="!userForm.valid">
