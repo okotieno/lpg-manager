@@ -1,0 +1,46 @@
+<h2>
+  <ion-text color="lpg-title">
+    {{ isEditing() ? 'Edit Brand' : 'Create Brand' }}
+  </ion-text>
+</h2>
+<ion-card class="ion-no-margin">
+  <ion-card-content>
+    <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
+      <ion-item lines="none">
+        <ion-input
+          label="Name"
+          labelPlacement="stacked"
+          formControlName="name"
+          placeholder="Enter role name"
+          errorText="Role is required"
+          helperText="&nbsp;"
+        >
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-input
+          label="Company name"
+          labelPlacement="stacked"
+          formControlName="companyName"
+          placeholder="Enter company name"
+          helperText="&nbsp;"
+        >
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <lpg-file-upload formControlName="images" [multiple]="false"></lpg-file-upload>
+      </ion-item>
+
+      <div class="ion-margin-top ion-text-end">
+        <ion-button fill="clear" type="button" [routerLink]="['/roles']">
+          Cancel
+        </ion-button>
+        <ion-button type="submit" [disabled]="!brandForm.valid">
+          {{ isEditing() ? 'Update' : 'Create' }}
+        </ion-button>
+      </div>
+    </form>
+  </ion-card-content>
+</ion-card>

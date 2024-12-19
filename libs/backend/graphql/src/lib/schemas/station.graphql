@@ -1,0 +1,35 @@
+type StationModel {
+  id: String!
+  name: String!
+}
+
+input CreateStationInput {
+  name: String!
+}
+
+input UpdateStationInput {
+  name: String!
+}
+
+type PaginatedStation {
+  items: [StationModel]
+  meta: Pagination
+}
+
+type CreateStationSuccessResponse {
+  message: String!
+  data: StationModel!
+}
+
+extend type Query {
+  stations(query: QueryParams): PaginatedStation!
+  station(id: String!): StationModel
+}
+
+extend type Mutation {
+  updateStation(id: String!, params: UpdateStationInput): CreateStationSuccessResponse
+
+  createStation(params: CreateStationInput): CreateStationSuccessResponse
+
+  deleteStation(id: String!): DeleteSuccessResponse
+}

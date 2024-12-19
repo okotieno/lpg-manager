@@ -93,6 +93,12 @@
       "@lpg-manager/setting-service": [
         "libs/backend/services/setting/src/index.ts"
       ],
+      "@lpg-manager/station": ["libs/backend/station/src/index.ts"],
+      "@lpg-manager/stations-page": ["libs/admin-portal/pages/stations/src/index.ts"],
+      "@lpg-manager/station-service": [
+        "libs/backend/services/station/src/index.ts"
+      ],
+      "@lpg-manager/station-store": ["libs/shared/data-access/station/src/index.ts"],
       "@lpg-manager/theme-service": ["libs/shared/services/theme/src/index.ts"],
       "@lpg-manager/translation": ["libs/backend/translation/src/index.ts"],
       "@lpg-manager/types": ["libs/shared/utils/types/src/index.ts"],

@@ -1,0 +1,9 @@
+{
+  "name": "station",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/station/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project station --web",
+  "targets": {}
+}

@@ -1,0 +1,49 @@
+mutation CreateStation(
+  $params: CreateStationInput!
+) {
+  createStation(
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetStationById($id: String!) {
+  station(id: $id) {
+    id
+    name
+  }
+}
+
+query GetStations($query: QueryParams) {
+  stations(query: $query) {
+    items {
+      id
+      name
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+mutation DeleteStationById($id: String!) {
+  deleteStation(id: $id) {
+    message
+  }
+}
+
+mutation UpdateStation($id: String!, $params: UpdateStationInput!) {
+  updateStation(
+    id: $id
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}

@@ -15,5 +15,12 @@ export const ADMINISTRATION_ROUTES:Routes = [
     data: {
       routeLabel: "Brands"
     }
+  },
+  {
+    path: 'stations',
+    loadChildren: () => import('@lpg-manager/stations-page'),
+    data: {
+      routeLabel: "Stations"
+    }
   }
 ]

@@ -138,6 +138,15 @@ export type ICreateSettingSuccessResponse = {
   message: Scalars['String']['output'];
 };
 
+export type ICreateStationInput = {
+  name: Scalars['String']['input'];
+};
+
+export type ICreateStationSuccessResponse = {
+  data: IStationModel;
+  message: Scalars['String']['output'];
+};
+
 export type ICreateSuccessStringIdResponse = {
   id: Scalars['String']['output'];
   message: Scalars['String']['output'];
@@ -190,6 +199,7 @@ export type IMutation = {
   createPermission?: Maybe<ICreatePermissionSuccessResponse>;
   createRole?: Maybe<ICreateRoleSuccessResponse>;
   createSetting?: Maybe<ICreateSettingSuccessResponse>;
+  createStation?: Maybe<ICreateStationSuccessResponse>;
   createUser?: Maybe<ICreateUserSuccessResponse>;
   deleteActivityLog?: Maybe<IDeleteSuccessResponse>;
   deleteBrand?: Maybe<IDeleteSuccessResponse>;
@@ -199,6 +209,7 @@ export type IMutation = {
   deletePermission?: Maybe<IDeleteSuccessResponse>;
   deleteRole?: Maybe<IDeleteSuccessResponse>;
   deleteSetting?: Maybe<IDeleteSuccessResponse>;
+  deleteStation?: Maybe<IDeleteSuccessResponse>;
   deleteUser?: Maybe<IDeleteSuccessResponse>;
   givePermissionsToRole?: Maybe<ISuccessResponse>;
   healthCheck?: Maybe<Scalars['String']['output']>;
@@ -222,6 +233,7 @@ export type IMutation = {
   updatePermission?: Maybe<ICreatePermissionSuccessResponse>;
   updateRole?: Maybe<ICreateRoleSuccessResponse>;
   updateSetting?: Maybe<ICreateSettingSuccessResponse>;
+  updateStation?: Maybe<ICreateStationSuccessResponse>;
   updateUser?: Maybe<ICreateUserSuccessResponse>;
   uploadSingleFile: IUploadSuccessResponse;
   validateOtp?: Maybe<ILoginResponse>;
@@ -295,6 +307,11 @@ export type IMutationCreateSettingArgs = {
 };
 
 
+export type IMutationCreateStationArgs = {
+  params?: InputMaybe<ICreateStationInput>;
+};
+
+
 export type IMutationCreateUserArgs = {
   params?: InputMaybe<ICreateUserInput>;
 };
@@ -336,6 +353,11 @@ export type IMutationDeleteRoleArgs = {
 
 
 export type IMutationDeleteSettingArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type IMutationDeleteStationArgs = {
   id: Scalars['String']['input'];
 };
 
@@ -452,6 +474,12 @@ export type IMutationUpdateRoleArgs = {
 export type IMutationUpdateSettingArgs = {
   id: Scalars['String']['input'];
   params?: InputMaybe<IUpdateSettingInput>;
+};
+
+
+export type IMutationUpdateStationArgs = {
+  id: Scalars['String']['input'];
+  params?: InputMaybe<IUpdateStationInput>;
 };
 
 
@@ -573,6 +601,11 @@ export type IPaginatedSetting = {
   meta?: Maybe<IPagination>;
 };
 
+export type IPaginatedStation = {
+  items?: Maybe<Array<Maybe<IStationModel>>>;
+  meta?: Maybe<IPagination>;
+};
+
 export type IPaginatedUser = {
   items?: Maybe<Array<Maybe<IUserModel>>>;
   meta?: Maybe<IPagination>;
@@ -624,6 +657,8 @@ export type IQuery = {
   roles: IPaginatedRole;
   setting?: Maybe<ISettingModel>;
   settings: IPaginatedSetting;
+  station?: Maybe<IStationModel>;
+  stations: IPaginatedStation;
   user?: Maybe<IUserModel>;
   userCount: IUserCount;
   userRoles?: Maybe<IPaginatedUserRoles>;
@@ -726,6 +761,16 @@ export type IQuerySettingsArgs = {
 };
 
 
+export type IQueryStationArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type IQueryStationsArgs = {
+  query?: InputMaybe<IQueryParams>;
+};
+
+
 export type IQueryUserArgs = {
   id: Scalars['String']['input'];
 };
@@ -789,6 +834,11 @@ export enum ISortByEnum {
   Desc = 'DESC'
 }
 
+export type IStationModel = {
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+};
+
 export type ISubscription = {
   healthCheck?: Maybe<Scalars['String']['output']>;
   notificationCreated?: Maybe<INotificationCreatedResponse>;
@@ -844,6 +894,10 @@ export type IUpdateRoleInput = {
 
 export type IUpdateSettingInput = {
   name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type IUpdateStationInput = {
+  name: Scalars['String']['input'];
 };
 
 export type IUpdateUserInput = {

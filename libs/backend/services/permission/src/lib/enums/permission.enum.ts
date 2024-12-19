@@ -29,5 +29,8 @@ export enum PermissionsEnum {
   CreateBrand = 'create brand',
   DeleteBrand = 'delete brand',
   UpdateBrand = 'update brand',
+  CreateStation = 'create station',
+  DeleteStation = 'delete station',
+  UpdateStation = 'update station',
 
 }

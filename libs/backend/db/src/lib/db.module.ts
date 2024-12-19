@@ -10,9 +10,9 @@ import {
   RoleModel,
   RoleUserModel, SettingModel,
   UserModel,
-  BrandFileUploadModel
+  BrandFileUploadModel, StationModel,
+  NotificationUserModel
 } from './models';
-import { NotificationUserModel } from './models/notification-user.model';
 import { SequelizeOptions } from 'sequelize-typescript';
 
 @Module({
@@ -41,7 +41,8 @@ import { SequelizeOptions } from 'sequelize-typescript';
           ActivityLogModel,
           ActivityLogUserModel,
           BrandModel,
-          BrandFileUploadModel
+          BrandFileUploadModel,
+          StationModel
         ],
       }),
     }),
