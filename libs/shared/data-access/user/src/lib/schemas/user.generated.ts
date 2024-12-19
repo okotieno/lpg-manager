@@ -4,23 +4,15 @@ import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
 export type ICreateUserMutationVariables = Types.Exact<{
-  phone: Types.Scalars['String']['input'];
-  email: Types.Scalars['String']['input'];
-  firstName: Types.Scalars['String']['input'];
-  lastName: Types.Scalars['String']['input'];
-  middleName?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  params: Types.ICreateUserInput;
 }>;
 
 
 export type ICreateUserMutation = { createUser?: { message: string, data: { id: string } } | null };
 
 export type IUpdateUserMutationVariables = Types.Exact<{
-  userId: Types.Scalars['String']['input'];
-  phone: Types.Scalars['String']['input'];
-  email: Types.Scalars['String']['input'];
-  firstName: Types.Scalars['String']['input'];
-  lastName: Types.Scalars['String']['input'];
-  middleName?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  id: Types.Scalars['String']['input'];
+  params: Types.IUpdateUserInput;
 }>;
 
 
@@ -68,14 +60,8 @@ export type IGetUserCountQueryVariables = Types.Exact<{ [key: string]: never; }>
 export type IGetUserCountQuery = { userCount: { count: number } };
 
 export const CreateUserDocument = gql`
-    mutation CreateUser($phone: String!, $email: String!, $firstName: String!, $lastName: String!, $middleName: String) {
-  createUser(
-    phone: $phone
-    lastName: $lastName
-    middleName: $middleName
-    firstName: $firstName
-    email: $email
-  ) {
+    mutation CreateUser($params: CreateUserInput!) {
+  createUser(params: $params) {
     message
     data {
       id
@@ -95,11 +81,8 @@ export const CreateUserDocument = gql`
     }
   }
 export const UpdateUserDocument = gql`
-    mutation UpdateUser($userId: String!, $phone: String!, $email: String!, $firstName: String!, $lastName: String!, $middleName: String) {
-  updateUser(
-    id: $userId
-    params: {phone: $phone, lastName: $lastName, middleName: $middleName, firstName: $firstName, email: $email}
-  ) {
+    mutation UpdateUser($id: String!, $params: UpdateUserInput!) {
+  updateUser(id: $id, params: $params) {
     message
     data {
       id

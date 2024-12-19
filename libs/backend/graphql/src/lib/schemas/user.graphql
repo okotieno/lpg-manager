@@ -33,12 +33,22 @@ extend type Query {
   userCount: UserCount!
 }
 
+input CreateUserInput {
+  firstName : String!
+  middleName: String
+  lastName : String!
+  email : String!
+  phone : String
+  roles: [SelectCategory]
+}
+
 input UpdateUserInput {
   firstName : String!
   middleName: String
   lastName : String!
   email : String!
   phone : String
+  roles: [SelectCategory]
 }
 
 type CreateUserSuccessResponse  {
@@ -54,14 +64,7 @@ input CountriesLanguagesInput {
 extend type Mutation {
   updateUser(id: String!, params: UpdateUserInput): CreateUserSuccessResponse
 
-  createUser(
-    firstName : String!
-    middleName: String
-    lastName : String!
-    email : String!
-    phone : String
-
-  ): CreateUserSuccessResponse
+  createUser(params: CreateUserInput): CreateUserSuccessResponse
 
   deleteUser(id: String!): DeleteSuccessResponse
 }

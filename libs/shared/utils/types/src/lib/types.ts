@@ -12,6 +12,12 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  DateTime: { input: string; output: string; }
+  EmailAddress: { input: string; output: string; }
+  PhoneNumber: { input: string; output: string; }
+  PositiveFloat: { input: number; output: number; }
+  PositiveInt: { input: number; output: number; }
+  URL: { input: string; output: string; }
   Upload: { input: any; output: any; }
 };
 
@@ -133,6 +139,15 @@ export type ICreateSettingSuccessResponse = {
 export type ICreateSuccessStringIdResponse = {
   id: Scalars['String']['output'];
   message: Scalars['String']['output'];
+};
+
+export type ICreateUserInput = {
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  lastName: Scalars['String']['input'];
+  middleName?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  roles?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
 };
 
 export type ICreateUserSuccessResponse = {
@@ -279,11 +294,7 @@ export type IMutationCreateSettingArgs = {
 
 
 export type IMutationCreateUserArgs = {
-  email: Scalars['String']['input'];
-  firstName: Scalars['String']['input'];
-  lastName: Scalars['String']['input'];
-  middleName?: InputMaybe<Scalars['String']['input']>;
-  phone?: InputMaybe<Scalars['String']['input']>;
+  params?: InputMaybe<ICreateUserInput>;
 };
 
 
@@ -838,6 +849,7 @@ export type IUpdateUserInput = {
   lastName: Scalars['String']['input'];
   middleName?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
+  roles?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
 };
 
 export type IUploadSuccessResponse = {

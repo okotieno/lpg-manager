@@ -1,0 +1,32 @@
+<h2>
+  <ion-text color="lpg-title">
+    {{ isEditing ? 'Edit User' : 'Create User' }}
+  </ion-text>
+</h2>
+
+<ion-card class="ion-no-margin">
+  <ion-card-content>
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <ion-item lines="none">
+        <ion-input
+          label="Name"
+          labelPlacement="stacked"
+          formControlName="name"
+          placeholder="Enter first name"
+          errorText="Role is required"
+          helperText="&nbsp;"
+        >
+        </ion-input>
+      </ion-item>
+
+      <div class="ion-margin-top ion-text-end">
+        <ion-button fill="clear" type="button" [routerLink]="['/roles']">
+          Cancel
+        </ion-button>
+        <ion-button type="submit" [disabled]="!userForm.valid">
+          {{ isEditing ? 'Update' : 'Create' }}
+        </ion-button>
+      </div>
+    </form>
+  </ion-card-content>
+</ion-card>
