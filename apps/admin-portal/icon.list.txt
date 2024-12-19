@@ -37,12 +37,14 @@ file-jpg-downloaded
 file-png-downloaded
 file-svg-downloaded
 filter
+filter-circle-xmark
 filters
 floppy-disk
 forward-fast
 forward-step
 gas-pump
 gear
+grid-2-plus
 house
 language
 left-to-line

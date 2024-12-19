@@ -41,6 +41,9 @@
   //--ion-item-border-color: rgba(255,555,555 , 0.2);
 
   --ion-color-step-850: var(--ion-text-color);
+  --ion-color-step-50: var(--ion-background-color);
+  --ion-color-step-100: rgba(var(--ion-text-color-rgb), 0.05);
+  --ion-color-step-150: rgba(var(--ion-text-color-rgb), 0.1);
 }
 form {
   ion-item {

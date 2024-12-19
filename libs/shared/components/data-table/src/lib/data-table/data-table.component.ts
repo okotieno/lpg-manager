@@ -27,7 +27,7 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
-import { JsonPipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import {
   ITableColumn,
   PaginatedResource,
@@ -73,7 +73,6 @@ const validateUUID = (control: AbstractControl) => {
     IonCol,
     IonInput,
     IonSelectOption,
-    JsonPipe,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -308,11 +307,64 @@ export class DataTableComponent<T> {
   }
 
   closeSearchDialog($event: CustomEvent) {
-    if ($event.detail.role === 'backdrop') {
+    if ($event.detail.role === 'backdrop' || $event.detail.role === 'close') {
+      // Reset filters tracker
       const filtersTracker = { ...this.filtersTracker() };
       filtersTracker[this.activeFilterKey()] = [...this.#prevFilterTracker];
       this.filtersTracker.set(filtersTracker);
+
+      // Reset form array with previous values
+      const formArray = this.searchForm.get(this.activeFilterKey() as string) as FormArray;
+      while (formArray.length) {
+        formArray.removeAt(0);
+      }
+
+      this.#prevSearchFormValue.forEach(({ operator, value }) => {
+        formArray.push(
+          this.fb.group({
+            operator: [operator],
+            value: [value, this.activeColumn().fieldType === 'uuid' ?
+              [Validators.required, validateUUID] :
+              [Validators.required]
+            ],
+          })
+        );
+      });
     }
     this.filterIsOpen.set(false);
+  }
+
+  clearSearch() {
+    const filtersTracker = { ...this.filtersTracker() };
+    filtersTracker[this.activeFilterKey()] = [];
+    this.filtersTracker.set(filtersTracker);
+
+    // Reset form array with previous values
+    const formArray = this.searchForm.get(this.activeFilterKey() as string) as FormArray;
+    while (formArray.length) {
+      formArray.removeAt(0);
+    }
+  }
+  async confirmClearSearch() {
+    const alert = await this.#alertCtrl.create({
+      header: 'Confirmation',
+      message: 'You are about to clear search field, continue?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Continue',
+          role: 'confirm',
+          cssClass: 'alert-button-danger',
+          handler: () => {
+            this.clearSearch();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

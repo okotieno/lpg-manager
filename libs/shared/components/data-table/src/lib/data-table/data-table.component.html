@@ -3,8 +3,6 @@
     <ion-text class="ion-margin-bottom" color="lpg-title">{{ pageTitle() }}</ion-text>
   </h2>
 }
-{{ filtersTracker() | json }}
-{{ prevSearchFormValue | json }}
 <div class="ion-margin-bottom ion-text-end">
   <ion-button [routerLink]="['new']">
     <ion-icon [name]="createNewIcon()" slot="start"></ion-icon>
@@ -97,6 +95,9 @@
     <ion-header class="ion-no-border">
       <ion-toolbar>
         <ion-title>Filter by {{ activeColumn().label }}</ion-title>
+        <ion-button (click)="popover().dismiss({}, 'close')" fill="clear" slot="end" shape="round">
+          <ion-icon slot="icon-only" name="xmark"></ion-icon>
+        </ion-button>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
@@ -104,7 +105,7 @@
       <form [formGroup]="searchForm">
         <ng-container [formGroupName]="$any(activeFilterKey())">
           @for (filter of activeFilterTracker(); track filter; let filterIndex = $index) {
-            <ion-row class="ion-justify-content-start" [formArrayName]="filterIndex">
+            <ion-row class="ion-justify-content-start ion-margin-bottom" [formArrayName]="filterIndex">
               <ion-select style="width: fit-content" fill="solid" formControlName="operator" class="custom">
                 @for (option of searchOptions(); track option) {
                   <ion-select-option [value]="option.value">{{ option.label }}</ion-select-option>
@@ -116,16 +117,21 @@
                            formControlName="value">
                   <ion-button (click)="confirmRemoveSearchField($any(activeColumn().key), filterIndex)" class="custom"
                               slot="end" color="danger" fill="clear">
-                    <ion-icon slot="icon-only" name="circle-minus"></ion-icon>
+                    <ion-icon slot="icon-only" name="filter-circle-xmark"></ion-icon>
                   </ion-button>
                 </ion-input>
               </ion-col>
             </ion-row>
           }
         </ng-container>
+        <ion-row class="ion-justify-content-end ion-margin">
+          <ion-button fill="clear" (click)="addFilter(activeFilterKey())">
+            <ion-icon name="grid-2-plus" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-row>
 
         <ion-row class="ion-margin-top ion-justify-content-end">
-          <ion-button color="primary" fill="outline">Clear</ion-button>
+          <ion-button (click)="confirmClearSearch()" color="primary" fill="outline">Clear</ion-button>
           <ion-button
             [disabled]="searchForm.get($any(activeFilterKey()))?.invalid"
             color="primary" fill="solid" (click)="applyFilters()"
