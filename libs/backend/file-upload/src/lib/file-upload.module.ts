@@ -22,7 +22,7 @@ import process from 'node:process';
   providers: [
     FileUploadService,
     FileUploadResolver,
-    { provide: 'BACKEND_URL', useValue: process.env['FS_BACKEND_URL'] },
+    { provide: 'BACKEND_URL', useValue: process.env['LPG_BACKEND_URL'] },
   ],
   controllers: [ImageController],
   exports: [FileUploadService],

@@ -33,16 +33,16 @@ describe('EmailService', () => {
     await service.send({
       to: email,
       from: 'test@example.com',
-      subject: 'Welcome to Studiz!',
-      text: 'You have successfully created an account with Studiz'
+      subject: 'Welcome to LPG Manager!',
+      text: 'You have successfully created an account with LPG Manager'
     });
 
     // Check if the sendMail method was called with the correct parameters
     expect(mailerServiceMock.sendMail).toHaveBeenCalledWith({
       from: 'test@example.com',
       to: email,
-      subject: 'Welcome to Studiz!',
-      text: 'You have successfully created an account with Studiz'
+      subject: 'Welcome to LPG Manager!',
+      text: 'You have successfully created an account with LPG Manager'
     });
   });
 });

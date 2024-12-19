@@ -1,5 +1,3 @@
-import { ReadStream } from 'fs-capacitor';
-
 export interface BufferedFile {
   fieldName: string;
   originalName: string;
@@ -24,13 +22,6 @@ export interface StoredFileMetadata {
   fileSrc?: string;
 }
 
-export type AppMimeType = 'image/png' | 'image/jpeg';
-
-export interface UploadedFileMetadata {
-  file: Promise<{
-    createReadStream(): ReadStream;
-    filename: string;
-    mimetype: string;
-    encoding: string;
-  }>;
-}
+export type AppMimeType =
+  | 'image/png'
+  | 'image/jpeg';

@@ -18,18 +18,31 @@ export class FileUploadService extends CrudAbstractService<FileUploadModel> {
 
   constructor(
     private readonly minio: MinioService,
-    @InjectModel(FileUploadModel) fileUploadService: typeof FileUploadModel,
+    @InjectModel(FileUploadModel) fileUploadService: typeof FileUploadModel
   ) {
     super(fileUploadService);
   }
 
-  public async upload(
-    file: BufferedFile,
-    baseBucket: string = this.baseBucket,
-  ) {
-    if (!(file.mimetype.includes('jpeg') || file.mimetype.includes('png'))) {
-      throw new HttpException('Error uploading file', HttpStatus.BAD_REQUEST);
+  public async upload({
+    file,
+    baseBucket = this.baseBucket,
+  }: {
+    file: BufferedFile;
+    baseBucket?: string;
+  }) {
+    const allowedFileTypes = ['image/jpeg', 'image/png'];
+
+    if (!allowedFileTypes.includes(file.mimetype)) {
+      throw new HttpException(
+        'File type not supported',
+        HttpStatus.BAD_REQUEST
+      );
     }
+
+    //
+    // if (!(file.mimetype.includes('jpeg') || file.mimetype.includes('png'))) {
+    //   throw new HttpException('Error uploading file', HttpStatus.BAD_REQUEST);
+    // }
     const temp_filename = Date.now().toString();
     const hashedFileName = crypto
       .createHash('md5')
@@ -37,15 +50,28 @@ export class FileUploadService extends CrudAbstractService<FileUploadModel> {
       .digest('hex');
     const ext = file.originalName.substring(
       file.originalName.lastIndexOf('.'),
-      file.originalName.length,
+      file.originalName.length
     );
+    const metaData = {
+      'Content-Type': file.mimetype,
+      'X-Amz-Meta-Testing': 1234,
+    };
     const filename = hashedFileName + ext;
     const fileName = `${filename}`;
     const fileBuffer = file.buffer;
-    this.client.putObject(baseBucket, fileName, fileBuffer, function (err) {
-      if (err)
-        throw new HttpException('Error uploading file', HttpStatus.BAD_REQUEST);
-    });
+    this.client.putObject(
+      baseBucket,
+      fileName,
+      fileBuffer,
+      metaData as any,
+      function (err, res) {
+        if (err)
+          throw new HttpException(
+            'Error uploading file',
+            HttpStatus.BAD_REQUEST
+          );
+      }
+    );
 
     return fileName;
   }
@@ -55,7 +81,7 @@ export class FileUploadService extends CrudAbstractService<FileUploadModel> {
       if (err)
         throw new HttpException(
           'Oops Something wrong happened',
-          HttpStatus.BAD_REQUEST,
+          HttpStatus.BAD_REQUEST
         );
     });
   }
@@ -70,7 +96,7 @@ export class FileUploadService extends CrudAbstractService<FileUploadModel> {
             return reject(error);
           }
           resolve(dataStream);
-        },
+        }
       );
     });
   }
@@ -82,7 +108,7 @@ export class FileUploadService extends CrudAbstractService<FileUploadModel> {
           return reject(err);
         }
 
-        const chunks: Uint8Array[] = [];
+        const chunks: any[] = [];
         dataStream.on('data', (chunk) => {
           chunks.push(chunk);
         });
