@@ -112,6 +112,9 @@ export const withPaginatedItemsStore = <
       setFilters(queryParamsFilters: IQueryParamsFilter[]) {
         patchState(store, { filters: queryParamsFilters });
       },
+      setSearchTerm(searchTerm: string) {
+        patchState(store, { searchTerm });
+      },
       fetchNextPage() {
         patchState(store, { currentPage: store.currentPage() + 1 });
         store.itemsResource?.()?.reload();

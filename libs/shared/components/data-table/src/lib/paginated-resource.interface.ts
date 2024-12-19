@@ -17,6 +17,8 @@ export interface PaginatedResource<T> {
   isLoading: Signal<boolean>;
 
   setFilters(filters: IQueryParamsFilter[]): void;
+
+  setSearchTerm(value: string): void;
 }
 
 

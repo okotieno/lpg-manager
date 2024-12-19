@@ -18,13 +18,13 @@ import {
   IonIcon,
   IonInput,
   IonPopover,
-  IonRow,
+  IonRow, IonSearchbar,
   IonSelect,
   IonSelectOption,
   IonSkeletonText,
   IonText,
   IonTitle,
-  IonToolbar,
+  IonToolbar
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
@@ -76,6 +76,7 @@ const validateUUID = (control: AbstractControl) => {
     IonHeader,
     IonToolbar,
     IonTitle,
+    IonSearchbar,
   ],
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.css',
@@ -314,7 +315,9 @@ export class DataTableComponent<T> {
       this.filtersTracker.set(filtersTracker);
 
       // Reset form array with previous values
-      const formArray = this.searchForm.get(this.activeFilterKey() as string) as FormArray;
+      const formArray = this.searchForm.get(
+        this.activeFilterKey() as string
+      ) as FormArray;
       while (formArray.length) {
         formArray.removeAt(0);
       }
@@ -323,9 +326,11 @@ export class DataTableComponent<T> {
         formArray.push(
           this.fb.group({
             operator: [operator],
-            value: [value, this.activeColumn().fieldType === 'uuid' ?
-              [Validators.required, validateUUID] :
-              [Validators.required]
+            value: [
+              value,
+              this.activeColumn().fieldType === 'uuid'
+                ? [Validators.required, validateUUID]
+                : [Validators.required],
             ],
           })
         );
@@ -340,7 +345,9 @@ export class DataTableComponent<T> {
     this.filtersTracker.set(filtersTracker);
 
     // Reset form array with previous values
-    const formArray = this.searchForm.get(this.activeFilterKey() as string) as FormArray;
+    const formArray = this.searchForm.get(
+      this.activeFilterKey() as string
+    ) as FormArray;
     while (formArray.length) {
       formArray.removeAt(0);
     }
@@ -366,5 +373,9 @@ export class DataTableComponent<T> {
     });
 
     await alert.present();
+  }
+
+  handleSearch($event: CustomEvent) {
+    this.store().setSearchTerm($event.detail.value);
   }
 }

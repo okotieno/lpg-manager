@@ -3,12 +3,15 @@
     <ion-text class="ion-margin-bottom" color="lpg-title">{{ pageTitle() }}</ion-text>
   </h2>
 }
-<div class="ion-margin-bottom ion-text-end">
+<ion-row class="ion-margin-bottom ion-justify-content-between">
+  <ion-col class="ion-no-margin ion-no-padding">
+    <ion-searchbar debounce="500" (ionInput)="handleSearch($event)"></ion-searchbar>
+  </ion-col>
   <ion-button [routerLink]="['new']">
     <ion-icon [name]="createNewIcon()" slot="start"></ion-icon>
     Create Brand
   </ion-button>
-</div>
+</ion-row>
 <div class="table-container">
   <table cdk-table [dataSource]="items()" class="items-table">
     @for (column of this.columns(); track column.key; let index = $index) {
