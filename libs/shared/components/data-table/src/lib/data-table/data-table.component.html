@@ -4,6 +4,7 @@
   </h2>
 }
 {{ filtersTracker() | json }}
+{{ prevSearchFormValue | json }}
 <div class="ion-margin-bottom ion-text-end">
   <ion-button [routerLink]="['new']">
     <ion-icon [name]="createNewIcon()" slot="start"></ion-icon>

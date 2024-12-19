@@ -155,6 +155,8 @@ export class DataTableComponent<T> {
     {} as { [K in keyof T]: string[] }
   );
   #prevFilterTracker: string[] = [];
+  #prevSearchFormValue: { value: string; operator: IQueryOperatorEnum }[] = [];
+  prevSearchFormValue: { value: string; operator: IQueryOperatorEnum }[] = [];
   fb = inject(FormBuilder);
   searchForm: FormGroup<{
     [key: string]: FormArray<
@@ -204,6 +206,8 @@ export class DataTableComponent<T> {
       filtersTracker[key] = [];
     }
     this.#prevFilterTracker = [...filtersTracker[key]];
+    this.#prevSearchFormValue = this.searchForm.get(key as string)?.value ?? [];
+    this.prevSearchFormValue = this.searchForm.get(key as string)?.value ?? [];
     if (filtersTracker[key].length < 1) {
       this.addFilter(key);
     }
@@ -216,7 +220,7 @@ export class DataTableComponent<T> {
       ({ key: keyValue }) => keyValue === key
     )[0].fieldType;
     const validators = [Validators.required];
-    if(fieldType === 'uuid') {
+    if (fieldType === 'uuid') {
       validators.push(validateUUID);
     }
     (this.searchForm.get(key as string) as FormArray).push(
@@ -304,11 +308,11 @@ export class DataTableComponent<T> {
   }
 
   closeSearchDialog($event: CustomEvent) {
-    if($event.detail.role === 'backdrop') {
+    if ($event.detail.role === 'backdrop') {
       const filtersTracker = { ...this.filtersTracker() };
       filtersTracker[this.activeFilterKey()] = [...this.#prevFilterTracker];
       this.filtersTracker.set(filtersTracker);
     }
-    this.filterIsOpen.set(false)
+    this.filterIsOpen.set(false);
   }
 }
