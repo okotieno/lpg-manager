@@ -86,6 +86,7 @@ export class DataTableComponent<T> {
   #alertCtrl = inject(AlertController);
   pageTitle = input<string>();
   createNewIcon = input<string>('plus');
+  createNewLabel = input<string>('New');
   store = input.required<PaginatedResource<T>>();
   columns = input<ITableColumn<T>[]>([
     { label: 'id', key: 'id' as keyof T, fieldType: 'uuid' },

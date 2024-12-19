@@ -1,8 +1,8 @@
 export default {
-  displayName: 'roles-store',
+  displayName: 'role-store',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/shared/data-access/roles',
+  coverageDirectory: '../../../../coverage/libs/shared/data-access/role',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

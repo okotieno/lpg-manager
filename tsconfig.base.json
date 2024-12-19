@@ -81,8 +81,8 @@
       "@lpg-manager/role": ["libs/backend/role/src/index.ts"],
       "@lpg-manager/role-service": ["libs/backend/services/role/src/index.ts"],
       "@lpg-manager/roles-page": ["libs/admin-portal/pages/roles/src/index.ts"],
-      "@lpg-manager/roles-store": [
-        "libs/shared/data-access/roles/src/index.ts"
+      "@lpg-manager/role-store": [
+        "libs/shared/data-access/role/src/index.ts"
       ],
       "@lpg-manager/searchable-select": [
         "libs/shared/components/searchable-select/src/index.ts"

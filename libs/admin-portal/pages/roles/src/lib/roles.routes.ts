@@ -1,6 +1,6 @@
 import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { inject } from '@angular/core';
-import { IGetRoleByIdGQL } from '@lpg-manager/roles-store';
+import { IGetRoleByIdGQL } from '@lpg-manager/role-store';
 import { map } from 'rxjs';
 
 export const ROLES_ROUTES: Routes = [

@@ -8,7 +8,7 @@ import {
   IonText,
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ICreateRoleGQL, IUpdateRoleGQL } from '@lpg-manager/roles-store';
+import { ICreateRoleGQL, IUpdateRoleGQL } from '@lpg-manager/role-store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   SearchableSelectComponent,
