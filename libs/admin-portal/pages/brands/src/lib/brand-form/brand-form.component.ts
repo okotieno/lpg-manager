@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, effect, inject, input, untracked } from '@angular/core';
 import {
   IonButton,
   IonCard,
@@ -12,9 +12,10 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { PermissionsStore } from '@lpg-manager/permission-store';
 import { ICreateBrandGQL, IUpdateBrandGQL } from '@lpg-manager/brand-store';
+import { IBrandModel } from '@lpg-manager/types';
 
 @Component({
-  selector: 'lpg-role-form',
+  selector: 'lpg-brand-form',
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -30,43 +31,35 @@ import { ICreateBrandGQL, IUpdateBrandGQL } from '@lpg-manager/brand-store';
   providers: [PermissionsStore],
 })
 export default class BrandFormComponent {
-  private fb = inject(FormBuilder);
-  private createRoleGQL = inject(ICreateBrandGQL);
-  private updateRoleGQL = inject(IUpdateBrandGQL);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-
-  roleForm = this.fb.group({
+  #fb = inject(FormBuilder);
+  #createRoleGQL = inject(ICreateBrandGQL);
+  #updateRoleGQL = inject(IUpdateBrandGQL);
+  brandForm = this.#fb.group({
     name: ['', [Validators.required]],
     companyName: [''],
   });
-
-  isEditing = false;
-  roleId: string | null = null;
-
-  constructor() {
-    const roleId = this.route.snapshot.paramMap.get('id');
-    if (roleId) {
-      this.isEditing = true;
-      this.roleId = roleId;
-      // Load role data if editing
-      const role = this.route.snapshot.data['role'];
-      if (role) {
-        this.roleForm.patchValue({
-          name: role.name,
-        });
+  #router = inject(Router);
+  #route = inject(ActivatedRoute);
+  brand = input<IBrandModel>();
+  isEditing = computed(() => !!this.brand());
+  roleId = computed(() => this.brand()?.id);
+  brandChangeEffect = effect(() => {
+    const brand = this.brand();
+    untracked(() => {
+      if(brand) {
+        this.brandForm.patchValue(brand);
       }
-    }
-  }
+    })
+  })
 
   async onSubmit() {
-    if (this.roleForm.valid) {
-      const { name, companyName } = this.roleForm.value;
+    if (this.brandForm.valid) {
+      const { name, companyName } = this.brandForm.value;
 
-      if (this.isEditing && this.roleId) {
-        this.updateRoleGQL
+      if (this.isEditing() && this.roleId()) {
+        this.#updateRoleGQL
           .mutate({
-            id: this.roleId,
+            id: this.roleId() as string,
             params: {
               name: name as string,
               companyName: companyName as string,
@@ -74,11 +67,11 @@ export default class BrandFormComponent {
           })
           .subscribe({
             next: async () => {
-              await this.router.navigate(['/roles']);
+              await this.#router.navigate(['../../'], {relativeTo: this.#route});
             },
           });
       } else {
-        this.createRoleGQL
+        this.#createRoleGQL
           .mutate({
             params: {
               name: name as string,
@@ -87,7 +80,7 @@ export default class BrandFormComponent {
           })
           .subscribe({
             next: async () => {
-              await this.router.navigate(['/roles']);
+              await this.#router.navigate(['../'], {relativeTo: this.#route});
             },
           });
       }

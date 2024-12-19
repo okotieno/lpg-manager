@@ -73,7 +73,7 @@
           >
             <ion-icon name="eye" slot="icon-only"></ion-icon>
           </ion-button>
-          <ion-button shape="round" fill="clear" size="small">
+          <ion-button [routerLink]="[item.id, 'edit']" shape="round" fill="clear" size="small">
             <ion-icon name="pen-to-square" slot="icon-only"></ion-icon>
           </ion-button>
           <ion-button

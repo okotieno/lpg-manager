@@ -1,12 +1,12 @@
 <h2>
   <ion-text color="lpg-title">
-    {{ isEditing ? 'Edit Role' : 'Create Role' }}
+    {{ isEditing() ? 'Edit Brand' : 'Create Brand' }}
   </ion-text>
 </h2>
 
 <ion-card class="ion-no-margin">
   <ion-card-content>
-    <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
       <ion-item lines="none">
         <ion-input
           label="Name"
@@ -34,8 +34,8 @@
         <ion-button fill="clear" type="button" [routerLink]="['/roles']">
           Cancel
         </ion-button>
-        <ion-button type="submit" [disabled]="!roleForm.valid">
-          {{ isEditing ? 'Update' : 'Create' }}
+        <ion-button type="submit" [disabled]="!brandForm.valid">
+          {{ isEditing() ? 'Update' : 'Create' }}
         </ion-button>
       </div>
     </form>
