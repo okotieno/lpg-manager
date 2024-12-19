@@ -9,7 +9,7 @@ export class ImageController {
 
   @Get(':imageId')
   async getImage(
-    @Param('imageId') imageId: number,
+    @Param('imageId') imageId: string,
 
     @Res() res: FastifyReply,
   ) {

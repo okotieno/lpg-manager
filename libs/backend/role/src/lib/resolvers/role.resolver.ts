@@ -50,7 +50,7 @@ export class RoleResolver {
 
   @Mutation(() => RoleModel)
   async deleteRole(
-    @Args('id') id: number
+    @Args('id') id: string
   ) {
     await this.roleService.deleteById(id);
 

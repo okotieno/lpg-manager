@@ -13,6 +13,9 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PermissionsStore } from '@lpg-manager/permission-store';
 import { ICreateBrandGQL, IUpdateBrandGQL } from '@lpg-manager/brand-store';
 import { IBrandModel } from '@lpg-manager/types';
+import {
+  FileUploadComponent
+} from '@lpg-manager/file-upload-component';
 
 @Component({
   selector: 'lpg-brand-form',
@@ -25,7 +28,9 @@ import { IBrandModel } from '@lpg-manager/types';
     IonInput,
     IonButton,
     IonText,
-    RouterLink
+    RouterLink,
+    FileUploadComponent,
+    FileUploadComponent,
   ],
   templateUrl: './brand-form.component.html',
   providers: [PermissionsStore],
@@ -37,6 +42,7 @@ export default class BrandFormComponent {
   brandForm = this.#fb.group({
     name: ['', [Validators.required]],
     companyName: [''],
+    imageUrl: ['']
   });
   #router = inject(Router);
   #route = inject(ActivatedRoute);
@@ -46,11 +52,11 @@ export default class BrandFormComponent {
   brandChangeEffect = effect(() => {
     const brand = this.brand();
     untracked(() => {
-      if(brand) {
+      if (brand) {
         this.brandForm.patchValue(brand);
       }
-    })
-  })
+    });
+  });
 
   async onSubmit() {
     if (this.brandForm.valid) {
@@ -63,11 +69,13 @@ export default class BrandFormComponent {
             params: {
               name: name as string,
               companyName: companyName as string,
-            }
+            },
           })
           .subscribe({
             next: async () => {
-              await this.#router.navigate(['../../'], {relativeTo: this.#route});
+              await this.#router.navigate(['../../'], {
+                relativeTo: this.#route,
+              });
             },
           });
       } else {
@@ -75,12 +83,12 @@ export default class BrandFormComponent {
           .mutate({
             params: {
               name: name as string,
-              companyName: companyName as string
+              companyName: companyName as string,
             },
           })
           .subscribe({
             next: async () => {
-              await this.#router.navigate(['../'], {relativeTo: this.#route});
+              await this.#router.navigate(['../'], { relativeTo: this.#route });
             },
           });
       }

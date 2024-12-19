@@ -1,0 +1,91 @@
+<ion-input
+  [multiple]="multiple()"
+  (change)="handleChange($event)"
+  type="file"
+  [accept]="allowedFileTypes"
+  fill="solid"
+  (drop)="fileDropped($event); fileOverDragZone.set(false)"
+  (dragover)="$event.preventDefault(); fileOverDragZone.set(true)"
+  (dragleave)="$event.preventDefault(); fileOverDragZone.set(false)"
+  (ionBlur)="fileOverDragZone.set(false)"
+  [class.file-over]="fileOverDragZone()"
+  [disabled]="isUploading()"
+>
+  <ion-row slot="label" class="ion-padding-vertical">
+    <ion-text class="ion-padding-bottom">
+      <small>{{ label() }}</small>
+    </ion-text>
+    <ion-col class="ion-no-padding" size="12">
+      <ion-icon name="upload" class="ion-margin-end"></ion-icon>
+      <ion-text class="ion-hide-sm-down"> Drag and drop files here or upload</ion-text>
+    </ion-col>
+    <ion-col class="ion-no-padding" size="12">
+      <ion-text>
+        <small>Accepted files: JPG, PNG</small>
+      </ion-text>
+    </ion-col>
+  </ion-row>
+
+  <ion-button [disabled]="isUploading()" class="ion-text-capitalize" (click)="triggerUpload()" slot="end">
+    @if(isUploading()) {
+      <span slot="end" class="ion-padding-horizontal"><ion-spinner class="ion-no-padding ion-no-margin" name="dots"></ion-spinner></span>
+
+    } @else {
+      upload
+    }
+
+  </ion-button>
+</ion-input>
+
+@if (fileUploadsWithIcons().length > 0) {
+  <ion-list class="ion-no-margin ion-margin-top">
+
+    @for (file of fileUploadsWithIcons(); track file.id ) {
+      <ion-item [lines]="$last ? 'none': null">
+        <ion-avatar slot="start" style="width: 70px; height: 70px">
+          <ion-img [src]="file.fileUpload?.url ?? file.url"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <ion-row class="ion-align-items-center ion-no-margin ion-no-padding ion-wrap">
+            <ion-col class="ion-no-margin ion-no-padding" style="width: 30px; max-width: 30px">
+              <ion-icon style="font-size: 20px" class="" [name]="file.icon"></ion-icon>
+            </ion-col>
+            <ion-col class="ion-no-margin ion-no-padding">
+              <ion-row class="ion-no-padding ion-no-margin ion-justify-content-between">
+                <ion-text>
+                  {{ file.file?.name ?? file.fileUpload?.originalName }}
+                </ion-text>
+                <ion-text style="display: inline-flex; align-items: center">
+                  @if(file.hasError) {
+                    0%
+                    <ion-icon class="ion-margin-start" color="danger" name="file-exclamation"></ion-icon>
+                  } @else {
+                    {{ file.progress | number:'1.0-0' }}%
+                    <ion-icon class="ion-margin-start" color="success" name="file-check"></ion-icon>
+                  }
+
+                </ion-text>
+              </ion-row>
+              <ion-text>
+                <small>{{ (file.file?.size ?? file.fileUpload?.size ?? 0) * ((file?.progress ?? 0) / 100) | fileSize }}</small>
+              </ion-text>
+            </ion-col>
+            <ion-col class="ion-no-margin ion-no-padding" size="12"></ion-col>
+          </ion-row>
+          <ion-progress-bar style="height: 14px" [color]="file.hasError ? 'danger': 'success'"
+                            class="ion-margin-vertical"
+                            [value]="(file.progress ?? 0) / 100"></ion-progress-bar>
+          <ion-text color="danger">
+            <small>{{ file.errorMessage }}</small>
+          </ion-text>
+        </ion-label>
+        <ion-buttons slot="end">
+          <ion-button (click)="handleRemovesFile($index)" shape="round" color="danger" fill="clear">
+            <ion-icon name="circle-xmark"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    }
+  </ion-list>
+
+}

@@ -1,0 +1,15 @@
+lpg-file-upload {
+  ion-input {
+    .label-text-wrapper {
+      max-width: unset !important;
+    }
+    .native-wrapper {
+      input {
+        width: 0;
+        height: 0;
+        opacity: 0;
+      }
+
+    }
+  }
+}

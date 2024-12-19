@@ -44,7 +44,7 @@ export class BrandResolver {
 
   @Mutation(() => BrandModel)
   async deleteBrand(
-    @Args('id') id: number
+    @Args('id') id: string
   ) {
     await this.brandService.deleteById(id);
 

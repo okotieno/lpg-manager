@@ -33,6 +33,8 @@ export const APP_ICONS = [
   'eye',
   'eye-slash',
   'file',
+  'file-check',
+  'file-exclamation',
   'file-image',
   'file-jpg-downloaded',
   'file-png-downloaded',

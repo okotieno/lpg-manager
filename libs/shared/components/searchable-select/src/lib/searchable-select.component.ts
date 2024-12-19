@@ -109,7 +109,7 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
   //   >();
   idKey = input<keyof T>('id' as keyof T);
   labelKey = input<keyof T>('name' as keyof T);
-  preselectedItems: { id: number }[] = [];
+  preselectedItems: { id: string }[] = [];
   items = computed(() => this.itemsStore().items());
   // items = signal<Record<string | number, string | number>[]>([]);
   selectedItems = signal<T[]>([]);
@@ -146,10 +146,10 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
     this.control.valueAccessor = this;
   }
 
-  onChanges?: (param: { id: number }[] | { id: number }) => void;
+  onChanges?: (param: { id: string }[] | { id: string }) => void;
   onTouched?: () => void;
 
-  writeValue(obj: { id: number }[] | { id: number }): void {
+  writeValue(obj: { id: string }[] | { id: string }): void {
     if (obj) {
       untracked(() => {
         this.preselectedItems = Array.isArray(obj) ? obj : [obj];
@@ -161,7 +161,7 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
     }
   }
 
-  registerOnChange(fn: (param: { id: number }[] | { id: number }) => void) {
+  registerOnChange(fn: (param: { id: string }[] | { id: string }) => void) {
     this.onChanges = fn;
   }
 
@@ -234,9 +234,9 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
 
   emitChange() {
     if (this.multiple()) {
-      this.onChanges?.(this.selectedItems() as { id: number }[]);
+      this.onChanges?.(this.selectedItems() as { id: string }[]);
     } else {
-      this.onChanges?.(this.selectedItems()[0] as { id: number });
+      this.onChanges?.(this.selectedItems()[0] as { id: string });
     }
   }
 
@@ -244,7 +244,7 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
     this.emitChange();
 
     modal.isOpen = false;
-    this.preselectedItems = this.selectedItems() as { id: number }[];
+    this.preselectedItems = this.selectedItems() as { id: string }[];
     this.selectedItemsActive.set(this.selectedItems());
   }
 

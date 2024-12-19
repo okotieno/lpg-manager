@@ -149,7 +149,7 @@ export abstract class CrudAbstractService<T extends Model> {
     return item;
   }
 
-  async deleteById(id?: number) {
+  async deleteById(id?: string) {
     if (!id) {
       return {
         message: 'No id provided',

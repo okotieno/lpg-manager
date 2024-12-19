@@ -32,7 +32,7 @@ export class NotificationBackendService extends CrudAbstractService<Notification
     await this.sendNotificationQueue.add({ title, description, userIds });
   }
 
-  async addUsers(notificationId: number, userIds: number[]) {
+  async addUsers(notificationId: string, userIds: string[]) {
     await this.notificationUserModel.bulkCreate(
       userIds.map((userId) => ({
         userId,
@@ -41,7 +41,7 @@ export class NotificationBackendService extends CrudAbstractService<Notification
     );
   }
 
-  async userStats(userId: number) {
+  async userStats(userId: string) {
     const total = await this.notificationUserModel.count({
       where: { userId },
     });

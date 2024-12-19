@@ -56,6 +56,8 @@
         "libs/backend/services/email/src/index.ts"
       ],
       "@lpg-manager/file-upload": ["libs/backend/file-upload/src/index.ts"],
+      "@lpg-manager/file-upload-component": ["libs/shared/components/file-upload/src/index.ts"],
+      "@lpg-manager/file-upload-store": ["libs/shared/data-access/file-upload/src/index.ts"],
       "@lpg-manager/graphql": ["libs/backend/graphql/src/index.ts"],
       "@lpg-manager/icon-service": ["libs/shared/services/icon/src/index.ts"],
       "@lpg-manager/injection-token": [

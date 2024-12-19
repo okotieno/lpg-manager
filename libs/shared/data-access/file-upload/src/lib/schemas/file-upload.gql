@@ -1,0 +1,28 @@
+query GetFileUploads($query: QueryParams) {
+  fileUploads(query: $query) {
+    items {
+      id
+      name
+      size
+      originalName
+      mimetype
+      url
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+mutation UploadFile($file: Upload!) {
+  uploadSingleFile(file: $file ) {
+    message
+    data {
+      originalName
+      id
+      name
+      size
+      mimetype
+      url
+    }
+  }
+}
