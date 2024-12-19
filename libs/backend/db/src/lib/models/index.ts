@@ -10,3 +10,4 @@ export * from './file-upload.model';
 export * from './otp.model';
 export * from './role-user.model';
 export * from './brand.model';
+export * from './brand-file-upload.model';

@@ -21,7 +21,6 @@ import { PermissionsStore } from '@lpg-manager/permission-store';
 import { ICreateBrandGQL, IUpdateBrandGQL } from '@lpg-manager/brand-store';
 import { IBrandModel, ISelectCategory } from '@lpg-manager/types';
 import { FileUploadComponent } from '@lpg-manager/file-upload-component';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-brand-form',
@@ -48,7 +47,7 @@ export default class BrandFormComponent {
   brandForm = this.#fb.group({
     name: ['', [Validators.required]],
     companyName: [''],
-    imageUrl: [{ id: '' } as ISelectCategory],
+    images: [[] as ISelectCategory[]],
   });
   #router = inject(Router);
   #route = inject(ActivatedRoute);
@@ -59,14 +58,19 @@ export default class BrandFormComponent {
     const brand = this.brand();
     untracked(() => {
       if (brand) {
-        this.brandForm.patchValue(brand);
+        this.brandForm.patchValue({
+          name: brand.name,
+          companyName: brand.companyName,
+          images: brand.images?.map((x) => ({ id: x?.id as string })),
+        });
       }
     });
   });
 
   async onSubmit() {
+    this.brandForm.updateValueAndValidity();
     if (this.brandForm.valid) {
-      const { name, companyName, imageUrl } = this.brandForm.value;
+      const { name, companyName, images } = this.brandForm.value;
 
       if (this.isEditing() && this.roleId()) {
         this.#updateRoleGQL
@@ -75,7 +79,7 @@ export default class BrandFormComponent {
             params: {
               name: name as string,
               companyName: companyName as string,
-              images: [{ id: imageUrl?.id ?? '' }],
+              images: images?.map((x) => ({ id: x?.id as string })),
             },
           })
           .subscribe({
@@ -91,7 +95,7 @@ export default class BrandFormComponent {
             params: {
               name: name as string,
               companyName: companyName as string,
-              images: [{ id: imageUrl?.id ?? '' }],
+              images: images?.map((x) => ({ id: x?.id as string })),
             },
           })
           .subscribe({

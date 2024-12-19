@@ -3,7 +3,9 @@ import {
   Model,
   Table,
   DataType,
+  BelongsToMany,
 } from 'sequelize-typescript';
+import { FileUploadModel } from './file-upload.model';
 
 @Table({
   tableName: 'brands',
@@ -49,4 +51,11 @@ export class BrandModel extends Model {
     allowNull: true,
   })
   licenceExpiry?: Date;
+
+  @BelongsToMany(() => FileUploadModel, {
+    through: 'brand_file_uploads',
+    foreignKey: 'brand_id',
+    otherKey: 'file_upload_id'
+  })
+  images!: FileUploadModel[];
 }

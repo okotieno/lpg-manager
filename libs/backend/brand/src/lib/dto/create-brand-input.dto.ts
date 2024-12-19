@@ -1,10 +1,10 @@
-import { IsArray, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
-import { PermissionModel } from '@lpg-manager/db';
+import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Exists } from '@lpg-manager/validators';
+import { FileUploadModel } from '@lpg-manager/db';
 import { Type } from 'class-transformer';
 
-class PermissionDto {
-  @Exists(PermissionModel, 'id', {
+class FileUploadDto {
+  @Exists(FileUploadModel, 'id', {
     message: (validationArguments) =>
       `Permission with id ${validationArguments.value} not found`
   })
@@ -16,8 +16,12 @@ export class CreateBrandInputDto {
   @IsNotEmpty()
   name!: string;
 
+  @IsString()
+  @IsOptional()
+  companyName!: string;
+
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PermissionDto)
-  permissions: PermissionDto[] = [];
+  @Type(() => FileUploadDto)
+  images: FileUploadDto[] = [];
 }

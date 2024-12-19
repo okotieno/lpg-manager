@@ -9,7 +9,8 @@ import {
   PermissionModel,
   RoleModel,
   RoleUserModel, SettingModel,
-  UserModel
+  UserModel,
+  BrandFileUploadModel
 } from './models';
 import { NotificationUserModel } from './models/notification-user.model';
 import { SequelizeOptions } from 'sequelize-typescript';
@@ -39,7 +40,8 @@ import { SequelizeOptions } from 'sequelize-typescript';
           SettingModel,
           ActivityLogModel,
           ActivityLogUserModel,
-          BrandModel
+          BrandModel,
+          BrandFileUploadModel
         ],
       }),
     }),

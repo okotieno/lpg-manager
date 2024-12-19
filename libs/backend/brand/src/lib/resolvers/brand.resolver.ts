@@ -15,12 +15,18 @@ export class BrandResolver {
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.CreateBrand)
-  async createBrand(@Body('params', new ValidationPipe()) input: CreateBrandInputDto) {
+  async createBrand(@Body('params', new ValidationPipe()) params: CreateBrandInputDto) {
     const brand = await this.brandService.create({
-      ...input
+      name: params.name,
+      companyName: params.companyName,
     });
+
+    if (params.images?.length) {
+      await brand.$set('images', params.images.map(img => img.id));
+    }
+
     return {
-      message: 'Successfully created brand',
+      message: 'Brand created successfully',
       data: brand
     };
   }
