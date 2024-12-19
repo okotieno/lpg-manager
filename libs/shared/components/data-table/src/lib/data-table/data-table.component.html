@@ -3,7 +3,7 @@
     <ion-text class="ion-margin-bottom" color="lpg-title">{{ pageTitle() }}</ion-text>
   </h2>
 }
-
+{{ filtersTracker() | json }}
 <div class="ion-margin-bottom ion-text-end">
   <ion-button [routerLink]="['new']">
     <ion-icon [name]="createNewIcon()" slot="start"></ion-icon>
@@ -15,121 +15,43 @@
     @for (column of this.columns(); track column.key; let index = $index) {
       <ng-container [cdkColumnDef]="$any(column.key)">
         <th cdk-header-cell *cdkHeaderCellDef>
-          {{ column.label }}
-          <ion-button (click)="changeSort($any(column.key))" class="sort-button"
-                      [class.active]="column.key === sortBy()" shape="round" size="small" fill="clear">
+          <ion-row class="ion-align-items-center ion-justify-content-between">
+            <ion-row class="ion-align-items-center">
+              {{ column.label }}
+              <ion-button (click)="changeSort($any(column.key))" class="sort-button"
+                          [class.active]="column.key === sortBy()" shape="round" size="small" fill="clear">
 
-            @if (column.key === sortBy() && column.fieldType !== 'integer') {
-              <ion-icon color="light" slot="icon-only"
-                        [name]="sortByDirection() === 'ASC' ? 'arrow-up-a-z': 'arrow-down-a-z'"></ion-icon>
-            } @else if (column.key === sortBy() && column.fieldType === 'integer') {
-              <ion-icon color="light" slot="icon-only"
-                        [name]="sortByDirection() === 'ASC' ? 'arrow-up-1-9': 'arrow-down-1-9'"></ion-icon>
-            } @else {
-              <ion-icon color="light" slot="icon-only" name="arrow-up-arrow-down"></ion-icon>
-            }
+                @if (column.key === sortBy() && column.fieldType !== 'integer') {
+                  <ion-icon color="light" slot="icon-only"
+                            [name]="sortByDirection() === 'ASC' ? 'arrow-up-a-z': 'arrow-down-a-z'"></ion-icon>
+                } @else if (column.key === sortBy() && column.fieldType === 'integer') {
+                  <ion-icon color="light" slot="icon-only"
+                            [name]="sortByDirection() === 'ASC' ? 'arrow-up-1-9': 'arrow-down-1-9'"></ion-icon>
+                } @else {
+                  <ion-icon color="light" slot="icon-only" name="arrow-up-arrow-down"></ion-icon>
+                }
 
-          </ion-button>
+              </ion-button>
+            </ion-row>
+            <ion-button
+              (click)="openFilterPopover($any(column.key), $event)" class="filter-button" shape="round" size="small"
+              fill="clear" [class.active]="filtersTracker()[column.key] && filtersTracker()[column.key].length > 0">
+              <ion-icon color="light" slot="icon-only" name="filters"></ion-icon>
+            </ion-button>
+          </ion-row>
         </th>
         <td cdk-cell *cdkCellDef="let item">
           @if (isLoading()) {
             <ion-skeleton-text animated />
-          } @else {
+          } @else if (column.fieldType === 'string') {
             {{ item[column.key] | titlecase }}
+          } @else {
+            {{ item[column.key] }}
           }
         </td>
       </ng-container>
 
-      <!--      <ng-container [cdkColumnDef]="$any(column.key)" [formGroup]="searchForm">-->
-        <!--        <th cdk-header-cell *cdkHeaderCellDef [formGroupName]="$any(column.key)">-->
-        <!--          <ion-row class="ion-align-items-center ion-justify-content-between">-->
-        <!--            <ion-row class="ion-align-items-center">-->
-        <!--              {{ column.label }}-->
-        <!--              <ion-button [disabled]="searchForm.invalid" (click)="changeSort($any(column.key))" class="sort-button"-->
-        <!--                          [class.active]="column.key === sortBy()" shape="round" size="small" fill="clear">-->
-
-        <!--                @if (column.key === sortBy() && column.fieldType !== 'integer') {-->
-        <!--                  <ion-icon color="light" slot="icon-only"-->
-        <!--                            [name]="sortByDirection() === 'ASC' ? 'arrow-up-a-z': 'arrow-down-a-z'"></ion-icon>-->
-        <!--                } @else if (column.key === sortBy() && column.fieldType === 'integer') {-->
-        <!--                  <ion-icon color="light" slot="icon-only"-->
-        <!--                            [name]="sortByDirection() === 'ASC' ? 'arrow-up-1-9': 'arrow-down-1-9'"></ion-icon>-->
-        <!--                }@else {-->
-        <!--                  <ion-icon color="light" slot="icon-only" name="arrow-up-arrow-down"></ion-icon>-->
-        <!--                }-->
-
-
-        <!--              </ion-button>-->
-        <!--            </ion-row>-->
-        <!--            <ion-button-->
-        <!--              [disabled]="filtersTracker()[$any(column.key)] && filtersTracker()[$any(column.key)].length > 0"-->
-        <!--              (click)="addFilter($any(column.key))" class="filter-button" shape="round" size="small"-->
-        <!--              fill="clear" [class.active]="filtersTracker()[column.key] && filtersTracker()[column.key].length > 0">-->
-        <!--              <ion-icon color="light" slot="icon-only" name="filters"></ion-icon>-->
-        <!--            </ion-button>-->
-
-        <!--          </ion-row>-->
-        <!--          @if (filtersTracker()[column.key]) {-->
-        <!--            @for (filter of filtersTracker()[column.key]; track filter; let filterIndex = $index) {-->
-        <!--              <ion-row class="ion-justify-content-start" [formArrayName]="filterIndex">-->
-        <!--                <ion-select formControlName="operator" class="custom">-->
-        <!--                  @for (option of searchOptions; track option) {-->
-        <!--                    <ion-select-option [disabled]="option.value === 'CONTAINS' && column.fieldType === 'integer'"-->
-        <!--                                       [value]="option.value">{{ option.label }}-->
-        <!--                    </ion-select-option>-->
-        <!--                  }-->
-        <!--                </ion-select>-->
-        <!--                <ion-col class="ion-no-padding ion-no-margin">-->
-        <!--                  <ion-input [type]="column.fieldType === 'integer' ? 'number': 'text'" class="custom" fill="solid"-->
-        <!--                             formControlName="value">-->
-        <!--                    <ion-button (click)="confirmRemoveSearchField($any(column.key), filterIndex)" class="custom"-->
-        <!--                                slot="end" color="danger" fill="clear">-->
-        <!--                      <ion-icon slot="icon-only" name="circle-minus"></ion-icon>-->
-        <!--                    </ion-button>-->
-        <!--                  </ion-input>-->
-        <!--                </ion-col>-->
-        <!--              </ion-row>-->
-        <!--            }-->
-        <!--          }-->
-        <!--          @if (filtersTracker()[column.key] && filtersTracker()[column.key].length > 0) {-->
-
-        <!--            <ion-row class="ion-justify-content-end">-->
-        <!--              <ion-button (click)="addFilter($any(column.key))" color="light"-->
-        <!--                          fill="clear" shape="round">-->
-        <!--                <ion-icon slot="icon-only" name="circle-plus"></ion-icon>-->
-        <!--              </ion-button>-->
-        <!--            </ion-row>-->
-        <!--          }-->
-
-
-        <!--        </th>-->
-        <!--        @if (column.key === 'id') {-->
-        <!--          <th class="scope" cdk-header-cell *cdkCellDef="let row"> {{ row[column.key] }}</th>-->
-        <!--        } @else {-->
-        <!--          <td cdk-cell *cdkCellDef="let row">-->
-        <!--            @if (contentsLoading()) {-->
-        <!--              <ion-skeleton-text></ion-skeleton-text>-->
-        <!--            } @else {-->
-        <!--              {{ row[column.key] }}-->
-        <!--            }-->
-        <!--          </td>-->
-        <!--        }-->
-        <!--      </ng-container>-->
     }
-
-    <!--    <ng-container cdkColumnDef="id">-->
-    <!--      <th cdk-header-cell *cdkHeaderCellDef>ID</th>-->
-    <!--      <td cdk-cell *cdkCellDef="let item">-->
-    <!--        {{ item.name | titlecase }}-->
-    <!--      </td>-->
-    <!--    </ng-container>-->
-
-    <!--    <ng-container cdkColumnDef="name">-->
-    <!--      <th cdk-header-cell *cdkHeaderCellDef>Name</th>-->
-    <!--      <td cdk-cell *cdkCellDef="let item">-->
-    <!--        {{ item.name | titlecase }}-->
-    <!--      </td>-->
-    <!--    </ng-container>-->
 
     <ng-container cdkColumnDef="actions">
       <th cdk-header-cell *cdkHeaderCellDef>Actions</th>
@@ -168,5 +90,50 @@
   </table>
 </div>
 
-<lpg-pagination
-></lpg-pagination>
+<lpg-pagination />
+<ion-popover [isOpen]="filterIsOpen()" (didDismiss)="closeSearchDialog($event)">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <ion-title>Filter by {{ activeColumn().label }}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+
+      <form [formGroup]="searchForm">
+        <ng-container [formGroupName]="$any(activeFilterKey())">
+          @for (filter of activeFilterTracker(); track filter; let filterIndex = $index) {
+            <ion-row class="ion-justify-content-start" [formArrayName]="filterIndex">
+              <ion-select style="width: fit-content" fill="solid" formControlName="operator" class="custom">
+                @for (option of searchOptions(); track option) {
+                  <ion-select-option [value]="option.value">{{ option.label }}</ion-select-option>
+                }
+              </ion-select>
+              <ion-col class="ion-no-padding ion-no-margin">
+                <ion-input [type]="activeColumn().fieldType === 'integer' ? 'number': 'text'" class="custom"
+                           fill="solid"
+                           formControlName="value">
+                  <ion-button (click)="confirmRemoveSearchField($any(activeColumn().key), filterIndex)" class="custom"
+                              slot="end" color="danger" fill="clear">
+                    <ion-icon slot="icon-only" name="circle-minus"></ion-icon>
+                  </ion-button>
+                </ion-input>
+              </ion-col>
+            </ion-row>
+          }
+        </ng-container>
+
+        <ion-row class="ion-margin-top ion-justify-content-end">
+          <ion-button color="primary" fill="outline">Clear</ion-button>
+          <ion-button
+            [disabled]="searchForm.get($any(activeFilterKey()))?.invalid"
+            color="primary" fill="solid" (click)="applyFilters()"
+          >Apply
+          </ion-button>
+        </ion-row>
+
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-popover>
+

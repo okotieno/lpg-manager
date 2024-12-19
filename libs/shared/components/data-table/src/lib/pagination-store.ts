@@ -8,7 +8,7 @@ import { computed, effect, ResourceRef, untracked } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { ApolloQueryResult } from '@apollo/client';
 import { Query } from 'apollo-angular';
-import { IQueryParams, ISortByEnum } from '@lpg-manager/types';
+import { IQueryParams, IQueryParamsFilter, ISortByEnum } from '@lpg-manager/types';
 
 export type IGetItemsQuery<T, P extends string> = {
   [K in P]: {
@@ -20,6 +20,7 @@ export type IGetItemsQuery<T, P extends string> = {
 interface StoreState<T, P extends string> {
   sortBy: keyof T;
   sortByDirection: ISortByEnum;
+  filters: IQueryParamsFilter[],
   searchTerm: string;
   currentPage: number;
   pageSize: number;
@@ -37,6 +38,7 @@ export const withPaginatedItemsStore = <
 >() =>
   signalStoreFeature(
     withState({
+      filters: [],
       sortBy: 'id' as keyof T,
       sortByDirection: ISortByEnum.Asc,
       searchTerm: '',
@@ -62,6 +64,7 @@ export const withPaginatedItemsStore = <
               searchTerm: store.searchTerm(),
               currentPage: store.currentPage(),
               pageSize: store.pageSize(),
+              filters: store.filters(),
             } as IQueryParams),
           loader: ({ request }) => {
             return getItemsGQL.fetch({
@@ -105,6 +108,9 @@ export const withPaginatedItemsStore = <
       },
       setSortByDirection(direction: ISortByEnum) {
         patchState(store, { sortByDirection: direction });
+      },
+      setFilters(queryParamsFilters: IQueryParamsFilter[]) {
+        patchState(store, { filters: queryParamsFilters });
       },
       fetchNextPage() {
         patchState(store, { currentPage: store.currentPage() + 1 });

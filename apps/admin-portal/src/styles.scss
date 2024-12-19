@@ -4,6 +4,11 @@
 /* You can add global styles to this file, and also import other style files */
 
 table {
+  th {
+    position: sticky;
+    top: -20px;
+    background: var(--ion-color-primary);
+  }
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
@@ -15,6 +20,7 @@ table {
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid rgba(var(--ion-color-primary-rgb), 0.1);
+    vertical-align: middle !important;
   }
 
   th {

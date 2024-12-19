@@ -1,5 +1,5 @@
 import { Signal } from '@angular/core';
-import { ISortByEnum } from '@lpg-manager/types';
+import { IQueryParamsFilter, ISortByEnum } from '@lpg-manager/types';
 
 export interface PaginatedResource<T> {
   sortBy: Signal<keyof T>;
@@ -15,11 +15,13 @@ export interface PaginatedResource<T> {
   setSortBy(key: keyof T): void;
   setSortByDirection(direction: ISortByEnum): void;
   isLoading: Signal<boolean>;
+
+  setFilters(filters: IQueryParamsFilter[]): void;
 }
 
 
 export interface ITableColumn<T> {
   label: string;
   key: keyof T;
-  fieldType?: 'integer' | 'date';
+  fieldType?: 'integer' | 'date' | 'uuid' | 'string';
 }

@@ -20,7 +20,7 @@ import { IBrandModel } from '@lpg-manager/types';
 export default class BrandsLandingPageComponent {
   brandsStore = inject(BrandsStore) as PaginatedResource<IBrandModel>;
   protected readonly allColumns: ITableColumn<IBrandModel>[] = [
-    { label: 'ID', key: 'id' },
-    { label: 'Name', key: 'name' },
+    { label: 'ID', key: 'id', fieldType: 'uuid' },
+    { label: 'Name', key: 'name', fieldType: 'string' },
   ];
 }
