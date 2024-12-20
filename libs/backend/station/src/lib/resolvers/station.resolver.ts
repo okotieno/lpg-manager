@@ -18,7 +18,7 @@ export class StationResolver {
   async createStation(@Body('params', new ValidationPipe()) params: CreateStationInputDto) {
     const station = await this.stationService.create({
       name: params.name,
-      companyName: params.companyName,
+      type: params.type,
     });
 
     return {

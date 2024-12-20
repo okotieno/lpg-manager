@@ -51,6 +51,11 @@ const permissions = [
   'create brand',
   'delete brand',
   'update brand',
+
+  // Brand
+  'create station',
+  'delete station',
+  'update station',
 ];
 
 /** @type {import('sequelize-cli').Migration} */

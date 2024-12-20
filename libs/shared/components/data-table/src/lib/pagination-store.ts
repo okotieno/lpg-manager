@@ -9,6 +9,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { ApolloQueryResult } from '@apollo/client';
 import { Query } from 'apollo-angular';
 import { IQueryParams, IQueryParamsFilter, ISortByEnum } from '@lpg-manager/types';
+import { tap } from 'rxjs';
 
 export type IGetItemsQuery<T, P extends string> = {
   [K in P]: {
@@ -71,10 +72,13 @@ export const withPaginatedItemsStore = <
               query: {
                 ...request,
               },
-            } as V);
+            } as V).pipe(tap((res) => {
+              console.log('fetched', res.data[getItemsKey]?.meta?.totalItems)
+            }));
           },
         });
         effect(() => {
+          console.log('changePicked', itemsResource?.value()?.data[getItemsKey]?.meta?.totalItems );
           const result = itemsResource?.value();
           untracked(() => {
             if (result) {

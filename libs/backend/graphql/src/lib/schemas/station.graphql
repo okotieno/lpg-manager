@@ -1,14 +1,21 @@
+enum StationType {
+  DEPOT
+  DEALER
+}
 type StationModel {
   id: String!
   name: String!
+  type: StationType!
 }
 
 input CreateStationInput {
   name: String!
+  type: StationType!
 }
 
 input UpdateStationInput {
   name: String!
+  type: StationType
 }
 
 type PaginatedStation {

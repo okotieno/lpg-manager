@@ -1,14 +1,8 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { Exists } from '@lpg-manager/validators';
-import { FileUploadModel } from '@lpg-manager/db';
-import { Type } from 'class-transformer';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
-class FileUploadDto {
-  @Exists(FileUploadModel, 'id', {
-    message: (validationArguments) =>
-      `Permission with id ${validationArguments.value} not found`
-  })
-  id!: string;
+enum StationType {
+  'DEPOT' = 'DEPOT',
+  'DEALER' = 'DEALER',
 }
 
 export class CreateStationInputDto {
@@ -16,12 +10,7 @@ export class CreateStationInputDto {
   @IsNotEmpty()
   name!: string;
 
-  @IsString()
-  @IsOptional()
-  companyName!: string;
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => FileUploadDto)
-  images: FileUploadDto[] = [];
+  @IsEnum(StationType)
+  @IsNotEmpty()
+  type!: 'DEPOT' | 'DEALER';
 }

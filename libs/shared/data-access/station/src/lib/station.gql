@@ -15,6 +15,7 @@ query GetStationById($id: String!) {
   station(id: $id) {
     id
     name
+    type
   }
 }
 
@@ -23,6 +24,7 @@ query GetStations($query: QueryParams) {
     items {
       id
       name
+      type
     }
     meta {
       totalItems

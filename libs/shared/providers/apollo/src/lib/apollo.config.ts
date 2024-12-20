@@ -8,7 +8,7 @@ import { multipartFormContext } from './multipart-form.context';
 
 import extractFiles from 'extract-files/extractFiles.mjs';
 import isExtractableFile from 'extract-files/isExtractableFile.mjs';
-import { ToastController } from '@ionic/angular/standalone';
+import { AlertController, ToastController } from '@ionic/angular/standalone';
 import { ENV_VARIABLES } from '@lpg-manager/injection-token';
 
 import { createClient } from 'graphql-ws';
@@ -16,11 +16,13 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { setContext } from '@apollo/client/link/context';
 import { Preferences } from '@capacitor/preferences';
+import { contextErrorAlert } from './error-alert.context';
 
 export const apolloConfig = ()=> {
   const httpLink = inject(HttpLink);
   const backendUrl = inject(ENV_VARIABLES).backendUrl;
-  const toastController = inject(ToastController);
+  const toastCtrl= inject(ToastController);
+  const alertCtrl = inject(AlertController);
 
   const http = httpLink.create({
     uri: `${backendUrl}/graphql`,
@@ -59,8 +61,10 @@ export const apolloConfig = ()=> {
   );
 
   const combinedLink = ApolloLink.from([
-    contextSuccessAlert(toastController),
+    contextSuccessAlert(toastCtrl),
+    contextErrorAlert(alertCtrl),
     multipartFormContext(),
+
     ApolloLink.from([authLink, link]),
   ]);
 

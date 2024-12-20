@@ -1,43 +1,39 @@
 <h2>
   <ion-text color="lpg-title">
-    {{ isEditing() ? 'Edit Brand' : 'Create Brand' }}
+    {{ isEditing() ? 'Edit Station' : 'Create Station' }}
   </ion-text>
 </h2>
 <ion-card class="ion-no-margin">
   <ion-card-content>
-    <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="stationForm" (ngSubmit)="onSubmit()">
       <ion-item lines="none">
         <ion-input
           label="Name"
           labelPlacement="stacked"
           formControlName="name"
-          placeholder="Enter role name"
-          errorText="Role is required"
+          placeholder="Enter station name"
+          errorText="Station name is required"
           helperText="&nbsp;"
         >
         </ion-input>
       </ion-item>
-
-      <ion-item lines="none">
-        <ion-input
-          label="Company name"
+      <ion-item>
+        <ion-select
+          toggle-icon="caret-down"
+          label="Station type"
           labelPlacement="stacked"
-          formControlName="companyName"
-          placeholder="Enter company name"
-          helperText="&nbsp;"
+          formControlName="type"
+          placeholder="Select station type"
         >
-        </ion-input>
+          <ion-select-option  value="DEPOT">Depot</ion-select-option>
+          <ion-select-option value="DEALER">Dealer</ion-select-option>
+        </ion-select>
       </ion-item>
-
-      <ion-item lines="none">
-        <lpg-file-upload formControlName="images" [multiple]="false"></lpg-file-upload>
-      </ion-item>
-
       <div class="ion-margin-top ion-text-end">
         <ion-button fill="clear" type="button" [routerLink]="['/roles']">
           Cancel
         </ion-button>
-        <ion-button type="submit" [disabled]="!brandForm.valid">
+        <ion-button type="submit" [disabled]="!stationForm.valid">
           {{ isEditing() ? 'Update' : 'Create' }}
         </ion-button>
       </div>

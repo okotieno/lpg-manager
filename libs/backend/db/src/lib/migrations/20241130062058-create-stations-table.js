@@ -5,14 +5,13 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('stations', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
-        autoIncrement: true,
-        allowNull: false
       },
       location: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.JSON,
+        allowNull: true
       },
       type: {
         type: Sequelize.ENUM('DEPOT', 'DEALER'),

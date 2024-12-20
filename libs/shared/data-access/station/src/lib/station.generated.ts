@@ -15,14 +15,14 @@ export type IGetStationByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetStationByIdQuery = { station?: { id: string, name: string } | null };
+export type IGetStationByIdQuery = { station?: { id: string, name: string, type: Types.IStationType } | null };
 
 export type IGetStationsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetStationsQuery = { stations: { items?: Array<{ id: string, name: string } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetStationsQuery = { stations: { items?: Array<{ id: string, name: string, type: Types.IStationType } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteStationByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['String']['input'];
@@ -65,6 +65,7 @@ export const GetStationByIdDocument = gql`
   station(id: $id) {
     id
     name
+    type
   }
 }
     `;
@@ -85,6 +86,7 @@ export const GetStationsDocument = gql`
     items {
       id
       name
+      type
     }
     meta {
       totalItems

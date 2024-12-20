@@ -1,7 +1,7 @@
 import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { inject } from '@angular/core';
-import { IGetBrandByIdGQL } from '@lpg-manager/brand-store';
 import { map } from 'rxjs';
+import { IGetStationByIdGQL } from '@lpg-manager/station-store';
 
 export const STATIONS_ROUTES: Routes = [
   {
@@ -15,23 +15,23 @@ export const STATIONS_ROUTES: Routes = [
     loadComponent: () => import('./station-form/stations-form.component'),
   },
   {
-    path: ':brandId',
-    loadComponent: () => import('./station-page/stations-page.component'),
+    path: ':stationId',
     resolve: {
-      brand: (route: ActivatedRouteSnapshot) =>
-        inject(IGetBrandByIdGQL)
-          .fetch({ id: route.params['brandId'] })
-          .pipe(map((res) => res.data.brand)),
+      station: (route: ActivatedRouteSnapshot) =>
+        inject(IGetStationByIdGQL)
+          .fetch({ id: route.params['stationId'] })
+          .pipe(map((res) => res.data.station)),
     },
-  },
-  {
-    path: ':brandId/edit',
-    loadComponent: () => import('./station-form/stations-form.component'),
-    resolve: {
-      brand: (route: ActivatedRouteSnapshot) =>
-        inject(IGetBrandByIdGQL)
-          .fetch({ id: route.params['brandId'] })
-          .pipe(map((res) => res.data.brand)),
-    },
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./station-page/stations-page.component'),
+      },
+      {
+        path: 'edit',
+        loadComponent: () => import('./station-form/stations-form.component'),
+      },
+    ],
   },
 ];

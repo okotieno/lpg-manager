@@ -140,6 +140,7 @@ export type ICreateSettingSuccessResponse = {
 
 export type ICreateStationInput = {
   name: Scalars['String']['input'];
+  type: IStationType;
 };
 
 export type ICreateStationSuccessResponse = {
@@ -837,7 +838,13 @@ export enum ISortByEnum {
 export type IStationModel = {
   id: Scalars['String']['output'];
   name: Scalars['String']['output'];
+  type: IStationType;
 };
+
+export enum IStationType {
+  Dealer = 'DEALER',
+  Depot = 'DEPOT'
+}
 
 export type ISubscription = {
   healthCheck?: Maybe<Scalars['String']['output']>;
@@ -898,6 +905,7 @@ export type IUpdateSettingInput = {
 
 export type IUpdateStationInput = {
   name: Scalars['String']['input'];
+  type?: InputMaybe<IStationType>;
 };
 
 export type IUpdateUserInput = {

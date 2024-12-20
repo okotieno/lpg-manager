@@ -12,15 +12,21 @@ import {
   IonCardContent,
   IonInput,
   IonItem,
+  IonSelect,
+  IonSelectOption,
   IonText,
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { PermissionsStore } from '@lpg-manager/permission-store';
-import { ICreateBrandGQL, IUpdateBrandGQL } from '@lpg-manager/brand-store';
-import { IBrandModel, ISelectCategory } from '@lpg-manager/types';
-import { FileUploadComponent } from '@lpg-manager/file-upload-component';
+import { IStationModel, IStationType } from '@lpg-manager/types';
+import {
+  GetStationsDocument,
+  ICreateStationGQL,
+  IUpdateStationGQL,
+} from '@lpg-manager/station-store';
+import { SHOW_ERROR_MESSAGE } from '@lpg-manager/injection-token';
 
 @Component({
   selector: 'lpg-station-form',
@@ -34,54 +40,72 @@ import { FileUploadComponent } from '@lpg-manager/file-upload-component';
     IonButton,
     IonText,
     RouterLink,
-    FileUploadComponent,
-    FileUploadComponent,
+    IonSelect,
+    IonSelectOption,
   ],
   templateUrl: './stations-form.component.html',
   providers: [PermissionsStore],
 })
 export default class StationsFormComponent {
   #fb = inject(FormBuilder);
-  #createRoleGQL = inject(ICreateBrandGQL);
-  #updateRoleGQL = inject(IUpdateBrandGQL);
-  brandForm = this.#fb.group({
+  #createStationGQL = inject(ICreateStationGQL);
+  #updateStationGQL = inject(IUpdateStationGQL);
+  stationForm = this.#fb.group({
     name: ['', [Validators.required]],
-    companyName: [''],
-    images: [[] as ISelectCategory[]],
+    type: ['DEPOT' as null | IStationType, [Validators.required]],
   });
   #router = inject(Router);
   #route = inject(ActivatedRoute);
-  brand = input<IBrandModel>();
-  isEditing = computed(() => !!this.brand());
-  roleId = computed(() => this.brand()?.id);
+  station = input<IStationModel>();
+  isEditing = computed(() => !!this.station());
+  roleId = computed(() => this.station()?.id);
   brandChangeEffect = effect(() => {
-    const brand = this.brand();
+    const station = this.station();
+    console.log(this.station())
     untracked(() => {
-      if (brand) {
-        this.brandForm.patchValue({
-          name: brand.name,
-          companyName: brand.companyName,
-          images: brand.images?.map((x) => ({ id: x?.id as string })),
+      if (station) {
+        this.stationForm.patchValue({
+          name: station.name,
+          type: station.type,
         });
       }
     });
   });
 
   async onSubmit() {
-    this.brandForm.updateValueAndValidity();
-    if (this.brandForm.valid) {
-      const { name, companyName, images } = this.brandForm.value;
+    this.stationForm.updateValueAndValidity();
+    if (this.stationForm.valid) {
+      const { name, type } = this.stationForm.value;
 
       if (this.isEditing() && this.roleId()) {
-        this.#updateRoleGQL
-          .mutate({
-            id: this.roleId() as string,
-            params: {
-              name: name as string,
-              companyName: companyName as string,
-              images: images?.map((x) => ({ id: x?.id as string })),
+        this.#updateStationGQL
+          .mutate(
+            {
+              id: this.roleId() as string,
+              params: {
+                name: name as string,
+                type: type as IStationType,
+              },
             },
-          })
+            {
+              context: { [SHOW_ERROR_MESSAGE]: true },
+              refetchQueries: [
+                {
+                  query: GetStationsDocument,
+                  variables: {
+                    query: {
+                      sortBy: 'id',
+                      sortByDirection: 'ASC',
+                      searchTerm: '',
+                      currentPage: 1,
+                      pageSize: 10,
+                      filters: [],
+                    },
+                  },
+                },
+              ],
+            }
+          )
           .subscribe({
             next: async () => {
               await this.#router.navigate(['../../'], {
@@ -90,14 +114,34 @@ export default class StationsFormComponent {
             },
           });
       } else {
-        this.#createRoleGQL
-          .mutate({
-            params: {
-              name: name as string,
-              companyName: companyName as string,
-              images: images?.map((x) => ({ id: x?.id as string })),
+        this.#createStationGQL
+          .mutate(
+            {
+              params: {
+                name: name as string,
+                type: type as IStationType,
+              },
             },
-          })
+            {
+              context: { [SHOW_ERROR_MESSAGE]: true },
+              awaitRefetchQueries: true,
+              refetchQueries: [
+                {
+                  query: GetStationsDocument,
+                  variables: {
+                    query: {
+                      sortBy: 'id',
+                      sortByDirection: 'ASC',
+                      searchTerm: '',
+                      currentPage: 1,
+                      pageSize: 10,
+                      filters: [],
+                    },
+                  },
+                },
+              ],
+            }
+          )
           .subscribe({
             next: async () => {
               await this.#router.navigate(['../'], { relativeTo: this.#route });
