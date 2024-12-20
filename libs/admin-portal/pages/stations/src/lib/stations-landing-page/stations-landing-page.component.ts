@@ -22,5 +22,6 @@ export default class StationsLandingPageComponent {
   protected readonly allColumns: ITableColumn<IStationModel>[] = [
     { label: 'ID', key: 'id', fieldType: 'uuid' },
     { label: 'Name', key: 'name', fieldType: 'string' },
+    { label: 'Type', key: 'type', fieldType: 'string' },
   ];
 }

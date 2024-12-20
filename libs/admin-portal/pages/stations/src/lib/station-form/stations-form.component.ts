@@ -61,7 +61,7 @@ export default class StationsFormComponent {
   roleId = computed(() => this.station()?.id);
   brandChangeEffect = effect(() => {
     const station = this.station();
-    console.log(this.station())
+    console.log(this.station());
     untracked(() => {
       if (station) {
         this.stationForm.patchValue({
@@ -89,19 +89,10 @@ export default class StationsFormComponent {
             },
             {
               context: { [SHOW_ERROR_MESSAGE]: true },
+              awaitRefetchQueries: true,
               refetchQueries: [
                 {
                   query: GetStationsDocument,
-                  variables: {
-                    query: {
-                      sortBy: 'id',
-                      sortByDirection: 'ASC',
-                      searchTerm: '',
-                      currentPage: 1,
-                      pageSize: 10,
-                      filters: [],
-                    },
-                  },
                 },
               ],
             }

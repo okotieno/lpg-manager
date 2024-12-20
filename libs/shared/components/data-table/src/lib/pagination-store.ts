@@ -72,7 +72,7 @@ export const withPaginatedItemsStore = <
               query: {
                 ...request,
               },
-            } as V).pipe(tap((res) => {
+            } as V, { fetchPolicy: 'cache-first'}).pipe(tap((res) => {
               console.log('fetched', res.data[getItemsKey]?.meta?.totalItems)
             }));
           },
