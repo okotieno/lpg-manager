@@ -1,6 +1,6 @@
 import {
   signalStore,
-  withHooks,
+  withProps
 } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
@@ -11,10 +11,9 @@ import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 import { IUserModel } from '@lpg-manager/types';
 
 export const UserStore = signalStore(
+  withProps(() => ({
+    _getItemsGQL: inject(IGetUsersGQL),
+    _getItemsKey: 'users',
+  })),
   withPaginatedItemsStore<IUserModel, 'users', IGetUsersQueryVariables>(),
-  withHooks((store, getUsersGQL = inject(IGetUsersGQL)) => ({
-    onInit: () => {
-      store._createResource(getUsersGQL, 'users');
-    },
-  }))
 );

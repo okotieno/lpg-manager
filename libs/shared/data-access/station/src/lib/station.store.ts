@@ -1,4 +1,4 @@
-import { signalStore, withHooks } from '@ngrx/signals';
+import { signalStore, withHooks, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
   IGetStationsGQL,
@@ -8,6 +8,10 @@ import { IStationModel } from '@lpg-manager/types';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
 export const StationsStore = signalStore(
+  withProps(() => ({
+    _getItemsGQL: inject(IGetStationsGQL),
+    _getItemsKey: 'stations',
+  })),
   withPaginatedItemsStore<
     IStationModel,
     'stations',
@@ -15,7 +19,7 @@ export const StationsStore = signalStore(
   >(),
   withHooks((store, getStationsGQL = inject(IGetStationsGQL)) => ({
     onInit: () => {
-      store._createResource(getStationsGQL, 'stations');
+      // store._createResource(getStationsGQL, 'stations');
     },
   }))
 );

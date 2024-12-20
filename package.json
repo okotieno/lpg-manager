@@ -47,7 +47,7 @@
     "@nestjs/platform-express": "^10.0.2",
     "@nestjs/platform-fastify": "^10.4.12",
     "@nestjs/sequelize": "^10.0.1",
-    "@ngrx/signals": "^18.1.1",
+    "@ngrx/signals": "^19.0.0",
     "@types/bcrypt": "^5.0.2",
     "@types/passport-jwt": "^4.0.1",
     "apollo-angular": "^8.0.0",
