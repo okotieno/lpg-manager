@@ -1,0 +1,54 @@
+enum CatalogueUnit {
+  KG
+  LITRE
+}
+
+type CatalogueModel {
+  id: String!
+  name: String!
+  description: String
+  price: Float!
+  unit: CatalogueUnit!
+  brandId: String!
+  brand: BrandModel!
+  inventories: [InventoryModel]
+}
+
+input CreateCatalogueInput {
+  name: String!
+  description: String
+  price: Float!
+  unit: CatalogueUnit!
+  brandId: String!
+}
+
+input UpdateCatalogueInput {
+  name: String!
+  description: String
+  price: Float!
+  unit: CatalogueUnit!
+  brandId: String!
+}
+
+type PaginatedCatalogue {
+  items: [CatalogueModel]
+  meta: Pagination
+}
+
+type CreateCatalogueSuccessResponse {
+  message: String!
+  data: CatalogueModel!
+}
+
+extend type Query {
+  catalogues(query: QueryParams): PaginatedCatalogue!
+  catalogue(id: String!): CatalogueModel
+}
+
+extend type Mutation {
+  updateCatalogue(id: String!, params: UpdateCatalogueInput): CreateCatalogueSuccessResponse
+
+  createCatalogue(params: CreateCatalogueInput): CreateCatalogueSuccessResponse
+
+  deleteCatalogue(id: String!): DeleteSuccessResponse
+} 

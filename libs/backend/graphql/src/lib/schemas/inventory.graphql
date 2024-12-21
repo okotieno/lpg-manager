@@ -1,0 +1,43 @@
+type InventoryModel {
+  id: String!
+  quantity: Float!
+  stationId: String!
+  catalogueId: String!
+  station: StationModel!
+  catalogue: CatalogueModel!
+}
+
+input CreateInventoryInput {
+  quantity: Float!
+  stationId: String!
+  catalogueId: String!
+}
+
+input UpdateInventoryInput {
+  quantity: Float!
+  stationId: String!
+  catalogueId: String!
+}
+
+type PaginatedInventory {
+  items: [InventoryModel]
+  meta: Pagination
+}
+
+type CreateInventorySuccessResponse {
+  message: String!
+  data: InventoryModel!
+}
+
+extend type Query {
+  inventories(query: QueryParams): PaginatedInventory!
+  inventory(id: String!): InventoryModel
+}
+
+extend type Mutation {
+  updateInventory(id: String!, params: UpdateInventoryInput): CreateInventorySuccessResponse
+
+  createInventory(params: CreateInventoryInput): CreateInventorySuccessResponse
+
+  deleteInventory(id: String!): DeleteSuccessResponse
+} 
