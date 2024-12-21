@@ -4,12 +4,11 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonChip,
   IonCol,
   IonGrid,
-  IonIcon,
+  IonIcon, IonItem, IonLabel, IonList,
   IonRow,
-  IonText,
+  IonText
 } from '@ionic/angular/standalone';
 import { IBrandModel } from '@lpg-manager/types';
 import { TitleCasePipe } from '@angular/common';
@@ -28,7 +27,9 @@ import { TitleCasePipe } from '@angular/common';
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
-    IonChip
+    IonList,
+    IonItem,
+    IonLabel,
   ],
   templateUrl: './brand-page.component.html',
   styles: `
@@ -63,6 +64,8 @@ export default class BrandPageComponent {
   brand = input<IBrandModel>();
 
   hasCatalogues = computed(() => {
-    return this.brand()?.catalogues && Number(this.brand()?.catalogues?.length) > 0;
+    return (
+      this.brand()?.catalogues && Number(this.brand()?.catalogues?.length) > 0
+    );
   });
 }

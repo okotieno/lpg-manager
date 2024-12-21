@@ -24,6 +24,7 @@ circle-minus
 circle-plus
 circle-xmark
 clipboard-list
+cube
 display-chart-up-circle-dollar
 download
 earth-africa

@@ -25,6 +25,7 @@ export const APP_ICONS = [
   'circle-plus',
   'circle-xmark',
   'clipboard-list',
+  'cube',
   'display-chart-up-circle-dollar',
   'download',
   'earth-africa',

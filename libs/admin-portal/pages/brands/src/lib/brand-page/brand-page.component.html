@@ -41,20 +41,26 @@
           </ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <div class="catalogues-container">
-            @if (hasCatalogues()) {
-              <div class="catalogues-grid">
-                @for (catalogue of brand()?.catalogues; track catalogue?.id) {
-                  <ion-chip color="success">
-                    <ion-icon name="cube" class="ion-margin-end" />
-                    {{ catalogue?.name | titlecase }}
-                  </ion-chip>
-                }
-              </div>
-            } @else {
-              <p class="no-catalogues">No catalogue items available for this brand</p>
-            }
-          </div>
+          @if (hasCatalogues()) {
+            <ion-list>
+              @for (catalogue of brand()?.catalogues; track catalogue?.id) {
+                <ion-item>
+                  <ion-icon name="cube" slot="start"></ion-icon>
+                  <ion-label>
+                    <h2>{{ catalogue?.name }}</h2>
+                    <p>{{ catalogue?.description || 'No description available' }}</p>
+                    <p>
+                      Unit: {{ catalogue?.unit }} | 
+                      Quantity per unit: {{ catalogue?.quantityPerUnit }} |
+                      Price per unit: {{ catalogue?.pricePerUnit || 'N/A' }}
+                    </p>
+                  </ion-label>
+                </ion-item>
+              }
+            </ion-list>
+          } @else {
+            <p class="no-catalogues">No catalogue items available for this brand</p>
+          }
         </ion-card-content>
       </ion-card>
     </ion-col>
