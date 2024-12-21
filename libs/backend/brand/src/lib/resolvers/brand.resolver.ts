@@ -5,11 +5,12 @@ import { JwtAuthGuard } from '@lpg-manager/auth';
 import { PermissionGuard, Permissions, PermissionsEnum } from '@lpg-manager/permission-service';
 import { BrandService } from '@lpg-manager/brand-service';
 import { IQueryParam, BrandModel } from '@lpg-manager/db';
+import { CatalogueService } from '@lpg-manager/catalogue-service';
 
 @Resolver(() => BrandModel)
 export class BrandResolver {
 
-  constructor(private brandService: BrandService) {
+  constructor(private brandService: BrandService,  private catalogueService: CatalogueService) {
   }
 
   @Mutation()
@@ -23,6 +24,17 @@ export class BrandResolver {
 
     if (params.images?.length) {
       await brand.$set('images', params.images.map(img => img.id));
+    }
+
+    // Handle catalogue creation
+    if (params.catalogues?.length) {
+      const cataloguePromises = params.catalogues.map(catalogue =>
+        this.catalogueService.create({
+          ...catalogue,
+          brandId: brand.id
+        })
+      );
+      await Promise.all(cataloguePromises);
     }
 
     return {

@@ -29,12 +29,12 @@ module.exports = {
         allowNull: true
       },
       pricePerUnit: {
-        field: 'per_unit_price',
+        field: 'price_per_unit',
         type: Sequelize.DECIMAL(10, 2),
         allowNull: true
       },
       quantityPerUnit: {
-        field: 'per_unit_quantity',
+        field: 'quantity_per_unit',
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false
       },
