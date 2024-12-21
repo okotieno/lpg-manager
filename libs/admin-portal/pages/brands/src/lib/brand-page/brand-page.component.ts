@@ -11,7 +11,7 @@ import {
   IonRow,
   IonText,
 } from '@ionic/angular/standalone';
-import { IRoleModel } from '@lpg-manager/types';
+import { IBrandModel } from '@lpg-manager/types';
 import { TitleCasePipe } from '@angular/common';
 
 @Component({
@@ -43,26 +43,26 @@ import { TitleCasePipe } from '@angular/common';
       gap: 0.5rem;
     }
 
-    .permissions-container {
+    .catalogues-container {
       padding: 1rem 0;
     }
 
-    .permissions-grid {
+    .catalogues-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
     }
 
-    .no-permissions {
+    .no-catalogues {
       color: var(--ion-color-medium);
       font-style: italic;
     }
   `,
 })
 export default class BrandPageComponent {
-  role = input<IRoleModel>();
+  brand = input<IBrandModel>();
 
-  hasPermissions = computed(() => {
-    return this.role()?.permissions && Number(this.role()?.permissions?.length) > 0;
+  hasCatalogues = computed(() => {
+    return this.brand()?.catalogues && Number(this.brand()?.catalogues?.length) > 0;
   });
 }

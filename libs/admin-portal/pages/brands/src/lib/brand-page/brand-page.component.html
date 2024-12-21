@@ -1,7 +1,7 @@
 <h2>
   <ion-text color="lpg-title">
     <ion-row class="ion-align-items-center">
-      Roles | {{ role()?.name | titlecase }}
+      Brands | {{ brand()?.name | titlecase }}
     </ion-row>
   </ion-text>
 </h2>
@@ -13,7 +13,7 @@
         <ion-card-header>
           <ion-card-title>
             <ion-text color="lpg-subtitle">
-              Role Details
+              Brand Details
             </ion-text>
           </ion-card-title>
         </ion-card-header>
@@ -21,34 +21,38 @@
           <div class="details-container">
             <div class="detail-item">
               <strong>Name:</strong>
-              <span>{{ role()?.name | titlecase }}</span>
+              <span>{{ brand()?.name | titlecase }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Company:</strong>
+              <span>{{ brand()?.companyName || 'N/A' }}</span>
             </div>
             <div class="detail-item">
               <strong>ID:</strong>
-              <span>{{ role()?.id }}</span>
+              <span>{{ brand()?.id }}</span>
             </div>
           </div>
         </ion-card-content>
         <ion-card-header>
           <ion-card-title>
             <ion-text color="lpg-subtitle">
-              Permissions
+              Catalogue Items
             </ion-text>
           </ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <div class="permissions-container">
-            @if (hasPermissions()) {
-              <div class="permissions-grid">
-                @for (permission of role()?.permissions; track permission?.id) {
+          <div class="catalogues-container">
+            @if (hasCatalogues()) {
+              <div class="catalogues-grid">
+                @for (catalogue of brand()?.catalogues; track catalogue?.id) {
                   <ion-chip color="success">
-                    <ion-icon name="shield-check" class="ion-margin-end" />
-                    {{ permission?.name | titlecase }}
+                    <ion-icon name="cube" class="ion-margin-end" />
+                    {{ catalogue?.name | titlecase }}
                   </ion-chip>
                 }
               </div>
             } @else {
-              <p class="no-permissions">No permissions assigned to this role</p>
+              <p class="no-catalogues">No catalogue items available for this brand</p>
             }
           </div>
         </ion-card-content>
