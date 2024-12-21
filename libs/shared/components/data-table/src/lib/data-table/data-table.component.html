@@ -35,11 +35,18 @@
 
               </ion-button>
             </ion-row>
-            <ion-button
-              (click)="openFilterPopover($any(column.key), $event)" class="filter-button" shape="round" size="small"
-              fill="clear" [class.active]="filtersTracker()[column.key] && filtersTracker()[column.key].length > 0">
-              <ion-icon color="light" slot="icon-only" name="filters"></ion-icon>
-            </ion-button>
+            <div class="badged-button"
+                 [class.active]="filtersTracker()[column.key] && filtersTracker()[column.key].length > 0">
+              <ion-button
+                (click)="openFilterPopover($any(column.key), $event)" class="filter-button ion-padding" shape="round"
+                size="small"
+                fill="clear">
+                <ion-icon color="light" slot="icon-only" name="filters"></ion-icon>
+                @if (filtersTracker()[column.key] && filtersTracker()[column.key].length > 0) {
+                  <ion-badge color="danger" class="badge-count">{{ filtersTracker()[column.key]?.length }}</ion-badge>
+                }
+              </ion-button>
+            </div>
           </ion-row>
         </th>
         <td cdk-cell *cdkCellDef="let item">
@@ -115,9 +122,9 @@
                 }
               </ion-select>
               <ion-col class="ion-no-padding ion-no-margin">
-                @if ( activeColumn().fieldType === 'enum') {
+                @if (activeColumn().fieldType === 'enum') {
                   <ion-select fill="solid" formControlName="value" [label]="activeColumn().label" placeholder="Select">
-                    @for (option of  $any(activeColumn()).enumList; track option) {
+                    @for (option of $any(activeColumn()).enumList; track option) {
                       <ion-select-option [value]="option.value">{{ option.label }}</ion-select-option>
                     }
 
@@ -132,7 +139,6 @@
                     </ion-button>
                   </ion-input>
                 }
-
 
 
               </ion-col>

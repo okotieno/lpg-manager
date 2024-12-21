@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { CdkTableModule } from '@angular/cdk/table';
 import {
+  IonBadge,
   IonButton,
   IonCol,
   IonContent,
@@ -27,7 +28,7 @@ import {
   IonToolbar
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
-import { TitleCasePipe } from '@angular/common';
+import { JsonPipe, TitleCasePipe } from '@angular/common';
 import {
   ITableColumn,
   PaginatedResource,
@@ -77,6 +78,8 @@ const validateUUID = (control: AbstractControl) => {
     IonToolbar,
     IonTitle,
     IonSearchbar,
+    IonBadge,
+    JsonPipe,
   ],
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.css',
