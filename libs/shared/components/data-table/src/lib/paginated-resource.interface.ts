@@ -22,8 +22,19 @@ export interface PaginatedResource<T> {
 }
 
 
-export interface ITableColumn<T> {
+ interface ITableColumn1<T> {
+   label: string;
+   key: keyof T;
+   fieldType?: 'enum';
+   enumList: { label: string; value: string }[];
+ }
+
+interface ITableColumn2<T> {
   label: string;
   key: keyof T;
   fieldType?: 'integer' | 'date' | 'uuid' | 'string';
 }
+
+
+export type ITableColumn<T> = ITableColumn1<T> | ITableColumn2<T>;
+

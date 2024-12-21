@@ -105,7 +105,13 @@ export class DataTableComponent<T> {
     ];
     const fieldTypesSearchOptions = {
       [IQueryOperatorEnum.Contains]: ['date', 'integer', 'string'],
-      [IQueryOperatorEnum.Equals]: ['date', 'integer', 'string', 'uuid'],
+      [IQueryOperatorEnum.Equals]: [
+        'date',
+        'integer',
+        'string',
+        'uuid',
+        'enum',
+      ],
       [IQueryOperatorEnum.In]: ['date', 'integer', 'string', 'uuid'],
       [IQueryOperatorEnum.GreaterThan]: ['date', 'integer', 'string'],
       [IQueryOperatorEnum.LessThan]: ['date', 'integer', 'string'],
@@ -227,7 +233,7 @@ export class DataTableComponent<T> {
     (this.searchForm.get(key as string) as FormArray).push(
       this.fb.group({
         operator: [
-          ['uuid', 'integer'].includes(fieldType as string)
+          ['uuid', 'integer', 'enum'].includes(fieldType as string)
             ? IQueryOperatorEnum.Equals
             : IQueryOperatorEnum.Contains,
         ],

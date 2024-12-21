@@ -22,6 +22,6 @@ export default class StationsLandingPageComponent {
   protected readonly allColumns: ITableColumn<IStationModel>[] = [
     { label: 'ID', key: 'id', fieldType: 'uuid' },
     { label: 'Name', key: 'name', fieldType: 'string' },
-    { label: 'Type', key: 'type', fieldType: 'string' },
+    { label: 'Type', key: 'type', fieldType: 'enum', enumList: [{ value: 'DEPOT', label: 'Depot' }, { value: 'DEALER', label: 'Dealer' }] },
   ];
 }

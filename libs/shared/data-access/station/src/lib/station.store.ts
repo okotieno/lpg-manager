@@ -1,4 +1,4 @@
-import { signalStore, withHooks, withProps } from '@ngrx/signals';
+import { signalStore, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
   IGetStationsGQL,
@@ -17,9 +17,4 @@ export const StationsStore = signalStore(
     'stations',
     IGetStationsQueryVariables
   >(),
-  withHooks((store, getStationsGQL = inject(IGetStationsGQL)) => ({
-    onInit: () => {
-      // store._createResource(getStationsGQL, 'stations');
-    },
-  }))
 );

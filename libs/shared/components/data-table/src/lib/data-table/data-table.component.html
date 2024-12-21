@@ -115,14 +115,26 @@
                 }
               </ion-select>
               <ion-col class="ion-no-padding ion-no-margin">
-                <ion-input [type]="activeColumn().fieldType === 'integer' ? 'number': 'text'" class="custom"
-                           fill="solid"
-                           formControlName="value">
-                  <ion-button (click)="confirmRemoveSearchField($any(activeColumn().key), filterIndex)" class="custom"
-                              slot="end" color="danger" fill="clear">
-                    <ion-icon slot="icon-only" name="filter-circle-xmark"></ion-icon>
-                  </ion-button>
-                </ion-input>
+                @if ( activeColumn().fieldType === 'enum') {
+                  <ion-select fill="solid" formControlName="value" [label]="activeColumn().label" placeholder="Select">
+                    @for (option of  $any(activeColumn()).enumList; track option) {
+                      <ion-select-option [value]="option.value">{{ option.label }}</ion-select-option>
+                    }
+
+                  </ion-select>
+                } @else {
+                  <ion-input [type]="activeColumn().fieldType === 'integer' ? 'number': 'text'"
+                             fill="solid"
+                             formControlName="value">
+                    <ion-button (click)="confirmRemoveSearchField($any(activeColumn().key), filterIndex)"
+                                slot="end" color="danger" fill="clear">
+                      <ion-icon slot="icon-only" name="filter-circle-xmark"></ion-icon>
+                    </ion-button>
+                  </ion-input>
+                }
+
+
+
               </ion-col>
             </ion-row>
           }
