@@ -3,16 +3,16 @@ import {
   computed,
   effect,
   inject,
-  input,
-  untracked,
+  input, signal,
+  untracked
 } from '@angular/core';
 import {
   IonButton,
   IonCard,
-  IonCardContent,
+  IonCardContent, IonIcon,
   IonInput,
-  IonItem,
-  IonText,
+  IonItem, IonLabel, IonList, IonListHeader,
+  IonText
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -21,6 +21,8 @@ import { PermissionsStore } from '@lpg-manager/permission-store';
 import { ICreateBrandGQL, IUpdateBrandGQL } from '@lpg-manager/brand-store';
 import { IBrandModel, ISelectCategory } from '@lpg-manager/types';
 import { FileUploadComponent } from '@lpg-manager/file-upload-component';
+import { ModalController } from '@ionic/angular/standalone';
+import { BrandItemModalComponent } from './brand-item-modal/brand-item-modal.component';
 
 @Component({
   selector: 'lpg-brand-form',
@@ -36,11 +38,17 @@ import { FileUploadComponent } from '@lpg-manager/file-upload-component';
     RouterLink,
     FileUploadComponent,
     FileUploadComponent,
+    IonList,
+    IonListHeader,
+    IonLabel,
+    IonIcon
   ],
   templateUrl: './brand-form.component.html',
   providers: [PermissionsStore],
 })
 export default class BrandFormComponent {
+  brandItems = signal<any[]>([]);
+  #modalCtrl = inject(ModalController);
   #fb = inject(FormBuilder);
   #createRoleGQL = inject(ICreateBrandGQL);
   #updateRoleGQL = inject(IUpdateBrandGQL);
@@ -104,6 +112,47 @@ export default class BrandFormComponent {
             },
           });
       }
+    }
+  }
+  async openAddItemModal() {
+    const modal = await this.#modalCtrl.create({
+      component: BrandItemModalComponent,
+      componentProps: {
+        // Add any props you want to pass to the modal
+      }
+    });
+
+    await modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm' && data) {
+      this.brandItems.update((brandItems) => {
+        brandItems.push(data);
+        return [...brandItems]
+      });
+    }
+  }
+  async confirm() {
+    if (this.brandItems().length === 0) {
+      // Show error or warning that items are required
+      // You might want to use Ionic's Toast or Alert here
+      return;
+    }
+
+    // Proceed with saving brand and its items
+    const brandData = {
+      // ... other brand fields ...
+      items: this.brandItems()
+    };
+    // Call your service method to save
+  }
+  removeItem(item: any) {
+    const index = this.brandItems().indexOf(item);
+    if (index > -1) {
+      this.brandItems.update((brandItems) => {
+        brandItems.splice(index, 1);
+        return brandItems
+      });
     }
   }
 }

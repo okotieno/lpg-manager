@@ -33,6 +33,37 @@
         <lpg-file-upload formControlName="images" [multiple]="false"></lpg-file-upload>
       </ion-item>
 
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Brand Items</ion-label>
+          <ion-button (click)="openAddItemModal()" fill="outline" size="small">
+            <ion-icon name="plus" slot="start"></ion-icon>
+            Add Item
+          </ion-button>
+        </ion-list-header>
+
+        @for (item of brandItems(); track item) {
+          <ion-item>
+            <ion-label>
+              <h2>{{item.name}}</h2>
+              <p>{{item.description}}</p>
+            </ion-label>
+            <ion-button slot="end" fill="clear" color="danger"
+                        (click)="removeItem(item)">
+              <ion-icon name="trash-can"></ion-icon>
+            </ion-button>
+          </ion-item>
+        }
+
+        @if (brandItems().length === 0) {
+          <ion-item>
+            <ion-label color="medium">
+              No items added yet. Click the Add Item button to begin.
+            </ion-label>
+          </ion-item>
+        }
+      </ion-list>
+
       <div class="ion-margin-top ion-text-end">
         <ion-button fill="clear" type="button" [routerLink]="['/roles']">
           Cancel
