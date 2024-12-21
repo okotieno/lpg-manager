@@ -13,7 +13,7 @@ import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 export const BrandsStore = signalStore(
   withProps(() => ({
     _getItemsGQL: inject(IGetBrandsGQL),
-    _getItemsKey: 'stations',
+    _getItemsKey: 'brands',
   })),
   withPaginatedItemsStore<IBrandModel, 'brands', IGetBrandsQueryVariables>(),
 );
