@@ -45,6 +45,8 @@
       "@lpg-manager/crud-abstract": [
         "libs/backend/services/crud-abstract/src/index.ts"
       ],
+      "@lpg-manager/catalogue": ["libs/backend/catalogue/src/index.ts"],
+      "@lpg-manager/catalogue-service": ["libs/backend/services/catalogue/src/index.ts"],
       "@lpg-manager/dashboard-page": [
         "libs/admin-portal/pages/dashboard/src/index.ts"
       ],
@@ -63,6 +65,8 @@
       "@lpg-manager/injection-token": [
         "libs/shared/utils/injection-token/src/index.ts"
       ],
+      "@lpg-manager/inventory": ["libs/backend/inventory/src/index.ts"],
+      "@lpg-manager/inventory-service": ["libs/backend/services/inventory/src/index.ts"],
       "@lpg-manager/notification-service": [
         "libs/backend/services/notification/src/index.ts"
       ],

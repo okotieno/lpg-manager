@@ -13,6 +13,8 @@ import { PermissionModule } from '@lpg-manager/permission';
 import { BrandModule } from '@lpg-manager/brand';
 import { FileUploadModule } from '@lpg-manager/file-upload';
 import { StationModule } from '@lpg-manager/station';
+import { CatalogueModule } from '@lpg-manager/catalogue';
+import { InventoryModule } from '@lpg-manager/inventory';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { StationModule } from '@lpg-manager/station';
     BrandModule,
     FileUploadModule,
     StationModule,
+    CatalogueModule,
+    InventoryModule
   ],
 })
 export class AppModule {}

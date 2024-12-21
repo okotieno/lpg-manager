@@ -56,6 +56,17 @@ const permissions = [
   'create station',
   'delete station',
   'update station',
+
+  // Catalogue
+  'create brand catalogue',
+  'delete brand catalogue',
+  'update brand catalogue',
+
+  // Inventory
+  'create inventory',
+  'delete inventory',
+  'update inventory',
+
 ];
 
 /** @type {import('sequelize-cli').Migration} */

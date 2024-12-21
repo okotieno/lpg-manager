@@ -64,7 +64,6 @@ export default class StationsFormComponent {
   roleId = computed(() => this.station()?.id);
   brandChangeEffect = effect(() => {
     const station = this.station();
-    console.log(this.station());
     untracked(() => {
       if (station) {
         this.stationForm.patchValue({

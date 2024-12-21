@@ -65,7 +65,6 @@ export class FileUploadService extends CrudAbstractService<FileUploadModel> {
       fileBuffer,
       metaData as any,
       function (err, res) {
-        console.log({ err })
         if (err)
           throw new HttpException(
             'Error uploading file',

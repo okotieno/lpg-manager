@@ -43,7 +43,7 @@
                 fill="clear">
                 <ion-icon color="light" slot="icon-only" name="filters"></ion-icon>
                 @if (filtersTracker()[column.key] && filtersTracker()[column.key].length > 0) {
-                  <ion-badge color="danger" class="badge-count">{{ filtersTracker()[column.key]?.length }}</ion-badge>
+                  <ion-badge color="danger" class="badge-count">{{ filtersTracker()[column.key].length }}</ion-badge>
                 }
               </ion-button>
             </div>

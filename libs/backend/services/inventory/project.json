@@ -1,0 +1,9 @@
+{
+  "name": "inventory-service",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/services/inventory/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project inventory-service --web",
+  "targets": {}
+}

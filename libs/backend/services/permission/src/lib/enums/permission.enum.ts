@@ -33,4 +33,12 @@ export enum PermissionsEnum {
   DeleteStation = 'delete station',
   UpdateStation = 'update station',
 
+  CreateCatalogue = 'create brand catalogue',
+  DeleteCatalogue = 'delete brand catalogue',
+  UpdateCatalogue = 'update brand catalogue',
+
+  CreateInventory = 'create inventory',
+  DeleteInventory = 'delete inventory',
+  UpdateInventory = 'update inventory',
+
 }

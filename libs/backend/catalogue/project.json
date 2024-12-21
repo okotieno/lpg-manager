@@ -1,0 +1,9 @@
+{
+  "name": "catalogue",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/catalogue/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project catalogue --web",
+  "targets": {}
+}

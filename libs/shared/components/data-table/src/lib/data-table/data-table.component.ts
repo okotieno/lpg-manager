@@ -28,7 +28,7 @@ import {
   IonToolbar
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
-import { JsonPipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import {
   ITableColumn,
   PaginatedResource,
@@ -79,7 +79,6 @@ const validateUUID = (control: AbstractControl) => {
     IonTitle,
     IonSearchbar,
     IonBadge,
-    JsonPipe,
   ],
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.css',

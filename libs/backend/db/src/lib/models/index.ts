@@ -13,3 +13,5 @@ export * from './brand.model';
 export * from './brand-file-upload.model';
 export * from './notification-user.model';
 export * from './station.model';
+export * from './catalogue.model';
+export * from './inventory.model';

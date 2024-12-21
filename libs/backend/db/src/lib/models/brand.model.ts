@@ -4,8 +4,10 @@ import {
   Table,
   DataType,
   BelongsToMany,
+  HasMany,
 } from 'sequelize-typescript';
 import { FileUploadModel } from './file-upload.model';
+import { CatalogueModel } from './catalogue.model';
 
 @Table({
   tableName: 'brands',
@@ -58,4 +60,7 @@ export class BrandModel extends Model {
     otherKey: 'file_upload_id'
   })
   images!: FileUploadModel[];
+
+  @HasMany(() => CatalogueModel)
+  catalogues!: CatalogueModel[];
 }

@@ -115,7 +115,6 @@ export class AuthResolver {
   @Mutation()
   async loginWithToken(@Args('token') token: string) {
     const { email, type } = this.authService.validateToken(token);
-    console.log({ email, type });
     if (type === 'RefreshToken') {
       const user = (await this.userService.findByEmail(email)) as UserModel;
       return this.authService.login(user as UserModel);

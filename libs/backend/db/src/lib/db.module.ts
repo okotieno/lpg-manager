@@ -11,7 +11,9 @@ import {
   RoleUserModel, SettingModel,
   UserModel,
   BrandFileUploadModel, StationModel,
-  NotificationUserModel
+  NotificationUserModel,
+  InventoryModel,
+  CatalogueModel
 } from './models';
 import { SequelizeOptions } from 'sequelize-typescript';
 
@@ -42,7 +44,9 @@ import { SequelizeOptions } from 'sequelize-typescript';
           ActivityLogUserModel,
           BrandModel,
           BrandFileUploadModel,
-          StationModel
+          StationModel,
+          InventoryModel,
+          CatalogueModel
         ],
       }),
     }),
