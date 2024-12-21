@@ -1,33 +1,47 @@
 <ion-header>
-    <ion-toolbar>
-      <ion-title>Add Brand Item</ion-title>
-      <ion-buttons slot="end">
-        <ion-button (click)="cancel()">Cancel</ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content class="ion-padding">
-    <form [formGroup]="itemForm">
-      <ion-item>
-        <ion-label position="stacked">Name</ion-label>
-        <ion-input formControlName="name" type="text" required></ion-input>
-      </ion-item>
-  
-      <ion-item>
-        <ion-label position="stacked">Description</ion-label>
-        <ion-textarea formControlName="description"></ion-textarea>
-      </ion-item>
-    </form>
-  </ion-content>
-  
-  <ion-footer>
-    <ion-toolbar>
-      <ion-buttons slot="end">
-        <ion-button (click)="confirm()" [strong]="true" 
-                    [disabled]="!itemForm.valid">
-          Add
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-footer>
+  <ion-toolbar color="primary">
+    <ion-title>Add Brand Item</ion-title>
+    <ion-button shape="round" color="danger" fill="clear" slot="end" (click)="cancel()">
+      <ion-icon color="light" slot="icon-only" name="xmark"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="itemForm">
+    <ion-item lines="none">
+      <ion-input
+        label="Name"
+        placeholder="Enter Name"
+        labelPlacement="stacked"
+        formControlName="name"
+        type="text"
+        helperText="&nbsp;"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-textarea
+        [autoGrow]="true"
+        label="Name"
+        placeholder="Enter Name"
+        labelPlacement="stacked"
+        formControlName="description"
+        type="text"
+        helperText="&nbsp;"
+      ></ion-textarea>
+    </ion-item>
+  </form>
+</ion-content>
+
+<ion-footer class="ion-padding">
+  <ion-toolbar>
+    <ion-button
+      slot="end"
+      color="primary"
+      (click)="confirm()"
+      [disabled]="!itemForm.valid">
+      Add
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

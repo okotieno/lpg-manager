@@ -23,6 +23,7 @@ import { IBrandModel, ISelectCategory } from '@lpg-manager/types';
 import { FileUploadComponent } from '@lpg-manager/file-upload-component';
 import { ModalController } from '@ionic/angular/standalone';
 import { BrandItemModalComponent } from './brand-item-modal/brand-item-modal.component';
+import { JsonPipe, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'lpg-brand-form',
@@ -41,7 +42,9 @@ import { BrandItemModalComponent } from './brand-item-modal/brand-item-modal.com
     IonList,
     IonListHeader,
     IonLabel,
-    IonIcon
+    IonIcon,
+    NgTemplateOutlet,
+    JsonPipe,
   ],
   templateUrl: './brand-form.component.html',
   providers: [PermissionsStore],
@@ -119,7 +122,7 @@ export default class BrandFormComponent {
       component: BrandItemModalComponent,
       componentProps: {
         // Add any props you want to pass to the modal
-      }
+      },
     });
 
     await modal.present();
@@ -128,7 +131,7 @@ export default class BrandFormComponent {
     if (role === 'confirm' && data) {
       this.brandItems.update((brandItems) => {
         brandItems.push(data);
-        return [...brandItems]
+        return [...brandItems];
       });
     }
   }
@@ -142,7 +145,7 @@ export default class BrandFormComponent {
     // Proceed with saving brand and its items
     const brandData = {
       // ... other brand fields ...
-      items: this.brandItems()
+      items: this.brandItems(),
     };
     // Call your service method to save
   }
@@ -151,7 +154,7 @@ export default class BrandFormComponent {
     if (index > -1) {
       this.brandItems.update((brandItems) => {
         brandItems.splice(index, 1);
-        return brandItems
+        return brandItems;
       });
     }
   }

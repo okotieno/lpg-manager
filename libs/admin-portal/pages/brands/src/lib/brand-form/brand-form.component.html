@@ -34,19 +34,16 @@
       </ion-item>
 
       <ion-list>
-        <ion-list-header>
-          <ion-label>Brand Items</ion-label>
-          <ion-button (click)="openAddItemModal()" fill="outline" size="small">
-            <ion-icon name="plus" slot="start"></ion-icon>
-            Add Item
-          </ion-button>
-        </ion-list-header>
+        <ng-template
+          [ngTemplateOutlet]="addItem"
+          [ngTemplateOutletContext]="{ showLabel: true, showButton: brandItems().length < 1 }"
+        />
 
         @for (item of brandItems(); track item) {
           <ion-item>
             <ion-label>
-              <h2>{{item.name}}</h2>
-              <p>{{item.description}}</p>
+              <h2>{{ item.name }}</h2>
+              <p>{{ item.description }}</p>
             </ion-label>
             <ion-button slot="end" fill="clear" color="danger"
                         (click)="removeItem(item)">
@@ -54,6 +51,10 @@
             </ion-button>
           </ion-item>
         }
+        <ng-template
+          [ngTemplateOutlet]="addItem"
+          [ngTemplateOutletContext]=" { showLabel: false, showButton: brandItems().length > 0 } "
+        />
 
         @if (brandItems().length === 0) {
           <ion-item>
@@ -75,3 +76,20 @@
     </form>
   </ion-card-content>
 </ion-card>
+
+<ng-template #addItem let-showLabel="showLabel" let-showButton="showButton">
+  @if (showLabel || showButton) {
+    <ion-list-header class="ion-no-padding">
+      <ion-label>
+        {{ showLabel ? 'Brand Items' : '' }}
+      </ion-label>
+      @if (showButton) {
+        <ion-button class="ion-padding" shape="round" (click)="openAddItemModal()" fill="clear" size="small">
+          <ion-icon name="grid-2-plus" slot="start"></ion-icon>
+          Add item
+        </ion-button>
+      }
+
+    </ion-list-header>
+  }
+</ng-template>

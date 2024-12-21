@@ -137,3 +137,9 @@ ion-toast.toast-success::part(button) {
   border-left: 1px solid rgba(var(--ion-color-success-contrast-rgb), 0.5);
   font-size: 15px;
 }
+
+ion-modal {
+  --height: 50%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}

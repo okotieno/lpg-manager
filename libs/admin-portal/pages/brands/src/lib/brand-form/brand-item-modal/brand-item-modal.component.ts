@@ -10,7 +10,7 @@ import {
   IonButtons,
   IonContent,
   IonFooter,
-  IonHeader,
+  IonHeader, IonIcon,
   IonInput,
   IonItem,
   IonLabel,
@@ -33,9 +33,15 @@ import {
     IonLabel,
     IonInput,
     IonTextarea,
-    IonFooter
+    IonFooter,
+    IonIcon,
   ],
   templateUrl: './brand-item-modal.component.html',
+  styles: `
+   :host {
+     border-radius: 30px !important;
+   }
+  `,
 })
 export class BrandItemModalComponent {
   itemForm: FormGroup;
