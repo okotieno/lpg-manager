@@ -11,7 +11,7 @@ mutation CreatePermission(
   }
 }
 
-query GetPermissionById($id: String!) {
+query GetPermissionById($id: UUID!) {
   permission(id: $id) {
     id
     name

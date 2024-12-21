@@ -1,5 +1,5 @@
 type BrandModel {
-  id: String!
+  id: UUID!
   name: String!
   companyName: String
   images: [FileUploadModel]
@@ -7,18 +7,21 @@ type BrandModel {
 }
 
 input CreateBrandCatalogueInput {
+  id: UUID!
   name: String!
   description: String
-  price: Float
+  pricePerUnit: Float
   unit: CatalogueUnit!
+  quantityPerUnit: Float!
 }
 
 input UpdateBrandCatalogueInput {
-  id: String
+  id: UUID!
   name: String!
   description: String
-  price: Float
+  pricePerUnit: Float
   unit: CatalogueUnit!
+  quantityPerUnit: Float!
 }
 
 input CreateBrandInput {
@@ -47,13 +50,13 @@ type CreateBrandSuccessResponse {
 
 extend type Query {
   brands(query: QueryParams): PaginatedBrand!
-  brand(id: String!): BrandModel
+  brand(id: UUID!): BrandModel
 }
 
 extend type Mutation {
-  updateBrand(id: String!, params: UpdateBrandInput): CreateBrandSuccessResponse
+  updateBrand(id: UUID!, params: UpdateBrandInput): CreateBrandSuccessResponse
 
   createBrand(params: CreateBrandInput): CreateBrandSuccessResponse
 
-  deleteBrand(id: String!): DeleteSuccessResponse
+  deleteBrand(id: UUID!): DeleteSuccessResponse
 }

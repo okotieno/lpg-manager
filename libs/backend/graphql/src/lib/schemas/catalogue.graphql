@@ -4,11 +4,12 @@ enum CatalogueUnit {
 }
 
 type CatalogueModel {
-  id: String!
+  id: UUID!
   name: String!
   description: String
-  price: Float
+  pricePerUnit: Float
   unit: CatalogueUnit!
+  quantityPerUnit: Float!
   brandId: String!
   brand: BrandModel!
   inventories: [InventoryModel]
@@ -17,16 +18,18 @@ type CatalogueModel {
 input CreateCatalogueInput {
   name: String!
   description: String
-  price: Float
+  pricePerUnit: Float
   unit: CatalogueUnit!
+  quantityPerUnit: Float!
   brandId: String!
 }
 
 input UpdateCatalogueInput {
   name: String!
   description: String
-  price: Float
+  pricePerUnit: Float
   unit: CatalogueUnit!
+  quantityPerUnit: Float!
   brandId: String!
 }
 
@@ -42,13 +45,13 @@ type CreateCatalogueSuccessResponse {
 
 extend type Query {
   catalogues(query: QueryParams): PaginatedCatalogue!
-  catalogue(id: String!): CatalogueModel
+  catalogue(id: UUID!): CatalogueModel
 }
 
 extend type Mutation {
-  updateCatalogue(id: String!, params: UpdateCatalogueInput): CreateCatalogueSuccessResponse
+  updateCatalogue(id: UUID!, params: UpdateCatalogueInput): CreateCatalogueSuccessResponse
 
   createCatalogue(params: CreateCatalogueInput): CreateCatalogueSuccessResponse
 
-  deleteCatalogue(id: String!): DeleteSuccessResponse
+  deleteCatalogue(id: UUID!): DeleteSuccessResponse
 }

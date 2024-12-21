@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>{{ isEditing ? 'Edit Brand Item' : 'Add Brand Item' }}</ion-title>
+    <ion-title>{{ isEditing() ? 'Edit Brand Item' : 'Add Brand Item' }}</ion-title>
     <ion-button shape="round" color="danger" fill="clear" slot="end" (click)="cancel()">
       <ion-icon color="light" slot="icon-only" name="xmark"></ion-icon>
     </ion-button>
@@ -31,6 +31,37 @@
         helperText="&nbsp;"
       ></ion-textarea>
     </ion-item>
+    <ion-item>
+      <ion-select
+        label="Unit"
+        labelPlacement="stacked"
+        formControlName="unit"
+      >
+        <ion-select-option value="KG">KG</ion-select-option>
+        <ion-select-option value="LITRE">LITRE</ion-select-option>
+      </ion-select>
+      <ion-note>&nbsp;</ion-note>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-input
+        label="Quantity"
+        placeholder="Enter quantity per unit"
+        labelPlacement="stacked"
+        formControlName="quantityPerUnit"
+        type="number"
+        helperText="&nbsp;"
+      ></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-input
+        label="Price"
+        placeholder="Enter Price per unit"
+        labelPlacement="stacked"
+        formControlName="pricePerUnit"
+        type="number"
+        helperText="&nbsp;"
+      ></ion-input>
+    </ion-item>
   </form>
 </ion-content>
 
@@ -41,7 +72,7 @@
       color="primary"
       (click)="confirm()"
       [disabled]="!itemForm.valid">
-      {{ isEditing ? 'Update' : 'Add' }}
+      {{ isEditing() ? 'Update' : 'Add' }}
     </ion-button>
   </ion-toolbar>
 </ion-footer>

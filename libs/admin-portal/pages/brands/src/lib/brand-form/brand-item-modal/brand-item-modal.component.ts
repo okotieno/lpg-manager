@@ -1,20 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, effect, inject, input, signal, untracked } from '@angular/core';
 import {
   FormBuilder,
-  FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import {
   IonButton,
-  IonButtons,
   IonContent,
   IonFooter,
   IonHeader,
   IonIcon,
   IonInput,
   IonItem,
-  IonLabel,
+  IonNote, IonSelect, IonSelectOption,
   IonTextarea,
   IonTitle,
   IonToolbar,
@@ -33,16 +31,17 @@ export interface IBrandItem {
     IonHeader,
     IonToolbar,
     IonTitle,
-    IonButtons,
     IonButton,
     IonContent,
     ReactiveFormsModule,
     IonItem,
-    IonLabel,
     IonInput,
     IonTextarea,
     IonFooter,
     IonIcon,
+    IonSelect,
+    IonSelectOption,
+    IonNote,
   ],
   templateUrl: './brand-item-modal.component.html',
   styles: `
@@ -51,40 +50,40 @@ export interface IBrandItem {
    }
   `,
 })
-export class BrandItemModalComponent implements OnInit {
-  @Input() item?: IBrandItem;
-  itemForm: FormGroup;
-  isEditing = false;
-
-  constructor(private modalCtrl: ModalController, private fb: FormBuilder) {
-    this.itemForm = this.fb.group({
-      name: ['', Validators.required],
-      description: [''],
+export class BrandItemModalComponent {
+  #fb = inject(FormBuilder);
+  #modalCtrl = inject(ModalController);
+  itemForm = this.#fb.group({
+    name: ['', Validators.required],
+    description: [''],
+    unit: ['KG', Validators.required],
+    pricePerUnit: [null, [Validators.min(0)]],
+    quantityPerUnit: [null, [Validators.min(0)]],
+  });
+  isEditing = signal(false);
+  item = input<IBrandItem>();
+  itemChangeEffect = effect(() => {
+    const item = this.item();
+    untracked(() => {
+      if (item) {
+        this.isEditing.set(true);
+        this.itemForm.patchValue({ ...item });
+      }
     });
-  }
-
-  ngOnInit() {
-    if (this.item) {
-      this.isEditing = true;
-      this.itemForm.patchValue({
-        name: this.item.name,
-        description: this.item.description
-      });
-    }
-  }
+  });
 
   cancel() {
-    return this.modalCtrl.dismiss(null, 'cancel');
+    return this.#modalCtrl.dismiss(null, 'cancel');
   }
 
   confirm() {
     if (this.itemForm.valid) {
       const formValue = this.itemForm.value;
-      const result: IBrandItem = {
+      const result = {
         ...formValue,
-        id: this.item?.id
+        id: this.item()?.id,
       };
-      return this.modalCtrl.dismiss(result, 'confirm');
+      return this.#modalCtrl.dismiss(result, 'confirm');
     }
     return;
   }

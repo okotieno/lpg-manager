@@ -33,10 +33,12 @@ import {
 } from '@lpg-manager/types';
 import { FileUploadComponent } from '@lpg-manager/file-upload-component';
 import { ModalController } from '@ionic/angular/standalone';
-import {
-  BrandItemModalComponent
-} from './brand-item-modal/brand-item-modal.component';
+import { BrandItemModalComponent } from './brand-item-modal/brand-item-modal.component';
 import { NgTemplateOutlet } from '@angular/common';
+import {
+  SHOW_ERROR_MESSAGE,
+  SHOW_SUCCESS_MESSAGE,
+} from '@lpg-manager/injection-token';
 
 @Component({
   selector: 'lpg-brand-form',
@@ -101,9 +103,10 @@ export default class BrandFormComponent {
         companyName: companyName as string,
         images: images?.map((x) => ({ id: x?.id as string })),
         catalogues: this.brandItems().map(
-          ({ id, price, name, unit, description }) => ({
+          ({ id, pricePerUnit, quantityPerUnit, name, unit, description }) => ({
             id,
-            price,
+            pricePerUnit,
+            quantityPerUnit,
             name,
             unit,
             description,
@@ -111,9 +114,14 @@ export default class BrandFormComponent {
         ),
       };
 
+      const context = {
+        [SHOW_ERROR_MESSAGE]: true,
+        [SHOW_SUCCESS_MESSAGE]: true,
+      };
+
       if (this.isEditing() && this.roleId()) {
         this.#updateRoleGQL
-          .mutate({ id: this.roleId() as string, params })
+          .mutate({ id: this.roleId() as string, params }, { context })
           .subscribe({
             next: async () => {
               await this.#router.navigate(['../../'], {
@@ -122,7 +130,7 @@ export default class BrandFormComponent {
             },
           });
       } else {
-        this.#createRoleGQL.mutate({ params }).subscribe({
+        this.#createRoleGQL.mutate({ params }, { context }).subscribe({
           next: async () => {
             await this.#router.navigate(['../'], { relativeTo: this.#route });
           },

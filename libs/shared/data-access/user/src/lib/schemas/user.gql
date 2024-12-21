@@ -7,7 +7,7 @@ mutation CreateUser($params: CreateUserInput!) {
   }
 }
 
-mutation UpdateUser($id: String! $params: UpdateUserInput!) {
+mutation UpdateUser($id: UUID! $params: UpdateUserInput!) {
   updateUser(id: $id, params: $params) {
     message
     data {
@@ -16,7 +16,7 @@ mutation UpdateUser($id: String! $params: UpdateUserInput!) {
   }
 }
 
-query GetUserById($id: String!) {
+query GetUserById($id: UUID!) {
   user(id: $id) {
     phone
     id
@@ -52,13 +52,13 @@ mutation AssignRolesToUser(
   }
 }
 
-mutation DeleteUserById($id: String!) {
+mutation DeleteUserById($id: UUID!) {
   deleteUser(id: $id) {
     message
   }
 }
 
-query UserWithRoles($userId: String!) {
+query UserWithRoles($userId: UUID!) {
   user(id: $userId) {
     phone
     id

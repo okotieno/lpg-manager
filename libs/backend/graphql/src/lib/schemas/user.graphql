@@ -1,5 +1,5 @@
 type UserModel {
-  id: String!
+  id: UUID!
   firstName: String!
   lastName: String!
   email: String!
@@ -26,9 +26,9 @@ type UserCount {
 
 extend type Query {
   users(query: QueryParams): PaginatedUser!
-  user(id: String!): UserModel
+  user(id: UUID!): UserModel
 
-  userRoles(userId: String): PaginatedUserRoles
+  userRoles(userId: UUID): PaginatedUserRoles
 
   userCount: UserCount!
 }
@@ -62,9 +62,9 @@ input CountriesLanguagesInput {
 }
 
 extend type Mutation {
-  updateUser(id: String!, params: UpdateUserInput): CreateUserSuccessResponse
+  updateUser(id: UUID!, params: UpdateUserInput): CreateUserSuccessResponse
 
   createUser(params: CreateUserInput): CreateUserSuccessResponse
 
-  deleteUser(id: String!): DeleteSuccessResponse
+  deleteUser(id: UUID!): DeleteSuccessResponse
 }

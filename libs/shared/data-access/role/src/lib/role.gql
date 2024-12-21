@@ -11,7 +11,7 @@ mutation CreateRole(
   }
 }
 
-query GetRoleById($id: String!) {
+query GetRoleById($id: UUID!) {
   role(id: $id) {
     id
     name
@@ -22,7 +22,7 @@ query GetRoleById($id: String!) {
   }
 }
 
-query GetRoleByIdWithPermission($id: String!) {
+query GetRoleByIdWithPermission($id: UUID!) {
   role(id: $id) {
     id
     name
@@ -54,13 +54,13 @@ mutation GivePermissionsToRole(
   }
 }
 
-mutation DeleteRoleById($id: String!) {
+mutation DeleteRoleById($id: UUID!) {
   deleteRole(id: $id) {
     message
   }
 }
 
-mutation UpdateRole($id: String!, $name: String!) {
+mutation UpdateRole($id: UUID!, $name: String!) {
   updateRole(
     id: $id
     params: {name: $name}

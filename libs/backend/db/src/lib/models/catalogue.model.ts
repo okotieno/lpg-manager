@@ -46,9 +46,9 @@ export class CatalogueModel extends Model {
 
   @Column({
     type: DataType.DECIMAL(10, 2),
-    allowNull: false,
+    allowNull: true,
   })
-  price!: number;
+  pricePerUnit?: number;
 
   @Column({
     type: DataType.ENUM('KG', 'LITRE'),
@@ -56,9 +56,15 @@ export class CatalogueModel extends Model {
   })
   unit!: 'KG' | 'LITRE';
 
+  @Column({
+    type: DataType.DECIMAL(10, 2),
+    allowNull: false,
+  })
+  quantityPerUnit!: number;
+
   @BelongsTo(() => BrandModel)
   brand!: BrandModel;
 
   @HasMany(() => InventoryModel)
   inventories!: InventoryModel[];
-} 
+}

@@ -8,28 +8,28 @@ export type ICreateRoleMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateRoleMutation = { createRole?: { message: string, data: { id: string } } | null };
+export type ICreateRoleMutation = { createRole?: { message: string, data: { id: any } } | null };
 
 export type IGetRoleByIdQueryVariables = Types.Exact<{
-  id: Types.Scalars['String']['input'];
+  id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetRoleByIdQuery = { role?: { id: string, name: string, permissions?: Array<{ id: string, name: string } | null> | null } | null };
+export type IGetRoleByIdQuery = { role?: { id: any, name: string, permissions?: Array<{ id: any, name: string } | null> | null } | null };
 
 export type IGetRoleByIdWithPermissionQueryVariables = Types.Exact<{
-  id: Types.Scalars['String']['input'];
+  id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetRoleByIdWithPermissionQuery = { role?: { id: string, name: string, permissions?: Array<{ id: string, name: string } | null> | null } | null };
+export type IGetRoleByIdWithPermissionQuery = { role?: { id: any, name: string, permissions?: Array<{ id: any, name: string } | null> | null } | null };
 
 export type IGetRolesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetRolesQuery = { roles: { items?: Array<{ id: string, name: string } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetRolesQuery = { roles: { items?: Array<{ id: any, name: string } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IGivePermissionsToRoleMutationVariables = Types.Exact<{
   permissions?: Types.InputMaybe<Array<Types.InputMaybe<Types.ISelectCategory>> | Types.InputMaybe<Types.ISelectCategory>>;
@@ -40,19 +40,19 @@ export type IGivePermissionsToRoleMutationVariables = Types.Exact<{
 export type IGivePermissionsToRoleMutation = { givePermissionsToRole?: { message: string } | null };
 
 export type IDeleteRoleByIdMutationVariables = Types.Exact<{
-  id: Types.Scalars['String']['input'];
+  id: Types.Scalars['UUID']['input'];
 }>;
 
 
 export type IDeleteRoleByIdMutation = { deleteRole?: { message: string } | null };
 
 export type IUpdateRoleMutationVariables = Types.Exact<{
-  id: Types.Scalars['String']['input'];
+  id: Types.Scalars['UUID']['input'];
   name: Types.Scalars['String']['input'];
 }>;
 
 
-export type IUpdateRoleMutation = { updateRole?: { message: string, data: { id: string } } | null };
+export type IUpdateRoleMutation = { updateRole?: { message: string, data: { id: any } } | null };
 
 export const CreateRoleDocument = gql`
     mutation CreateRole($params: CreateRoleInput!) {
@@ -76,7 +76,7 @@ export const CreateRoleDocument = gql`
     }
   }
 export const GetRoleByIdDocument = gql`
-    query GetRoleById($id: String!) {
+    query GetRoleById($id: UUID!) {
   role(id: $id) {
     id
     name
@@ -99,7 +99,7 @@ export const GetRoleByIdDocument = gql`
     }
   }
 export const GetRoleByIdWithPermissionDocument = gql`
-    query GetRoleByIdWithPermission($id: String!) {
+    query GetRoleByIdWithPermission($id: UUID!) {
   role(id: $id) {
     id
     name
@@ -164,7 +164,7 @@ export const GivePermissionsToRoleDocument = gql`
     }
   }
 export const DeleteRoleByIdDocument = gql`
-    mutation DeleteRoleById($id: String!) {
+    mutation DeleteRoleById($id: UUID!) {
   deleteRole(id: $id) {
     message
   }
@@ -182,7 +182,7 @@ export const DeleteRoleByIdDocument = gql`
     }
   }
 export const UpdateRoleDocument = gql`
-    mutation UpdateRole($id: String!, $name: String!) {
+    mutation UpdateRole($id: UUID!, $name: String!) {
   updateRole(id: $id, params: {name: $name}) {
     message
     data {

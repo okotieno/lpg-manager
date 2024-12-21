@@ -28,11 +28,13 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true
       },
-      price: {
+      pricePerUnit: {
+        field: 'per_unit_price',
         type: Sequelize.DECIMAL(10, 2),
         allowNull: true
       },
-      quantity: {
+      quantityPerUnit: {
+        field: 'per_unit_quantity',
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false
       },
@@ -44,10 +46,12 @@ module.exports = {
       createdAt: {
         field: 'created_at',
         type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW'),
         allowNull: false
       },
       updatedAt: {
         field: 'updated_at',
+        defaultValue: Sequelize.fn('NOW'),
         type: Sequelize.DATE,
         allowNull: false
       },

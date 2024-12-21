@@ -3,9 +3,9 @@ import * as Types from '@lpg-manager/types';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
-export type IUserFieldsFragment = { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null };
+export type IUserFieldsFragment = { id: any, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null };
 
-export type IAuthDetailsFragment = { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null } | null };
+export type IAuthDetailsFragment = { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: any, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null } | null };
 
 export type ILoginWithPasswordMutationVariables = Types.Exact<{
   email: Types.Scalars['String']['input'];
@@ -13,14 +13,14 @@ export type ILoginWithPasswordMutationVariables = Types.Exact<{
 }>;
 
 
-export type ILoginWithPasswordMutation = { loginWithPassword?: { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null } | null } | null };
+export type ILoginWithPasswordMutation = { loginWithPassword?: { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: any, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null } | null } | null };
 
 export type ILoginWithTokenMutationVariables = Types.Exact<{
   token: Types.Scalars['String']['input'];
 }>;
 
 
-export type ILoginWithTokenMutation = { loginWithToken?: { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null } | null } | null };
+export type ILoginWithTokenMutation = { loginWithToken?: { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: any, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null } | null } | null };
 
 export type IRequestAccessTokenMutationVariables = Types.Exact<{
   refreshToken: Types.Scalars['String']['input'];

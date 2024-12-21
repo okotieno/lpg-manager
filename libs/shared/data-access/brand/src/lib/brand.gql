@@ -11,7 +11,7 @@ mutation CreateBrand(
   }
 }
 
-query GetBrandById($id: String!) {
+query GetBrandById($id: UUID!) {
   brand(id: $id) {
     id
     name
@@ -40,13 +40,13 @@ query GetBrands($query: QueryParams) {
   }
 }
 
-mutation DeleteBrandById($id: String!) {
+mutation DeleteBrandById($id: UUID!) {
   deleteBrand(id: $id) {
     message
   }
 }
 
-mutation UpdateBrand($id: String!, $params: UpdateBrandInput!) {
+mutation UpdateBrand($id: UUID!, $params: UpdateBrandInput!) {
   updateBrand(
     id: $id
     params: $params

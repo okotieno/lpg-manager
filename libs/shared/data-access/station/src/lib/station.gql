@@ -11,7 +11,7 @@ mutation CreateStation(
   }
 }
 
-query GetStationById($id: String!) {
+query GetStationById($id: UUID!) {
   station(id: $id) {
     id
     name
@@ -32,13 +32,13 @@ query GetStations($query: QueryParams) {
   }
 }
 
-mutation DeleteStationById($id: String!) {
+mutation DeleteStationById($id: UUID!) {
   deleteStation(id: $id) {
     message
   }
 }
 
-mutation UpdateStation($id: String!, $params: UpdateStationInput!) {
+mutation UpdateStation($id: UUID!, $params: UpdateStationInput!) {
   updateStation(
     id: $id
     params: $params

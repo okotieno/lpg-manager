@@ -35,18 +35,18 @@ type SuccessResponse {
 
 type CreateSuccessStringIdResponse  {
   message: String!
-  id: String!
+  id: UUID!
 }
 type DeleteSuccessResponse  {
   message: String!
 }
 
 input SelectCategory {
-  id: String!
+  id: UUID!
 }
 
 input SelectCategoryString {
-  id: String!
+  id: UUID!
 }
 
 type Pagination {
@@ -54,6 +54,7 @@ type Pagination {
 }
 
 scalar DateTime
+scalar UUID
 scalar URL
 scalar PositiveInt
 scalar PositiveFloat

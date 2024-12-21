@@ -8,36 +8,36 @@ export type ICreateStationMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateStationMutation = { createStation?: { message: string, data: { id: string } } | null };
+export type ICreateStationMutation = { createStation?: { message: string, data: { id: any } } | null };
 
 export type IGetStationByIdQueryVariables = Types.Exact<{
-  id: Types.Scalars['String']['input'];
+  id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetStationByIdQuery = { station?: { id: string, name: string, type: Types.IStationType } | null };
+export type IGetStationByIdQuery = { station?: { id: any, name: string, type: Types.IStationType } | null };
 
 export type IGetStationsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetStationsQuery = { stations: { items?: Array<{ id: string, name: string, type: Types.IStationType } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetStationsQuery = { stations: { items?: Array<{ id: any, name: string, type: Types.IStationType } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteStationByIdMutationVariables = Types.Exact<{
-  id: Types.Scalars['String']['input'];
+  id: Types.Scalars['UUID']['input'];
 }>;
 
 
 export type IDeleteStationByIdMutation = { deleteStation?: { message: string } | null };
 
 export type IUpdateStationMutationVariables = Types.Exact<{
-  id: Types.Scalars['String']['input'];
+  id: Types.Scalars['UUID']['input'];
   params: Types.IUpdateStationInput;
 }>;
 
 
-export type IUpdateStationMutation = { updateStation?: { message: string, data: { id: string } } | null };
+export type IUpdateStationMutation = { updateStation?: { message: string, data: { id: any } } | null };
 
 export const CreateStationDocument = gql`
     mutation CreateStation($params: CreateStationInput!) {
@@ -61,7 +61,7 @@ export const CreateStationDocument = gql`
     }
   }
 export const GetStationByIdDocument = gql`
-    query GetStationById($id: String!) {
+    query GetStationById($id: UUID!) {
   station(id: $id) {
     id
     name
@@ -106,7 +106,7 @@ export const GetStationsDocument = gql`
     }
   }
 export const DeleteStationByIdDocument = gql`
-    mutation DeleteStationById($id: String!) {
+    mutation DeleteStationById($id: UUID!) {
   deleteStation(id: $id) {
     message
   }
@@ -124,7 +124,7 @@ export const DeleteStationByIdDocument = gql`
     }
   }
 export const UpdateStationDocument = gql`
-    mutation UpdateStation($id: String!, $params: UpdateStationInput!) {
+    mutation UpdateStation($id: UUID!, $params: UpdateStationInput!) {
   updateStation(id: $id, params: $params) {
     message
     data {

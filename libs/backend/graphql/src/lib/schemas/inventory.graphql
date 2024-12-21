@@ -1,5 +1,5 @@
 type InventoryModel {
-  id: String!
+  id: UUID!
   quantity: Float!
   stationId: String!
   catalogueId: String!
@@ -31,13 +31,13 @@ type CreateInventorySuccessResponse {
 
 extend type Query {
   inventories(query: QueryParams): PaginatedInventory!
-  inventory(id: String!): InventoryModel
+  inventory(id: UUID!): InventoryModel
 }
 
 extend type Mutation {
-  updateInventory(id: String!, params: UpdateInventoryInput): CreateInventorySuccessResponse
+  updateInventory(id: UUID!, params: UpdateInventoryInput): CreateInventorySuccessResponse
 
   createInventory(params: CreateInventoryInput): CreateInventorySuccessResponse
 
-  deleteInventory(id: String!): DeleteSuccessResponse
-} 
+  deleteInventory(id: UUID!): DeleteSuccessResponse
+}

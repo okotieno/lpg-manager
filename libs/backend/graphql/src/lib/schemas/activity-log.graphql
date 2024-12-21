@@ -5,7 +5,7 @@ enum ActivityLogType {
   SUCCESS
 }
 type ActivityLogModel {
-  id: String!
+  id: UUID!
   userId: Int!
   action: String!
   description: String!
@@ -13,7 +13,7 @@ type ActivityLogModel {
   type: ActivityLogType
 }
 type ActivityLogUserModel {
-  id: String!
+  id: UUID!
   userId: Int!
   action: String!
   description: String!
@@ -45,7 +45,7 @@ type CreateActivityLogSuccessResponse {
 
 extend type Query {
   activityLogs(query: QueryParams): PaginatedActivityLog!
-  activityLog(id: String!): ActivityLogModel
+  activityLog(id: UUID!): ActivityLogModel
   authenticatedUserActivityLogs(
     query: QueryParams
   ): PaginatedActivityLogUserModel!
@@ -53,7 +53,7 @@ extend type Query {
 
 extend type Mutation {
   updateActivityLog(
-    id: String!
+    id: UUID!
     params: UpdateActivityLogInput
   ): CreateActivityLogSuccessResponse
 
@@ -61,5 +61,5 @@ extend type Mutation {
     params: CreateActivityLogInput
   ): CreateActivityLogSuccessResponse
 
-  deleteActivityLog(id: String!): DeleteSuccessResponse
+  deleteActivityLog(id: UUID!): DeleteSuccessResponse
 }

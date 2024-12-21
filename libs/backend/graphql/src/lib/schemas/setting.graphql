@@ -1,5 +1,5 @@
 type SettingModel {
-  id: String!
+  id: UUID!
   name: String!
 }
 
@@ -23,16 +23,16 @@ type CreateSettingSuccessResponse {
 
 extend type Query {
   settings(query: QueryParams): PaginatedSetting!
-  setting(id: String!): SettingModel
+  setting(id: UUID!): SettingModel
 }
 
 extend type Mutation {
   updateSetting(
-    id: String!
+    id: UUID!
     params: UpdateSettingInput
   ): CreateSettingSuccessResponse
 
   createSetting(params: CreateSettingInput): CreateSettingSuccessResponse
 
-  deleteSetting(id: String!): DeleteSuccessResponse
+  deleteSetting(id: UUID!): DeleteSuccessResponse
 }

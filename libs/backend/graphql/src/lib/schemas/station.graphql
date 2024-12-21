@@ -3,7 +3,7 @@ enum StationType {
   DEALER
 }
 type StationModel {
-  id: String!
+  id: UUID!
   name: String!
   type: StationType!
 }
@@ -30,13 +30,13 @@ type CreateStationSuccessResponse {
 
 extend type Query {
   stations(query: QueryParams): PaginatedStation!
-  station(id: String!): StationModel
+  station(id: UUID!): StationModel
 }
 
 extend type Mutation {
-  updateStation(id: String!, params: UpdateStationInput): CreateStationSuccessResponse
+  updateStation(id: UUID!, params: UpdateStationInput): CreateStationSuccessResponse
 
   createStation(params: CreateStationInput): CreateStationSuccessResponse
 
-  deleteStation(id: String!): DeleteSuccessResponse
+  deleteStation(id: UUID!): DeleteSuccessResponse
 }

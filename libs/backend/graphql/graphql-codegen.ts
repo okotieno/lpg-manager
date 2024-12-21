@@ -12,6 +12,7 @@ const config: CodegenConfig = {
         scalars: {
           DateTime: 'string',
           URL: 'string',
+          UUID: 'string',
           PositiveInt: 'number',
           PositiveFloat: 'number',
           EmailAddress: 'string',

@@ -18,6 +18,7 @@ export type Scalars = {
   PositiveFloat: { input: number; output: number; }
   PositiveInt: { input: number; output: number; }
   URL: { input: string; output: string; }
+  UUID: { input: string; output: string; }
   Upload: { input: any; output: any; }
 };
 
@@ -29,7 +30,7 @@ export type IActivityLogModel = {
   action: Scalars['String']['output'];
   createdAt: Scalars['String']['output'];
   description: Scalars['String']['output'];
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   type?: Maybe<IActivityLogType>;
   userId: Scalars['Int']['output'];
 };
@@ -45,7 +46,7 @@ export type IActivityLogUserModel = {
   action: Scalars['String']['output'];
   createdAt: Scalars['String']['output'];
   description: Scalars['String']['output'];
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   type?: Maybe<IActivityLogType>;
   userId: Scalars['Int']['output'];
 };
@@ -53,7 +54,7 @@ export type IActivityLogUserModel = {
 export type IBrandModel = {
   catalogues?: Maybe<Array<Maybe<ICatalogueModel>>>;
   companyName?: Maybe<Scalars['String']['output']>;
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   images?: Maybe<Array<Maybe<IFileUploadModel>>>;
   name: Scalars['String']['output'];
 };
@@ -62,10 +63,11 @@ export type ICatalogueModel = {
   brand: IBrandModel;
   brandId: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   inventories?: Maybe<Array<Maybe<IInventoryModel>>>;
   name: Scalars['String']['output'];
-  price?: Maybe<Scalars['Float']['output']>;
+  pricePerUnit?: Maybe<Scalars['Float']['output']>;
+  quantityPerUnit: Scalars['Float']['output'];
   unit: ICatalogueUnit;
 };
 
@@ -90,8 +92,10 @@ export type ICreateActivityLogSuccessResponse = {
 
 export type ICreateBrandCatalogueInput = {
   description?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['UUID']['input'];
   name: Scalars['String']['input'];
-  price?: InputMaybe<Scalars['Float']['input']>;
+  pricePerUnit?: InputMaybe<Scalars['Float']['input']>;
+  quantityPerUnit: Scalars['Float']['input'];
   unit: ICatalogueUnit;
 };
 
@@ -111,7 +115,8 @@ export type ICreateCatalogueInput = {
   brandId: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
-  price?: InputMaybe<Scalars['Float']['input']>;
+  pricePerUnit?: InputMaybe<Scalars['Float']['input']>;
+  quantityPerUnit: Scalars['Float']['input'];
   unit: ICatalogueUnit;
 };
 
@@ -198,7 +203,7 @@ export type ICreateStationSuccessResponse = {
 };
 
 export type ICreateSuccessStringIdResponse = {
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   message: Scalars['String']['output'];
 };
 
@@ -221,7 +226,7 @@ export type IDeleteSuccessResponse = {
 };
 
 export type IFileUploadModel = {
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   mimetype?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   originalName?: Maybe<Scalars['String']['output']>;
@@ -232,7 +237,7 @@ export type IFileUploadModel = {
 export type IInventoryModel = {
   catalogue: ICatalogueModel;
   catalogueId: Scalars['String']['output'];
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   quantity: Scalars['Float']['output'];
   station: IStationModel;
   stationId: Scalars['String']['output'];
@@ -393,62 +398,62 @@ export type IMutationCreateUserArgs = {
 
 
 export type IMutationDeleteActivityLogArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IMutationDeleteBrandArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IMutationDeleteCatalogueArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IMutationDeleteInventoryArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IMutationDeleteNotificationArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IMutationDeleteOtpArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IMutationDeletePasswordResetArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IMutationDeletePermissionArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IMutationDeleteRoleArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IMutationDeleteSettingArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IMutationDeleteStationArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IMutationDeleteUserArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
@@ -515,73 +520,73 @@ export type IMutationSignupGoogleUserArgs = {
 
 
 export type IMutationUpdateActivityLogArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateActivityLogInput>;
 };
 
 
 export type IMutationUpdateBrandArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateBrandInput>;
 };
 
 
 export type IMutationUpdateCatalogueArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateCatalogueInput>;
 };
 
 
 export type IMutationUpdateInventoryArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateInventoryInput>;
 };
 
 
 export type IMutationUpdateNotificationArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateNotificationInput>;
 };
 
 
 export type IMutationUpdateOtpArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateOtpInput>;
 };
 
 
 export type IMutationUpdatePasswordResetArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdatePasswordResetInput>;
 };
 
 
 export type IMutationUpdatePermissionArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdatePermissionInput>;
 };
 
 
 export type IMutationUpdateRoleArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateRoleInput>;
 };
 
 
 export type IMutationUpdateSettingArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateSettingInput>;
 };
 
 
 export type IMutationUpdateStationArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateStationInput>;
 };
 
 
 export type IMutationUpdateUserArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateUserInput>;
 };
 
@@ -623,7 +628,7 @@ export type INotificationMarkedAsReadResponse = {
 export type INotificationModel = {
   createdAt: Scalars['String']['output'];
   description: Scalars['String']['output'];
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   title: Scalars['String']['output'];
   updatedAt: Scalars['String']['output'];
 };
@@ -637,14 +642,14 @@ export type INotificationStat = {
 export type INotificationUserModel = {
   createdAt: Scalars['String']['output'];
   description: Scalars['String']['output'];
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   isRead: Scalars['Boolean']['output'];
   title: Scalars['String']['output'];
   updatedAt: Scalars['String']['output'];
 };
 
 export type IOtpModel = {
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   name: Scalars['String']['output'];
 };
 
@@ -733,12 +738,12 @@ export type IPagination = {
 };
 
 export type IPasswordResetModel = {
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   name: Scalars['String']['output'];
 };
 
 export type IPermissionModel = {
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   name: Scalars['String']['output'];
 };
 
@@ -778,7 +783,7 @@ export type IQuery = {
 
 
 export type IQueryActivityLogArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
@@ -798,7 +803,7 @@ export type IQueryAuthenticatedUserNotificationsArgs = {
 
 
 export type IQueryBrandArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
@@ -808,7 +813,7 @@ export type IQueryBrandsArgs = {
 
 
 export type IQueryCatalogueArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
@@ -828,12 +833,12 @@ export type IQueryInventoriesArgs = {
 
 
 export type IQueryInventoryArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IQueryNotificationArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
@@ -843,7 +848,7 @@ export type IQueryNotificationsArgs = {
 
 
 export type IQueryOtpArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
@@ -853,7 +858,7 @@ export type IQueryOtpsArgs = {
 
 
 export type IQueryPasswordResetArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
@@ -863,7 +868,7 @@ export type IQueryPasswordResetsArgs = {
 
 
 export type IQueryPermissionArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
@@ -873,7 +878,7 @@ export type IQueryPermissionsArgs = {
 
 
 export type IQueryRoleArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
@@ -883,7 +888,7 @@ export type IQueryRolesArgs = {
 
 
 export type IQuerySettingArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
@@ -893,7 +898,7 @@ export type IQuerySettingsArgs = {
 
 
 export type IQueryStationArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
@@ -903,12 +908,12 @@ export type IQueryStationsArgs = {
 
 
 export type IQueryUserArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 
 export type IQueryUserRolesArgs = {
-  userId?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 
@@ -942,21 +947,21 @@ export type IQueryParamsFilter = {
 };
 
 export type IRoleModel = {
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   name: Scalars['String']['output'];
   permissions?: Maybe<Array<Maybe<IPermissionModel>>>;
 };
 
 export type ISelectCategory = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 export type ISelectCategoryString = {
-  id: Scalars['String']['input'];
+  id: Scalars['UUID']['input'];
 };
 
 export type ISettingModel = {
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   name: Scalars['String']['output'];
 };
 
@@ -966,7 +971,7 @@ export enum ISortByEnum {
 }
 
 export type IStationModel = {
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   name: Scalars['String']['output'];
   type: IStationType;
 };
@@ -1004,9 +1009,10 @@ export type IUpdateActivityLogInput = {
 
 export type IUpdateBrandCatalogueInput = {
   description?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['UUID']['input'];
   name: Scalars['String']['input'];
-  price?: InputMaybe<Scalars['Float']['input']>;
+  pricePerUnit?: InputMaybe<Scalars['Float']['input']>;
+  quantityPerUnit: Scalars['Float']['input'];
   unit: ICatalogueUnit;
 };
 
@@ -1021,7 +1027,8 @@ export type IUpdateCatalogueInput = {
   brandId: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
-  price?: InputMaybe<Scalars['Float']['input']>;
+  pricePerUnit?: InputMaybe<Scalars['Float']['input']>;
+  quantityPerUnit: Scalars['Float']['input'];
   unit: ICatalogueUnit;
 };
 
@@ -1084,7 +1091,7 @@ export type IUserModel = {
   email: Scalars['String']['output'];
   emailVerifiedAt?: Maybe<Scalars['String']['output']>;
   firstName: Scalars['String']['output'];
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   lastName: Scalars['String']['output'];
   phone?: Maybe<Scalars['String']['output']>;
   phoneVerifiedAt?: Maybe<Scalars['String']['output']>;

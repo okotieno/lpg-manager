@@ -1,5 +1,5 @@
 type NotificationModel {
-  id: String!
+  id: UUID!
   title: String!
   description: String!
   createdAt: String!
@@ -7,7 +7,7 @@ type NotificationModel {
 }
 
 type NotificationUserModel {
-  id: String!
+  id: UUID!
   title: String!
   createdAt: String!
   updatedAt: String!
@@ -57,14 +57,14 @@ type NotificationMarkedAsReadResponse {
 
 extend type Query {
   notifications(query: QueryParams): PaginatedNotification!
-  notification(id: String!): NotificationModel
+  notification(id: UUID!): NotificationModel
   authenticatedUserNotifications(query: QueryParams): PaginatedUserNotification
   authenticatedUserNotificationStats: NotificationStat
 }
 
 extend type Mutation {
   updateNotification(
-    id: String!
+    id: UUID!
     params: UpdateNotificationInput
   ): CreateNotificationSuccessResponse
 
@@ -72,7 +72,7 @@ extend type Mutation {
     params: CreateNotificationInput
   ): CreateNotificationSuccessResponse
 
-  deleteNotification(id: String!): DeleteSuccessResponse
+  deleteNotification(id: UUID!): DeleteSuccessResponse
 
   markNotificationAsRead(
     notifications: [SelectCategory]!
