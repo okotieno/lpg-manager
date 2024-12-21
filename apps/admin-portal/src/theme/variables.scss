@@ -123,3 +123,17 @@ ion-select {
 .alert-wrapper {
   border-radius: 1rem !important;
 }
+
+ion-toast.toast-success {
+  --background: var(--ion-color-success);
+  --color: var(--ion-color-success-contrast);
+}
+
+ion-toast.toast-success::part(message) {
+  font-style: italic;
+}
+
+ion-toast.toast-success::part(button) {
+  border-left: 1px solid rgba(var(--ion-color-success-contrast-rgb), 0.5);
+  font-size: 15px;
+}

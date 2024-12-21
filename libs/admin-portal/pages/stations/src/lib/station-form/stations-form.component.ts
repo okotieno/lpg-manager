@@ -26,7 +26,10 @@ import {
   ICreateStationGQL,
   IUpdateStationGQL,
 } from '@lpg-manager/station-store';
-import { SHOW_ERROR_MESSAGE } from '@lpg-manager/injection-token';
+import {
+  SHOW_ERROR_MESSAGE,
+  SHOW_SUCCESS_MESSAGE,
+} from '@lpg-manager/injection-token';
 
 @Component({
   selector: 'lpg-station-form',
@@ -88,7 +91,10 @@ export default class StationsFormComponent {
               },
             },
             {
-              context: { [SHOW_ERROR_MESSAGE]: true },
+              context: {
+                [SHOW_ERROR_MESSAGE]: true,
+                [SHOW_SUCCESS_MESSAGE]: true,
+              },
               awaitRefetchQueries: true,
               refetchQueries: [
                 {
@@ -114,23 +120,11 @@ export default class StationsFormComponent {
               },
             },
             {
-              context: { [SHOW_ERROR_MESSAGE]: true },
+              context: {
+                [SHOW_ERROR_MESSAGE]: true,
+                [SHOW_SUCCESS_MESSAGE]: true,
+              },
               awaitRefetchQueries: true,
-              refetchQueries: [
-                {
-                  query: GetStationsDocument,
-                  variables: {
-                    query: {
-                      sortBy: 'id',
-                      sortByDirection: 'ASC',
-                      searchTerm: '',
-                      currentPage: 1,
-                      pageSize: 10,
-                      filters: [],
-                    },
-                  },
-                },
-              ],
             }
           )
           .subscribe({

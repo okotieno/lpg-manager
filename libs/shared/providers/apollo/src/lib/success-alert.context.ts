@@ -11,6 +11,7 @@ export const
       const presentAlert = async () => {
         const alert = await alertCtrl.create({
           duration: 5000,
+          icon: 'circle-check',
           cssClass: 'toast-success',
           header: 'Success',
           message: res['message'],
