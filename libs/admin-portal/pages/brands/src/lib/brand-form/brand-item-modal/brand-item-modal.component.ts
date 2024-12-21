@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,14 +10,22 @@ import {
   IonButtons,
   IonContent,
   IonFooter,
-  IonHeader, IonIcon,
+  IonHeader,
+  IonIcon,
   IonInput,
   IonItem,
   IonLabel,
   IonTextarea,
   IonTitle,
-  IonToolbar, ModalController
+  IonToolbar,
+  ModalController
 } from '@ionic/angular/standalone';
+
+export interface IBrandItem {
+  id?: string;
+  name: string;
+  description?: string;
+}
 
 @Component({
   selector: 'lpg-add-brand-item-modal',
@@ -43,15 +51,26 @@ import {
    }
   `,
 })
-export class BrandItemModalComponent {
+export class BrandItemModalComponent implements OnInit {
+  @Input() item?: IBrandItem;
   itemForm: FormGroup;
+  isEditing = false;
 
   constructor(private modalCtrl: ModalController, private fb: FormBuilder) {
     this.itemForm = this.fb.group({
       name: ['', Validators.required],
       description: [''],
-      // Add other item fields as needed
     });
+  }
+
+  ngOnInit() {
+    if (this.item) {
+      this.isEditing = true;
+      this.itemForm.patchValue({
+        name: this.item.name,
+        description: this.item.description
+      });
+    }
   }
 
   cancel() {
@@ -60,7 +79,12 @@ export class BrandItemModalComponent {
 
   confirm() {
     if (this.itemForm.valid) {
-      return this.modalCtrl.dismiss(this.itemForm.value, 'confirm');
+      const formValue = this.itemForm.value;
+      const result: IBrandItem = {
+        ...formValue,
+        id: this.item?.id
+      };
+      return this.modalCtrl.dismiss(result, 'confirm');
     }
     return;
   }

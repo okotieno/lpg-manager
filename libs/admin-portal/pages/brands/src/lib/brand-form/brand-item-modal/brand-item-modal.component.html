@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Add Brand Item</ion-title>
+    <ion-title>{{ isEditing ? 'Edit Brand Item' : 'Add Brand Item' }}</ion-title>
     <ion-button shape="round" color="danger" fill="clear" slot="end" (click)="cancel()">
       <ion-icon color="light" slot="icon-only" name="xmark"></ion-icon>
     </ion-button>
@@ -23,8 +23,8 @@
     <ion-item lines="none">
       <ion-textarea
         [autoGrow]="true"
-        label="Name"
-        placeholder="Enter Name"
+        label="Description"
+        placeholder="Enter Description"
         labelPlacement="stacked"
         formControlName="description"
         type="text"
@@ -41,7 +41,7 @@
       color="primary"
       (click)="confirm()"
       [disabled]="!itemForm.valid">
-      Add
+      {{ isEditing ? 'Update' : 'Add' }}
     </ion-button>
   </ion-toolbar>
 </ion-footer>

@@ -7,7 +7,7 @@ import {
   untracked
 } from '@angular/core';
 import {
-  IonButton,
+  IonButton, IonButtons,
   IonCard,
   IonCardContent, IonIcon,
   IonInput,
@@ -22,7 +22,7 @@ import { ICreateBrandGQL, IUpdateBrandGQL } from '@lpg-manager/brand-store';
 import { IBrandModel, ISelectCategory } from '@lpg-manager/types';
 import { FileUploadComponent } from '@lpg-manager/file-upload-component';
 import { ModalController } from '@ionic/angular/standalone';
-import { BrandItemModalComponent } from './brand-item-modal/brand-item-modal.component';
+import { BrandItemModalComponent, IBrandItem } from './brand-item-modal/brand-item-modal.component';
 import { JsonPipe, NgTemplateOutlet } from '@angular/common';
 
 @Component({
@@ -45,6 +45,7 @@ import { JsonPipe, NgTemplateOutlet } from '@angular/common';
     IonIcon,
     NgTemplateOutlet,
     JsonPipe,
+    IonButtons,
   ],
   templateUrl: './brand-form.component.html',
   providers: [PermissionsStore],
@@ -117,11 +118,11 @@ export default class BrandFormComponent {
       }
     }
   }
-  async openAddItemModal() {
+  async openAddItemModal(item?: IBrandItem) {
     const modal = await this.#modalCtrl.create({
       component: BrandItemModalComponent,
       componentProps: {
-        // Add any props you want to pass to the modal
+        item: item, // Pass the item if editing
       },
     });
 
@@ -129,10 +130,23 @@ export default class BrandFormComponent {
 
     const { data, role } = await modal.onWillDismiss();
     if (role === 'confirm' && data) {
-      this.brandItems.update((brandItems) => {
-        brandItems.push(data);
-        return [...brandItems];
-      });
+      if (item) {
+        // Update existing item
+        this.brandItems.update((brandItems) => {
+          const index = brandItems.findIndex((i) => i.id === item.id);
+          if (index !== -1) {
+            brandItems[index] = data;
+          }
+          return [...brandItems];
+        });
+      } else {
+        // Add new item
+        this.brandItems.update((brandItems) => {
+          data.id = crypto.randomUUID(); // Add unique ID for new items
+          brandItems.push(data);
+          return [...brandItems];
+        });
+      }
     }
   }
   async confirm() {

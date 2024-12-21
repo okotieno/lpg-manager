@@ -45,10 +45,16 @@
               <h2>{{ item.name }}</h2>
               <p>{{ item.description }}</p>
             </ion-label>
-            <ion-button slot="end" fill="clear" color="danger"
-                        (click)="removeItem(item)">
-              <ion-icon name="trash-can"></ion-icon>
-            </ion-button>
+            <ion-buttons>
+              <ion-button shape="round" fill="clear" color="primary"
+                          (click)="openAddItemModal(item)">
+                <ion-icon slot="icon-only" name="pen-to-square"></ion-icon>
+              </ion-button>
+              <ion-button shape="round" fill="clear" color="danger"
+                          (click)="removeItem(item)">
+                <ion-icon slot="icon-only" name="trash-can"></ion-icon>
+              </ion-button>
+            </ion-buttons>
           </ion-item>
         }
         <ng-template
