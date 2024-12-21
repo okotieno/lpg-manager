@@ -3,27 +3,40 @@ import {
   computed,
   effect,
   inject,
-  input, signal,
-  untracked
+  input,
+  signal,
+  untracked,
 } from '@angular/core';
 import {
-  IonButton, IonButtons,
+  AlertController,
+  IonButton,
+  IonButtons,
   IonCard,
-  IonCardContent, IonIcon,
+  IonCardContent,
+  IonIcon,
   IonInput,
-  IonItem, IonLabel, IonList, IonListHeader,
-  IonText
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonText,
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { PermissionsStore } from '@lpg-manager/permission-store';
 import { ICreateBrandGQL, IUpdateBrandGQL } from '@lpg-manager/brand-store';
-import { IBrandModel, ISelectCategory } from '@lpg-manager/types';
+import {
+  IBrandModel,
+  ISelectCategory,
+  IUpdateBrandCatalogueInput,
+} from '@lpg-manager/types';
 import { FileUploadComponent } from '@lpg-manager/file-upload-component';
 import { ModalController } from '@ionic/angular/standalone';
-import { BrandItemModalComponent, IBrandItem } from './brand-item-modal/brand-item-modal.component';
-import { JsonPipe, NgTemplateOutlet } from '@angular/common';
+import {
+  BrandItemModalComponent
+} from './brand-item-modal/brand-item-modal.component';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'lpg-brand-form',
@@ -44,15 +57,15 @@ import { JsonPipe, NgTemplateOutlet } from '@angular/common';
     IonLabel,
     IonIcon,
     NgTemplateOutlet,
-    JsonPipe,
     IonButtons,
   ],
   templateUrl: './brand-form.component.html',
   providers: [PermissionsStore],
 })
 export default class BrandFormComponent {
-  brandItems = signal<any[]>([]);
+  brandItems = signal<IUpdateBrandCatalogueInput[]>([]);
   #modalCtrl = inject(ModalController);
+  #alertController = inject(AlertController);
   #fb = inject(FormBuilder);
   #createRoleGQL = inject(ICreateBrandGQL);
   #updateRoleGQL = inject(IUpdateBrandGQL);
@@ -83,17 +96,24 @@ export default class BrandFormComponent {
     this.brandForm.updateValueAndValidity();
     if (this.brandForm.valid) {
       const { name, companyName, images } = this.brandForm.value;
+      const params = {
+        name: name as string,
+        companyName: companyName as string,
+        images: images?.map((x) => ({ id: x?.id as string })),
+        catalogues: this.brandItems().map(
+          ({ id, price, name, unit, description }) => ({
+            id,
+            price,
+            name,
+            unit,
+            description,
+          })
+        ),
+      };
 
       if (this.isEditing() && this.roleId()) {
         this.#updateRoleGQL
-          .mutate({
-            id: this.roleId() as string,
-            params: {
-              name: name as string,
-              companyName: companyName as string,
-              images: images?.map((x) => ({ id: x?.id as string })),
-            },
-          })
+          .mutate({ id: this.roleId() as string, params })
           .subscribe({
             next: async () => {
               await this.#router.navigate(['../../'], {
@@ -102,23 +122,16 @@ export default class BrandFormComponent {
             },
           });
       } else {
-        this.#createRoleGQL
-          .mutate({
-            params: {
-              name: name as string,
-              companyName: companyName as string,
-              images: images?.map((x) => ({ id: x?.id as string })),
-            },
-          })
-          .subscribe({
-            next: async () => {
-              await this.#router.navigate(['../'], { relativeTo: this.#route });
-            },
-          });
+        this.#createRoleGQL.mutate({ params }).subscribe({
+          next: async () => {
+            await this.#router.navigate(['../'], { relativeTo: this.#route });
+          },
+        });
       }
     }
   }
-  async openAddItemModal(item?: IBrandItem) {
+
+  async openAddItemModal(item?: IUpdateBrandCatalogueInput) {
     const modal = await this.#modalCtrl.create({
       component: BrandItemModalComponent,
       componentProps: {
@@ -149,6 +162,7 @@ export default class BrandFormComponent {
       }
     }
   }
+
   async confirm() {
     if (this.brandItems().length === 0) {
       // Show error or warning that items are required
@@ -163,13 +177,28 @@ export default class BrandFormComponent {
     };
     // Call your service method to save
   }
-  removeItem(item: any) {
-    const index = this.brandItems().indexOf(item);
-    if (index > -1) {
-      this.brandItems.update((brandItems) => {
-        brandItems.splice(index, 1);
-        return brandItems;
-      });
-    }
+
+  async removeItem(item: IUpdateBrandCatalogueInput) {
+    const alert = await this.#alertController.create({
+      header: 'Confirm Deletion',
+      message: 'Are you sure you want to remove this item?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Remove',
+          role: 'confirm',
+          handler: () => {
+            this.brandItems.update((items) =>
+              items.filter((i) => i.id !== item.id)
+            );
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

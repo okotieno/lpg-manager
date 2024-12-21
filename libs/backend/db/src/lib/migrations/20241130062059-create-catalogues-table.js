@@ -30,10 +30,15 @@ module.exports = {
       },
       price: {
         type: Sequelize.DECIMAL(10, 2),
+        allowNull: true
+      },
+      quantity: {
+        type: Sequelize.DECIMAL(10, 2),
         allowNull: false
       },
       unit: {
         type: Sequelize.ENUM('KG', 'LITRE'),
+        defaultValue: 'KG',
         allowNull: false
       },
       createdAt: {
@@ -59,4 +64,4 @@ module.exports = {
   async down(queryInterface) {
     await queryInterface.dropTable('catalogues');
   }
-}; 
+};

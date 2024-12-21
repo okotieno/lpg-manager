@@ -15,7 +15,7 @@ export type IGetBrandByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetBrandByIdQuery = { brand?: { id: string, name: string, companyName?: string | null, images?: Array<{ originalName?: string | null, url?: any | null, id: string } | null> | null } | null };
+export type IGetBrandByIdQuery = { brand?: { id: string, name: string, companyName?: string | null, images?: Array<{ originalName?: string | null, url?: any | null, id: string } | null> | null, catalogues?: Array<{ name: string } | null> | null } | null };
 
 export type IGetBrandsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
@@ -70,6 +70,9 @@ export const GetBrandByIdDocument = gql`
       originalName
       url
       id
+    }
+    catalogues {
+      name
     }
   }
 }

@@ -21,6 +21,9 @@ query GetBrandById($id: String!) {
       url
       id
     }
+    catalogues {
+      name
+    }
   }
 }
 

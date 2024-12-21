@@ -3,18 +3,36 @@ type BrandModel {
   name: String!
   companyName: String
   images: [FileUploadModel]
+  catalogues: [CatalogueModel]
+}
+
+input CreateBrandCatalogueInput {
+  name: String!
+  description: String
+  price: Float
+  unit: CatalogueUnit!
+}
+
+input UpdateBrandCatalogueInput {
+  id: String
+  name: String!
+  description: String
+  price: Float
+  unit: CatalogueUnit!
 }
 
 input CreateBrandInput {
   name: String!
   companyName: String
   images: [SelectCategory]
+  catalogues: [CreateBrandCatalogueInput]
 }
 
 input UpdateBrandInput {
   name: String!
   companyName: String
   images: [SelectCategory]
+  catalogues: [UpdateBrandCatalogueInput]
 }
 
 type PaginatedBrand {
