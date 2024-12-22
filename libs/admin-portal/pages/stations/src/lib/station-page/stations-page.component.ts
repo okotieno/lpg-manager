@@ -1,17 +1,16 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonChip,
   IonCol,
   IonGrid,
   IonIcon,
   IonRow,
   IonText,
 } from '@ionic/angular/standalone';
-import { IRoleModel } from '@lpg-manager/types';
+import { IStationModel } from '@lpg-manager/types';
 import { TitleCasePipe } from '@angular/common';
 
 @Component({
@@ -28,7 +27,6 @@ import { TitleCasePipe } from '@angular/common';
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
-    IonChip
   ],
   templateUrl: './stations-page.component.html',
   styles: `
@@ -42,27 +40,8 @@ import { TitleCasePipe } from '@angular/common';
       display: flex;
       gap: 0.5rem;
     }
-
-    .permissions-container {
-      padding: 1rem 0;
-    }
-
-    .permissions-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .no-permissions {
-      color: var(--ion-color-medium);
-      font-style: italic;
-    }
   `,
 })
 export default class StationsPageComponent {
-  role = input<IRoleModel>();
-
-  hasPermissions = computed(() => {
-    return this.role()?.permissions && Number(this.role()?.permissions?.length) > 0;
-  });
+  station = input<IStationModel>();
 }

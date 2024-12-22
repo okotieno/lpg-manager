@@ -1,11 +1,3 @@
-<h2>
-  <ion-text color="lpg-title">
-    <ion-row class="ion-align-items-center">
-      Roles | {{ role()?.name | titlecase }}
-    </ion-row>
-  </ion-text>
-</h2>
-
 <ion-grid class="ion-no-margin">
   <ion-row class="ion-no-margin ion-no-padding">
     <ion-col size="12" size-md="12" class="ion-no-margin">
@@ -13,7 +5,7 @@
         <ion-card-header>
           <ion-card-title>
             <ion-text color="lpg-subtitle">
-              Role Details
+              Station Details
             </ion-text>
           </ion-card-title>
         </ion-card-header>
@@ -21,35 +13,16 @@
           <div class="details-container">
             <div class="detail-item">
               <strong>Name:</strong>
-              <span>{{ role()?.name | titlecase }}</span>
+              <span>{{ station()?.name | titlecase }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Type:</strong>
+              <span>{{ station()?.type | titlecase }}</span>
             </div>
             <div class="detail-item">
               <strong>ID:</strong>
-              <span>{{ role()?.id }}</span>
+              <span>{{ station()?.id }}</span>
             </div>
-          </div>
-        </ion-card-content>
-        <ion-card-header>
-          <ion-card-title>
-            <ion-text color="lpg-subtitle">
-              Permissions
-            </ion-text>
-          </ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <div class="permissions-container">
-            @if (hasPermissions()) {
-              <div class="permissions-grid">
-                @for (permission of role()?.permissions; track permission?.id) {
-                  <ion-chip color="success">
-                    <ion-icon name="shield-check" class="ion-margin-end" />
-                    {{ permission?.name | titlecase }}
-                  </ion-chip>
-                }
-              </div>
-            } @else {
-              <p class="no-permissions">No permissions assigned to this role</p>
-            }
           </div>
         </ion-card-content>
       </ion-card>
