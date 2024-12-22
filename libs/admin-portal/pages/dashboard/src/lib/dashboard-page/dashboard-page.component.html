@@ -35,6 +35,16 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-toolbar class="ion-padding-horizontal">
+    <lpg-breadcrumb [breadcrumbs]="breadcrumbs()"></lpg-breadcrumb>
+    <h2 class="ion-no-padding ion-no-margin">
+      <ion-text color="lpg-title">
+        <ion-row class="ion-align-items-center">
+          {{ pageTitle() | titlecase }}
+        </ion-row>
+      </ion-text>
+    </h2>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content id="main-content" class="ion-padding">

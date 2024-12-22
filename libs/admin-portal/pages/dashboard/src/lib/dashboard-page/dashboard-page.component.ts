@@ -12,11 +12,22 @@ import {
   IonMenuButton,
   IonTitle,
   IonToolbar,
-  IonPopover, IonListHeader,
+  IonPopover,
+  IonListHeader,
+  IonRow,
+  IonText,
 } from '@ionic/angular/standalone';
 import { ThemeService } from '@lpg-manager/theme-service';
-import { AuthStore } from '@lpg-manager/auth-store';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterOutlet,
+} from '@angular/router';
+import { BreadcrumbComponent, BreadcrumbStore, IBreadcrumb } from '@lpg-manager/breadcrumb';
+import { filter, tap } from 'rxjs';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-dashboard',
@@ -38,6 +49,10 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
     IonListHeader,
     RouterOutlet,
     RouterLink,
+    BreadcrumbComponent,
+    IonRow,
+    IonText,
+    TitleCasePipe,
   ],
   templateUrl: './dashboard-page.component.html',
   styles: `
@@ -47,12 +62,14 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
   `,
 })
 export default class DashboardComponent {
-  private themeService = inject(ThemeService);
-  private authStore = inject(AuthStore);
-  private router = inject(Router);
+  #themeService = inject(ThemeService);
+  #router = inject(Router);
+  #route = inject(ActivatedRoute);
+  #breadcrumbStore = inject(BreadcrumbStore);
+  pageTitle = this.#breadcrumbStore.pageTitle;
 
   currentThemeIcon = computed(() => {
-    switch (this.themeService.theme()) {
+    switch (this.#themeService.theme()) {
       case 'light':
         return 'sun';
       case 'dark':
@@ -64,18 +81,35 @@ export default class DashboardComponent {
 
   toggleTheme() {
     const themes = ['system', 'light', 'dark'] as const;
-    const currentIndex = themes.indexOf(this.themeService.theme());
+    const currentIndex = themes.indexOf(this.#themeService.theme());
     const nextTheme = themes[(currentIndex + 1) % themes.length];
-    this.themeService.setTheme(nextTheme);
+    this.#themeService.setTheme(nextTheme);
   }
 
   async logout() {
     // await this.authStore.logout();
-    await this.router.navigate(['/login']);
+    await this.#router.navigate(['/login']);
   }
 
   goToProfile() {
     // Implement profile navigation
     console.log('Navigate to profile');
   }
+
+  breadcrumbs = computed(() => {
+    const crumbs: IBreadcrumb[] = [{ label: 'Dashboard', path: '/dashboard' }];
+    let currentRoute = this.#route.firstChild;
+
+    while (currentRoute) {
+      if (currentRoute.snapshot.data['routeLabel']) {
+        crumbs.push({
+          label: currentRoute.snapshot.data['routeLabel'],
+          path: this.#router.url,
+        });
+      }
+      currentRoute = currentRoute.firstChild;
+    }
+
+    return crumbs;
+  });
 }

@@ -10,7 +10,6 @@ import { IStationModel } from '@lpg-manager/types';
   standalone: true,
   imports: [CdkTableModule, DataTableComponent],
   template: `<lpg-data-table
-    pageTitle="Stations"
     createNewIcon="plus"
     [store]="stationsStore"
     [columns]="allColumns"

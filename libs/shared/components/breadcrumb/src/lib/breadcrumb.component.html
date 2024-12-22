@@ -1,0 +1,12 @@
+<div class="breadcrumb-container">
+  @for (crumb of breadcrumbs(); track crumb.label; let last = $last) {
+    @if (!last && crumb.path) {
+      <a [routerLink]="[crumb.path]">
+        <ion-text class="ion-no-margin ion-no-padding" color="primary">{{ crumb.label }}</ion-text>
+      </a>
+      <ion-icon class="ion-no-margin ion-no-padding" name="chevron-right" color="medium"></ion-icon>
+    } @else {
+      <ion-text color="medium" class="ion-no-margin ion-no-padding">{{ crumb.label }}</ion-text>
+    }
+  }
+</div>

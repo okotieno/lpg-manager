@@ -8,6 +8,9 @@ export const USERS_ROUTES: Routes = [
     path: '',
     loadComponent: () =>
       import('./users-landing-page/users-landing-page.component'),
+    data: {
+      routeLabel: "User management"
+    }
   },
   {
     path: 'users',
@@ -16,10 +19,16 @@ export const USERS_ROUTES: Routes = [
         path: '',
         pathMatch: 'full',
         loadComponent: () => import('./users-page/users-page.component'),
+        data: {
+          routeLabel: "Users"
+        }
       },
       {
         path: 'new',
         loadComponent: () => import('./user-form/user-form.component'),
+        data: {
+          routeLabel: "Create user"
+        }
       },
       {
         path: ':userId',
@@ -33,6 +42,9 @@ export const USERS_ROUTES: Routes = [
           {
             path: 'edit',
             loadComponent: () => import('./user-form/user-form.component'),
+            data: {
+              routeLabel: "Edit user"
+            }
           },
         ],
       },

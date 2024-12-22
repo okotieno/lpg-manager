@@ -10,7 +10,6 @@ import { IRoleModel } from '@lpg-manager/types';
   standalone: true,
   imports: [CdkTableModule, DataTableComponent],
   template: `<lpg-data-table
-    pageTitle="Roles"
     createNewIcon="shield-plus"
     createNewLabel="New Role"
     [store]="rolesStore"

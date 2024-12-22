@@ -4,8 +4,7 @@ import {
   IonCard,
   IonCardContent,
   IonInput,
-  IonItem,
-  IonText,
+  IonItem
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICreateUserGQL, IUpdateUserGQL } from '@lpg-manager/user-store';
@@ -25,7 +24,6 @@ import { PaginatedResource } from '@lpg-manager/data-table';
     IonItem,
     IonInput,
     IonButton,
-    IonText,
     RouterLink,
     SearchableSelectComponent,
   ],

@@ -59,7 +59,6 @@ const validateUUID = (control: AbstractControl) => {
   standalone: true,
   imports: [
     CdkTableModule,
-    IonText,
     IonButton,
     RouterLink,
     IonIcon,
@@ -86,7 +85,6 @@ const validateUUID = (control: AbstractControl) => {
 export class DataTableComponent<T> {
   popover = viewChild.required(IonPopover);
   #alertCtrl = inject(AlertController);
-  pageTitle = input<string>();
   createNewIcon = input<string>('plus');
   createNewLabel = input<string>('New');
   store = input.required<PaginatedResource<T>>();

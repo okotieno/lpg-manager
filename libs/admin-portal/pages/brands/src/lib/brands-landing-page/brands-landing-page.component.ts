@@ -10,7 +10,6 @@ import { IBrandModel } from '@lpg-manager/types';
   standalone: true,
   imports: [CdkTableModule, DataTableComponent],
   template: `<lpg-data-table
-    pageTitle="Brands"
     createNewIcon="shield-plus"
     [store]="brandsStore"
     [columns]="allColumns"

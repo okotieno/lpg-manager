@@ -1,0 +1,14 @@
+.breadcrumb-container {
+  display: flex;
+  align-items: center;
+  a {
+    text-decoration: none;
+  }
+  ion-icon {
+    font-size: 12px;
+  }
+  ion-text {
+    margin: 0 !important;
+    margin-bottom: 0.5rem !important;
+  }
+}
