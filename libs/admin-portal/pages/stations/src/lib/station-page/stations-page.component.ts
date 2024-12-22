@@ -6,7 +6,6 @@ import {
   IonCardTitle,
   IonCol,
   IonGrid,
-  IonIcon,
   IonRow,
   IonText,
 } from '@ionic/angular/standalone';
@@ -19,7 +18,6 @@ import { TitleCasePipe } from '@angular/common';
   imports: [
     IonText,
     TitleCasePipe,
-    IonIcon,
     IonRow,
     IonGrid,
     IonCol,

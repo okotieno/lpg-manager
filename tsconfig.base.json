@@ -55,6 +55,12 @@
       "@lpg-manager/dashboard-page": [
         "libs/admin-portal/pages/dashboard/src/index.ts"
       ],
+      "@lpg-manager/dealer-dashboard-page": [
+        "libs/dealer/pages/dashboard/src/index.ts"
+      ],
+      "@lpg-manager/dealer-catalogues-page": [
+        "libs/dealer/pages/catalogues/src/index.ts"
+      ],
       "@lpg-manager/data-table": [
         "libs/shared/components/data-table/src/index.ts"
       ],
