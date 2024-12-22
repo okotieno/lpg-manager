@@ -10,7 +10,7 @@ import {
 import { withEntities } from '@ngrx/signals/entities';
 import { computed, resource, ResourceRef } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client';
-import { Query } from 'apollo-angular';
+import { Mutation, MutationResult, Query } from 'apollo-angular';
 import {
   IQueryParams,
   IQueryParamsFilter,
@@ -26,7 +26,14 @@ export type IGetItemsQuery<T, P extends string> = {
   };
 };
 
+export type IDeleteItemMutation<D extends string> = {
+  [K in D]?: {
+    message: string;
+  } | null;
+};
+
 interface StoreState<T, P extends string> {
+  deleteItemId?: string;
   sortBy: keyof T;
   sortByDirection: ISortByEnum;
   filters: IQueryParamsFilter[];
@@ -40,16 +47,18 @@ interface StoreState<T, P extends string> {
 
 export const withPaginatedItemsStore = <
   T,
-  P extends string,
   V extends {
     query?: IQueryParams | null;
-  }
+  },
+  C extends string,
+  D extends string,
 >() =>
   signalStoreFeature(
     {
       props: type<{
-        _getItemsGQL: Query<IGetItemsQuery<T, P>, V>;
-        _getItemsKey: string;
+        _getItemsGQL: Query<IGetItemsQuery<T, C>, V>;
+        _deleteItemWithIdGQL: Mutation<IDeleteItemMutation<D>, { id: string }>;
+        _getItemKey: string;
       }>(),
     },
     withEntities<T>(),
@@ -59,9 +68,12 @@ export const withPaginatedItemsStore = <
       totalItems: 0,
       itemsResource: undefined,
       items: [],
-    } as StoreState<T, P>),
+      deleteItemId: undefined,
+    } as StoreState<T, C>),
     withComputed((store) => ({
       isLoading: computed(() => !!store.itemsResource?.()?.isLoading()),
+      _getItemsKey: computed(() => store._getItemKey + 's'),
+      _deleteItemWithIdKey: computed(() => `delete${store._getItemKey}`),
     })),
     withProps((store) => ({
       _itemResource: resource({
@@ -91,7 +103,7 @@ export const withPaginatedItemsStore = <
                   console.log(result);
                   if (result) {
                     const getItemsKey =
-                      store._getItemsKey as keyof IGetItemsQuery<T, P>;
+                      store._getItemsKey() as keyof IGetItemsQuery<T, C>;
                     const newItems = result.data[getItemsKey].items ?? [];
 
                     patchState(store, { items: [...newItems] as T[] });
@@ -103,7 +115,24 @@ export const withPaginatedItemsStore = <
                     }
                   }
                 })
-              ) as Observable<ApolloQueryResult<IGetItemsQuery<T, P>>>
+              ) as Observable<ApolloQueryResult<IGetItemsQuery<T, C>>>
+          );
+        },
+      }),
+      _deleteItemWithIdResource: resource({
+        request: () => ({ id: store.deleteItemId?.() }),
+        loader: ({ request }) => {
+          console.log('reached 6', request);
+          const id = request.id;
+          if (!id) {
+            return Promise.resolve(undefined);
+          }
+          return lastValueFrom(
+            store._deleteItemWithIdGQL?.mutate({ id }).pipe(
+              tap((result) => {
+                console.log(result);
+              })
+            ) as Observable<MutationResult<IDeleteItemMutation<C>>>
           );
         },
       }),
@@ -134,6 +163,9 @@ export const withPaginatedItemsStore = <
       fetchNextPage() {
         patchState(store, { currentPage: store.currentPage() + 1 });
         store.itemsResource?.()?.reload();
+      },
+      deleteItemWithId(id: string) {
+        patchState(store, { deleteItemId: id });
       },
     }))
   );

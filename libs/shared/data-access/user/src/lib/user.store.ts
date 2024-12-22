@@ -1,9 +1,7 @@
-import {
-  signalStore,
-  withProps
-} from '@ngrx/signals';
+import { signalStore, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
+  IDeleteUserByIdGQL,
   IGetUsersGQL,
   IGetUsersQueryVariables,
 } from './schemas/user.generated';
@@ -12,8 +10,14 @@ import { IUserModel } from '@lpg-manager/types';
 
 export const UserStore = signalStore(
   withProps(() => ({
+    _getItemKey: 'station',
     _getItemsGQL: inject(IGetUsersGQL),
-    _getItemsKey: 'users',
+    _deleteItemWithIdGQL: inject(IDeleteUserByIdGQL),
   })),
-  withPaginatedItemsStore<IUserModel, 'users', IGetUsersQueryVariables>(),
+  withPaginatedItemsStore<
+    IUserModel,
+    IGetUsersQueryVariables,
+    'users',
+    'deleteUser'
+  >()
 );

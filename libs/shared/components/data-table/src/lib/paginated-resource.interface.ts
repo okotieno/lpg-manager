@@ -1,5 +1,6 @@
 import { Signal } from '@angular/core';
-import { IQueryParamsFilter, ISortByEnum } from '@lpg-manager/types';
+import { IQueryParamsFilter, ISortByEnum, ISuccessResponse } from '@lpg-manager/types';
+import { Observable } from 'rxjs';
 
 export interface PaginatedResource<T> {
   sortBy: Signal<keyof T>;
@@ -19,6 +20,8 @@ export interface PaginatedResource<T> {
   setFilters(filters: IQueryParamsFilter[]): void;
 
   setSearchTerm(value: string): void;
+
+  deleteItemWithId(id: string): void
 }
 
 

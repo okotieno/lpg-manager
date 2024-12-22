@@ -7,7 +7,7 @@ import {
   signal,
   untracked,
   viewChild,
-  WritableSignal,
+  WritableSignal
 } from '@angular/core';
 import { CdkTableModule } from '@angular/cdk/table';
 import {
@@ -19,13 +19,13 @@ import {
   IonIcon,
   IonInput,
   IonPopover,
-  IonRow, IonSearchbar,
+  IonRow,
+  IonSearchbar,
   IonSelect,
   IonSelectOption,
   IonSkeletonText,
-  IonText,
   IonTitle,
-  IonToolbar
+  IonToolbar,
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
@@ -42,17 +42,17 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { validate as isValidUUID } from 'uuid';
 
 const validateUUID = (control: AbstractControl) => {
-  if(isValidUUID(control.value)) {
+  if (isValidUUID(control.value)) {
     return null;
   }
   return { uuid: 'Invalid UUID' };
-}
+};
 
 @Component({
   selector: 'lpg-data-table',
@@ -82,14 +82,14 @@ const validateUUID = (control: AbstractControl) => {
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.css',
 })
-export class DataTableComponent<T> {
-  popover = viewChild.required(IonPopover);
+export class DataTableComponent<T extends { id: string }> {
   #alertCtrl = inject(AlertController);
+  popover = viewChild.required(IonPopover);
   createNewIcon = input<string>('plus');
   createNewLabel = input<string>('New');
   store = input.required<PaginatedResource<T>>();
   columns = input<ITableColumn<T>[]>([
-    { label: 'id', key: 'id' as keyof T, fieldType: 'uuid' },
+    { label: 'id', key: 'id', fieldType: 'uuid' },
     { label: 'name', key: 'name' as keyof T },
   ]);
 
@@ -359,6 +359,7 @@ export class DataTableComponent<T> {
       formArray.removeAt(0);
     }
   }
+
   async confirmClearSearch() {
     const alert = await this.#alertCtrl.create({
       header: 'Confirmation',
@@ -384,5 +385,43 @@ export class DataTableComponent<T> {
 
   handleSearch($event: CustomEvent) {
     this.store().setSearchTerm($event.detail.value);
+  }
+
+  async deleteItem(id: string) {
+    const alert = await this.#alertCtrl.create({
+      header: 'Confirm Deletion',
+      message: 'Are you sure you want to delete this item?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Delete',
+          role: 'confirm',
+          handler: () => {
+            console.log('reached 1');
+            this.store().deleteItemWithId(id);
+            console.log('reached 2');
+              // .mutate(
+              //   { id: item.id },
+              //   {
+              //     context: {
+              //       [SHOW_ERROR_MESSAGE]: true,
+              //       [SHOW_SUCCESS_MESSAGE]: true,
+              //     },
+              //   }
+              // )
+              // .subscribe({
+              //   next: () => {
+              //     this.stationsStore.loadItems();
+              //   },
+              // });
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

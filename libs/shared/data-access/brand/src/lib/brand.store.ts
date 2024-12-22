@@ -4,16 +4,18 @@ import {
 } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
+  IDeleteBrandByIdGQL,
   IGetBrandsGQL,
-  IGetBrandsQueryVariables,
+  IGetBrandsQueryVariables
 } from './brand.generated';
 import { IBrandModel } from '@lpg-manager/types';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
 export const BrandsStore = signalStore(
   withProps(() => ({
+    _getItemKey: 'brand',
     _getItemsGQL: inject(IGetBrandsGQL),
-    _getItemsKey: 'brands',
+    _deleteItemWithIdGQL: inject(IDeleteBrandByIdGQL),
   })),
-  withPaginatedItemsStore<IBrandModel, 'brands', IGetBrandsQueryVariables>(),
+  withPaginatedItemsStore<IBrandModel, IGetBrandsQueryVariables, 'brands', 'deleteBrand'>(),
 );
