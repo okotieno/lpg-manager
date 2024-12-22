@@ -6,3 +6,7 @@ moon
 bell
 gear
 house
+hourglass
+circle-check
+circle-plus
+timer

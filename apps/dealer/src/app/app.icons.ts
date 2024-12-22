@@ -6,5 +6,9 @@ export const APP_ICONS = [
   'moon',
   'bell',
   'gear',
-  'house'
+  'house',
+  'hourglass',
+  'circle-check',
+  'circle-plus',
+  'timer',
 ];

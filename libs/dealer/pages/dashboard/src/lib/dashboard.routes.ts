@@ -4,11 +4,16 @@ export const DASHBOARD_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () => import('./dashboard-page/dashboard-page.component'),
-    children: [],
-  },
-  {
-    path: 'catalogues',
-    loadChildren: () => import('@lpg-manager/dealer-catalogues-page'),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./home-page/home-page.component'),
+      },
+      {
+        path: 'catalogues',
+        loadChildren: () => import('@lpg-manager/dealer-catalogues-page'),
+      },
+    ],
   },
 ];
-

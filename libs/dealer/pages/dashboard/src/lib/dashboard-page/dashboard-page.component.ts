@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -13,7 +13,6 @@ import {
   IonTitle,
   IonToolbar,
   IonPopover,
-  IonListHeader,
   IonRow,
   IonText,
 } from '@ionic/angular/standalone';
@@ -43,7 +42,6 @@ import { TitleCasePipe } from '@angular/common';
     IonItem,
     IonLabel,
     IonPopover,
-    IonListHeader,
     RouterOutlet,
     RouterLink,
     BreadcrumbComponent,
@@ -52,11 +50,7 @@ import { TitleCasePipe } from '@angular/common';
     TitleCasePipe,
   ],
   templateUrl: './dashboard-page.component.html',
-  styles: `
-    :host {
-      height: 100%;
-    }
-  `,
+  styleUrl: './dashboard-page.component.scss',
 })
 export default class DashboardComponent {
   #themeService = inject(ThemeService);
