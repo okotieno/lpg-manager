@@ -69,6 +69,7 @@
       "@lpg-manager/file-upload-store": [
         "libs/shared/data-access/file-upload/src/index.ts"
       ],
+      "@lpg-manager/form-exit-guard": ["libs/shared/guards/form-exit-guard/src/index.ts"],
       "@lpg-manager/graphql": ["libs/backend/graphql/src/index.ts"],
       "@lpg-manager/icon-service": ["libs/shared/services/icon/src/index.ts"],
       "@lpg-manager/injection-token": [

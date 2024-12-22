@@ -30,6 +30,7 @@ import {
   SHOW_SUCCESS_MESSAGE,
 } from '@lpg-manager/injection-token';
 import { defaultQueryParams } from '@lpg-manager/data-table';
+import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
 
 @Component({
   selector: 'lpg-station-form',
@@ -48,7 +49,7 @@ import { defaultQueryParams } from '@lpg-manager/data-table';
   templateUrl: './stations-form.component.html',
   providers: [PermissionsStore],
 })
-export default class StationsFormComponent {
+export default class StationsFormComponent implements IHasUnsavedChanges {
   #fb = inject(FormBuilder);
   #createStationGQL = inject(ICreateStationGQL);
   #updateStationGQL = inject(IUpdateStationGQL);
@@ -73,6 +74,9 @@ export default class StationsFormComponent {
     });
   });
 
+  get hasUnsavedChanges() {
+    return this.stationForm.dirty;
+  }
   async onSubmit() {
     this.stationForm.updateValueAndValidity();
     if (this.stationForm.valid) {
@@ -104,6 +108,7 @@ export default class StationsFormComponent {
           )
           .subscribe({
             next: async () => {
+              this.stationForm.reset();
               await this.#router.navigate(['../../'], {
                 relativeTo: this.#route,
               });
@@ -128,13 +133,14 @@ export default class StationsFormComponent {
               refetchQueries: [
                 {
                   query: GetStationsDocument,
-                  variables: defaultQueryParams
+                  variables: defaultQueryParams,
                 },
               ],
             }
           )
           .subscribe({
             next: async () => {
+              this.stationForm.reset();
               await this.#router.navigate(['../'], { relativeTo: this.#route });
             },
           });
