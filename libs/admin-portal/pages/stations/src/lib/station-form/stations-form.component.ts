@@ -8,13 +8,11 @@ import {
 } from '@angular/core';
 import {
   IonButton,
-  IonCard,
-  IonCardContent,
+  IonCol,
   IonInput,
-  IonItem,
+  IonItem, IonRow,
   IonSelect,
   IonSelectOption,
-  IonText,
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -36,15 +34,14 @@ import {
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    IonCard,
-    IonCardContent,
     IonItem,
     IonInput,
     IonButton,
-    IonText,
     RouterLink,
     IonSelect,
     IonSelectOption,
+    IonRow,
+    IonCol,
   ],
   templateUrl: './stations-form.component.html',
   providers: [PermissionsStore],
