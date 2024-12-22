@@ -1,44 +1,66 @@
-<ion-grid>
-  <ion-row>
-    <ion-col size="12">
-      <ion-card>
-        <ion-card-content>
-          <ion-list>
-            @for (catalogue of catalogues(); track catalogue.id) {
-              <ion-item>
-                @if (catalogue.brand?.images?.[0]?.url) {
-                  <ion-img
-                    slot="start"
-                    [src]="catalogue.brand?.images?.[0]?.url"
-                    style="width: 60px; height: 60px; object-fit: cover;"
-                  />
-                }
-
-                <ion-label>
-                  <h2>{{ catalogue.name }}</h2>
-                  <p>{{ catalogue.description }}</p>
-                  <p>
-                    Unit: {{ catalogue.unit }} |
-                    Quantity per unit: {{ catalogue.quantityPerUnit }}
-                    @if (catalogue.pricePerUnit) {
-                      | Price: {{ catalogue.pricePerUnit | currency }}
-                    }
-                  </p>
-                  <p>Brand: {{ catalogue.brand?.name }}</p>
-                </ion-label>
-              </ion-item>
-            }
-
-            @if (!catalogues().length) {
-              <ion-item>
-                <ion-label color="medium">
-                  No catalogues available
-                </ion-label>
-              </ion-item>
-            }
-          </ion-list>
-        </ion-card-content>
-      </ion-card>
+<ion-grid class="ion-padding">
+  <!-- Search Bar -->
+  <ion-row class="ion-margin-bottom">
+    <ion-col size="12" size-md="6" offset-md="3">
+      <ion-searchbar
+        placeholder="Search catalogues..."
+        (ionInput)="handleSearch($event)"
+      ></ion-searchbar>
     </ion-col>
+  </ion-row>
+
+  <!-- Catalogue Grid -->
+  <ion-row>
+    @for (catalogue of catalogues(); track catalogue.id) {
+      <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
+        <ion-card class="catalogue-card">
+          <div class="image-container">
+            <ion-img
+              [src]="catalogue.brand?.images?.[0]?.url ?? 'no-image-placeholder.webp'"
+              class="catalogue-image"
+            ></ion-img>
+            @if (catalogue.pricePerUnit) {
+              <div class="price-tag">
+                {{ catalogue.pricePerUnit | currency }}
+              </div>
+            }
+          </div>
+
+          <ion-card-header>
+            <ion-card-title class="ion-text-wrap">{{ catalogue.name }}</ion-card-title>
+            <ion-card-subtitle>{{ catalogue.brand?.name }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p class="description">{{ catalogue.description || 'No description available' }}</p>
+
+            <div class="specs">
+              <ion-text color="medium">
+                <p>
+                  <ion-icon name="cube"></ion-icon>
+                  {{ catalogue.quantityPerUnit }} {{ catalogue.unit }}
+                </p>
+              </ion-text>
+            </div>
+
+            <ion-button expand="block" (click)="addToCart(catalogue)">
+              <ion-icon name="cart-plus" slot="start"></ion-icon>
+              Add to Cart
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    }
+
+    @if (!catalogues().length) {
+      <ion-col size="12">
+        <div class="ion-text-center ion-padding">
+          <ion-text color="medium">
+            <h2>No catalogues available</h2>
+            <p>Try adjusting your search criteria</p>
+          </ion-text>
+        </div>
+      </ion-col>
+    }
   </ion-row>
 </ion-grid>

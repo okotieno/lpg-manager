@@ -1,0 +1,97 @@
+.catalogue-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .image-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+
+    .catalogue-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .price-tag {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: var(--ion-color-primary);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-weight: bold;
+    }
+  }
+
+  ion-card-header {
+    padding-bottom: 8px;
+
+    ion-card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    ion-card-subtitle {
+      font-size: 0.9rem;
+      color: var(--ion-color-medium);
+    }
+  }
+
+  ion-card-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+
+    .description {
+      color: var(--ion-color-medium);
+      font-size: 0.9rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin: 0;
+    }
+
+    .specs {
+      p {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 4px 0;
+
+        ion-icon {
+          font-size: 1.2rem;
+        }
+      }
+    }
+
+    ion-button {
+      margin-top: auto;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 576px) {
+  .catalogue-card {
+    .image-container {
+      height: 150px;
+    }
+
+    ion-card-header {
+      ion-card-title {
+        font-size: 1rem;
+      }
+    }
+  }
+}

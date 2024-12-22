@@ -3,16 +3,14 @@ import { CataloguesStore } from '@lpg-manager/catalogue-store';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { ICatalogueModel } from '@lpg-manager/types';
 import {
+  IonButton,
   IonCard,
-  IonCardContent,
+  IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle,
   IonCol,
-  IonGrid,
+  IonGrid, IonIcon,
   IonImg,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonRow,
-  IonText,
+  IonRow, IonSearchbar,
+  IonText
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
 
@@ -25,14 +23,18 @@ import { CurrencyPipe } from '@angular/common';
     IonCol,
     IonCard,
     IonCardContent,
-    IonList,
-    IonItem,
-    IonLabel,
     IonText,
     IonImg,
     CurrencyPipe,
+    IonSearchbar,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonIcon,
+    IonButton,
   ],
   templateUrl: './catalogues-page.component.html',
+  styleUrl: './catalogues-page.component.scss',
   providers: [CataloguesStore],
 })
 export default class CataloguesPageComponent {
@@ -40,4 +42,15 @@ export default class CataloguesPageComponent {
     CataloguesStore
   ) as PaginatedResource<ICatalogueModel>;
   catalogues = this.cataloguesStore.items;
+
+  handleSearch(event: any) {
+    const searchTerm = event.target.value.toLowerCase();
+    // Implement search functionality through your store
+    this.cataloguesStore.setSearchTerm(searchTerm);
+  }
+
+  addToCart(catalogue: ICatalogueModel) {
+    // Implement add to cart functionality
+    console.log('Adding to cart:', catalogue);
+  }
 }

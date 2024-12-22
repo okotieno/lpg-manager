@@ -10,3 +10,5 @@ hourglass
 circle-check
 circle-plus
 timer
+cart-plus
+cube
