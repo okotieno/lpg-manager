@@ -17,6 +17,7 @@ import {
   ISortByEnum,
 } from '@lpg-manager/types';
 import { lastValueFrom, Observable, tap } from 'rxjs';
+import { defaultQueryParams } from './default-variables';
 
 export type IGetItemsQuery<T, P extends string> = {
   [K in P]: {
@@ -53,12 +54,8 @@ export const withPaginatedItemsStore = <
     },
     withEntities<T>(),
     withState({
-      filters: [],
-      sortBy: 'id' as keyof T,
-      sortByDirection: ISortByEnum.Asc,
-      searchTerm: '',
-      currentPage: 1,
-      pageSize: 10,
+      ...defaultQueryParams.query,
+      sortBy: defaultQueryParams.query.sortBy as keyof T,
       totalItems: 0,
       itemsResource: undefined,
       items: [],
@@ -86,10 +83,12 @@ export const withPaginatedItemsStore = <
                     ...request,
                   },
                 } as V,
+
                 { fetchPolicy: 'cache-first' }
               )
               .pipe(
                 tap((result) => {
+                  console.log(result);
                   if (result) {
                     const getItemsKey =
                       store._getItemsKey as keyof IGetItemsQuery<T, P>;

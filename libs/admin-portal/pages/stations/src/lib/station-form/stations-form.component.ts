@@ -10,7 +10,8 @@ import {
   IonButton,
   IonCol,
   IonInput,
-  IonItem, IonRow,
+  IonItem,
+  IonRow,
   IonSelect,
   IonSelectOption,
 } from '@ionic/angular/standalone';
@@ -28,6 +29,7 @@ import {
   SHOW_ERROR_MESSAGE,
   SHOW_SUCCESS_MESSAGE,
 } from '@lpg-manager/injection-token';
+import { defaultQueryParams } from '@lpg-manager/data-table';
 
 @Component({
   selector: 'lpg-station-form',
@@ -95,6 +97,7 @@ export default class StationsFormComponent {
               refetchQueries: [
                 {
                   query: GetStationsDocument,
+                  variables: {},
                 },
               ],
             }
@@ -120,7 +123,14 @@ export default class StationsFormComponent {
                 [SHOW_ERROR_MESSAGE]: true,
                 [SHOW_SUCCESS_MESSAGE]: true,
               },
+
               awaitRefetchQueries: true,
+              refetchQueries: [
+                {
+                  query: GetStationsDocument,
+                  variables: defaultQueryParams
+                },
+              ],
             }
           )
           .subscribe({
