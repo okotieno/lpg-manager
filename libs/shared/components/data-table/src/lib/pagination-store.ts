@@ -135,7 +135,7 @@ export const withPaginatedItemsStore = <
       }),
     })),
     withComputed((store)=> ({
-      isLoading: computed(() => store._itemResource.isLoading()),
+      isLoading: computed(() => store._itemResource.isLoading() || store._deleteItemWithIdResource.isLoading()),
     })),
     withMethods((store) => ({
       searchItemsByTerm(searchTerm: string) {

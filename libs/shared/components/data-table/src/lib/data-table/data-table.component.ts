@@ -46,6 +46,7 @@ import {
 } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { validate as isValidUUID } from 'uuid';
+import { defaultQueryParams } from '../default-variables';
 
 const validateUUID = (control: AbstractControl) => {
   if (isValidUUID(control.value)) {
@@ -147,7 +148,7 @@ export class DataTableComponent<T extends { id: string }> {
   ]);
   items = computed(() => {
     if (this.isLoading()) {
-      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
+      return [...Array(defaultQueryParams.query.pageSize).keys()].map(
         (id) => ({ id: String(id) } as T)
       );
     } else {
@@ -400,23 +401,7 @@ export class DataTableComponent<T extends { id: string }> {
           text: 'Delete',
           role: 'confirm',
           handler: () => {
-            console.log('reached 1');
             this.store().deleteItemWithId(id);
-            console.log('reached 2');
-              // .mutate(
-              //   { id: item.id },
-              //   {
-              //     context: {
-              //       [SHOW_ERROR_MESSAGE]: true,
-              //       [SHOW_SUCCESS_MESSAGE]: true,
-              //     },
-              //   }
-              // )
-              // .subscribe({
-              //   next: () => {
-              //     this.stationsStore.loadItems();
-              //   },
-              // });
           },
         },
       ],

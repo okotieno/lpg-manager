@@ -1,3 +1,4 @@
+<lpg-pagination class="ion-padding-horizontal" />
 <ion-row class="ion-margin-bottom ion-justify-content-between">
   <ion-col class="ion-no-margin ion-no-padding">
     <ion-searchbar debounce="500" (ionInput)="handleSearch($event)"></ion-searchbar>
@@ -7,7 +8,7 @@
     {{ createNewLabel() }}
   </ion-button>
 </ion-row>
-<div class="table-container">
+<div class="table-container" style="position: relative">
   <table cdk-table [dataSource]="items()" class="items-table">
     @for (column of this.columns(); track column.key; let index = $index) {
       <ng-container [cdkColumnDef]="$any(column.key)">
@@ -94,8 +95,6 @@
     <tr cdk-row *cdkRowDef="let row; columns: displayedColumns()"></tr>
   </table>
 </div>
-
-<lpg-pagination />
 <ion-popover [isOpen]="filterIsOpen()" (didDismiss)="closeSearchDialog($event)">
   <ng-template>
     <ion-header class="ion-no-border">
