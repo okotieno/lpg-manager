@@ -49,6 +49,9 @@
       "@lpg-manager/catalogue-service": [
         "libs/backend/services/catalogue/src/index.ts"
       ],
+      "@lpg-manager/catalogue-store": [
+        "libs/shared/data-access/catalogue/src/index.ts"
+      ],
       "@lpg-manager/crud-abstract": [
         "libs/backend/services/crud-abstract/src/index.ts"
       ],

@@ -8,21 +8,21 @@ export type ICreateBrandMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateBrandMutation = { createBrand?: { message: string, data: { id: any } } | null };
+export type ICreateBrandMutation = { createBrand?: { message: string, data: { id: string } } | null };
 
 export type IGetBrandByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetBrandByIdQuery = { brand?: { id: any, name: string, companyName?: string | null, images?: Array<{ originalName?: string | null, url?: any | null, id: any } | null> | null, catalogues?: Array<{ name: string } | null> | null } | null };
+export type IGetBrandByIdQuery = { brand?: { id: string, name: string, companyName?: string | null, images?: Array<{ originalName?: string | null, url?: string | null, id: string } | null> | null, catalogues?: Array<{ name: string } | null> | null } | null };
 
 export type IGetBrandsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetBrandsQuery = { brands: { items?: Array<{ id: any, name: string, companyName?: string | null } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetBrandsQuery = { brands: { items?: Array<{ id: string, name: string, companyName?: string | null } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteBrandByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -37,7 +37,7 @@ export type IUpdateBrandMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateBrandMutation = { updateBrand?: { message: string, data: { id: any } } | null };
+export type IUpdateBrandMutation = { updateBrand?: { message: string, data: { id: string } } | null };
 
 export const CreateBrandDocument = gql`
     mutation CreateBrand($params: CreateBrandInput!) {

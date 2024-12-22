@@ -14,7 +14,16 @@ const config: CodegenConfig = {
       config: {
         addExplicitOverride: true,
         typesPrefix: 'I',
-        skipTypename: true
+        skipTypename: true,
+        scalars: {
+          DateTime: 'string',
+          URL: 'string',
+          UUID: 'string',
+          PositiveInt: 'number',
+          PositiveFloat: 'number',
+          EmailAddress: 'string',
+          PhoneNumber: 'string',
+        }
       }
     }
   },

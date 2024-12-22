@@ -8,21 +8,21 @@ export type ICreatePermissionMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreatePermissionMutation = { createPermission?: { message: string, data: { id: any } } | null };
+export type ICreatePermissionMutation = { createPermission?: { message: string, data: { id: string } } | null };
 
 export type IGetPermissionByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetPermissionByIdQuery = { permission?: { id: any, name: string } | null };
+export type IGetPermissionByIdQuery = { permission?: { id: string, name: string } | null };
 
 export type IGetPermissionsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetPermissionsQuery = { permissions: { items?: Array<{ id: any, name: string } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetPermissionsQuery = { permissions: { items?: Array<{ id: string, name: string } | null> | null, meta?: { totalItems: number } | null } };
 
 export const CreatePermissionDocument = gql`
     mutation CreatePermission($name: String!) {

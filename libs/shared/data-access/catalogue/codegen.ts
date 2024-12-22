@@ -3,8 +3,8 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 const config: CodegenConfig = {
   schema: 'libs/backend/graphql/src/lib/schemas',
   generates: {
-    [`libs/shared/data-access/brand/src/lib/graphql/generated.ts`]: {
-      documents: `libs/shared/data-access/brand/src/lib/**/*.gql`,
+    [`libs/shared/data-access/catalogue/src/lib/graphql/generated.ts`]: {
+      documents: `libs/shared/data-access/catalogue/src/lib/**/*.gql`,
       plugins: ['typescript-operations', 'typescript-apollo-angular'],
       preset: 'near-operation-file',
       presetConfig: {

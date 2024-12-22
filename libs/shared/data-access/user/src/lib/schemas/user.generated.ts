@@ -8,7 +8,7 @@ export type ICreateUserMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateUserMutation = { createUser?: { message: string, data: { id: any } } | null };
+export type ICreateUserMutation = { createUser?: { message: string, data: { id: string } } | null };
 
 export type IUpdateUserMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -16,21 +16,21 @@ export type IUpdateUserMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateUserMutation = { updateUser?: { message: string, data: { id: any } } | null };
+export type IUpdateUserMutation = { updateUser?: { message: string, data: { id: string } } | null };
 
 export type IGetUserByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetUserByIdQuery = { user?: { phone?: string | null, id: any, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null } | null };
+export type IGetUserByIdQuery = { user?: { phone?: string | null, id: string, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null } | null };
 
 export type IGetUsersQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetUsersQuery = { users: { items?: Array<{ id: any, firstName: string, lastName: string, email: string, phone?: string | null } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetUsersQuery = { users: { items?: Array<{ id: string, firstName: string, lastName: string, email: string, phone?: string | null } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IAssignRolesToUserMutationVariables = Types.Exact<{
   roles: Array<Types.InputMaybe<Types.ISelectCategory>> | Types.InputMaybe<Types.ISelectCategory>;
@@ -52,7 +52,7 @@ export type IUserWithRolesQueryVariables = Types.Exact<{
 }>;
 
 
-export type IUserWithRolesQuery = { user?: { phone?: string | null, id: any, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null } | null, userRoles?: { items?: Array<{ id: any, name: string, permissions?: Array<{ id: any, name: string } | null> | null } | null> | null, meta?: { totalItems: number } | null } | null };
+export type IUserWithRolesQuery = { user?: { phone?: string | null, id: string, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null } | null, userRoles?: { items?: Array<{ id: string, name: string, permissions?: Array<{ id: string, name: string } | null> | null } | null> | null, meta?: { totalItems: number } | null } | null };
 
 export type IGetUserCountQueryVariables = Types.Exact<{ [key: string]: never; }>;
 

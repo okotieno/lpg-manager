@@ -1,0 +1,49 @@
+mutation CreateCatalogue(
+  $params: CreateCatalogueInput!
+) {
+  createCatalogue(
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetCatalogueById($id: UUID!) {
+  catalogue(id: $id) {
+    id
+    name
+  }
+}
+
+query GetCatalogues($query: QueryParams) {
+  catalogues(query: $query) {
+    items {
+      id
+      name
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+mutation DeleteCatalogueById($id: UUID!) {
+  deleteCatalogue(id: $id) {
+    message
+  }
+}
+
+mutation UpdateCatalogue($id: UUID!, $params: UpdateCatalogueInput!) {
+  updateCatalogue(
+    id: $id
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}

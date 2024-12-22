@@ -8,21 +8,21 @@ export type ICreateStationMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateStationMutation = { createStation?: { message: string, data: { id: any } } | null };
+export type ICreateStationMutation = { createStation?: { message: string, data: { id: string } } | null };
 
 export type IGetStationByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetStationByIdQuery = { station?: { id: any, name: string, type: Types.IStationType } | null };
+export type IGetStationByIdQuery = { station?: { id: string, name: string, type: Types.IStationType } | null };
 
 export type IGetStationsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetStationsQuery = { stations: { items?: Array<{ id: any, name: string, type: Types.IStationType } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetStationsQuery = { stations: { items?: Array<{ id: string, name: string, type: Types.IStationType } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteStationByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -37,7 +37,7 @@ export type IUpdateStationMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateStationMutation = { updateStation?: { message: string, data: { id: any } } | null };
+export type IUpdateStationMutation = { updateStation?: { message: string, data: { id: string } } | null };
 
 export const CreateStationDocument = gql`
     mutation CreateStation($params: CreateStationInput!) {
