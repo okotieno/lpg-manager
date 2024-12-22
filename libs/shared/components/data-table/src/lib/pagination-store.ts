@@ -8,7 +8,7 @@ import {
   type,
 } from '@ngrx/signals';
 import { withEntities } from '@ngrx/signals/entities';
-import { computed, resource, ResourceRef } from '@angular/core';
+import { computed, resource } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client';
 import { Mutation, MutationResult, Query } from 'apollo-angular';
 import {
@@ -32,7 +32,7 @@ export type IDeleteItemMutation<D extends string> = {
   } | null;
 };
 
-interface StoreState<T, P extends string> {
+interface StoreState<T> {
   deleteItemId?: string;
   sortBy: keyof T;
   sortByDirection: ISortByEnum;
@@ -41,7 +41,6 @@ interface StoreState<T, P extends string> {
   currentPage: number;
   pageSize: number;
   totalItems: number;
-  itemsResource?: ResourceRef<ApolloQueryResult<IGetItemsQuery<T, P>>>;
   items: T[];
 }
 
@@ -66,12 +65,10 @@ export const withPaginatedItemsStore = <
       ...defaultQueryParams.query,
       sortBy: defaultQueryParams.query.sortBy as keyof T,
       totalItems: 0,
-      itemsResource: undefined,
       items: [],
       deleteItemId: undefined,
-    } as StoreState<T, C>),
+    } as StoreState<T>),
     withComputed((store) => ({
-      isLoading: computed(() => !!store.itemsResource?.()?.isLoading()),
       _getItemsKey: computed(() => store._getItemKey + 's'),
       _deleteItemWithIdKey: computed(() => `delete${store._getItemKey}`),
     })),
@@ -137,10 +134,12 @@ export const withPaginatedItemsStore = <
         },
       }),
     })),
+    withComputed((store)=> ({
+      isLoading: computed(() => store._itemResource.isLoading()),
+    })),
     withMethods((store) => ({
       searchItemsByTerm(searchTerm: string) {
         patchState(store, { currentPage: 1, searchTerm, items: [] });
-        store.itemsResource?.()?.reload();
       },
       setCurrentPage(page: number) {
         patchState(store, { currentPage: page });
@@ -162,7 +161,6 @@ export const withPaginatedItemsStore = <
       },
       fetchNextPage() {
         patchState(store, { currentPage: store.currentPage() + 1 });
-        store.itemsResource?.()?.reload();
       },
       deleteItemWithId(id: string) {
         patchState(store, { deleteItemId: id });
