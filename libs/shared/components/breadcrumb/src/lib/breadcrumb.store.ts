@@ -1,31 +1,32 @@
 import {
   patchState,
-  signalStore, withComputed,
+  signalStore,
+  withComputed,
   withHooks,
   withMethods,
   withProps,
-  withState
+  withState,
 } from '@ngrx/signals';
 import { computed, DestroyRef, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-interface Breadcrumb {
+export interface IBreadcrumb {
   label: string;
-  link?: string[];
+  path?: string[];
 }
 
 interface BreadcrumbState {
   _pageTitle: string;
   params: Record<string, string>;
-  breadcrumbs: Breadcrumb[];
+  _breadcrumbs: IBreadcrumb[];
 }
 
 const initialState: BreadcrumbState = {
   _pageTitle: '',
   params: {},
-  breadcrumbs: [],
+  _breadcrumbs: [],
 };
 export const BreadcrumbStore = signalStore(
   { providedIn: 'root' },
@@ -35,19 +36,30 @@ export const BreadcrumbStore = signalStore(
     _route: inject(ActivatedRoute),
   })),
   withState(initialState),
-  withComputed((store) => ({
-    pageTitle: computed(() => store._pageTitle().replace(/:([a-zA-Z0-9_]+)/g, (_, key) => store.params()[key] || ''))
+  withMethods((store) => ({
+    updatePageTitleParams: (values: Record<string, string>) => {
+      patchState(store, { params: values });
+    },
   })),
-  withMethods((store) => {
-    const v = (template: string, values: Record<string, string>) =>
+  withComputed((store) => {
+    const t = (template: string, values: Record<string, string>) =>
       template.replace(/:([a-zA-Z0-9_]+)/g, (_, key) => values[key] || '');
-
     return {
-      updatePageTitleParams: (values: Record<string, string>) => {
-        patchState(store, { params: values });
-      },
+      pageTitle: computed(() => t(store._pageTitle(), store.params())),
+      breadcrumbs: computed(
+        () =>
+          store._breadcrumbs().map((breadcrumb) => ({
+            path: t(
+              breadcrumb.path ? '#' + breadcrumb.path.join('/') : '',
+              store.params()
+            ),
+            label: t(breadcrumb.label, store.params()),
+          })),
+        {}
+      ),
     };
   }),
+
   withHooks((store) => ({
     onInit: () => {
       store._router.events
@@ -55,13 +67,16 @@ export const BreadcrumbStore = signalStore(
           filter((event) => event instanceof NavigationEnd),
           tap(() => {
             let _pageTitle = 'Dashboard';
+            let _breadcrumbs = [] as { label: string; link?: string[] }[];
             let currentRoute: ActivatedRoute | null = store._route.root;
             while (currentRoute) {
               if (currentRoute.snapshot.data['routeLabel'])
                 _pageTitle = currentRoute.snapshot.data['routeLabel'];
+              if (currentRoute.snapshot.data['breadcrumbs'])
+                _breadcrumbs = currentRoute.snapshot.data['breadcrumbs'];
               currentRoute = currentRoute.firstChild;
             }
-            patchState(store, { _pageTitle });
+            patchState(store, { _pageTitle, _breadcrumbs });
           }),
           takeUntilDestroyed(store._destroyRef)
         )

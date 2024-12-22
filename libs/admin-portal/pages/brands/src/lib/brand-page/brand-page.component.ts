@@ -44,16 +44,6 @@ import { TitleCasePipe } from '@angular/common';
       gap: 0.5rem;
     }
 
-    .catalogues-container {
-      padding: 1rem 0;
-    }
-
-    .catalogues-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
     .no-catalogues {
       color: var(--ion-color-medium);
       font-style: italic;

@@ -1,18 +1,16 @@
-import { Component, input } from '@angular/core';
-import { IonIcon, IonText } from '@ionic/angular/standalone';
+import { Component, inject } from '@angular/core';
+import { IonBreadcrumb, IonBreadcrumbs, IonIcon } from '@ionic/angular/standalone';
+import { BreadcrumbStore } from './breadcrumb.store';
 import { RouterLink } from '@angular/router';
-
-export interface IBreadcrumb {
-  label: string;
-  path?: string;
-}
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-breadcrumb',
-  imports: [IonIcon, RouterLink, IonText],
+  imports: [IonIcon, IonBreadcrumbs, IonBreadcrumb, RouterLink, TitleCasePipe],
   templateUrl: './breadcrumb.component.html',
   styleUrl: './breadcrumb.component.css',
 })
 export class BreadcrumbComponent {
-  breadcrumbs = input<IBreadcrumb[]>([]);
+  #breadcrumbStore = inject(BreadcrumbStore);
+  breadcrumbs = this.#breadcrumbStore.breadcrumbs;
 }

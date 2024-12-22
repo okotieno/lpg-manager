@@ -2,7 +2,7 @@ import {
   ApplicationConfig,
   provideExperimentalZonelessChangeDetection
 } from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withHashLocation } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { provideIonicAngular } from '@ionic/angular/standalone';
 import { provideApollo } from 'apollo-angular';
@@ -21,7 +21,7 @@ declare const process: {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
-    provideRouter(appRoutes, withComponentInputBinding()),
+    provideRouter(appRoutes, withComponentInputBinding(), withHashLocation()),
     provideIonicAngular({
       useSetInputAPI: true,
     }),

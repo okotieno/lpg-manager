@@ -1,11 +1,3 @@
-<h2>
-  <ion-text color="lpg-title">
-    <ion-row class="ion-align-items-center">
-      Brands | {{ brand()?.name | titlecase }}
-    </ion-row>
-  </ion-text>
-</h2>
-
 <ion-grid class="ion-no-margin">
   <ion-row class="ion-no-margin ion-no-padding">
     <ion-col size="12" size-md="12" class="ion-no-margin">
@@ -50,7 +42,7 @@
                     <h2>{{ catalogue?.name }}</h2>
                     <p>{{ catalogue?.description || 'No description available' }}</p>
                     <p>
-                      Unit: {{ catalogue?.unit }} | 
+                      Unit: {{ catalogue?.unit }} |
                       Quantity per unit: {{ catalogue?.quantityPerUnit }} |
                       Price per unit: {{ catalogue?.pricePerUnit || 'N/A' }}
                     </p>

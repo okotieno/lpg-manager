@@ -19,14 +19,11 @@ import {
 } from '@ionic/angular/standalone';
 import { ThemeService } from '@lpg-manager/theme-service';
 import {
-  ActivatedRoute,
-  NavigationEnd,
   Router,
   RouterLink,
   RouterOutlet,
 } from '@angular/router';
-import { BreadcrumbComponent, BreadcrumbStore, IBreadcrumb } from '@lpg-manager/breadcrumb';
-import { filter, tap } from 'rxjs';
+import { BreadcrumbComponent, BreadcrumbStore } from '@lpg-manager/breadcrumb';
 import { TitleCasePipe } from '@angular/common';
 
 @Component({
@@ -64,8 +61,8 @@ import { TitleCasePipe } from '@angular/common';
 export default class DashboardComponent {
   #themeService = inject(ThemeService);
   #router = inject(Router);
-  #route = inject(ActivatedRoute);
   #breadcrumbStore = inject(BreadcrumbStore);
+
   pageTitle = this.#breadcrumbStore.pageTitle;
 
   currentThemeIcon = computed(() => {
@@ -95,21 +92,4 @@ export default class DashboardComponent {
     // Implement profile navigation
     console.log('Navigate to profile');
   }
-
-  breadcrumbs = computed(() => {
-    const crumbs: IBreadcrumb[] = [{ label: 'Dashboard', path: '/dashboard' }];
-    let currentRoute = this.#route.firstChild;
-
-    while (currentRoute) {
-      if (currentRoute.snapshot.data['routeLabel']) {
-        crumbs.push({
-          label: currentRoute.snapshot.data['routeLabel'],
-          path: this.#router.url,
-        });
-      }
-      currentRoute = currentRoute.firstChild;
-    }
-
-    return crumbs;
-  });
 }

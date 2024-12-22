@@ -12,14 +12,14 @@ import {
   IonButton,
   IonButtons,
   IonCard,
-  IonCardContent,
+  IonCardContent, IonCol, IonFooter,
   IonIcon,
   IonInput,
   IonItem,
   IonLabel,
   IonList,
-  IonListHeader,
-  IonText,
+  IonListHeader, IonRow,
+  IonText
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -60,6 +60,9 @@ import {
     IonIcon,
     NgTemplateOutlet,
     IonButtons,
+    IonRow,
+    IonCol,
+    IonFooter,
   ],
   templateUrl: './brand-form.component.html',
   providers: [PermissionsStore],

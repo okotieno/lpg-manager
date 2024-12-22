@@ -1,7 +1,7 @@
 import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { inject } from '@angular/core';
 import { IGetBrandByIdGQL } from '@lpg-manager/brand-store';
-import { catchError, map, of, tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { BreadcrumbStore } from '@lpg-manager/breadcrumb';
 
 export const BRANDS_ROUTES: Routes = [
@@ -12,6 +12,10 @@ export const BRANDS_ROUTES: Routes = [
     pathMatch: 'full',
     data: {
       routeLabel: 'Brands',
+      breadcrumbs: [
+        { label: 'Administration', path: ['/dashboard', 'administration'] },
+        { label: 'Brands' },
+      ],
     },
   },
   {
@@ -19,22 +23,33 @@ export const BRANDS_ROUTES: Routes = [
     loadComponent: () => import('./brand-form/brand-form.component'),
     data: {
       routeLabel: 'Create Brand',
+      breadcrumbs: [
+        { label: 'Administration', path: ['/dashboard', 'administration'] },
+        { label: 'Brands', path: ['/dashboard', 'administration', 'brands'] },
+        { label: 'Create brand' },
+      ],
     },
   },
   {
     path: ':brandId',
     data: {
       routeLabel: 'Brands | :brandName',
+      breadcrumbs: [
+        { label: 'Administration', path: ['/dashboard', 'administration'] },
+        { label: 'Brands', path: ['/dashboard', 'administration', 'brands'] },
+        { label: ':brandName' },
+      ],
     },
     resolve: {
       brand: (route: ActivatedRouteSnapshot) => {
-        const breadCrumbStore = inject(BreadcrumbStore);
+        const breadcrumbStore = inject(BreadcrumbStore);
         return inject(IGetBrandByIdGQL)
           .fetch({ id: route.params['brandId'] })
           .pipe(
             map((res) => res.data.brand),
             tap((res) => {
-              breadCrumbStore.updatePageTitleParams({
+              breadcrumbStore.updatePageTitleParams({
+                brandId: res?.id ?? '',
                 brandName: res?.name ?? '',
               });
             })
@@ -51,14 +66,20 @@ export const BRANDS_ROUTES: Routes = [
         path: 'edit',
         data: {
           routeLabel: 'Edit brand | :brandName',
+          breadcrumbs: [
+            { label: 'Administration', path: ['/dashboard', 'administration'] },
+            {
+              label: 'Brands',
+              path: ['/dashboard', 'administration', 'brands'],
+            },
+            {
+              label: ':brandName',
+              path: ['/dashboard', 'administration', 'brands', ':brandId'],
+            },
+            { label: 'Edit' },
+          ],
         },
         loadComponent: () => import('./brand-form/brand-form.component'),
-        resolve: {
-          brand: (route: ActivatedRouteSnapshot) =>
-            inject(IGetBrandByIdGQL)
-              .fetch({ id: route.params['brandId'] })
-              .pipe(map((res) => res.data.brand)),
-        },
       },
     ],
   },

@@ -1,12 +1,11 @@
-<div class="breadcrumb-container">
+<ion-breadcrumbs>
+  <ion-breadcrumb href="#dashboard"><ion-icon name="house"></ion-icon></ion-breadcrumb>
   @for (crumb of breadcrumbs(); track crumb.label; let last = $last) {
-    @if (!last && crumb.path) {
-      <a [routerLink]="[crumb.path]">
-        <ion-text class="ion-no-margin ion-no-padding" color="primary">{{ crumb.label }}</ion-text>
-      </a>
-      <ion-icon class="ion-no-margin ion-no-padding" name="chevron-right" color="medium"></ion-icon>
+    @if (crumb.path) {
+      <ion-breadcrumb [routerLink]="crumb.path" [href]="crumb.path">{{ crumb.label | titlecase }}</ion-breadcrumb>
     } @else {
-      <ion-text color="medium" class="ion-no-margin ion-no-padding">{{ crumb.label }}</ion-text>
+      <ion-breadcrumb>{{ crumb.label | titlecase }}</ion-breadcrumb>
     }
   }
-</div>
+
+</ion-breadcrumbs>
