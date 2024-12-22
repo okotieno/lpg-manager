@@ -97,7 +97,6 @@ export const withPaginatedItemsStore = <
               )
               .pipe(
                 tap((result) => {
-                  console.log(result);
                   if (result) {
                     const getItemsKey =
                       store._getItemsKey() as keyof IGetItemsQuery<T, C>;
@@ -119,17 +118,12 @@ export const withPaginatedItemsStore = <
       _deleteItemWithIdResource: resource({
         request: () => ({ id: store.deleteItemId?.() }),
         loader: ({ request }) => {
-          console.log('reached 6', request);
           const id = request.id;
           if (!id) {
             return Promise.resolve(undefined);
           }
           return lastValueFrom(
-            store._deleteItemWithIdGQL?.mutate({ id }).pipe(
-              tap((result) => {
-                console.log(result);
-              })
-            ) as Observable<MutationResult<IDeleteItemMutation<C>>>
+            store._deleteItemWithIdGQL?.mutate({ id }) as Observable<MutationResult<IDeleteItemMutation<C>>>
           );
         },
       }),
