@@ -13,6 +13,7 @@ import {
   IonText
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
+import { CartStore } from '../../../../../../shared/data-access/cart/src/lib/cart.store';
 
 @Component({
   selector: 'lpg-catalogues',
@@ -38,9 +39,13 @@ import { CurrencyPipe } from '@angular/common';
   providers: [CataloguesStore],
 })
 export default class CataloguesPageComponent {
+
+  #cartStore = inject(CartStore);
+
+
   cataloguesStore = inject(
     CataloguesStore
-  ) as PaginatedResource<ICatalogueModel>;
+  ) as unknown as PaginatedResource<ICatalogueModel>;
   catalogues = this.cataloguesStore.items;
 
   handleSearch(event: any) {
@@ -52,5 +57,6 @@ export default class CataloguesPageComponent {
   addToCart(catalogue: ICatalogueModel) {
     // Implement add to cart functionality
     console.log('Adding to cart:', catalogue);
+      this.#cartStore.addItem(catalogue.id);
   }
 }

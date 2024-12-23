@@ -59,11 +59,30 @@ export type IBrandModel = {
   name: Scalars['String']['output'];
 };
 
+export type ICartCatalogueInput = {
+  catalogueId: Scalars['UUID']['input'];
+  quantity: Scalars['Float']['input'];
+};
+
+export type ICartCatalogueModel = {
+  catalogue: ICatalogueModel;
+  catalogueId: Scalars['UUID']['output'];
+  quantity: Scalars['Float']['output'];
+};
+
+export type ICartModel = {
+  id: Scalars['UUID']['output'];
+  items: Array<Maybe<ICartCatalogueModel>>;
+  totalPrice?: Maybe<Scalars['Float']['output']>;
+  totalQuantity?: Maybe<Scalars['Int']['output']>;
+};
+
 export type ICatalogueModel = {
   brand: IBrandModel;
   brandId: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['UUID']['output'];
+  images?: Maybe<Array<Maybe<IFileUploadModel>>>;
   inventories?: Maybe<Array<Maybe<IInventoryModel>>>;
   name: Scalars['String']['output'];
   pricePerUnit?: Maybe<Scalars['Float']['output']>;
@@ -108,6 +127,15 @@ export type ICreateBrandInput = {
 
 export type ICreateBrandSuccessResponse = {
   data: IBrandModel;
+  message: Scalars['String']['output'];
+};
+
+export type ICreateCartInput = {
+  items: Array<InputMaybe<ICartCatalogueInput>>;
+};
+
+export type ICreateCartResponse = {
+  data: ICartModel;
   message: Scalars['String']['output'];
 };
 
@@ -251,12 +279,14 @@ export type ILoginResponse = {
 };
 
 export type IMutation = {
+  addItemToCart: ICreateCartResponse;
   assignRoleToUser?: Maybe<ISuccessResponse>;
   changePassword?: Maybe<ISuccessResponse>;
   changePasswordUsingResetToken?: Maybe<ILoginResponse>;
   continueWithGoogle?: Maybe<ILoginResponse>;
   createActivityLog?: Maybe<ICreateActivityLogSuccessResponse>;
   createBrand?: Maybe<ICreateBrandSuccessResponse>;
+  createCart: ICreateCartResponse;
   createCatalogue?: Maybe<ICreateCatalogueSuccessResponse>;
   createInventory?: Maybe<ICreateInventorySuccessResponse>;
   createNotification?: Maybe<ICreateNotificationSuccessResponse>;
@@ -286,6 +316,7 @@ export type IMutation = {
   loginWithToken?: Maybe<ILoginResponse>;
   markNotificationAsRead?: Maybe<INotificationMarkedAsReadResponse>;
   register?: Maybe<ILoginResponse>;
+  removeItemFromCart: ICreateCartResponse;
   requestAccessToken?: Maybe<IAccessToken>;
   sendPasswordResetLinkEmail?: Maybe<ISuccessResponse>;
   sendPasswordResetOtpEmail?: Maybe<ISuccessResponse>;
@@ -297,6 +328,7 @@ export type IMutation = {
   updateBrand?: Maybe<ICreateBrandSuccessResponse>;
   updateCatalogue?: Maybe<ICreateCatalogueSuccessResponse>;
   updateInventory?: Maybe<ICreateInventorySuccessResponse>;
+  updateItemQuantity: ICreateCartResponse;
   updateNotification?: Maybe<ICreateNotificationSuccessResponse>;
   updateOtp?: Maybe<ICreateOtpSuccessResponse>;
   updatePasswordReset?: Maybe<ICreatePasswordResetSuccessResponse>;
@@ -309,6 +341,13 @@ export type IMutation = {
   validateOtp?: Maybe<ILoginResponse>;
   validatePasswordResetToken?: Maybe<IValidatePasswordResetTokenResponse>;
   verifyEmail?: Maybe<ISuccessResponse>;
+};
+
+
+export type IMutationAddItemToCartArgs = {
+  cartId?: InputMaybe<Scalars['UUID']['input']>;
+  catalogueId: Scalars['UUID']['input'];
+  quantity: Scalars['Int']['input'];
 };
 
 
@@ -344,6 +383,11 @@ export type IMutationCreateActivityLogArgs = {
 
 export type IMutationCreateBrandArgs = {
   params?: InputMaybe<ICreateBrandInput>;
+};
+
+
+export type IMutationCreateCartArgs = {
+  params?: InputMaybe<ICreateCartInput>;
 };
 
 
@@ -494,6 +538,12 @@ export type IMutationRegisterArgs = {
 };
 
 
+export type IMutationRemoveItemFromCartArgs = {
+  cartCatalogueId: Scalars['UUID']['input'];
+  cartId: Scalars['UUID']['input'];
+};
+
+
 export type IMutationRequestAccessTokenArgs = {
   refreshToken: Scalars['String']['input'];
 };
@@ -540,6 +590,13 @@ export type IMutationUpdateCatalogueArgs = {
 export type IMutationUpdateInventoryArgs = {
   id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateInventoryInput>;
+};
+
+
+export type IMutationUpdateItemQuantityArgs = {
+  cartCatalogueId: Scalars['UUID']['input'];
+  cartId: Scalars['UUID']['input'];
+  quantity: Scalars['Int']['input'];
 };
 
 
@@ -668,6 +725,11 @@ export type IPaginatedBrand = {
   meta?: Maybe<IPagination>;
 };
 
+export type IPaginatedCart = {
+  items?: Maybe<Array<Maybe<ICartModel>>>;
+  meta?: Maybe<IPagination>;
+};
+
 export type IPaginatedCatalogue = {
   items?: Maybe<Array<Maybe<ICatalogueModel>>>;
   meta?: Maybe<IPagination>;
@@ -755,6 +817,8 @@ export type IQuery = {
   authenticatedUserNotifications?: Maybe<IPaginatedUserNotification>;
   brand?: Maybe<IBrandModel>;
   brands: IPaginatedBrand;
+  cart?: Maybe<ICartModel>;
+  carts: IPaginatedCart;
   catalogue?: Maybe<ICatalogueModel>;
   catalogues: IPaginatedCatalogue;
   fileUploads: IPaginatedFileUpload;
@@ -808,6 +872,16 @@ export type IQueryBrandArgs = {
 
 
 export type IQueryBrandsArgs = {
+  query?: InputMaybe<IQueryParams>;
+};
+
+
+export type IQueryCartArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
+export type IQueryCartsArgs = {
   query?: InputMaybe<IQueryParams>;
 };
 
@@ -1021,6 +1095,11 @@ export type IUpdateBrandInput = {
   companyName?: InputMaybe<Scalars['String']['input']>;
   images?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
   name: Scalars['String']['input'];
+};
+
+export type IUpdateCartInput = {
+  id: Scalars['UUID']['input'];
+  items: Array<InputMaybe<ICartCatalogueInput>>;
 };
 
 export type IUpdateCatalogueInput = {

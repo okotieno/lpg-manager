@@ -45,6 +45,7 @@
       "@lpg-manager/breadcrumb": [
         "libs/shared/components/breadcrumb/src/index.ts"
       ],
+      "@lpg-manager/cart-store": ["libs/shared/data-access/cart/src/index.ts"],
       "@lpg-manager/catalogue": ["libs/backend/catalogue/src/index.ts"],
       "@lpg-manager/catalogue-service": [
         "libs/backend/services/catalogue/src/index.ts"

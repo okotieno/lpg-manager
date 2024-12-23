@@ -1,0 +1,60 @@
+fragment cartFragment on CartModel {
+  id
+  totalQuantity
+  totalPrice
+  items {
+    catalogueId
+    quantity
+    catalogue {
+      id
+      name
+      pricePerUnit
+      unit
+      quantityPerUnit
+    }
+  }
+}
+query GetCart($id: UUID!) { cart(id: $id) { ...cartFragment }}
+
+mutation CreateCart($params: CreateCartInput) {
+  createCart(params: $params) {
+    message
+    data { ...cartFragment }
+  }
+}
+
+mutation AddItemToCart($cartId: UUID, $catalogueId: UUID!, $quantity: Int!) {
+  addItemToCart(cartId: $cartId, catalogueId: $catalogueId, quantity: $quantity) {
+    message
+    data {
+      id
+      totalQuantity
+      totalPrice
+      items {
+        catalogueId
+        quantity
+        catalogue {
+          id
+          name
+          pricePerUnit
+          unit
+          quantityPerUnit
+        }
+      }
+    }
+  }
+}
+
+mutation RemoveItemFromCart($cartId: UUID!, $cartCatalogueId: UUID!) {
+  removeItemFromCart(cartId: $cartId, cartCatalogueId: $cartCatalogueId) {
+    message
+    data { ...cartFragment }
+  }
+}
+
+mutation UpdateItemQuantity($cartId: UUID!, $cartCatalogueId: UUID!, $quantity: Int!) {
+  updateItemQuantity(cartId: $cartId, cartCatalogueId: $cartCatalogueId, quantity: $quantity) {
+    message
+    data { ...cartFragment }
+  }
+}

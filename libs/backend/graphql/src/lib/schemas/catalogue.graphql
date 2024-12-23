@@ -13,6 +13,7 @@ type CatalogueModel {
   brandId: String!
   brand: BrandModel!
   inventories: [InventoryModel]
+  images: [FileUploadModel]
 }
 
 input CreateCatalogueInput {

@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
-import { CatalogueResolver } from './resolvers/catalogue.resolver';
-import { CatalogueServiceModule } from '@lpg-manager/catalogue-service';
+import { CartResolver } from './resolvers/cart.resolver';
+import { CartServiceModule } from '@lpg-manager/cart-service';
 import { UserServiceModule } from '@lpg-manager/user-service';
 import { BrandServiceModule } from '@lpg-manager/brand-service';
 
 @Module({
   imports: [
-    CatalogueServiceModule,
+    CartServiceModule,
     UserServiceModule,
     BrandServiceModule
   ],
   providers: [
-    CatalogueResolver
+    CartResolver
   ],
 })
-export class CatalogueModule {
+export class CartModule {
 }
