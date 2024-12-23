@@ -1,4 +1,4 @@
-import { computed, inject, resource } from '@angular/core';
+import { computed, inject, resource, ResourceStatus } from '@angular/core';
 import {
   patchState,
   signalStore,
@@ -16,6 +16,10 @@ import {
   ICreateCartGQL,
 } from './cart.generated';
 import { lastValueFrom } from 'rxjs';
+import {
+  SHOW_ERROR_MESSAGE,
+  SHOW_SUCCESS_MESSAGE,
+} from '@lpg-manager/injection-token';
 
 interface CartState {
   items: ICartCatalogueModel[];
@@ -43,34 +47,41 @@ export const CartStore = signalStore(
   })),
   withProps((store) => ({
     _createCartResource: resource({
-        request: () => ({
-          cartId: store.cartId(),
-        }),
-        loader: ({ request }) => {
-          console.log({ request });
-          if (request.cartId) {
-            return Promise.resolve(undefined);
-          }
-          return lastValueFrom(
-            store._createCartGQL.mutate({
+      request: () => ({
+        cartId: store.cartId(),
+      }),
+      loader: ({ request, previous }) => {
+        if (request.cartId || previous.status === ResourceStatus.Idle) {
+          return Promise.resolve(undefined);
+        }
+        return lastValueFrom(
+          store._createCartGQL.mutate(
+            {
               params: {
                 items: [],
               },
-            })
-          );
-        },
-      }),
+            },
+            {
+              context: {
+                [SHOW_SUCCESS_MESSAGE]: true,
+                [SHOW_ERROR_MESSAGE]: true,
+              },
+            }
+          )
+        );
+      },
+    }),
     _addToCartResource: resource({
-        loader: () => {
-          return lastValueFrom(
-            store._addItemToCartGQL.mutate({
-              cartId: '',
-              catalogueId: '',
-              quantity: 1,
-            })
-          );
-        },
-      }),
+      loader: () => {
+        return lastValueFrom(
+          store._addItemToCartGQL.mutate({
+            cartId: '',
+            catalogueId: '',
+            quantity: 1,
+          })
+        );
+      },
+    }),
   })),
   withComputed((store) => ({
     cartItems: computed(() => store.items()),
@@ -79,13 +90,12 @@ export const CartStore = signalStore(
   })),
   withMethods((store) => ({
     addItem: (catalogueId: string, quantity = 1) => {
-      if(!store.cartId()) {
+      if (!store.cartId()) {
         store._createCartResource.reload();
       } else {
         store._addToCartResource.reload();
       }
-
-    }
+    },
     // async addItem(productId: string, quantity = 1) {
     //   if (!store.userId()) return;
     //

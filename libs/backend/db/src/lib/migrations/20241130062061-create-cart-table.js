@@ -49,7 +49,7 @@ module.exports = {
       },
     });
 
-    await queryInterface.createTable('cart_items', {
+    await queryInterface.createTable('cart_catalogues', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -100,11 +100,11 @@ module.exports = {
     });
 
     await queryInterface.addIndex('carts', ['user_id']);
-    await queryInterface.addIndex('cart_items', ['cart_id', 'catalogue_id']);
+    await queryInterface.addIndex('cart_catalogues', ['cart_id', 'catalogue_id']);
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable('cart_items');
+    await queryInterface.dropTable('cart_catalogues');
     await queryInterface.dropTable('carts');
   }
-}; 
+};

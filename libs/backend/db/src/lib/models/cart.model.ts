@@ -1,11 +1,12 @@
 import {
   Column,
-  DataType,
+  DataType, ForeignKey,
   HasMany,
   Model,
-  Table,
+  Table
 } from 'sequelize-typescript';
 import { CartCatalogueModel } from './cart-catalogue.model';
+import { UserModel } from './user.model';
 
 @Table({
   tableName: 'carts',
@@ -21,6 +22,13 @@ export class CartModel extends Model {
     allowNull: false,
   })
   override id!: string;
+
+  @ForeignKey(() => UserModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  userId!: string;
 
   @HasMany(() => CartCatalogueModel)
   items!: CartCatalogueModel[];

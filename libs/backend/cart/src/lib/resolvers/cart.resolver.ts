@@ -5,14 +5,14 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
-import { JwtAuthGuard } from '@lpg-manager/auth';
+import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
   PermissionsEnum,
 } from '@lpg-manager/permission-service';
 import { CartService } from '@lpg-manager/cart-service';
-import { IQueryParam, CartModel, CartCatalogueModel, CatalogueModel } from '@lpg-manager/db';
+import { IQueryParam, CartModel, CartCatalogueModel, CatalogueModel, UserModel } from '@lpg-manager/db';
 import { CreateCartInputDto } from '../dto/create-cart-input.dto';
 
 @Resolver(() => CartModel)
@@ -25,10 +25,11 @@ export class CartResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.CreateCart)
   async createCart(
-    @Body('params', new ValidationPipe()) params: CreateCartInputDto
+    @Body('params', new ValidationPipe()) params: CreateCartInputDto,
+    @CurrentUser() user: UserModel
   ) {
     const cart = await this.cartService.create({
-      items: params.items,
+      userId: user.id,
     });
     if (params.items?.length) {
       await this.cartService.addItems(cart.id, params.items);
