@@ -79,7 +79,7 @@ export const CartStore = signalStore(
   })),
   withMethods((store) => ({
     addItem: (catalogueId: string, quantity = 1) => {
-      if(!store.cartId) {
+      if(!store.cartId()) {
         store._createCartResource.reload();
       } else {
         store._addToCartResource.reload();

@@ -49,8 +49,8 @@ export class LoginPageComponent {
   showPassword = false;
 
   loginForm = this.#fb.nonNullable.group({
-    email: ['test@test.cp', [Validators.required, Validators.email]],
-    password: ['sdsd', [Validators.required]],
+    email: ['admin@example.com', [Validators.required, Validators.email]],
+    password: ['admin123', [Validators.required]],
   });
 
   isLoadingEffect = effect(() => {

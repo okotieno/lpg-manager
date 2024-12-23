@@ -67,6 +67,9 @@ const permissions = [
   'delete inventory',
   'update inventory',
 
+  // Cart
+  'create cart'
+
 ];
 
 /** @type {import('sequelize-cli').Migration} */

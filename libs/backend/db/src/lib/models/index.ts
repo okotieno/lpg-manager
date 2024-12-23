@@ -15,3 +15,5 @@ export * from './notification-user.model';
 export * from './station.model';
 export * from './catalogue.model';
 export * from './inventory.model';
+export * from './cart.model';
+export * from './cart-catalogue.model';

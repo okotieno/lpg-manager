@@ -13,7 +13,7 @@ import {
   BrandFileUploadModel, StationModel,
   NotificationUserModel,
   InventoryModel,
-  CatalogueModel
+  CatalogueModel, CartModel, CartCatalogueModel
 } from './models';
 import { SequelizeOptions } from 'sequelize-typescript';
 
@@ -46,7 +46,9 @@ import { SequelizeOptions } from 'sequelize-typescript';
           BrandFileUploadModel,
           StationModel,
           InventoryModel,
-          CatalogueModel
+          CatalogueModel,
+          CartModel,
+          CartCatalogueModel
         ],
       }),
     }),
