@@ -1,13 +1,14 @@
 'use strict';
 const { v4: uuid } = require('uuid');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface) {
     await queryInterface.bulkInsert('brands', [
       {
         id: uuid(),
-        name: 'AFRICAN GAS AND OIL COMPANY LIMITED',
-        company_name: 'AFRICAN GAS AND OIL COMPANY LIMITED - Miritini, Mombasa',
+        name: 'African Gas',
+        company_name: 'African Gas and Oil Company Limited - Miritini, Mombasa',
         licence_number: 'ERC/LPG/1406',
         licence_description: 'Storage & Filling of LPG in Bulk',
         licence_expiry: new Date('2020-04-05'),
@@ -16,9 +17,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'ALFA GAS LIMITED',
-        company_name:
-          'ALFA GAS LIMITED - Embakasi South - Nairobi, Enterprise Road',
+        name: 'Alfa Gas',
+        company_name: 'Alfa Gas Limited - Embakasi South - Nairobi, Enterprise Road',
         licence_number: 'ERC/LPG/673',
         licence_description: 'Storage & Filling of LPG in Bulk',
         licence_expiry: new Date('2020-08-21'),
@@ -27,8 +27,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'AMEKEN MINEWEST COMPANY LIMITED',
-        company_name: 'AMEKEN MINEWEST COMPANY LIMITED - Thika',
+        name: 'Ameken Gas',
+        company_name: 'Ameken Minewest Company Limited - Thika',
         licence_number: 'ERC/LPG/1528',
         licence_description: 'Storage and filling of LPG in Cylinders',
         licence_expiry: new Date('2019-09-13'),
@@ -37,8 +37,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'AVIAN GAS LIMITED',
-        company_name: 'AVIAN GAS LIMITED - Masai Rd Off Mombasa Rd',
+        name: 'Avian Gas',
+        company_name: 'Avian Gas Limited - Masai Rd Off Mombasa Rd',
         licence_number: 'ERC/LPG/1299',
         licence_description: 'Storage and filling of LPG in Cylinders',
         licence_expiry: new Date('2019-12-02'),
@@ -47,8 +47,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'BOC KENYA LIMITED',
-        company_name: 'BOC KENYA LIMITED - Nairobi, Kitui Road',
+        name: 'Boc Gas',
+        company_name: 'Boc Kenya Limited - Nairobi, Kitui Road',
         licence_number: 'ERC/LPG/1042',
         licence_description: 'Storage & Filling of LPG in Cylinders',
         licence_expiry: new Date('2020-09-05'),
@@ -57,9 +57,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'CAPITAL GAS CONSUMER COOPERATIVE SOCIETY',
-        company_name:
-          'CAPITAL GAS CONSUMER COOPERATIVE SOCIETY - Embakasi East, Eastern Bypass',
+        name: 'Capital Gas',
+        company_name: 'Capital Gas Consumer Cooperative Society - Embakasi East, Eastern Bypass',
         licence_number: 'ERC/LPG/1636',
         licence_description: 'Storage & Filling of LPG in Cylinders',
         licence_expiry: new Date('2020-02-11'),
@@ -68,8 +67,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'CHEMIGAS LTD',
-        company_name: 'CHEMIGAS LTD - Kitui',
+        name: 'Chemigas Gas',
+        company_name: 'Chemigas Ltd - Kitui',
         licence_number: 'ERC/LPG/1756',
         licence_description: 'Storage & Filling of LPG in Bulk',
         licence_expiry: new Date('2020-07-03'),
@@ -78,8 +77,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'CHEV ENERGIES LIMITED',
-        company_name: 'CHEV ENERGIES LIMITED - Webuye',
+        name: 'Chev Gas',
+        company_name: 'Chev Energies Limited - Webuye',
         licence_number: 'ERC/LPG/1526',
         licence_description: 'Storage and filling of LPG in Cylinders',
         licence_expiry: new Date('2020-09-05'),
@@ -88,8 +87,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'CITY GAS LIMITED',
-        company_name: 'CITY GAS LIMITED - Kisii',
+        name: 'City Gas',
+        company_name: 'City Gas Limited - Kisii',
         licence_number: 'ERC/LPG/1821',
         licence_description: 'Storage & Filling of LPG in Bulk',
         licence_expiry: new Date('2020-09-05'),
@@ -98,18 +97,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'CITY GAS LIMITED',
-        company_name: 'CITY GAS LIMITED - Nairobi East, Lusaka Road',
-        licence_number: 'ERC/LPG/1183',
-        licence_description: 'Storage & Filling of LPG in Cylinders',
-        licence_expiry: new Date('2020-04-15'),
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: uuid(),
-        name: 'CRESCENT ENERGY LIMITED',
-        company_name: 'CRESCENT ENERGY LIMITED - Kiambu, Kikuyu road',
+        name: 'Crescent Gas',
+        company_name: 'Crescent Energy Limited - Kiambu, Kikuyu road',
         licence_number: 'ERC/LPG/1101',
         licence_description: 'Storage & Filling of LPG in Cylinders',
         licence_expiry: new Date('2020-01-22'),
@@ -118,18 +107,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'DEPAR LIMITED',
-        company_name: 'DEPAR LIMITED - Old North Airport Road',
-        licence_number: 'ERC/LPG/1510',
-        licence_description: 'Storage and filling of LPG in Cylinders',
-        licence_expiry: new Date('2020-09-05'),
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: uuid(),
-        name: 'DEPAR LIMITED',
-        company_name: 'DEPAR LIMITED - Sagana, Kirinyaga - Muranga Road',
+        name: 'Depar Gas',
+        company_name: 'Depar Limited - Sagana, Kirinyaga - Muranga Road',
         licence_number: 'ERC/LPG/1277',
         licence_description: 'Storage & Filling of LPG in Cylinders',
         licence_expiry: new Date('2020-02-14'),
@@ -138,8 +117,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'ECO-ENERGY EAST AFRICA LIMITED',
-        company_name: 'ECO-ENERGY EAST AFRICA LIMITED - Nairobi, Lunga Lunga',
+        name: 'Eco Gas',
+        company_name: 'Eco-Energy East Africa Limited - Nairobi, Lunga Lunga',
         licence_number: 'ERC/LPG/1319',
         licence_description: 'Storage & Filling of LPG in Cylinders',
         licence_expiry: new Date('2020-02-29'),
@@ -148,8 +127,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'ENERGY HORIZONS',
-        company_name: 'ENERGY HORIZONS - Factory Street, Thika',
+        name: 'Energy Gas',
+        company_name: 'Energy Horizons - Factory Street, Thika',
         licence_number: 'ERC/LPG/1603',
         licence_description: 'Storage and filling of LPG in Cylinders',
         licence_expiry: new Date('2019-12-19'),
@@ -158,8 +137,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'EXCELLENT LOGISTICS LTD',
-        company_name: 'EXCELLENT LOGISTICS LTD - Laikipia, Nyeri - Nyahururu',
+        name: 'Excellent Gas',
+        company_name: 'Excellent Logistics Ltd - Laikipia, Nyeri - Nyahururu',
         licence_number: 'ERC/LPG/1444',
         licence_description: 'Storage & Filling of LPG in Cylinders',
         licence_expiry: new Date('2020-05-23'),
@@ -168,8 +147,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'FAST GAS LIMITED',
-        company_name: 'FAST GAS LIMITED - Nairobi, Shimo la tewa',
+        name: 'Fast Gas',
+        company_name: 'Fast Gas Limited - Nairobi, Shimo la tewa',
         licence_number: 'ERC/LPG/1222',
         licence_description: 'Storage & Filling of LPG in Cylinders',
         licence_expiry: new Date('2020-02-04'),
@@ -178,8 +157,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'FOSSIL FUELS LIMITED',
-        company_name: 'FOSSIL FUELS LIMITED - Mombasa',
+        name: 'Fossil Gas',
+        company_name: 'Fossil Fuels Limited - Mombasa',
         licence_number: 'ERC/LPG/1524',
         licence_description: 'Storage and filling of LPG in Cylinders',
         licence_expiry: new Date('2019-09-12'),
@@ -188,8 +167,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'GICOMU GAS LIMITED',
-        company_name: 'GICOMU GAS LIMITED - Embu',
+        name: 'Gicomu Gas',
+        company_name: 'Gicomu Gas Limited - Embu',
         licence_number: 'ERC/LPG/1643',
         licence_description: 'Storage & Filling of LPG in Cylinders',
         licence_expiry: new Date('2020-02-14'),
@@ -198,8 +177,8 @@ module.exports = {
       },
       {
         id: uuid(),
-        name: 'GREATMOUNT LPG LIMITED',
-        company_name: 'GREATMOUNT LPG LIMITED - Naromoru, Nyeri-Nanyuki RD',
+        name: 'Greatmount Gas',
+        company_name: 'Greatmount LPG Limited - Naromoru, Nyeri-Nanyuki RD',
         licence_number: 'ERC/LPG/1639',
         licence_description: 'Storage & Filling of LPG in Cylinders',
         licence_expiry: new Date('2020-02-12'),
