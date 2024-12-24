@@ -121,4 +121,31 @@ export class CartService extends CrudAbstractService<CartModel> {
     );
   }
 
+  async completeCart(cartId: string) {
+    const transaction = await this.model.sequelize?.transaction();
+    try {
+      await this.model.update(
+        { 
+          status: 'COMPLETED',
+        },
+        { 
+          where: { id: cartId },
+          transaction 
+        }
+      );
+      
+      await transaction?.commit();
+      
+      return this.findById(cartId, {
+        include: [{
+          model: CartCatalogueModel,
+          include: [CatalogueModel]
+        }]
+      });
+    } catch (error) {
+      await transaction?.rollback();
+      throw error;
+    }
+  }
+
 }

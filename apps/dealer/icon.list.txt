@@ -12,3 +12,6 @@ circle-plus
 timer
 cart-plus
 cube
+circle-xmark
+right-from-bracket
+user-tie

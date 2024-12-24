@@ -117,4 +117,17 @@ export class CartResolver {
       filters: query?.filters ?? [],
     });
   }
+  @Mutation(() => CartModel)
+@UseGuards(JwtAuthGuard, PermissionGuard)
+@Permissions(PermissionsEnum.UpdateCart)
+async completeCart(
+  @Args('cartId') cartId: string
+) {
+  const cart = await this.cartService.completeCart(cartId);
+
+  return {
+    message: 'Cart completed successfully',
+    data: cart
+  };
+}
 }

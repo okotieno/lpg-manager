@@ -23,14 +23,23 @@ module.exports = {
       totalQuantity: {
         field: 'total_quantity',
         type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0
+        allowNull: true
       },
       totalPrice: {
         field: 'total_price',
         type: Sequelize.DECIMAL(10, 2),
+        allowNull: true
+      },
+      status: {
+        type: Sequelize.ENUM('PENDING', 'COMPLETED'),
         allowNull: false,
-        defaultValue: 0
+        defaultValue: 'PENDING'
+      },
+      expiresAt: {
+        field: 'expires_at',
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP + INTERVAL \'24 hours\'')
       },
       createdAt: {
         field: 'created_at',
@@ -48,63 +57,10 @@ module.exports = {
         allowNull: true
       },
     });
-
-    await queryInterface.createTable('cart_catalogues', {
-      id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        primaryKey: true,
-      },
-      cartId: {
-        field: 'cart_id',
-        type: Sequelize.UUID,
-        allowNull: false,
-        references: {
-          model: 'carts',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-      catalogueId: {
-        field: 'catalogue_id',
-        type: Sequelize.UUID,
-        allowNull: false,
-        references: {
-          model: 'catalogues',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-      quantity: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 1
-      },
-      createdAt: {
-        field: 'created_at',
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-      updatedAt: {
-        field: 'updated_at',
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-      deletedAt: {
-        field: 'deleted_at',
-        type: Sequelize.DATE,
-        allowNull: true
-      },
-    });
-
-    await queryInterface.addIndex('carts', ['user_id']);
-    await queryInterface.addIndex('cart_catalogues', ['cart_id', 'catalogue_id']);
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable('cart_catalogues');
     await queryInterface.dropTable('carts');
+    await queryInterface.sequelize.query('DROP TYPE IF EXISTS enum_carts_status;');
   }
 };

@@ -1,12 +1,18 @@
 import {
   Column,
-  DataType, ForeignKey,
+  DataType,
+  ForeignKey,
   HasMany,
   Model,
   Table
 } from 'sequelize-typescript';
 import { CartCatalogueModel } from './cart-catalogue.model';
 import { UserModel } from './user.model';
+
+export enum CartStatus {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED'
+}
 
 @Table({
   tableName: 'carts',
@@ -44,4 +50,17 @@ export class CartModel extends Model {
     allowNull: true,
   })
   totalPrice?: number;
+
+  @Column({
+    type: DataType.ENUM(...Object.values(CartStatus)),
+    allowNull: false,
+    defaultValue: CartStatus.PENDING
+  })
+  status!: CartStatus;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  expiresAt!: Date;
 }

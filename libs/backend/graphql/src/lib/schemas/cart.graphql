@@ -1,16 +1,25 @@
+enum CartStatus {
+  PENDING
+  COMPLETED
+}
+
 type CartCatalogueModel {
   catalogueId: UUID!
   quantity: Float!
   catalogue: CatalogueModel!
 }
+
 type CartModel {
   id: UUID!
   items: [CartCatalogueModel]!
   totalQuantity: Int
   totalPrice: Float
+  status: CartStatus!
+  expiresAt: DateTime!
 }
 
 input CartCatalogueInput {
+  id: UUID!
   catalogueId: UUID!
   quantity: Float!
 }
@@ -41,11 +50,8 @@ extend type Query {
 
 extend type Mutation {
   createCart(params: CreateCartInput): CreateCartResponse!
-
   addItemToCart(cartId: UUID, catalogueId: UUID!, quantity: Int!): CreateCartResponse!
-
   removeItemFromCart(cartId: UUID!, cartCatalogueId: UUID!): CreateCartResponse!
-
   updateItemQuantity(cartId: UUID!, cartCatalogueId: UUID!, quantity: Int!): CreateCartResponse!
-
+  completeCart(cartId: UUID!): CreateCartResponse!
 }

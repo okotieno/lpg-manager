@@ -61,6 +61,7 @@ export type IBrandModel = {
 
 export type ICartCatalogueInput = {
   catalogueId: Scalars['UUID']['input'];
+  id: Scalars['UUID']['input'];
   quantity: Scalars['Float']['input'];
 };
 

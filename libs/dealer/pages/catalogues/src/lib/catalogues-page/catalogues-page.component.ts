@@ -10,10 +10,12 @@ import {
   IonGrid, IonIcon,
   IonImg,
   IonRow, IonSearchbar,
-  IonText
+  IonText,
+  ModalController,
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
-import { CartStore } from '../../../../../../shared/data-access/cart/src/lib/cart.store';
+import { CartStore } from '@lpg-manager/cart-store';
+import { AddToCartDialogComponent } from '@lpg-manager/cart-store';
 
 @Component({
   selector: 'lpg-catalogues',
@@ -41,6 +43,7 @@ import { CartStore } from '../../../../../../shared/data-access/cart/src/lib/car
 export default class CataloguesPageComponent {
 
   #cartStore = inject(CartStore);
+  #modalCtrl = inject(ModalController);
 
 
   cataloguesStore = inject(
@@ -54,9 +57,19 @@ export default class CataloguesPageComponent {
     this.cataloguesStore.setSearchTerm(searchTerm);
   }
 
-  addToCart(catalogue: ICatalogueModel) {
-    // Implement add to cart functionality
-    console.log('Adding to cart:', catalogue);
-      this.#cartStore.addItem(catalogue.id);
+  async addToCart(catalogue: ICatalogueModel) {
+    const modal = await this.#modalCtrl.create({
+      component: AddToCartDialogComponent,
+      componentProps: {
+        catalogue,
+      },
+    });
+
+    await modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm' && data) {
+       this.#cartStore.addItem(data.catalogueId, data.quantity);
+    }
   }
 }

@@ -7,7 +7,7 @@ import {
   withProps,
   withState,
 } from '@ngrx/signals';
-import { ICartCatalogueModel } from '@lpg-manager/types';
+import { ICartCatalogueInput } from '@lpg-manager/types';
 import {
   IAddItemToCartGQL,
   IRemoveItemFromCartGQL,
@@ -22,7 +22,7 @@ import {
 } from '@lpg-manager/injection-token';
 
 interface CartState {
-  items: ICartCatalogueModel[];
+  items: ICartCatalogueInput[];
   totalQuantity: number;
   totalPrice: number;
   cartId: string | null;
@@ -49,6 +49,7 @@ export const CartStore = signalStore(
     _createCartResource: resource({
       request: () => ({
         cartId: store.cartId(),
+        items: store.items(),
       }),
       loader: ({ request, previous }) => {
         if (request.cartId || previous.status === ResourceStatus.Idle) {
@@ -58,7 +59,7 @@ export const CartStore = signalStore(
           store._createCartGQL.mutate(
             {
               params: {
-                items: [],
+                items: [...request.items],
               },
             },
             {
@@ -91,6 +92,9 @@ export const CartStore = signalStore(
   withMethods((store) => ({
     addItem: (catalogueId: string, quantity = 1) => {
       if (!store.cartId()) {
+        patchState(store, {
+          items: [{ id: crypto.randomUUID(), catalogueId, quantity }],
+        });
         store._createCartResource.reload();
       } else {
         store._addToCartResource.reload();

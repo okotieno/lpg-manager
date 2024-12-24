@@ -12,5 +12,8 @@ export const APP_ICONS = [
   'circle-plus',
   'timer',
   'cart-plus',
-  'cube'
+  'cube',
+  'circle-xmark',
+  'right-from-bracket',
+  'user-tie'
 ];
