@@ -1,7 +1,8 @@
 import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { inject } from '@angular/core';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { IGetUserByIdGQL } from '@lpg-manager/user-store';
+import { BreadcrumbStore } from '@lpg-manager/breadcrumb';
 
 export const USERS_ROUTES: Routes = [
   {
@@ -9,8 +10,9 @@ export const USERS_ROUTES: Routes = [
     loadComponent: () =>
       import('./users-landing-page/users-landing-page.component'),
     data: {
-      routeLabel: "User management"
-    }
+      routeLabel: 'User management',
+      breadcrumbs: [{ label: 'User management' }],
+    },
   },
   {
     path: 'users',
@@ -20,34 +22,76 @@ export const USERS_ROUTES: Routes = [
         pathMatch: 'full',
         loadComponent: () => import('./users-page/users-page.component'),
         data: {
-          routeLabel: "Users"
-        }
+          routeLabel: 'Users',
+          breadcrumbs: [
+            {
+              label: 'User management',
+              path: ['/dashboard', 'user-management'],
+            },
+            { label: 'Users' },
+          ],
+        },
       },
       {
         path: 'new',
         loadComponent: () => import('./user-form/user-form.component'),
         data: {
-          routeLabel: "Create user"
-        }
+          routeLabel: 'Create user',
+          breadcrumbs: [
+            {
+              label: 'User management',
+              path: ['/dashboard', 'user-management'],
+            },
+            {
+              label: 'Users',
+              path: ['/dashboard', 'user-management', 'users'],
+            },
+            { label: 'Create user' },
+          ],
+        },
       },
       {
         path: ':userId',
+        data: {
+          routeLabel: 'Users | :userName',
+          breadcrumbs: [
+            {
+              label: 'User management',
+              path: ['/dashboard', 'user-management'],
+            },
+            {
+              label: 'Users',
+              path: ['/dashboard', 'user-management', 'users'],
+            },
+            { label: ':userName' },
+          ],
+        },
         resolve: {
-          user: (route: ActivatedRouteSnapshot) =>
-            inject(IGetUserByIdGQL)
+          user: (route: ActivatedRouteSnapshot) => {
+            const breadcrumbStore = inject(BreadcrumbStore);
+            return inject(IGetUserByIdGQL)
               .fetch({ id: route.params['userId'] })
-              .pipe(map((res) => res.data.user)),
+              .pipe(
+                map((res) => res.data.user),
+                tap((res) => {
+                  breadcrumbStore.updatePageTitleParams({
+                    userId: res?.id ?? '',
+                    userName: `${res?.firstName} ${res?.lastName}`,
+                  });
+                })
+              );
+          },
         },
         children: [
           {
             path: 'edit',
             loadComponent: () => import('./user-form/user-form.component'),
             data: {
-              routeLabel: "Edit user"
-            }
+              routeLabel: 'Edit user',
+            },
           },
         ],
       },
-    ]
-  }
+    ],
+  },
 ];

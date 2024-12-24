@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, effect, inject, input, untracked } from '@angular/core';
 import {
   IonButton,
   IonCard,
@@ -8,9 +8,9 @@ import {
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICreateUserGQL, IUpdateUserGQL } from '@lpg-manager/user-store';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { RoleStore } from '@lpg-manager/role-store';
-import { IRoleModel, ISelectCategory } from '@lpg-manager/types';
+import { IRoleModel, ISelectCategory, IUserModel } from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
 
@@ -35,10 +35,6 @@ export default class UserFormComponent {
   #createUserGQL = inject(ICreateUserGQL);
   #updateUserGQL = inject(IUpdateUserGQL);
   #router = inject(Router);
-  #route = inject(ActivatedRoute);
-
-  rolesStore: PaginatedResource<IRoleModel> = inject(RoleStore);
-
   userForm = this.#fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
@@ -46,36 +42,34 @@ export default class UserFormComponent {
     phone: [''],
     roles: [[] as ISelectCategory[]],
   });
-
-  isEditing = false;
-  userId: string | null = null;
-
-  constructor() {
-    const userId = this.#route.snapshot.paramMap.get('id');
-    if (userId) {
-      this.isEditing = true;
-      this.userId = userId;
-      const user = this.#route.snapshot.data['user'];
+  user = input<IUserModel>();
+  isEditing = computed(() => !!this.user());
+  userId = computed(() => this.user()?.id);
+  userChangeEffect = effect(() => {
+    const user = this.user();
+    untracked(() => {
       if (user) {
         this.userForm.patchValue({
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
           phone: user.phone,
-          roles: user.roles,
         });
       }
-    }
-  }
+    });
+  });
+
+  rolesStore: PaginatedResource<IRoleModel> = inject(RoleStore);
+
 
   async onSubmit() {
     if (this.userForm.valid) {
       const { firstName, lastName, email, phone, roles } = this.userForm.value;
 
-      if (this.isEditing && this.userId) {
+      if (this.isEditing()) {
         this.#updateUserGQL
           .mutate({
-            id: this.userId,
+            id: this.userId() as string,
             params: {
               firstName: firstName as string,
               lastName: lastName as string,
