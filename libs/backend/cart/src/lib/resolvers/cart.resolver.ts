@@ -1,9 +1,4 @@
-import {
-  Args,
-  Mutation,
-  Query,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
 import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
 import {
@@ -12,14 +7,18 @@ import {
   PermissionsEnum,
 } from '@lpg-manager/permission-service';
 import { CartService } from '@lpg-manager/cart-service';
-import { IQueryParam, CartModel, CartCatalogueModel, CatalogueModel, UserModel } from '@lpg-manager/db';
+import {
+  IQueryParam,
+  CartModel,
+  CartCatalogueModel,
+  CatalogueModel,
+  UserModel,
+} from '@lpg-manager/db';
 import { CreateCartInputDto } from '../dto/create-cart-input.dto';
 
 @Resolver(() => CartModel)
 export class CartResolver {
-  constructor(
-    private cartService: CartService
-  ) {}
+  constructor(private cartService: CartService) {}
 
   @Mutation(() => CartModel)
   @UseGuards(JwtAuthGuard, PermissionGuard)
@@ -38,10 +37,12 @@ export class CartResolver {
     await this.cartService.updateCartTotals(cart.id);
 
     const cartWithItems = this.cartService.findById(cart.id, {
-      include: [{
-        model: CartCatalogueModel,
-        include: [CatalogueModel]
-      }]
+      include: [
+        {
+          model: CartCatalogueModel,
+          include: [CatalogueModel],
+        },
+      ],
     });
 
     return {
@@ -59,7 +60,7 @@ export class CartResolver {
     const cart = await this.cartService.addItem(cartId, catalogueId, quantity);
     return {
       message: 'Item added to cart successfully',
-      data: cart
+      data: cart,
     };
   }
 
@@ -72,7 +73,7 @@ export class CartResolver {
 
     return {
       message: 'Item removed from cart successfully',
-      data: cart
+      data: cart,
     };
   }
 
@@ -90,7 +91,7 @@ export class CartResolver {
 
     return {
       message: 'Cart item quantity updated successfully',
-      data: cart
+      data: cart,
     };
   }
 
@@ -100,23 +101,39 @@ export class CartResolver {
   }
 
   @Query(() => CartModel)
-  carts(@Args('query') query: IQueryParam) {
+  async carts(@Args('query') query: IQueryParam) {
+    console.log(
+      await this.cartService.findAll({
+        ...query,
+        filters: query?.filters ?? [],
+      })
+    );
     return this.cartService.findAll({
       ...query,
       filters: query?.filters ?? [],
     });
   }
-  @Mutation(() => CartModel)
-@UseGuards(JwtAuthGuard, PermissionGuard)
-@Permissions(PermissionsEnum.UpdateCart)
-async completeCart(
-  @Args('cartId') cartId: string
-) {
-  const cart = await this.cartService.completeCart(cartId);
 
-  return {
-    message: 'Cart completed successfully',
-    data: cart
-  };
-}
+  @Mutation(() => CartModel)
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @Permissions(PermissionsEnum.UpdateCart)
+  async completeCart(@Args('cartId') cartId: string) {
+    const cart = await this.cartService.completeCart(cartId);
+
+    return {
+      message: 'Cart completed successfully',
+      data: cart,
+    };
+  }
+  @ResolveField('items')
+  async getItems(@Parent() cart: CartModel) {
+    const cartWithItems = await this.cartService.findById(cart.id, {
+      include: [{
+        model: CartCatalogueModel,
+        include: [CatalogueModel]
+      }]
+    });
+
+    return cartWithItems?.items ?? [];
+  }
 }

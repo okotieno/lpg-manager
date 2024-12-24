@@ -14,7 +14,7 @@ import {
   IonToolbar,
   IonPopover,
   IonRow,
-  IonText,
+  IonText, IonBadge
 } from '@ionic/angular/standalone';
 import { ThemeService } from '@lpg-manager/theme-service';
 import {
@@ -24,6 +24,7 @@ import {
 } from '@angular/router';
 import { BreadcrumbComponent, BreadcrumbStore } from '@lpg-manager/breadcrumb';
 import { TitleCasePipe } from '@angular/common';
+import { CartStore } from '@lpg-manager/cart-store';
 
 @Component({
   selector: 'lpg-dashboard',
@@ -48,6 +49,7 @@ import { TitleCasePipe } from '@angular/common';
     IonRow,
     IonText,
     TitleCasePipe,
+    IonBadge,
   ],
   templateUrl: './dashboard-page.component.html',
   styleUrl: './dashboard-page.component.scss',
@@ -56,6 +58,8 @@ export default class DashboardComponent {
   #themeService = inject(ThemeService);
   #router = inject(Router);
   #breadcrumbStore = inject(BreadcrumbStore);
+  #cartStore = inject(CartStore);
+  cartItemsCount = this.#cartStore.cartItemsCount
 
   pageTitle = this.#breadcrumbStore.pageTitle;
 

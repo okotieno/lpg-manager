@@ -5,6 +5,13 @@ import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
 export type ICartFragmentFragment = { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> };
 
+export type IGetCartsQueryVariables = Types.Exact<{
+  query?: Types.InputMaybe<Types.IQueryParams>;
+}>;
+
+
+export type IGetCartsQuery = { carts: { items?: Array<{ id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } | null> | null, meta?: { totalItems: number } | null } };
+
 export type IGetCartQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
@@ -63,6 +70,29 @@ export const CartFragmentFragmentDoc = gql`
   }
 }
     `;
+export const GetCartsDocument = gql`
+    query GetCarts($query: QueryParams) {
+  carts(query: $query) {
+    items {
+      ...cartFragment
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+    ${CartFragmentFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class IGetCartsGQL extends Apollo.Query<IGetCartsQuery, IGetCartsQueryVariables> {
+    override document = GetCartsDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const GetCartDocument = gql`
     query GetCart($id: UUID!) {
   cart(id: $id) {

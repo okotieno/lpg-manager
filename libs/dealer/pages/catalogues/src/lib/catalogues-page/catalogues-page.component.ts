@@ -54,7 +54,7 @@ import { AddToCartDialogComponent } from '@lpg-manager/cart-store';
     {
       provide: GET_ITEMS_INCLUDE_FIELDS,
       useValue: {
-        includeBrands: true,
+        includeBrand: true,
         includeDescription: true,
         includePricePerUnit: true,
       },

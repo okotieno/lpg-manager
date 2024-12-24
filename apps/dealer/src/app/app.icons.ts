@@ -15,5 +15,6 @@ export const APP_ICONS = [
   'cube',
   'circle-xmark',
   'right-from-bracket',
-  'user-tie'
+  'user-tie',
+  'cart-shopping'
 ];

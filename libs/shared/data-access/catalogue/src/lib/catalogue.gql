@@ -29,7 +29,7 @@ fragment catalogueBrandFragment on CatalogueModel {
 
 query GetCatalogues(
   $query: QueryParams
-  $includeBrands: Boolean = false
+  $includeBrand: Boolean = false
   $includeDescription: Boolean = false
   $includePricePerUnit: Boolean = false
 ) {
@@ -41,7 +41,7 @@ query GetCatalogues(
       quantityPerUnit
       pricePerUnit @include(if: $includePricePerUnit)
       description @include(if: $includeDescription)
-      ...catalogueBrandFragment @include(if: $includeBrands)
+      ...catalogueBrandFragment @include(if: $includeBrand)
     }
     meta {
       totalItems

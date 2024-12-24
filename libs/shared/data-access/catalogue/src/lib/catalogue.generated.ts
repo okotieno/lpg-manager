@@ -21,7 +21,7 @@ export type ICatalogueBrandFragmentFragment = { images?: Array<{ url?: string | 
 
 export type IGetCataloguesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
-  includeBrands?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
+  includeBrand?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
   includeDescription?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
   includePricePerUnit?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
 }>;
@@ -70,7 +70,7 @@ export const CreateCatalogueDocument = gql`
   })
   export class ICreateCatalogueGQL extends Apollo.Mutation<ICreateCatalogueMutation, ICreateCatalogueMutationVariables> {
     override document = CreateCatalogueDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -89,13 +89,13 @@ export const GetCatalogueByIdDocument = gql`
   })
   export class IGetCatalogueByIdGQL extends Apollo.Query<IGetCatalogueByIdQuery, IGetCatalogueByIdQueryVariables> {
     override document = GetCatalogueByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
   }
 export const GetCataloguesDocument = gql`
-    query GetCatalogues($query: QueryParams, $includeBrands: Boolean = false, $includeDescription: Boolean = false, $includePricePerUnit: Boolean = false) {
+    query GetCatalogues($query: QueryParams, $includeBrand: Boolean = false, $includeDescription: Boolean = false, $includePricePerUnit: Boolean = false) {
   catalogues(query: $query) {
     items {
       id
@@ -104,7 +104,7 @@ export const GetCataloguesDocument = gql`
       quantityPerUnit
       pricePerUnit @include(if: $includePricePerUnit)
       description @include(if: $includeDescription)
-      ...catalogueBrandFragment @include(if: $includeBrands)
+      ...catalogueBrandFragment @include(if: $includeBrand)
     }
     meta {
       totalItems
@@ -118,7 +118,7 @@ export const GetCataloguesDocument = gql`
   })
   export class IGetCataloguesGQL extends Apollo.Query<IGetCataloguesQuery, IGetCataloguesQueryVariables> {
     override document = GetCataloguesDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -136,7 +136,7 @@ export const DeleteCatalogueByIdDocument = gql`
   })
   export class IDeleteCatalogueByIdGQL extends Apollo.Mutation<IDeleteCatalogueByIdMutation, IDeleteCatalogueByIdMutationVariables> {
     override document = DeleteCatalogueByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -157,7 +157,7 @@ export const UpdateCatalogueDocument = gql`
   })
   export class IUpdateCatalogueGQL extends Apollo.Mutation<IUpdateCatalogueMutation, IUpdateCatalogueMutationVariables> {
     override document = UpdateCatalogueDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

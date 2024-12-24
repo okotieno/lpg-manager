@@ -19,7 +19,9 @@ import {
 import { lastValueFrom, Observable, tap } from 'rxjs';
 import { defaultQueryParams } from './default-variables';
 
-export const GET_ITEMS_INCLUDE_FIELDS = new InjectionToken<Record<string, boolean>>('get-items-include-fields')
+export const GET_ITEMS_INCLUDE_FIELDS = new InjectionToken<
+  Record<string, boolean>
+>('get-items-include-fields');
 
 type Meta = {
   totalItems: number;
@@ -61,7 +63,10 @@ export const withPaginatedItemsStore = <
   signalStoreFeature(
     {
       props: type<{
-        _getItemsGQL: Query<IGetItemsQuery<RootField, IGetItemsQueryItem>, IGetItemsQueryVariables>;
+        _getItemsGQL: Query<
+          IGetItemsQuery<RootField, IGetItemsQueryItem>,
+          IGetItemsQueryVariables
+        >;
         _deleteItemWithIdGQL: Mutation<IDeleteItemMutation<D>, { id: string }>;
         _getItemKey: string;
       }>(),
@@ -78,7 +83,7 @@ export const withPaginatedItemsStore = <
       _deleteItemWithIdKey: computed(() => `delete${store._getItemKey}`),
     })),
     withProps(() => ({
-      _getItemsIncludeFields: inject(GET_ITEMS_INCLUDE_FIELDS)
+      _getItemsIncludeFields: inject(GET_ITEMS_INCLUDE_FIELDS),
     })),
     withProps((store) => ({
       _itemResource: resource({
@@ -92,7 +97,7 @@ export const withPaginatedItemsStore = <
             filters: store.filters(),
           } as IQueryParams),
         loader: ({ request }) => {
-          console.log(store._getItemsIncludeFields)
+          console.log(store._getItemsIncludeFields);
           return lastValueFrom(
             store._getItemsGQL
               ?.fetch(
@@ -100,6 +105,7 @@ export const withPaginatedItemsStore = <
                   query: {
                     ...request,
                   },
+                  ...store._getItemsIncludeFields,
                 } as IGetItemsQueryVariables,
 
                 { fetchPolicy: 'cache-first' }

@@ -15,3 +15,4 @@ cube
 circle-xmark
 right-from-bracket
 user-tie
+cart-shopping

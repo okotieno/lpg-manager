@@ -52,7 +52,7 @@ import { CurrencyPipe } from '@angular/common';
         <ion-row>
           <ion-col size="5">
             <ion-img
-              [src]="catalogue().brand?.images?.[0]?.url ?? 'no-image-placeholder.webp'"
+              [src]="catalogue().images?.[0]?.url ?? 'no-image-placeholder.webp'"
               class="catalogue-image"
             ></ion-img>
           </ion-col>
@@ -80,7 +80,7 @@ import { CurrencyPipe } from '@angular/common';
           <ion-card-title class="ion-text-wrap"
             >{{ catalogue().name }}
           </ion-card-title>
-          <ion-card-subtitle>{{ catalogue().brand?.name }}</ion-card-subtitle>
+          <ion-card-subtitle>{{ catalogue().brand.name }}</ion-card-subtitle>
         </ion-card-header>
 
         <ion-card-content> </ion-card-content>
