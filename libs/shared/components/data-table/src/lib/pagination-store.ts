@@ -7,23 +7,28 @@ import {
   withProps,
   type,
 } from '@ngrx/signals';
-import { computed, resource } from '@angular/core';
-import { ApolloQueryResult } from '@apollo/client';
+import { computed, inject, InjectionToken, resource } from '@angular/core';
 import { Mutation, MutationResult, Query } from 'apollo-angular';
 import {
   Exact,
   InputMaybe,
   IQueryParams,
   IQueryParamsFilter,
-  ISortByEnum
+  ISortByEnum,
 } from '@lpg-manager/types';
 import { lastValueFrom, Observable, tap } from 'rxjs';
 import { defaultQueryParams } from './default-variables';
 
-export type IGetItemsQuery<IGetItemsQueryItem, RootField extends string> = {
-  [K in RootField]: {
-    items?: IGetItemsQueryItem[];
-    meta?: { totalItems: number } | null;
+export const GET_ITEMS_INCLUDE_FIELDS = new InjectionToken<Record<string, boolean>>('get-items-include-fields')
+
+type Meta = {
+  totalItems: number;
+};
+
+export type IGetItemsQuery<RootField extends string, TItem> = {
+  [key in RootField]: {
+    items?: Array<TItem | null> | null;
+    meta?: Meta | null;
   };
 };
 
@@ -51,12 +56,12 @@ export const withPaginatedItemsStore = <
     query?: InputMaybe<IQueryParams>;
   }>,
   RootField extends string,
-  D extends string,
+  D extends string
 >() =>
   signalStoreFeature(
     {
       props: type<{
-        _getItemsGQL: Query<IGetItemsQuery<IGetItemsQueryItem, RootField>, IGetItemsQueryVariables> ;
+        _getItemsGQL: Query<IGetItemsQuery<RootField, IGetItemsQueryItem>, IGetItemsQueryVariables>;
         _deleteItemWithIdGQL: Mutation<IDeleteItemMutation<D>, { id: string }>;
         _getItemKey: string;
       }>(),
@@ -69,8 +74,11 @@ export const withPaginatedItemsStore = <
       deleteItemId: undefined,
     } as StoreState<IGetItemsQueryItem>),
     withComputed((store) => ({
-      _getItemsKey: computed(() => store._getItemKey + 's'),
+      _getItemsKey: computed(() => (store._getItemKey + 's') as RootField),
       _deleteItemWithIdKey: computed(() => `delete${store._getItemKey}`),
+    })),
+    withProps(() => ({
+      _getItemsIncludeFields: inject(GET_ITEMS_INCLUDE_FIELDS)
     })),
     withProps((store) => ({
       _itemResource: resource({
@@ -84,6 +92,7 @@ export const withPaginatedItemsStore = <
             filters: store.filters(),
           } as IQueryParams),
         loader: ({ request }) => {
+          console.log(store._getItemsIncludeFields)
           return lastValueFrom(
             store._getItemsGQL
               ?.fetch(
@@ -98,11 +107,12 @@ export const withPaginatedItemsStore = <
               .pipe(
                 tap((result) => {
                   if (result) {
-                    const getItemsKey =
-                      store._getItemsKey() as keyof IGetItemsQuery<IGetItemsQueryItem, RootField>;
+                    const getItemsKey = store._getItemsKey();
                     const newItems = result.data[getItemsKey].items ?? [];
 
-                    patchState(store, { items: [...newItems] as IGetItemsQueryItem[] });
+                    patchState(store, {
+                      items: [...newItems.filter((x) => x !== null)],
+                    });
 
                     if (result.data[getItemsKey].meta?.totalItems) {
                       patchState(store, {
@@ -111,7 +121,7 @@ export const withPaginatedItemsStore = <
                     }
                   }
                 })
-              ) as Observable<ApolloQueryResult<IGetItemsQuery<IGetItemsQueryItem, RootField>>>
+              )
           );
         },
       }),
@@ -123,13 +133,19 @@ export const withPaginatedItemsStore = <
             return Promise.resolve(undefined);
           }
           return lastValueFrom(
-            store._deleteItemWithIdGQL?.mutate({ id }) as Observable<MutationResult<IDeleteItemMutation<RootField>>>
+            store._deleteItemWithIdGQL?.mutate({ id }) as Observable<
+              MutationResult<IDeleteItemMutation<RootField>>
+            >
           );
         },
       }),
     })),
-    withComputed((store)=> ({
-      isLoading: computed(() => store._itemResource.isLoading() || store._deleteItemWithIdResource.isLoading()),
+    withComputed((store) => ({
+      isLoading: computed(
+        () =>
+          store._itemResource.isLoading() ||
+          store._deleteItemWithIdResource.isLoading()
+      ),
     })),
     withMethods((store) => ({
       searchItemsByTerm(searchTerm: string) {

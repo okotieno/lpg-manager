@@ -1,15 +1,26 @@
 import { Component, inject } from '@angular/core';
-import { CataloguesStore } from '@lpg-manager/catalogue-store';
-import { PaginatedResource } from '@lpg-manager/data-table';
+import {
+  CataloguesStore,
+  IGetCataloguesQuery,
+} from '@lpg-manager/catalogue-store';
+import {
+  GET_ITEMS_INCLUDE_FIELDS,
+  PaginatedResource,
+} from '@lpg-manager/data-table';
 import { ICatalogueModel } from '@lpg-manager/types';
 import {
   IonButton,
   IonCard,
-  IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
   IonCol,
-  IonGrid, IonIcon,
+  IonGrid,
+  IonIcon,
   IonImg,
-  IonRow, IonSearchbar,
+  IonRow,
+  IonSearchbar,
   IonText,
   ModalController,
 } from '@ionic/angular/standalone';
@@ -38,17 +49,25 @@ import { AddToCartDialogComponent } from '@lpg-manager/cart-store';
   ],
   templateUrl: './catalogues-page.component.html',
   styleUrl: './catalogues-page.component.scss',
-  providers: [CataloguesStore],
+  providers: [
+    CataloguesStore,
+    {
+      provide: GET_ITEMS_INCLUDE_FIELDS,
+      useValue: {
+        includeBrands: true,
+        includeDescription: true,
+        includePricePerUnit: true,
+      },
+    },
+  ],
 })
 export default class CataloguesPageComponent {
-
   #cartStore = inject(CartStore);
   #modalCtrl = inject(ModalController);
 
-
-  cataloguesStore = inject(
-    CataloguesStore
-  ) as unknown as PaginatedResource<ICatalogueModel>;
+  cataloguesStore = inject(CataloguesStore) as PaginatedResource<
+    NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]
+  >;
   catalogues = this.cataloguesStore.items;
 
   handleSearch(event: any) {
@@ -57,7 +76,9 @@ export default class CataloguesPageComponent {
     this.cataloguesStore.setSearchTerm(searchTerm);
   }
 
-  async addToCart(catalogue: ICatalogueModel) {
+  async addToCart(
+    catalogue?: NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]
+  ) {
     const modal = await this.#modalCtrl.create({
       component: AddToCartDialogComponent,
       componentProps: {
@@ -69,7 +90,7 @@ export default class CataloguesPageComponent {
 
     const { data, role } = await modal.onWillDismiss();
     if (role === 'confirm' && data) {
-       this.#cartStore.addItem(data.catalogueId, data.quantity);
+      this.#cartStore.addItem(data.catalogueId, data.quantity);
     }
   }
 }

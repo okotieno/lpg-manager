@@ -17,15 +17,17 @@ export type IGetCatalogueByIdQueryVariables = Types.Exact<{
 
 export type IGetCatalogueByIdQuery = { catalogue?: { id: string, name: string } | null };
 
-export type ICatalogueBrandFragmentFragment = { brand: { name: string, images?: Array<{ url?: string | null } | null> | null } };
+export type ICatalogueBrandFragmentFragment = { images?: Array<{ url?: string | null } | null> | null, brand: { name: string } };
 
 export type IGetCataloguesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
   includeBrands?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
+  includeDescription?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
+  includePricePerUnit?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
 }>;
 
 
-export type IGetCataloguesQuery = { catalogues: { items?: Array<{ id: string, name: string, brand: { name: string, images?: Array<{ url?: string | null } | null> | null } } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetCataloguesQuery = { catalogues: { items?: Array<{ id: string, name: string, unit: Types.ICatalogueUnit, quantityPerUnit: number, pricePerUnit?: number | null, description?: string | null, images?: Array<{ url?: string | null } | null> | null, brand: { name: string } } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteCatalogueByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -44,11 +46,11 @@ export type IUpdateCatalogueMutation = { updateCatalogue?: { message: string, da
 
 export const CatalogueBrandFragmentFragmentDoc = gql`
     fragment catalogueBrandFragment on CatalogueModel {
+  images {
+    url
+  }
   brand {
     name
-    images {
-      url
-    }
   }
 }
     `;
@@ -93,11 +95,15 @@ export const GetCatalogueByIdDocument = gql`
     }
   }
 export const GetCataloguesDocument = gql`
-    query GetCatalogues($query: QueryParams, $includeBrands: Boolean = false) {
+    query GetCatalogues($query: QueryParams, $includeBrands: Boolean = false, $includeDescription: Boolean = false, $includePricePerUnit: Boolean = false) {
   catalogues(query: $query) {
     items {
       id
       name
+      unit
+      quantityPerUnit
+      pricePerUnit @include(if: $includePricePerUnit)
+      description @include(if: $includeDescription)
       ...catalogueBrandFragment @include(if: $includeBrands)
     }
     meta {

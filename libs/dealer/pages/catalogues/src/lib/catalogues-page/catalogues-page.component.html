@@ -11,34 +11,34 @@
 
   <!-- Catalogue Grid -->
   <ion-row>
-    @for (catalogue of catalogues(); track catalogue.id) {
+    @for (catalogue of catalogues(); track catalogue?.id) {
       <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
         <ion-card class="catalogue-card">
           <div class="image-container">
             <ion-img
-              [src]="catalogue.brand.images?.[0]?.url ?? 'no-image-placeholder.webp'"
+              [src]="catalogue?.images?.[0]?.url ?? 'no-image-placeholder.webp'"
               class="catalogue-image"
             ></ion-img>
-            @if (catalogue.pricePerUnit) {
+            @if (catalogue?.pricePerUnit) {
               <div class="price-tag">
-                {{ catalogue.pricePerUnit | currency }}
+                {{ catalogue?.pricePerUnit | currency }}
               </div>
             }
           </div>
 
           <ion-card-header>
-            <ion-card-title class="ion-text-wrap">{{ catalogue.name }}</ion-card-title>
-            <ion-card-subtitle>{{ catalogue.brand?.name }}</ion-card-subtitle>
+            <ion-card-title class="ion-text-wrap">{{ catalogue?.name }}</ion-card-title>
+            <ion-card-subtitle>{{ catalogue?.brand?.name }}</ion-card-subtitle>
           </ion-card-header>
 
           <ion-card-content>
-            <p class="description">{{ catalogue.description || 'No description available' }}</p>
+            <p class="description">{{ catalogue?.description || 'No description available' }}</p>
 
             <div class="specs">
               <ion-text color="medium">
                 <p>
                   <ion-icon name="cube"></ion-icon>
-                  {{ catalogue.quantityPerUnit }} {{ catalogue.unit }}
+                  {{ catalogue?.quantityPerUnit }} {{ catalogue?.unit }}
                 </p>
               </ion-text>
             </div>

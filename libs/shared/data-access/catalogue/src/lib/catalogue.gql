@@ -19,19 +19,28 @@ query GetCatalogueById($id: UUID!) {
 }
 
 fragment catalogueBrandFragment on CatalogueModel {
+  images {
+    url
+  }
   brand {
     name
-    images {
-      url
-    }
   }
 }
 
-query GetCatalogues($query: QueryParams, $includeBrands: Boolean = false) {
+query GetCatalogues(
+  $query: QueryParams
+  $includeBrands: Boolean = false
+  $includeDescription: Boolean = false
+  $includePricePerUnit: Boolean = false
+) {
   catalogues(query: $query) {
     items {
       id
       name
+      unit
+      quantityPerUnit
+      pricePerUnit @include(if: $includePricePerUnit)
+      description @include(if: $includeDescription)
       ...catalogueBrandFragment @include(if: $includeBrands)
     }
     meta {

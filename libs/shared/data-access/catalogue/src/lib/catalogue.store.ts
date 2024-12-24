@@ -6,6 +6,8 @@ import {
   IGetCataloguesQueryVariables
 } from './catalogue.generated';
 
+
+
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
 export const CataloguesStore = signalStore(
@@ -20,21 +22,4 @@ export const CataloguesStore = signalStore(
     'catalogues',
     'deleteCatalogue'
   >()
-  // withPaginatedItemsStore<{
-  //     id: string;
-  //     name: string;
-  //   },
-  //   IGetCataloguesQueryVariables,
-  //   'catalogues',
-  //   'deleteCatalogue'
-  // >()
 );
-
-export class test {
-  getItemsGQL = inject(IGetCataloguesGQL);
-  test?: NonNullable<IGetCataloguesQuery['catalogues']['items']>[number];
-  constructor() {
-    console.log(this.getItemsGQL);
-
-  }
-}

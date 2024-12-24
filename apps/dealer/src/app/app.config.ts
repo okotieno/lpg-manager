@@ -9,6 +9,7 @@ import { provideApollo } from 'apollo-angular';
 import { provideHttpClient } from '@angular/common/http';
 import { apolloConfig } from '@lpg-manager/apollo-config';
 import { ENV_VARIABLES, IEnvVariable } from '@lpg-manager/injection-token';
+import { GET_ITEMS_INCLUDE_FIELDS } from '@lpg-manager/data-table';
 
 declare const process: {
   env: {
@@ -35,6 +36,10 @@ export const appConfig: ApplicationConfig = {
         googleClientId: process.env['LPG_GOOGLE_CLIENT_ID'],
         production:  process.env['LPG_ENVIRONMENT'] === 'production',
       } as IEnvVariable,
-    }
+    },
+    {
+      provide: GET_ITEMS_INCLUDE_FIELDS,
+      useValue: {},
+    },
   ],
 };
