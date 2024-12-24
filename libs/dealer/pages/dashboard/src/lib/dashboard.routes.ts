@@ -9,6 +9,11 @@ export const DASHBOARD_ROUTES: Routes = [
         path: '',
         pathMatch: 'full',
         loadComponent: () => import('./home-page/home-page.component'),
+        data: {
+          routeLabel: 'Dashboard',
+          breadcrumbs: [{ label: 'Dashboard' }],
+
+        }
       },
       {
         path: 'catalogues',

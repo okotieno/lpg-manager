@@ -17,6 +17,9 @@
   <ion-icon color="primary" class="ion-padding-horizontal ion-padding-top" slot="end" [name]="modal.isOpen ? 'caret-up':  'caret-down'"></ion-icon>
 </ion-textarea>
 
+{{ totalAvailableElements() | json }}
+{{ items() | json }}
+{{ entities() | json }}
 <div style="position: absolute; top: 30px" #chipsContainerRef >
   @for (item of selectedItemsActive(); track item) {
     <ion-chip style="margin: 4px 4px 0 0;">{{ $any(item)[labelKey()] }}
@@ -29,7 +32,7 @@
   }
 </div>
 
-<ion-modal [backdropDismiss]="false" (ionModalWillPresent)="loadInitialData()" #modal [animated]="true" (ionModalWillDismiss)="modal.isOpen = false">
+<ion-modal [backdropDismiss]="false" #modal [animated]="true" (ionModalWillDismiss)="modal.isOpen = false">
   <ng-template>
     <ion-header class="ion-no-border">
       <ion-toolbar class="ion-no-border">
@@ -52,7 +55,7 @@
         id="modal-list"
         [inset]="true"
       >
-        @for (item of items(); track item[idKey()]) {
+        @for (item of entities(); track item[idKey()]) {
           <ion-item
             [button]="true"
             [cdkOption]="item"

@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { map, tap } from 'rxjs';
 import { IGetUserByIdGQL } from '@lpg-manager/user-store';
 import { BreadcrumbStore } from '@lpg-manager/breadcrumb';
+import { FormExitGuardService, IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
 
 export const USERS_ROUTES: Routes = [
   {
@@ -84,14 +85,42 @@ export const USERS_ROUTES: Routes = [
         },
         children: [
           {
+            path: '',
+            pathMatch: 'full',
+            children: []
+          },
+          {
             path: 'edit',
             loadComponent: () => import('./user-form/user-form.component'),
             data: {
-              routeLabel: 'Edit user',
+              routeLabel: 'Edit user | :userName',
+              breadcrumbs: [
+                {
+                  label: 'User management',
+                  path: ['/dashboard', 'user-management'],
+                },
+                {
+                  label: 'Users',
+                  path: ['/dashboard', 'user-management', 'users'],
+                },
+                {
+                  label: ':userName',
+                  path: ['/dashboard', 'user-management', 'users', ':userId'],
+                },
+                { label: 'Edit' },
+              ],
             },
+            canDeactivate: [
+              (component: IHasUnsavedChanges) =>
+                inject(FormExitGuardService).hasUnsavedChanges(component),
+            ],
           },
         ],
       },
     ],
   },
+  {
+    path: 'roles',
+    loadChildren: () => import('@lpg-manager/roles-page')
+  }
 ];

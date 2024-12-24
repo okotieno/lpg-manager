@@ -30,3 +30,8 @@ query GetPermissions($query: QueryParams) {
   }
 }
 
+mutation DeletePermissionById($id: UUID!) {
+  deletePermission(id: $id) {
+    message
+  }
+}

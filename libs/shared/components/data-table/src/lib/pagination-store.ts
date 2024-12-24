@@ -18,6 +18,7 @@ import {
 } from '@lpg-manager/types';
 import { lastValueFrom, Observable, tap } from 'rxjs';
 import { defaultQueryParams } from './default-variables';
+import { addEntities, setAllEntities, setEntities, withEntities } from '@ngrx/signals/entities';
 
 export const GET_ITEMS_INCLUDE_FIELDS = new InjectionToken<
   Record<string, boolean>
@@ -53,7 +54,7 @@ interface StoreState<T> {
 }
 
 export const withPaginatedItemsStore = <
-  IGetItemsQueryItem,
+  IGetItemsQueryItem extends { id: string },
   IGetItemsQueryVariables extends Exact<{
     query?: InputMaybe<IQueryParams>;
   }>,
@@ -71,6 +72,7 @@ export const withPaginatedItemsStore = <
         _getItemKey: string;
       }>(),
     },
+    withEntities<IGetItemsQueryItem>(),
     withState({
       ...defaultQueryParams.query,
       sortBy: defaultQueryParams.query.sortBy as keyof IGetItemsQueryItem,
@@ -113,12 +115,17 @@ export const withPaginatedItemsStore = <
                 tap((result) => {
                   if (result) {
                     const getItemsKey = store._getItemsKey();
-                    console.log(result.data, getItemsKey);
 
-                    const newItems = result.data[getItemsKey].items ?? [];
+                    const newItems = (result.data[getItemsKey].items ?? []).filter((x) => x !== null);
+
+                    if(store.currentPage() < 2) {
+                      patchState(store, setAllEntities(newItems));
+                    } else {
+                      patchState(store, setEntities(newItems));
+                    }
 
                     patchState(store, {
-                      items: [...newItems.filter((x) => x !== null)],
+                      items: [...newItems],
                     });
 
                     if (result.data[getItemsKey].meta?.totalItems) {

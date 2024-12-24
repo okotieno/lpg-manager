@@ -27,7 +27,6 @@ import {
   IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
-  IonInput,
   IonItem,
   IonList,
   IonModal,
@@ -39,7 +38,8 @@ import {
 } from '@ionic/angular/standalone';
 import { CdkListbox, CdkOption } from '@angular/cdk/listbox';
 import { IQueryParamsFilter } from '@lpg-manager/types';
-import { PaginatedResource } from '../../../data-table/src/lib/paginated-resource.interface';
+import { PaginatedResource } from '@lpg-manager/data-table';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-searchable-select',
@@ -65,53 +65,42 @@ import { PaginatedResource } from '../../../data-table/src/lib/paginated-resourc
     IonInfiniteScrollContent,
     IonTextarea,
     IonChip,
+    JsonPipe,
   ],
   styleUrl: './searchable-select.component.scss',
 })
-export class SearchableSelectComponent<T> implements ControlValueAccessor {
-  chipsContainerRef = viewChild.required('chipsContainerRef', {
-    read: ElementRef,
-  });
-
-  itemsStore = input.required<PaginatedResource<T>>();
-  helperText = input('\u00A0');
-  selectModal = viewChild.required(IonModal);
-  alertCtrl = inject(AlertController);
-  pageSize = computed(() => this.itemsStore().pageSize());
-  searchTerm = signal('');
-  // searchTermChanged = toSignal(
-  //   toObservable(this.searchTerm).pipe(debounceTime(500))
-  // );
-  searchTermChangedEffect = effect(() => {
-    const searchTerm = this.searchTerm();
-    untracked(() => {
-      this.itemsStore().searchItemsByTerm(searchTerm);
-      this.currentPage.set(1);
-      this.fetchItems();
-    });
-  });
+export class SearchableSelectComponent<T extends { id: string }> implements ControlValueAccessor {
+  #alertCtrl = inject(AlertController);
   isDisabled = signal(false);
   multiple = input(false);
   label = input('');
   labelPlacement = input('');
   fill = input('');
+  itemsStore = input.required<PaginatedResource<T>>();
+  helperText = input('\u00A0');
   placeholder = input('--Please Select--');
-  // service = input<CrudService<T>>();
-  // service =
-  //   input<
-  //     (
-  //       variables?: IGetPermissionsQueryVariables,
-  //       options?: QueryOptionsAlone<
-  //         IGetPermissionsQueryVariables,
-  //         IGetPermissionsQuery
-  //       >
-  //     ) => Observable<ApolloQueryResult<IGetPermissionsQuery>>
-  //   >();
-  idKey = input<keyof T>('id' as keyof T);
+  idKey = input<keyof T>('id');
   labelKey = input<keyof T>('name' as keyof T);
-  preselectedItems: { id: string }[] = [];
+
+  ionInfiniteScroll = viewChild(IonInfiniteScroll);
+  chipsContainerRef = viewChild.required('chipsContainerRef', {
+    read: ElementRef,
+  });
+  selectModal = viewChild.required(IonModal);
+
+  pageSize = computed(() => this.itemsStore().pageSize());
   items = computed(() => this.itemsStore().items());
-  // items = signal<Record<string | number, string | number>[]>([]);
+  entities = computed(() => this.itemsStore().entities());
+  totalAvailableElements = computed(() => this.itemsStore().totalItems());
+
+  searchTerm = signal('');
+  searchTermChangedEffect = effect(() => {
+    const searchTerm = this.searchTerm();
+    untracked(() => {
+      this.itemsStore().searchItemsByTerm(searchTerm);
+    });
+  });
+
   selectedItems = signal<T[]>([]);
   selectedItemsActive = signal<T[]>([]);
   selectedItemsDisplayed = computed(() => {
@@ -125,7 +114,6 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
 
   rowsCount = computed(() => {
     this.selectedItems();
-    console.log(   Math.ceil((Math.ceil(this.chipsContainerRef().nativeElement.offsetHeight - 39)) / 19));
     return Math.max(
       1,
       Math.ceil(
@@ -133,13 +121,11 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
       )
     );
   });
-  ionInfiniteScroll = viewChild(IonInfiniteScroll);
-  totalItems = computed(() => this.items().length);
-  totalAvailableElements = signal(0);
+
+  totalItems = computed(() => this.entities().length);
   showInfiniteScroll = computed(
     () => this.totalAvailableElements() > this.totalItems()
   );
-  currentPage = signal(1);
   defaultParams = signal<IQueryParamsFilter[]>([]);
 
   constructor(@Self() @Optional() private control: NgControl) {
@@ -152,7 +138,7 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
   writeValue(obj: { id: string }[] | { id: string }): void {
     if (obj) {
       untracked(() => {
-        this.preselectedItems = Array.isArray(obj) ? obj : [obj];
+        // this.preselectedItems = Array.isArray(obj) ? obj : [obj];
         // this.items.set(this.preselectedItems);
         // this.selectedItems.set(this.preselectedItems as T[]);
         // this.selectedItemsActive.set(this.selectedItems());
@@ -173,61 +159,6 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
     this.isDisabled.set(isDisabled);
   }
 
-  fetchItems() {
-    this.itemsStore().fetchNextPage();
-    // const searchTerm = this.searchTerm();
-    // const currentPage = this.currentPage();
-    // const pageSize = this.pageSize();
-    const defaultParams = this.defaultParams();
-    // if (!this.service()) {
-    //   return EMPTY;
-    // }
-    // return this.service()?.({
-    //   query: {
-    //     searchTerm: searchTerm ?? '',
-    //     currentPage: currentPage ?? 1,
-    //     pageSize: pageSize ?? 20,
-    //     filters: defaultParams ?? [],
-    //   },
-    // })
-    //   .pipe(
-    //     tap((res: any) => {
-    //       if (res?.items) {
-    //         this.totalAvailableElements.set(res?.meta?.totalItems ?? 0);
-    //         if (this.currentPage() <= 1) {
-    //           this.items.set([
-    //             ...this.preselectedItems,
-    //             ...(res.items as Record<string, string>[]),
-    //           ]);
-    //         } else {
-    //           this.items.update((items) => [
-    //             ...items,
-    //             ...(res.items as Record<string, string>[]),
-    //           ]);
-    //         }
-    //         this.items.set(
-    //           this.items().sort((a, b) => (a['name'] < b['name'] ? -1 : 1))
-    //         );
-    //         const uniqueData = [];
-    //         const idSet = new Set();
-    //
-    //         for (const item of this.items()) {
-    //           if (!idSet.has(item['id'])) {
-    //             idSet.add(item['id']);
-    //             uniqueData.push(item);
-    //           }
-    //         }
-    //
-    //         this.items.set([...uniqueData]);
-    //       }
-    //
-    //       this.ionInfiniteScroll()?.complete().then();
-    //     }),
-    //     take(1)
-    //   )
-    //   .subscribe();
-  }
-
   compareIds = (t1: T, t2: T) => {
     return t1[this.idKey() as keyof T] === t2[this.idKey() as keyof T];
   };
@@ -244,23 +175,16 @@ export class SearchableSelectComponent<T> implements ControlValueAccessor {
     this.emitChange();
 
     modal.isOpen = false;
-    this.preselectedItems = this.selectedItems() as { id: string }[];
     this.selectedItemsActive.set(this.selectedItems());
   }
 
   async loadMoreData() {
-    this.currentPage.update((current) => current + 1);
-    this.fetchItems();
+    this.itemsStore().fetchNextPage();
   }
 
-  async loadInitialData() {
-    this.currentPage.set(1);
-    this.searchTerm.set('');
-    this.fetchItems();
-  }
 
   async removeItem($index: number) {
-    const alert = await this.alertCtrl.create({
+    const alert = await this.#alertCtrl.create({
       header: 'Removing Item',
       message: 'You are removing Item, continue?',
       buttons: [

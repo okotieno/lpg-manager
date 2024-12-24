@@ -2,9 +2,9 @@ import { Component, computed, effect, inject, input, untracked } from '@angular/
 import {
   IonButton,
   IonCard,
-  IonCardContent,
+  IonCardContent, IonCol,
   IonInput,
-  IonItem
+  IonItem, IonRow
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICreateUserGQL, IUpdateUserGQL } from '@lpg-manager/user-store';
@@ -26,6 +26,8 @@ import { PaginatedResource } from '@lpg-manager/data-table';
     IonButton,
     RouterLink,
     SearchableSelectComponent,
+    IonRow,
+    IonCol,
   ],
   templateUrl: './user-form.component.html',
   providers: [RoleStore],
@@ -60,7 +62,6 @@ export default class UserFormComponent {
   });
 
   rolesStore: PaginatedResource<IRoleModel> = inject(RoleStore);
-
 
   async onSubmit() {
     if (this.userForm.valid) {

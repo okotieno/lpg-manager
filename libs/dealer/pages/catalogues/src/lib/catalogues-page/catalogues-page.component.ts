@@ -71,7 +71,7 @@ export default class CataloguesPageComponent {
   #alertController = inject(AlertController);
 
   cataloguesStore = inject(CataloguesStore) as PaginatedResource<
-    NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]
+    NonNullable<NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]>
   >;
   cartCatalogueItems = computed(() => this.#cartStore.cart?.()?.items ?? []);
   catalogues = this.cataloguesStore.items;

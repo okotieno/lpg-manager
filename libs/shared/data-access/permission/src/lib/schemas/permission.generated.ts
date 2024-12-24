@@ -24,6 +24,13 @@ export type IGetPermissionsQueryVariables = Types.Exact<{
 
 export type IGetPermissionsQuery = { permissions: { items?: Array<{ id: string, name: string } | null> | null, meta?: { totalItems: number } | null } };
 
+export type IDeletePermissionByIdMutationVariables = Types.Exact<{
+  id: Types.Scalars['UUID']['input'];
+}>;
+
+
+export type IDeletePermissionByIdMutation = { deletePermission?: { message: string } | null };
+
 export const CreatePermissionDocument = gql`
     mutation CreatePermission($name: String!) {
   createPermission(name: $name) {
@@ -83,6 +90,24 @@ export const GetPermissionsDocument = gql`
   })
   export class IGetPermissionsGQL extends Apollo.Query<IGetPermissionsQuery, IGetPermissionsQueryVariables> {
     override document = GetPermissionsDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeletePermissionByIdDocument = gql`
+    mutation DeletePermissionById($id: UUID!) {
+  deletePermission(id: $id) {
+    message
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class IDeletePermissionByIdGQL extends Apollo.Mutation<IDeletePermissionByIdMutation, IDeletePermissionByIdMutationVariables> {
+    override document = DeletePermissionByIdDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
