@@ -13,6 +13,7 @@ import { RoleStore } from '@lpg-manager/role-store';
 import { IRoleModel, ISelectCategory, IUserModel } from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
+import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
 
 @Component({
   selector: 'lpg-user-form',
@@ -32,7 +33,7 @@ import { PaginatedResource } from '@lpg-manager/data-table';
   templateUrl: './user-form.component.html',
   providers: [RoleStore],
 })
-export default class UserFormComponent {
+export default class UserFormComponent implements IHasUnsavedChanges {
   #fb = inject(FormBuilder);
   #createUserGQL = inject(ICreateUserGQL);
   #updateUserGQL = inject(IUpdateUserGQL);
@@ -105,5 +106,9 @@ export default class UserFormComponent {
           });
       }
     }
+  }
+
+  get hasUnsavedChanges() {
+    return this.userForm.dirty;
   }
 }

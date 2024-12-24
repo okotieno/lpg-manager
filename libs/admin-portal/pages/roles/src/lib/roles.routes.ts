@@ -25,6 +25,10 @@ export const ROLES_ROUTES: Routes = [
   {
     path: 'new',
     loadComponent: () => import('./role-form/role-form.component'),
+    canDeactivate: [
+      (component: IHasUnsavedChanges) =>
+        inject(FormExitGuardService).hasUnsavedChanges(component),
+    ],
     data: {
       routeLabel: 'Create Role',
       breadcrumbs: [

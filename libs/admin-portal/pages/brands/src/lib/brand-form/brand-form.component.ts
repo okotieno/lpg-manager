@@ -39,6 +39,7 @@ import {
   SHOW_ERROR_MESSAGE,
   SHOW_SUCCESS_MESSAGE,
 } from '@lpg-manager/injection-token';
+import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
 
 @Component({
   selector: 'lpg-brand-form',
@@ -63,7 +64,7 @@ import {
   templateUrl: './brand-form.component.html',
   providers: [PermissionsStore],
 })
-export default class BrandFormComponent {
+export default class BrandFormComponent implements IHasUnsavedChanges {
   brandItems = signal<IUpdateBrandCatalogueInput[]>([]);
   #modalCtrl = inject(ModalController);
   #alertController = inject(AlertController);
@@ -207,5 +208,9 @@ export default class BrandFormComponent {
     });
 
     await alert.present();
+  }
+
+  get hasUnsavedChanges() {
+    return this.brandForm.dirty;
   }
 }

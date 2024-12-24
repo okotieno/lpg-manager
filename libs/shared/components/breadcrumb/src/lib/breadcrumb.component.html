@@ -2,7 +2,7 @@
   <ion-breadcrumb href="#dashboard"><ion-icon name="house"></ion-icon></ion-breadcrumb>
   @for (crumb of breadcrumbs(); track crumb.label; let last = $last) {
     @if (crumb.path) {
-      <ion-breadcrumb [routerLink]="crumb.path" [href]="crumb.path">{{ crumb.label | titlecase }}</ion-breadcrumb>
+      <ion-breadcrumb [href]="crumb.path">{{ crumb.label | titlecase }}</ion-breadcrumb>
     } @else {
       <ion-breadcrumb>{{ crumb.label | titlecase }}</ion-breadcrumb>
     }
