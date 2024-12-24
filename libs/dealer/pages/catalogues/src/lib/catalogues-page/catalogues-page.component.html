@@ -16,7 +16,7 @@
         <ion-card class="catalogue-card">
           <div class="image-container">
             <ion-img
-              [src]="catalogue.brand?.images?.[0]?.url ?? 'no-image-placeholder.webp'"
+              [src]="catalogue.brand.images?.[0]?.url ?? 'no-image-placeholder.webp'"
               class="catalogue-image"
             ></ion-img>
             @if (catalogue.pricePerUnit) {

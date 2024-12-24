@@ -2,8 +2,8 @@ import { signalStore, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
   IDeleteCatalogueByIdGQL,
-  IGetCataloguesGQL,
-  IGetCataloguesQueryVariables,
+  IGetCataloguesGQL, IGetCataloguesQuery,
+  IGetCataloguesQueryVariables
 } from './catalogue.generated';
 
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
@@ -15,12 +15,26 @@ export const CataloguesStore = signalStore(
     _deleteItemWithIdGQL: inject(IDeleteCatalogueByIdGQL),
   })),
   withPaginatedItemsStore<
-    {
-      id: string;
-      name: string;
-    },
+    NonNullable<IGetCataloguesQuery['catalogues']['items']>[number],
     IGetCataloguesQueryVariables,
     'catalogues',
     'deleteCatalogue'
   >()
+  // withPaginatedItemsStore<{
+  //     id: string;
+  //     name: string;
+  //   },
+  //   IGetCataloguesQueryVariables,
+  //   'catalogues',
+  //   'deleteCatalogue'
+  // >()
 );
+
+export class test {
+  getItemsGQL = inject(IGetCataloguesGQL);
+  test?: NonNullable<IGetCataloguesQuery['catalogues']['items']>[number];
+  constructor() {
+    console.log(this.getItemsGQL);
+
+  }
+}

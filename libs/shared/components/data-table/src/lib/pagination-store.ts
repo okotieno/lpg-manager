@@ -7,21 +7,22 @@ import {
   withProps,
   type,
 } from '@ngrx/signals';
-import { withEntities } from '@ngrx/signals/entities';
 import { computed, resource } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client';
 import { Mutation, MutationResult, Query } from 'apollo-angular';
 import {
+  Exact,
+  InputMaybe,
   IQueryParams,
   IQueryParamsFilter,
-  ISortByEnum,
+  ISortByEnum
 } from '@lpg-manager/types';
 import { lastValueFrom, Observable, tap } from 'rxjs';
 import { defaultQueryParams } from './default-variables';
 
-export type IGetItemsQuery<T, P extends string> = {
-  [K in P]: {
-    items?: Array<T | null> | null;
+export type IGetItemsQuery<IGetItemsQueryItem, RootField extends string> = {
+  [K in RootField]: {
+    items?: IGetItemsQueryItem[];
     meta?: { totalItems: number } | null;
   };
 };
@@ -45,29 +46,28 @@ interface StoreState<T> {
 }
 
 export const withPaginatedItemsStore = <
-  T,
-  V extends {
-    query?: IQueryParams | null;
-  },
-  C extends string,
+  IGetItemsQueryItem,
+  IGetItemsQueryVariables extends Exact<{
+    query?: InputMaybe<IQueryParams>;
+  }>,
+  RootField extends string,
   D extends string,
 >() =>
   signalStoreFeature(
     {
       props: type<{
-        _getItemsGQL: Query<IGetItemsQuery<T, C>, V>;
+        _getItemsGQL: Query<IGetItemsQuery<IGetItemsQueryItem, RootField>, IGetItemsQueryVariables> ;
         _deleteItemWithIdGQL: Mutation<IDeleteItemMutation<D>, { id: string }>;
         _getItemKey: string;
       }>(),
     },
-    withEntities<T>(),
     withState({
       ...defaultQueryParams.query,
-      sortBy: defaultQueryParams.query.sortBy as keyof T,
+      sortBy: defaultQueryParams.query.sortBy as keyof IGetItemsQueryItem,
       totalItems: 0,
       items: [],
       deleteItemId: undefined,
-    } as StoreState<T>),
+    } as StoreState<IGetItemsQueryItem>),
     withComputed((store) => ({
       _getItemsKey: computed(() => store._getItemKey + 's'),
       _deleteItemWithIdKey: computed(() => `delete${store._getItemKey}`),
@@ -91,7 +91,7 @@ export const withPaginatedItemsStore = <
                   query: {
                     ...request,
                   },
-                } as V,
+                } as IGetItemsQueryVariables,
 
                 { fetchPolicy: 'cache-first' }
               )
@@ -99,10 +99,10 @@ export const withPaginatedItemsStore = <
                 tap((result) => {
                   if (result) {
                     const getItemsKey =
-                      store._getItemsKey() as keyof IGetItemsQuery<T, C>;
+                      store._getItemsKey() as keyof IGetItemsQuery<IGetItemsQueryItem, RootField>;
                     const newItems = result.data[getItemsKey].items ?? [];
 
-                    patchState(store, { items: [...newItems] as T[] });
+                    patchState(store, { items: [...newItems] as IGetItemsQueryItem[] });
 
                     if (result.data[getItemsKey].meta?.totalItems) {
                       patchState(store, {
@@ -111,7 +111,7 @@ export const withPaginatedItemsStore = <
                     }
                   }
                 })
-              ) as Observable<ApolloQueryResult<IGetItemsQuery<T, C>>>
+              ) as Observable<ApolloQueryResult<IGetItemsQuery<IGetItemsQueryItem, RootField>>>
           );
         },
       }),
@@ -123,7 +123,7 @@ export const withPaginatedItemsStore = <
             return Promise.resolve(undefined);
           }
           return lastValueFrom(
-            store._deleteItemWithIdGQL?.mutate({ id }) as Observable<MutationResult<IDeleteItemMutation<C>>>
+            store._deleteItemWithIdGQL?.mutate({ id }) as Observable<MutationResult<IDeleteItemMutation<RootField>>>
           );
         },
       }),
@@ -141,7 +141,7 @@ export const withPaginatedItemsStore = <
       setPageSize(size: number) {
         patchState(store, { pageSize: size });
       },
-      setSortBy(key: keyof T) {
+      setSortBy(key: keyof IGetItemsQueryItem) {
         patchState(store, { sortBy: key });
       },
       setSortByDirection(direction: ISortByEnum) {

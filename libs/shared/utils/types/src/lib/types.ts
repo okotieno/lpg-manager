@@ -72,11 +72,18 @@ export type ICartCatalogueModel = {
 };
 
 export type ICartModel = {
+  expiresAt: Scalars['DateTime']['output'];
   id: Scalars['UUID']['output'];
   items: Array<Maybe<ICartCatalogueModel>>;
+  status: ICartStatus;
   totalPrice?: Maybe<Scalars['Float']['output']>;
   totalQuantity?: Maybe<Scalars['Int']['output']>;
 };
+
+export enum ICartStatus {
+  Completed = 'COMPLETED',
+  Pending = 'PENDING'
+}
 
 export type ICatalogueModel = {
   brand: IBrandModel;
@@ -284,6 +291,7 @@ export type IMutation = {
   assignRoleToUser?: Maybe<ISuccessResponse>;
   changePassword?: Maybe<ISuccessResponse>;
   changePasswordUsingResetToken?: Maybe<ILoginResponse>;
+  completeCart: ICreateCartResponse;
   continueWithGoogle?: Maybe<ILoginResponse>;
   createActivityLog?: Maybe<ICreateActivityLogSuccessResponse>;
   createBrand?: Maybe<ICreateBrandSuccessResponse>;
@@ -369,6 +377,11 @@ export type IMutationChangePasswordUsingResetTokenArgs = {
   password: Scalars['String']['input'];
   passwordConfirmation: Scalars['String']['input'];
   token: Scalars['String']['input'];
+};
+
+
+export type IMutationCompleteCartArgs = {
+  cartId: Scalars['UUID']['input'];
 };
 
 

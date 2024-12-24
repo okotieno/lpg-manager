@@ -17,12 +17,15 @@ export type IGetCatalogueByIdQueryVariables = Types.Exact<{
 
 export type IGetCatalogueByIdQuery = { catalogue?: { id: string, name: string } | null };
 
+export type ICatalogueBrandFragmentFragment = { brand: { name: string, images?: Array<{ url?: string | null } | null> | null } };
+
 export type IGetCataloguesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
+  includeBrands?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
 }>;
 
 
-export type IGetCataloguesQuery = { catalogues: { items?: Array<{ id: string, name: string } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetCataloguesQuery = { catalogues: { items?: Array<{ id: string, name: string, brand: { name: string, images?: Array<{ url?: string | null } | null> | null } } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteCatalogueByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -39,6 +42,16 @@ export type IUpdateCatalogueMutationVariables = Types.Exact<{
 
 export type IUpdateCatalogueMutation = { updateCatalogue?: { message: string, data: { id: string } } | null };
 
+export const CatalogueBrandFragmentFragmentDoc = gql`
+    fragment catalogueBrandFragment on CatalogueModel {
+  brand {
+    name
+    images {
+      url
+    }
+  }
+}
+    `;
 export const CreateCatalogueDocument = gql`
     mutation CreateCatalogue($params: CreateCatalogueInput!) {
   createCatalogue(params: $params) {
@@ -80,18 +93,19 @@ export const GetCatalogueByIdDocument = gql`
     }
   }
 export const GetCataloguesDocument = gql`
-    query GetCatalogues($query: QueryParams) {
+    query GetCatalogues($query: QueryParams, $includeBrands: Boolean = false) {
   catalogues(query: $query) {
     items {
       id
       name
+      ...catalogueBrandFragment @include(if: $includeBrands)
     }
     meta {
       totalItems
     }
   }
 }
-    `;
+    ${CatalogueBrandFragmentFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'

@@ -52,22 +52,11 @@ export class CartResolver {
 
   @Mutation(() => CartModel)
   async addItemToCart(
-    @Args('cartId') cartId: string | undefined,
+    @Args('cartId') cartId: string,
     @Args('catalogueId') catalogueId: string,
     @Args('quantity') quantity: number
   ) {
-    let cart;
-    if (!cartId) {
-      cart = await this.cartService.create({
-        items: [{
-          catalogueId,
-          quantity
-        }]
-      });
-    } else {
-      cart = await this.cartService.addItem(cartId, catalogueId, quantity);
-    }
-
+    const cart = await this.cartService.addItem(cartId, catalogueId, quantity);
     return {
       message: 'Item added to cart successfully',
       data: cart

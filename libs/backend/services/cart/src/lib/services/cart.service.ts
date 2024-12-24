@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { CartModel, CartCatalogueModel, CatalogueModel } from '@lpg-manager/db';
+import { CartModel, CartCatalogueModel, CatalogueModel, CartStatus } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
 
@@ -11,6 +11,17 @@ export class CartService extends CrudAbstractService<CartModel> {
     @InjectModel(CartCatalogueModel) private cartCatalogueModel: typeof CartCatalogueModel,
   ) {
     super(cartModel);
+  }
+
+  override async create(data: Partial<CartModel>) {
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 24); // Set expiry to 24 hours from now
+
+    return super.create({
+      ...data,
+      expiresAt,
+      status: CartStatus.PENDING
+    });
   }
 
   async addItem(cartId: string, catalogueId: string, quantity: number) {
@@ -125,17 +136,17 @@ export class CartService extends CrudAbstractService<CartModel> {
     const transaction = await this.model.sequelize?.transaction();
     try {
       await this.model.update(
-        { 
+        {
           status: 'COMPLETED',
         },
-        { 
+        {
           where: { id: cartId },
-          transaction 
+          transaction
         }
       );
-      
+
       await transaction?.commit();
-      
+
       return this.findById(cartId, {
         include: [{
           model: CartCatalogueModel,
