@@ -4,6 +4,7 @@ enum CartStatus {
 }
 
 type CartCatalogueModel {
+  id: UUID!
   catalogueId: UUID!
   quantity: Float!
   catalogue: CatalogueModel!

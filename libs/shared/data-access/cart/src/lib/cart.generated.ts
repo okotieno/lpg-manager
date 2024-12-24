@@ -3,28 +3,28 @@ import * as Types from '@lpg-manager/types';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
-export type ICartFragmentFragment = { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> };
+export type ICartFragmentFragment = { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ id: string, catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> };
 
 export type IGetCartsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetCartsQuery = { carts: { items?: Array<{ id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetCartsQuery = { carts: { items?: Array<{ id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ id: string, catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IGetCartQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetCartQuery = { cart?: { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } | null };
+export type IGetCartQuery = { cart?: { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ id: string, catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } | null };
 
 export type ICreateCartMutationVariables = Types.Exact<{
   params?: Types.InputMaybe<Types.ICreateCartInput>;
 }>;
 
 
-export type ICreateCartMutation = { createCart: { message: string, data: { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } } };
+export type ICreateCartMutation = { createCart: { message: string, data: { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ id: string, catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } } };
 
 export type IAddItemToCartMutationVariables = Types.Exact<{
   cartId?: Types.InputMaybe<Types.Scalars['UUID']['input']>;
@@ -33,7 +33,7 @@ export type IAddItemToCartMutationVariables = Types.Exact<{
 }>;
 
 
-export type IAddItemToCartMutation = { addItemToCart: { message: string, data: { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } } };
+export type IAddItemToCartMutation = { addItemToCart: { message: string, data: { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ id: string, catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } } };
 
 export type IRemoveItemFromCartMutationVariables = Types.Exact<{
   cartId: Types.Scalars['UUID']['input'];
@@ -41,7 +41,7 @@ export type IRemoveItemFromCartMutationVariables = Types.Exact<{
 }>;
 
 
-export type IRemoveItemFromCartMutation = { removeItemFromCart: { message: string, data: { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } } };
+export type IRemoveItemFromCartMutation = { removeItemFromCart: { message: string, data: { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ id: string, catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } } };
 
 export type IUpdateItemQuantityMutationVariables = Types.Exact<{
   cartId: Types.Scalars['UUID']['input'];
@@ -50,7 +50,7 @@ export type IUpdateItemQuantityMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateItemQuantityMutation = { updateItemQuantity: { message: string, data: { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } } };
+export type IUpdateItemQuantityMutation = { updateItemQuantity: { message: string, data: { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ id: string, catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } } };
 
 export const CartFragmentFragmentDoc = gql`
     fragment cartFragment on CartModel {
@@ -58,6 +58,7 @@ export const CartFragmentFragmentDoc = gql`
   totalQuantity
   totalPrice
   items {
+    id
     catalogueId
     quantity
     catalogue {
@@ -137,24 +138,11 @@ export const AddItemToCartDocument = gql`
   addItemToCart(cartId: $cartId, catalogueId: $catalogueId, quantity: $quantity) {
     message
     data {
-      id
-      totalQuantity
-      totalPrice
-      items {
-        catalogueId
-        quantity
-        catalogue {
-          id
-          name
-          pricePerUnit
-          unit
-          quantityPerUnit
-        }
-      }
+      ...cartFragment
     }
   }
 }
-    `;
+    ${CartFragmentFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'

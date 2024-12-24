@@ -44,17 +44,17 @@
             </div>
             <ion-buttons style="justify-content: center; align-items: center">
               @if (catalogue.cart) {
-                <ion-button color="primary" (click)="addToCart(catalogue)">
+                <ion-button color="primary" (click)="updateQuantity(catalogue, false)">
                   <ion-icon name="circle-minus" slot="icon-only"></ion-icon>
                 </ion-button>
                 <ion-text class="">
                   {{ catalogue.cart?.quantity }}
                 </ion-text>
-                <ion-button color="primary" (click)="addToCart(catalogue)">
+                <ion-button color="primary" (click)="updateQuantity(catalogue, true)">
                   <ion-icon name="circle-plus" slot="icon-only"></ion-icon>
                 </ion-button>
 
-                <ion-button color="danger" style="margin-left: auto" (click)="addToCart(catalogue)">
+                <ion-button color="danger" style="margin-left: auto" (click)="removeFromCart(catalogue)">
                   <ion-icon name="trash-can" slot="icon-only"></ion-icon>
                 </ion-button>
 

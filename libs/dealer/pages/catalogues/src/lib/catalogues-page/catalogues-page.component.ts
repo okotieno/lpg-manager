@@ -21,7 +21,8 @@ import {
   IonRow,
   IonSearchbar,
   IonText,
-  ModalController
+  ModalController,
+  AlertController
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
 import { CartStore, IGetCartsQuery, AddToCartDialogComponent } from '@lpg-manager/cart-store';
@@ -67,6 +68,7 @@ type ICatalogueDisplay = IGetItemQuery & { cart?: NonNullable<IGetCartsQuery['ca
 export default class CataloguesPageComponent {
   #cartStore = inject(CartStore);
   #modalCtrl = inject(ModalController);
+  #alertController = inject(AlertController);
 
   cataloguesStore = inject(CataloguesStore) as PaginatedResource<
     NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]
@@ -109,5 +111,40 @@ export default class CataloguesPageComponent {
     if (role === 'confirm' && data) {
       this.#cartStore.addItem(data.catalogueId, data.quantity);
     }
+  }
+
+  async updateQuantity(catalogue: ICatalogueDisplay, increment: boolean) {
+    const cartItem = catalogue.cart as NonNullable<NonNullable<IGetCartsQuery['carts']['items']>[number]>['items'][number];
+    if (!cartItem) return;
+
+    const newQuantity = increment ? cartItem.quantity + 1 : cartItem.quantity - 1;
+    if (newQuantity < 1) return;
+
+    await this.#cartStore.updateQuantity(cartItem.id, newQuantity);
+  }
+
+  async removeFromCart(catalogue: ICatalogueDisplay) {
+    const cartItem = catalogue.cart;
+    if (!cartItem) return;
+
+    const alert = await this.#alertController.create({
+      header: 'Remove Item',
+      message: 'Are you sure you want to remove this item from your cart?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Remove',
+          role: 'destructive',
+          handler: async () => {
+            await this.#cartStore.removeItem(cartItem.id);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }

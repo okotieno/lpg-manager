@@ -3,6 +3,7 @@ fragment cartFragment on CartModel {
   totalQuantity
   totalPrice
   items {
+    id
     catalogueId
     quantity
     catalogue {
@@ -35,22 +36,7 @@ mutation CreateCart($params: CreateCartInput) {
 mutation AddItemToCart($cartId: UUID, $catalogueId: UUID!, $quantity: Int!) {
   addItemToCart(cartId: $cartId, catalogueId: $catalogueId, quantity: $quantity) {
     message
-    data {
-      id
-      totalQuantity
-      totalPrice
-      items {
-        catalogueId
-        quantity
-        catalogue {
-          id
-          name
-          pricePerUnit
-          unit
-          quantityPerUnit
-        }
-      }
-    }
+    data { ...cartFragment }
   }
 }
 

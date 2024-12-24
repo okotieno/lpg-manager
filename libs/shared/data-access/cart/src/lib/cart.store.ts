@@ -252,5 +252,58 @@ export const CartStore = signalStore(
     //     });
     //   }
     // },
+    async removeItem(cartCatalogueId: string) {
+      if (!store.cartId()) return;
+      
+      return lastValueFrom(
+        store._removeItemFromCartGQL.mutate(
+          {
+            cartId: store.cartId() as string,
+            cartCatalogueId,
+          },
+          {
+            context: {
+              [SHOW_SUCCESS_MESSAGE]: true,
+              [SHOW_ERROR_MESSAGE]: true,
+            },
+          }
+        ).pipe(
+          tap((res) => {
+            untracked(() => {
+              if (res.data?.removeItemFromCart.data) {
+                patchState(store, { cart: res.data.removeItemFromCart.data });
+              }
+            });
+          })
+        )
+      );
+    },
+    async updateQuantity(cartCatalogueId: string, quantity: number) {
+      if (!store.cartId()) return;
+
+      return lastValueFrom(
+        store._updateItemQuantityGQL.mutate(
+          {
+            cartId: store.cartId() as string,
+            cartCatalogueId,
+            quantity,
+          },
+          {
+            context: {
+              [SHOW_SUCCESS_MESSAGE]: true,
+              [SHOW_ERROR_MESSAGE]: true,
+            },
+          }
+        ).pipe(
+          tap((res) => {
+            untracked(() => {
+              if (res.data?.updateItemQuantity.data) {
+                patchState(store, { cart: res.data.updateItemQuantity.data });
+              }
+            });
+          })
+        )
+      );
+    }
   }))
 );
