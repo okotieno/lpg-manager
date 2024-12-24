@@ -16,3 +16,6 @@ circle-xmark
 right-from-bracket
 user-tie
 cart-shopping
+trash-can
+circle-plus
+circle-minus

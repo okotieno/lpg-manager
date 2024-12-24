@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import {
   CataloguesStore,
   IGetCataloguesQuery,
@@ -7,9 +7,8 @@ import {
   GET_ITEMS_INCLUDE_FIELDS,
   PaginatedResource,
 } from '@lpg-manager/data-table';
-import { ICatalogueModel } from '@lpg-manager/types';
 import {
-  IonButton,
+  IonButton, IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -22,11 +21,14 @@ import {
   IonRow,
   IonSearchbar,
   IonText,
-  ModalController,
+  ModalController
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
-import { CartStore } from '@lpg-manager/cart-store';
-import { AddToCartDialogComponent } from '@lpg-manager/cart-store';
+import { CartStore, IGetCartsQuery, AddToCartDialogComponent } from '@lpg-manager/cart-store';
+
+type IGetItemQuery = NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]
+
+type ICatalogueDisplay = IGetItemQuery & { cart?: NonNullable<IGetCartsQuery['carts']['items']>[number] }
 
 @Component({
   selector: 'lpg-catalogues',
@@ -46,6 +48,7 @@ import { AddToCartDialogComponent } from '@lpg-manager/cart-store';
     IonCardSubtitle,
     IonIcon,
     IonButton,
+    IonButtons,
   ],
   templateUrl: './catalogues-page.component.html',
   styleUrl: './catalogues-page.component.scss',
@@ -68,7 +71,21 @@ export default class CataloguesPageComponent {
   cataloguesStore = inject(CataloguesStore) as PaginatedResource<
     NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]
   >;
+  cartCatalogueItems = computed(() => this.#cartStore.cart?.()?.items ?? []);
   catalogues = this.cataloguesStore.items;
+  cataloguesDisplayed = computed<any>(() => {
+    const cartCatalogueItems = this.cartCatalogueItems();
+    const catalogues = this.catalogues();
+
+    console.log({ cartCatalogueItems, catalogues });
+    return catalogues.map((catalog) => {
+      const cartCatalogueItem = cartCatalogueItems.find(
+        (item) => item?.catalogueId === catalog?.id
+      );
+      console.log({ cartCatalogueItem });
+      return { ...catalog, cart: cartCatalogueItem } as ICatalogueDisplay;
+    });
+  });
 
   handleSearch(event: any) {
     const searchTerm = event.target.value.toLowerCase();
