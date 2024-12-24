@@ -10,7 +10,7 @@ import { IUserModel } from '@lpg-manager/types';
 
 export const UserStore = signalStore(
   withProps(() => ({
-    _getItemKey: 'station',
+    _getItemKey: 'user',
     _getItemsGQL: inject(IGetUsersGQL),
     _deleteItemWithIdGQL: inject(IDeleteUserByIdGQL),
   })),

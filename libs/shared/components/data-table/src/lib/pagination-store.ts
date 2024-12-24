@@ -97,7 +97,6 @@ export const withPaginatedItemsStore = <
             filters: store.filters(),
           } as IQueryParams),
         loader: ({ request }) => {
-          console.log(store._getItemsIncludeFields);
           return lastValueFrom(
             store._getItemsGQL
               ?.fetch(
@@ -114,6 +113,8 @@ export const withPaginatedItemsStore = <
                 tap((result) => {
                   if (result) {
                     const getItemsKey = store._getItemsKey();
+                    console.log(result.data, getItemsKey);
+
                     const newItems = result.data[getItemsKey].items ?? [];
 
                     patchState(store, {
