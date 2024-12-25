@@ -55,13 +55,10 @@
     </ion-col>
   </ion-row>
   <ion-list formArrayName="roles">
-    <ion-list-header class="ion-padding-bottom">
-      <ion-label>Roles</ion-label>
-      <ion-button size="small" (click)="addRole()">
-        <ion-icon slot="start" name="plus"></ion-icon>
-        Add Role
-      </ion-button>
-    </ion-list-header>
+    <ng-template
+      [ngTemplateOutlet]="addItem"
+      [ngTemplateOutletContext]="{ showLabel: true, showButton:  roles.controls.length < 1 }"
+    />
     @for (role of roles.controls; track $index) {
       <ion-item lines="none" [formGroupName]="$index">
         <ion-row style="width: 100%;" class="ion-margin-horizontal">
@@ -83,7 +80,7 @@
               placeholder="Select station"
             ></lpg-searchable-select>
           </ion-col>
-          <ion-col size="12" sizeMd="2" class="ion-align-self-end">
+          <ion-col size="12" offsetLg="1" sizeMd="1" class="ion-align-self-end">
             <ion-button fill="clear" color="danger" (click)="removeRole($index)">
               <ion-icon name="trash-can"></ion-icon>
             </ion-button>
@@ -91,6 +88,10 @@
         </ion-row>
       </ion-item>
     }
+    <ng-template
+      [ngTemplateOutlet]="addItem"
+      [ngTemplateOutletContext]=" { showLabel: false, showButton: roles.controls.length > 0 } "
+    />
 
   </ion-list>
 
@@ -103,3 +104,20 @@
     </ion-button>
   </div>
 </form>
+
+<ng-template #addItem let-showLabel="showLabel" let-showButton="showButton">
+  @if (showLabel || showButton) {
+    <ion-list-header>
+      <ion-label>
+        {{ showLabel ? 'Assigned roles' : '' }}
+      </ion-label>
+      @if (showButton) {
+        <ion-button class="ion-padding" shape="round" (click)="addRole()" fill="clear" size="small">
+          <ion-icon name="grid-2-plus" slot="start"></ion-icon>
+          Add role
+        </ion-button>
+      }
+
+    </ion-list-header>
+  }
+</ng-template>

@@ -11,23 +11,11 @@
   (click)="modal.isOpen = true"
   (keydown.enter)="modal.isOpen = true"
   [ngModel]="selectedItemsDisplayed()"
-  [rows]="rowsCount()"
+  [rows]="1"
   [autoGrow]="true"
 >
   <ion-icon color="primary" class="ion-padding-horizontal ion-padding-top" slot="end" [name]="modal.isOpen ? 'caret-up':  'caret-down'"></ion-icon>
 </ion-textarea>
-
-<div style="position: absolute; top: 30px" #chipsContainerRef >
-  @for (item of selectedItemsActive(); track item) {
-    <ion-chip style="margin: 4px 4px 0 0;">{{ $any(item)[labelKey()] }}
-      @if (multiple()) {
-        <ion-button (click)="removeItem($index)" color="danger" fill="clear" style="margin: -2px -8px -2px 10px" size="small">
-          <ion-icon name="xmark" slot="icon-only"></ion-icon>
-        </ion-button>
-      }
-    </ion-chip>
-  }
-</div>
 
 <ion-modal [backdropDismiss]="false" #modal [animated]="true" (ionModalWillDismiss)="modal.isOpen = false">
   <ng-template>

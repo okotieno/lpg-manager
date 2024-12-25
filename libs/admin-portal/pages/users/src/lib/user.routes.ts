@@ -50,6 +50,10 @@ export const USERS_ROUTES: Routes = [
             { label: 'Create user' },
           ],
         },
+        canDeactivate: [
+          (component: IHasUnsavedChanges) =>
+            inject(FormExitGuardService).hasUnsavedChanges(component),
+        ],
       },
       {
         path: ':userId',

@@ -4,7 +4,7 @@ import {
   IonCard,
   IonCardContent, IonCol, IonIcon,
   IonInput,
-  IonItem, IonLabel, IonList, IonListHeader, IonRow
+  IonItem, IonLabel, IonList, IonListHeader, IonRow, AlertController
 } from '@ionic/angular/standalone';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICreateUserGQL, IUpdateUserGQL } from '@lpg-manager/user-store';
@@ -14,6 +14,7 @@ import { IRoleModel, ISelectCategory, IUserModel } from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'lpg-user-form',
@@ -31,6 +32,7 @@ import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
     IonListHeader,
     IonIcon,
     IonLabel,
+    NgTemplateOutlet,
   ],
   templateUrl: './user-form.component.html',
   providers: [RoleStore],
@@ -40,6 +42,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
   #createUserGQL = inject(ICreateUserGQL);
   #updateUserGQL = inject(IUpdateUserGQL);
   #router = inject(Router);
+  #alertController = inject(AlertController);
   userForm = this.#fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
@@ -93,8 +96,26 @@ export default class UserFormComponent implements IHasUnsavedChanges {
     this.roles.push(roleForm);
   }
 
-  removeRole(index: number) {
-    this.roles.removeAt(index);
+  async removeRole(index: number) {
+    const alert = await this.#alertController.create({
+      header: 'Confirm Removal',
+      message: 'Are you sure you want to remove this role?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Remove',
+          role: 'destructive',
+          handler: () => {
+            this.roles.removeAt(index);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   async onSubmit() {

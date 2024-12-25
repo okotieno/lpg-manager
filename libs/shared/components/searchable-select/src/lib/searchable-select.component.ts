@@ -39,7 +39,6 @@ import {
 import { CdkListbox, CdkOption } from '@angular/cdk/listbox';
 import { IQueryParamsFilter } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-searchable-select',
@@ -82,9 +81,6 @@ export class SearchableSelectComponent<T extends { id: string }> implements Cont
   labelKey = input<keyof T>('name' as keyof T);
 
   ionInfiniteScroll = viewChild(IonInfiniteScroll);
-  chipsContainerRef = viewChild.required('chipsContainerRef', {
-    read: ElementRef,
-  });
   selectModal = viewChild.required(IonModal);
 
   pageSize = computed(() => this.itemsStore().pageSize());
@@ -109,16 +105,6 @@ export class SearchableSelectComponent<T extends { id: string }> implements Cont
     return this.selectedItems()
       .map((item) => item[this.labelKey() as keyof T])
       .join('           ,');
-  });
-
-  rowsCount = computed(() => {
-    this.selectedItems();
-    return Math.max(
-      1,
-      Math.ceil(
-        Math.ceil(this.chipsContainerRef().nativeElement.offsetHeight - 39) / 19
-      )
-    );
   });
 
   totalItems = computed(() => this.entities().length);
