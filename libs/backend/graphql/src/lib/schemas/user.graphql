@@ -47,7 +47,7 @@ input CreateUserInput {
   lastName : String!
   email : String!
   phone : String
-  roles: [SelectCategory]
+  roles: [UserRoleInput]
 }
 
 input UpdateUserInput {
@@ -56,7 +56,7 @@ input UpdateUserInput {
   lastName : String!
   email : String!
   phone : String
-  roles: [SelectCategory]
+  roles: [UserRoleInput]
 }
 
 type CreateUserSuccessResponse  {

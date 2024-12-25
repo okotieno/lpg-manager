@@ -12,5 +12,6 @@ extend type Mutation {
 
 input UserRoleInput {
   id: String!
-  stationId: UUID
+  stationId: UUID!
+  roleId: UUID!
 }

@@ -155,8 +155,8 @@ export default class UserFormComponent implements IHasUnsavedChanges {
   addRole() {
     const roleForm = this.#fb.group({
       id: [crypto.randomUUID(), Validators.required],
-      roleId: [null, Validators.required],
-      stationId: [null, [Validators.required]],
+      role: [null, Validators.required],
+      station: [null, [Validators.required]],
     });
     this.roles.push(roleForm);
   }
@@ -215,7 +215,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
               roles:
                 this.userForm.get('roles')?.value?.map((user) => ({
                   id: user?.id as string,
-                  roleId: user?.role.id as string,
+                  roleId: user?.id as string,
                   stationId: user?.station?.id as string,
                 })) ?? [],
             },

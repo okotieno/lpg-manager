@@ -250,7 +250,7 @@ export type ICreateUserInput = {
   lastName: Scalars['String']['input'];
   middleName?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
-  roles?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
+  roles?: InputMaybe<Array<InputMaybe<IUserRoleInput>>>;
 };
 
 export type ICreateUserSuccessResponse = {
@@ -1169,7 +1169,7 @@ export type IUpdateUserInput = {
   lastName: Scalars['String']['input'];
   middleName?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
-  roles?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
+  roles?: InputMaybe<Array<InputMaybe<IUserRoleInput>>>;
 };
 
 export type IUploadSuccessResponse = {
@@ -1205,7 +1205,8 @@ export type IUserRole = {
 
 export type IUserRoleInput = {
   id: Scalars['String']['input'];
-  stationId?: InputMaybe<Scalars['UUID']['input']>;
+  roleId: Scalars['UUID']['input'];
+  stationId: Scalars['UUID']['input'];
 };
 
 export type IValidatePasswordResetTokenResponse = {
