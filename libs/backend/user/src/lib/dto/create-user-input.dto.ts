@@ -17,7 +17,7 @@ export class CreateUserInputDto {
   @DoesntExist(UserModel, 'email', {isAdmin: false}, {message: 'Email already taken'})
   email = '';
 
-  @IsPhoneNumber()
+  @IsPhoneNumber('KE')
   @DoesntExist(UserModel, 'phone', {isAdmin: true}, {message: 'Phone already taken'})
   phone = '';
 }

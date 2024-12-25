@@ -5,14 +5,20 @@ import { EmailService } from '@lpg-manager/email-service';
 
 @Injectable()
 export class UserModelEventsListener {
-  constructor(private welcomeEmailService: EmailService) {
-
-  }
+  constructor(private emailService: EmailService) {}
 
   @OnEvent('user.created')
-  async sendWelcomeEmail($event: UserCreatedEvent) {
-    if($event.user.email) {
-      // await this.welcomeEmailService.send($event.user.email)
+  async sendWelcomeEmail(event: UserCreatedEvent) {
+    if (event.user.email && event.plainPassword) {
+      await this.emailService.send({
+        to: event.user.email,
+        template: 'welcome-email',
+        context: {
+          firstName: event.user.firstName,
+          email: event.user.email,
+          password: event.plainPassword // Include temporary password in email
+        }
+      });
     }
   }
 }

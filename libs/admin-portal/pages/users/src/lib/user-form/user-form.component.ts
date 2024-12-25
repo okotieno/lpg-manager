@@ -28,7 +28,7 @@ import {
 import { ICreateUserGQL, IUpdateUserGQL } from '@lpg-manager/user-store';
 import { Router, RouterLink } from '@angular/router';
 import { IGetRolesQuery, RoleStore } from '@lpg-manager/role-store';
-import { ISelectCategory, IUserModel } from '@lpg-manager/types';
+import { ISelectCategory, IUserModel, IUserRole, IUserRoleInput } from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
@@ -196,7 +196,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
               lastName: lastName as string,
               email: email as string,
               phone: phone as string,
-              roles: roles as unknown as ISelectCategory[],
+              roles: roles as unknown as IUserRoleInput[],
             },
           })
           .subscribe({
