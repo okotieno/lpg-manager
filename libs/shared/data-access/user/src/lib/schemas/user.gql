@@ -25,6 +25,17 @@ query GetUserById($id: UUID!) {
     lastName
     profilePhotoLink
     createdAt
+    roles {
+      id
+      role {
+        id
+        name
+      }
+      station {
+        id
+        name
+      }
+    }
   }
 }
 

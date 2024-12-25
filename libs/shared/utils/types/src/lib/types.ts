@@ -1199,6 +1199,7 @@ export type IUserRole = {
   id: Scalars['UUID']['output'];
   role: IRoleModel;
   roleId: Scalars['UUID']['output'];
+  station: IStationModel;
   stationId: Scalars['UUID']['output'];
   userId: Scalars['UUID']['output'];
 };

@@ -4,6 +4,7 @@ type UserRole {
   userId: UUID!
   stationId: UUID!
   role: RoleModel!
+  station: StationModel!
 }
 type UserModel {
   id: UUID!

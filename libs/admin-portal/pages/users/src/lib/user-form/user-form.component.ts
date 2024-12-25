@@ -25,7 +25,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ICreateUserGQL, IUpdateUserGQL } from '@lpg-manager/user-store';
+import { ICreateUserGQL, IGetUserByIdQuery, IUpdateUserGQL } from '@lpg-manager/user-store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IGetRolesQuery, RoleStore } from '@lpg-manager/role-store';
 import { ISelectCategory, IUserModel, IUserRole, IUserRoleInput } from '@lpg-manager/types';
@@ -110,7 +110,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
       }>
     ),
   });
-  user = input<IUserModel>();
+  user = input<IGetUserByIdQuery['user']>();
   isEditing = computed(() => !!this.user());
   userId = computed(() => this.user()?.id);
   userChangeEffect = effect(() => {
@@ -132,8 +132,8 @@ export default class UserFormComponent implements IHasUnsavedChanges {
         user.roles?.forEach((role) => {
           const roleForm = this.#fb.group({
             id: [role?.id, Validators.required],
-            role: [role?.roleId ? { id: role.roleId } : null, Validators.required],
-            station: [role?.stationId || '', Validators.required],
+            role: [role?.role.id ? { id: role?.role.id } : null, Validators.required],
+            station: [role?.station.id || '', Validators.required],
           });
           this.roles.push(roleForm);
         });

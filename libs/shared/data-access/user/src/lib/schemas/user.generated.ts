@@ -23,7 +23,7 @@ export type IGetUserByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetUserByIdQuery = { user?: { phone?: string | null, id: string, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null } | null };
+export type IGetUserByIdQuery = { user?: { phone?: string | null, id: string, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null, roles?: Array<{ id: string, role: { id: string, name: string }, station: { id: string, name: string } } | null> | null } | null };
 
 export type IGetUsersQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
@@ -111,6 +111,17 @@ export const GetUserByIdDocument = gql`
     lastName
     profilePhotoLink
     createdAt
+    roles {
+      id
+      role {
+        id
+        name
+      }
+      station {
+        id
+        name
+      }
+    }
   }
 }
     `;
