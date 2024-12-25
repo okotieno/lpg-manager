@@ -1,3 +1,10 @@
+type UserRole {
+  id: UUID!
+  roleId: UUID!
+  userId: UUID!
+  stationId: UUID!
+  role: RoleModel!
+}
 type UserModel {
   id: UUID!
   firstName: String!
@@ -9,7 +16,7 @@ type UserModel {
   profilePhotoLink: String
   createdAt: String
   updatedAt: String
-  roles: [RoleModel]
+  roles: [UserRole]
 }
 
 type PaginatedUser {

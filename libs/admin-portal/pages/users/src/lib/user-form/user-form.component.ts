@@ -1,16 +1,34 @@
-import { Component, computed, effect, inject, input, untracked } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  untracked,
+} from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/animations';
 import {
   IonButton,
-  IonCard,
-  IonCardContent, IonCol, IonIcon,
+  IonCol,
+  IonIcon,
   IonInput,
-  IonItem, IonLabel, IonList, IonListHeader, IonRow, AlertController
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonRow,
+  AlertController,
 } from '@ionic/angular/standalone';
-import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ICreateUserGQL, IUpdateUserGQL } from '@lpg-manager/user-store';
 import { Router, RouterLink } from '@angular/router';
 import { IGetRolesQuery, RoleStore } from '@lpg-manager/role-store';
-import { IRoleModel, ISelectCategory, IUserModel } from '@lpg-manager/types';
+import { ISelectCategory, IUserModel } from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
@@ -32,10 +50,44 @@ import { NgTemplateOutlet } from '@angular/common';
     IonListHeader,
     IonIcon,
     IonLabel,
-    NgTemplateOutlet,
+    NgTemplateOutlet
   ],
   templateUrl: './user-form.component.html',
   providers: [RoleStore],
+  animations: [
+    trigger('roleAnimation', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          transform: 'translateY(-20px)',
+          maxHeight: '0',
+        }),
+        animate(
+          '300ms ease-out',
+          style({
+            opacity: 1,
+            transform: 'translateY(0)',
+            maxHeight: '500px',
+          })
+        ),
+      ]),
+      transition(':leave', [
+        style({
+          opacity: 1,
+          transform: 'translateY(0)',
+          maxHeight: '500px',
+        }),
+        animate(
+          '300ms ease-in',
+          style({
+            opacity: 0,
+            transform: 'translateY(-20px)',
+            maxHeight: '0',
+          })
+        ),
+      ]),
+    ]),
+  ],
 })
 export default class UserFormComponent implements IHasUnsavedChanges {
   #fb = inject(FormBuilder);
@@ -48,7 +100,9 @@ export default class UserFormComponent implements IHasUnsavedChanges {
     lastName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     phone: [''],
-    roles: this.#fb.array([] as Array<{ id: string; stationId?: string }>),
+    roles: this.#fb.array(
+      [] as Array<{ id: string; roleId: string; stationId?: string }>
+    ),
   });
   user = input<IUserModel>();
   isEditing = computed(() => !!this.user());
@@ -71,8 +125,9 @@ export default class UserFormComponent implements IHasUnsavedChanges {
         // Add existing roles if any
         user.roles?.forEach((role) => {
           const roleForm = this.#fb.group({
-            id: [role?.id, Validators.required],
-            stationId: [role?.stationId || ''],
+            id: [crypto.randomUUID(), Validators.required],
+            roleId: [role?.id, Validators.required],
+            stationId: [role?.stationId || '', Validators.required],
           });
           this.roles.push(roleForm);
         });
@@ -90,8 +145,9 @@ export default class UserFormComponent implements IHasUnsavedChanges {
 
   addRole() {
     const roleForm = this.#fb.group({
-      id: ['', Validators.required],
-      stationId: [''],
+      id: [crypto.randomUUID(), Validators.required],
+      roleId: ['', Validators.required],
+      stationId: ['', [Validators.required]],
     });
     this.roles.push(roleForm);
   }

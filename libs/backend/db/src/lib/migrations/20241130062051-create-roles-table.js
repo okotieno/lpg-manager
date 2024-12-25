@@ -44,6 +44,11 @@ module.exports = {
 
     // Create role_user junction table
     await queryInterface.createTable('role_user', {
+      id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        primaryKey: true,
+      },
       roleId: {
         type: Sequelize.UUID,
         allowNull: false,
@@ -102,7 +107,7 @@ module.exports = {
   async down(queryInterface) {
     // Drop the index first
     await queryInterface.removeIndex('roles', 'roles_name_unique_not_deleted');
-    
+
     // Then drop the tables
     await queryInterface.dropTable('role_user');
     await queryInterface.dropTable('roles');

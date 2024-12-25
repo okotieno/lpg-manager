@@ -10,6 +10,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { apolloConfig } from '@lpg-manager/apollo-config';
 import { ENV_VARIABLES, IEnvVariable } from '@lpg-manager/injection-token';
 import { GET_ITEMS_INCLUDE_FIELDS } from '@lpg-manager/data-table';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 declare const process: {
   env: {
@@ -28,6 +29,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideHttpClient(),
     provideApollo(apolloConfig),
+    provideAnimations(),
     {
       provide: ENV_VARIABLES,
       useValue: {

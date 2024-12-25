@@ -57,17 +57,17 @@
   <ion-list formArrayName="roles">
     <ng-template
       [ngTemplateOutlet]="addItem"
-      [ngTemplateOutletContext]="{ showLabel: true, showButton:  roles.controls.length < 1 }"
+      [ngTemplateOutletContext]="{ showLabel: true, showButton: roles.controls.length < 1 }"
     />
-    @for (role of roles.controls; track $index) {
-      <ion-item lines="none" [formGroupName]="$index">
+    @for (role of roles.controls; track role.value.id || $index) {
+      <ion-item lines="none" [formGroupName]="$index" @roleAnimation>
         <ion-row style="width: 100%;" class="ion-margin-horizontal">
           <ion-col size="12" sizeMd="5">
             <lpg-searchable-select
               [itemsStore]="rolesStore"
               label="Role"
               labelPlacement="stacked"
-              formControlName="id"
+              formControlName="roleId"
               placeholder="Select roles"
             ></lpg-searchable-select>
           </ion-col>
@@ -90,9 +90,8 @@
     }
     <ng-template
       [ngTemplateOutlet]="addItem"
-      [ngTemplateOutletContext]=" { showLabel: false, showButton: roles.controls.length > 0 } "
+      [ngTemplateOutletContext]="{ showLabel: false, showButton: roles.controls.length > 0 }"
     />
-
   </ion-list>
 
   <div class="ion-margin-top ion-text-end">
@@ -112,12 +111,11 @@
         {{ showLabel ? 'Assigned roles' : '' }}
       </ion-label>
       @if (showButton) {
-        <ion-button class="ion-padding" shape="round" (click)="addRole()" fill="clear" size="small">
+        <ion-button [disabled]="roles.invalid" class="ion-padding" shape="round" (click)="addRole()" fill="clear" size="small">
           <ion-icon name="grid-2-plus" slot="start"></ion-icon>
           Add role
         </ion-button>
       }
-
     </ion-list-header>
   }
 </ng-template>

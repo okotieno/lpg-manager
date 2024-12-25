@@ -1,12 +1,12 @@
 'use strict';
 const bcrypt = require('bcrypt');
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuid } = require('uuid');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface) {
     const hashedPassword = await bcrypt.hash('admin123', 10);
-    const adminUserId = uuidv4();
+    const adminUserId = uuid();
 
     // Get admin role ID
     const [adminRole] = await queryInterface.sequelize.query(
@@ -28,6 +28,7 @@ module.exports = {
     // Assign admin role to user if role exists
     if (adminRole[0]) {
       await queryInterface.bulkInsert('role_user', [{
+        id: uuid(),
         user_id: adminUserId,
         role_id: adminRole[0].id,
         created_at: new Date(),
@@ -39,10 +40,10 @@ module.exports = {
   async down(queryInterface) {
     // First remove role assignment
     await queryInterface.bulkDelete('role_user', null, {});
-    
+
     // Then remove admin user
-    await queryInterface.bulkDelete('users', { 
-      email: 'admin@example.com' 
+    await queryInterface.bulkDelete('users', {
+      email: 'admin@example.com'
     }, {});
   }
-}; 
+};
