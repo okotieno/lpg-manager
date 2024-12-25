@@ -7,77 +7,73 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      line-height: 1.6;
-      color: #333333;
       background-color: #f4f4f4;
       margin: 0;
-      padding: 20px;
+      padding: 0;
     }
     .container {
+      width: 100%;
       max-width: 600px;
-      background-color: #ffffff;
       margin: 20px auto;
-      padding: 20px;
+      background-color: #ffffff;
       border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
     }
-    h1 {
-      color: #5B5D00;
-      font-size: 24px;
-    }
-    p {
-      margin: 10px 0;
-    }
-    .btn {
-      display: inline-block;
-      background-color: #5B5D00;
+    .header {
+      background-color: #007bff;
       color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 5px;
+      padding: 20px;
+      text-align: center;
     }
-    .btn:hover {
-      background-color: #5B5D00;
+    .content {
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .credentials {
+      background-color: #f4f4f4;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 20px 0;
+      border: 1px solid #007bff;
+    }
+    .title {
+      color: #007bff;
+      font-weight: bold;
     }
     .footer {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #777777;
+      background-color: #f4f4f4;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <h1>Welcome to Tahiniwa – Your Ultimate Exam Platform!</h1>
+  <div class="container">
+    <div class="header">
+      <h1>Welcome to Tahiniwa</h1>
+    </div>
+    <div class="content">
+      <p>Hi {{firstName}},</p>
+      
+      <p>Welcome to Tahiniwa! Your account has been successfully created.</p>
 
-  <p>Dear {{ firstName }},</p>
+      <div class="credentials">
+        <p class="title">Your login credentials:</p>
+        <p><strong>Username:</strong> {{email}}</p>
+        <p><strong>Password:</strong> {{password}}</p>
+      </div>
 
-  <p>Welcome to <strong>Tahiniwa</strong> – your go-to platform for seamless exam preparation, test-taking, and assessment management. We're excited to have you on board!</p>
+      <p>For security reasons, we recommend changing your password after your first login.</p>
 
-  <h2>What Tahiniwa Offers:</h2>
-  <ul>
-    <li><strong>Personalized Exams:</strong> Tailor your study experience with customizable tests to match your learning pace and needs.</li>
-    <li><strong>Instant Feedback:</strong> Receive real-time results and insights to track your progress and identify improvement areas.</li>
-    <li><strong>Wide Range of Subjects:</strong> Access a comprehensive library of exams covering various topics and difficulty levels.</li>
-    <li><strong>User-Friendly Interface:</strong> Navigate effortlessly with our intuitive design, making your exam experience smooth and stress-free.</li>
-  </ul>
-
-  <h2>How to Get Started:</h2>
-  <ol>
-    <li><strong>Log In:</strong> Use the credentials provided at sign-up to access your account.</li>
-    <li><strong>Explore:</strong> Browse through our exam categories and choose your preferred subjects.</li>
-    <li><strong>Take Your First Test:</strong> Start with a practice test and get instant feedback.</li>
-    <li><strong>Track Progress:</strong> View your performance history and watch yourself improve over time.</li>
-  </ol>
-
-  <p>Need help? Our support team is always here to assist you. Feel free to reach out to us at support@tahiniwa.com.</p>
-
-  <p>Once again, welcome to Tahiniwa! We’re confident that you’ll find our platform a valuable part of your learning journey. Get ready to ace your exams with ease!</p>
-
-  <p>Best regards,<br>
-    The Tahiniwa Team</p>
-
-  <p class="footer">https://tahiniwa.com | Contact us: support@tahiniwa.com</p>
-</div>
+      <p>Thank you!</p>
+    </div>
+    <div class="footer">
+      <p>If you did not create this account, please contact us at support@tahiniwa.com</p>
+      <p>&copy; 2024 Tahiniwa</p>
+    </div>
+  </div>
 </body>
 </html>
