@@ -12,7 +12,7 @@ export class UserModelEventsListener {
     if (event.user.email && event.plainPassword) {
       await this.emailService.send({
         to: event.user.email,
-        template: 'welcome-email',
+        template: 'welcome-template',
         context: {
           firstName: event.user.firstName,
           email: event.user.email,

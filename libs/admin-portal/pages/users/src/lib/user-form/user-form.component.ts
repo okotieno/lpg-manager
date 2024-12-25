@@ -26,7 +26,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ICreateUserGQL, IUpdateUserGQL } from '@lpg-manager/user-store';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IGetRolesQuery, RoleStore } from '@lpg-manager/role-store';
 import { ISelectCategory, IUserModel, IUserRole, IUserRoleInput } from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
@@ -94,6 +94,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
   #fb = inject(FormBuilder);
   #createUserGQL = inject(ICreateUserGQL);
   #updateUserGQL = inject(IUpdateUserGQL);
+  #route = inject(ActivatedRoute);
   #router = inject(Router);
   #alertController = inject(AlertController);
   userForm = this.#fb.group({
@@ -201,7 +202,8 @@ export default class UserFormComponent implements IHasUnsavedChanges {
           })
           .subscribe({
             next: async () => {
-              await this.#router.navigate(['/users']);
+              this.userForm.reset();
+              await this.#router.navigate(['../users'], {relativeTo: this.#route});
             },
           });
       } else {
@@ -222,7 +224,8 @@ export default class UserFormComponent implements IHasUnsavedChanges {
           })
           .subscribe({
             next: async () => {
-              await this.#router.navigate(['/users']);
+              this.userForm.reset();
+              await this.#router.navigate(['../../users'], {relativeTo: this.#route});
             },
           });
       }
