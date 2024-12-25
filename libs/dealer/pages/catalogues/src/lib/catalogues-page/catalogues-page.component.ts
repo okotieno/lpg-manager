@@ -79,12 +79,10 @@ export default class CataloguesPageComponent {
     const cartCatalogueItems = this.cartCatalogueItems();
     const catalogues = this.catalogues();
 
-    console.log({ cartCatalogueItems, catalogues });
     return catalogues.map((catalog) => {
       const cartCatalogueItem = cartCatalogueItems.find(
         (item) => item?.catalogueId === catalog?.id
       );
-      console.log({ cartCatalogueItem });
       return { ...catalog, cart: cartCatalogueItem } as ICatalogueDisplay;
     });
   });

@@ -70,8 +70,6 @@ export class CatalogueResolver {
 
   @ResolveField('brand', () => BrandModel)
   async getBrand(@Root() catalogue: CatalogueModel) {
-    console.log({ catalogue });
-    console.log(await this.brandService.findById(catalogue.brandId, {include: ['images']}));
     return this.brandService.findById(catalogue.brandId, {include: ['images']});
   }
 

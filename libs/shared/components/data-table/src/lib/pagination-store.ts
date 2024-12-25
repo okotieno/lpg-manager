@@ -105,11 +105,11 @@ export const withPaginatedItemsStore = <
       _selectedItemResource: resource({
         request: () => ({ selectedItemIds: store._selectedItems() }),
         loader: ({ request }) => {
-          if( store._selectedItems().length < 1) {
+          if (store._selectedItems().length < 1) {
             setAllEntities([], {
               collection: 'selectedItems',
             });
-            return Promise.resolve(undefined)
+            return Promise.resolve(undefined);
           }
           return lastValueFrom(
             store._getItemsGQL
@@ -139,10 +139,12 @@ export const withPaginatedItemsStore = <
                     const newItems = (
                       result.data[store._getItemsKey()].items ?? []
                     ).filter((x) => x !== null);
-
-                    setAllEntities(newItems, {
-                      collection: 'selectedItems',
-                    });
+                    patchState(
+                      store,
+                      setAllEntities(newItems, {
+                        collection: 'selectedItems',
+                      })
+                    );
                   }
                 })
               )

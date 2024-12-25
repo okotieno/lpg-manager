@@ -94,7 +94,6 @@ export class FileUploadComponent implements ControlValueAccessor {
     this.uploadedFilesStore.fileUploads();
     const val = this.uploadedFilesStore.fileUploads().map(x => x.fileUpload);
 
-    console.log({ val });
     if (val) {
       this.onChanges?.(val as { id: string }[]);
     } else {

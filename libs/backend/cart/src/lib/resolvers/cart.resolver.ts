@@ -102,12 +102,6 @@ export class CartResolver {
 
   @Query(() => CartModel)
   async carts(@Args('query') query: IQueryParam) {
-    console.log(
-      await this.cartService.findAll({
-        ...query,
-        filters: query?.filters ?? [],
-      })
-    );
     return this.cartService.findAll({
       ...query,
       filters: query?.filters ?? [],

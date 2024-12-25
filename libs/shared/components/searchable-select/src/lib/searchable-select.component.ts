@@ -37,6 +37,7 @@ import {
 import { CdkListbox, CdkOption } from '@angular/cdk/listbox';
 import { IQueryParamsFilter } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-searchable-select',
@@ -61,6 +62,7 @@ import { PaginatedResource } from '@lpg-manager/data-table';
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonTextarea,
+    JsonPipe,
   ],
   styleUrl: './searchable-select.component.scss',
 })
@@ -108,6 +110,13 @@ export class SearchableSelectComponent<T extends { id: string }>
       this.itemsStore().searchItemsByTerm(searchTerm);
     });
   });
+  selectedItemsEntitiesChangedEffect = effect(() => {
+    const selectedItemsEntities = this.selectedItemsEntities();
+    untracked(() => {
+      this.selectedItemsActive.set(selectedItemsEntities);
+      this.selectedItems.set(selectedItemsEntities as T[]);
+    });
+  });
 
   selectedItems = signal<T[]>([]);
   selectedItemsActive = signal<T[]>([]);
@@ -135,15 +144,12 @@ export class SearchableSelectComponent<T extends { id: string }>
 
   writeValue(obj: { id: string }[] | { id: string }): void {
     if (obj) {
-      this.itemsStore().setSelectedItemIds(Array.isArray(obj) ? obj : [obj])
-      setTimeout(() => {
-        console.log(obj, this.entities());
-      }, 2000);
+      this.itemsStore().setSelectedItemIds(Array.isArray(obj) ? obj : [obj]);
 
       untracked(() => {
-        // this.preselectedItems = Array.isArray(obj) ? obj : [obj];
+        const preselectedItems = Array.isArray(obj) ? obj : [obj];
         // this.items.set(this.preselectedItems);
-        // this.selectedItems.set(this.preselectedItems as T[]);
+        // this.selectedItems.set(preselectedItems as T[]);
         // this.selectedItemsActive.set(this.selectedItems());
         // this.cdr.detectChanges();
       });

@@ -71,7 +71,6 @@ export const CartStore = signalStore(
               if (res.data.carts.items?.[0]) {
                 patchState(store, { cart: res.data.carts.items[0] });
               }
-              console.log('Triggered untracked');
             });
           })
         ),
@@ -105,7 +104,6 @@ export const CartStore = signalStore(
                   if (res.data?.createCart.data) {
                     patchState(store, { cart: res.data?.createCart.data });
                   }
-                  console.log('Triggered untracked');
                 });
               })
             )
@@ -141,7 +139,6 @@ export const CartStore = signalStore(
                   if (res.data?.addItemToCart.data.items?.[0]) {
                     patchState(store, { cart: res.data?.addItemToCart.data });
                   }
-                  console.log('Triggered untracked');
                 });
               })
             )
@@ -254,7 +251,7 @@ export const CartStore = signalStore(
     // },
     async removeItem(cartCatalogueId: string) {
       if (!store.cartId()) return;
-      
+
       return lastValueFrom(
         store._removeItemFromCartGQL.mutate(
           {
