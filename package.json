@@ -35,6 +35,8 @@
     "@capacitor/preferences": "^6.0.3",
     "@ionic/angular": "^8.4.1",
     "@keyv/redis": "^4.0.2",
+    "@maskito/angular": "^3.2.0",
+    "@maskito/core": "^3.2.0",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/apollo": "^12.2.1",
     "@nestjs/bull": "^10.2.3",

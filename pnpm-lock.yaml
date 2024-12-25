@@ -53,6 +53,12 @@ importers:
       '@keyv/redis':
         specifier: ^4.0.2
         version: 4.1.0
+      '@maskito/angular':
+        specifier: ^3.2.0
+        version: 3.2.0(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(@angular/forms@19.0.5(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.5(@angular/animations@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1))(@maskito/core@3.2.0)
+      '@maskito/core':
+        specifier: ^3.2.0
+        version: 3.2.0
       '@nestjs-modules/mailer':
         specifier: ^2.0.2
         version: 2.0.2(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@10.4.15)(encoding@0.1.13)(nodemailer@6.9.16)
@@ -2582,6 +2588,16 @@ packages:
   '@mapbox/node-pre-gyp@1.0.11':
     resolution: {integrity: sha512-Yhlar6v9WQgUp/He7BdgzOz8lqMQ8sU+jkCq7Wx8Myc5YFJLbEe7lgui/V7G1qB1DJykHSGwreceSaD60Y0PUQ==}
     hasBin: true
+
+  '@maskito/angular@3.2.0':
+    resolution: {integrity: sha512-3E3sqZMWauHeHr6uGj/LnpatV+DlQZIPKWLv5pZ2SIJUX0pXUN4ZskP6gO+wiqWbw70zDCMee09KqbSxFkbcEg==}
+    peerDependencies:
+      '@angular/core': '>=16.0.0'
+      '@angular/forms': '>=16.0.0'
+      '@maskito/core': ^3.2.0
+
+  '@maskito/core@3.2.0':
+    resolution: {integrity: sha512-c8GNwuz4PQmZqf5CSXIncwIkZSwBeU2FZtpBJtD21DaIe4uBQ541C0BncHMqEbLP2+n+HyFKEnT90m03BBlGrw==}
 
   '@module-federation/bridge-react-webpack-plugin@0.7.6':
     resolution: {integrity: sha512-eD1JZDQ+h5WLdA58MmAE1DzLwvFaGJeeam3Tswc/sEUb4QGT86X4Fme+dMTBRYRoAq/tRYql3DlVTFhdmrUVzg==}
@@ -9653,6 +9669,9 @@ packages:
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
+  tslib@2.8.0:
+    resolution: {integrity: sha512-jWVzBLplnCmoaTr13V9dYbiQ99wvZRd0vNWaDRg+aVYRcjDF3nDksxFDE/+fkXnKhpnUUkmx5pK/v8mCtLVqZA==}
+
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
@@ -13028,6 +13047,15 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
+
+  '@maskito/angular@3.2.0(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(@angular/forms@19.0.5(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.5(@angular/animations@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1))(@maskito/core@3.2.0)':
+    dependencies:
+      '@angular/core': 19.0.5(rxjs@7.8.1)(zone.js@0.15.0)
+      '@angular/forms': 19.0.5(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.5(@angular/animations@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
+      '@maskito/core': 3.2.0
+      tslib: 2.8.0
+
+  '@maskito/core@3.2.0': {}
 
   '@module-federation/bridge-react-webpack-plugin@0.7.6':
     dependencies:
@@ -22001,6 +22029,8 @@ snapshots:
   tslib@2.4.1: {}
 
   tslib@2.6.3: {}
+
+  tslib@2.8.0: {}
 
   tslib@2.8.1: {}
 
