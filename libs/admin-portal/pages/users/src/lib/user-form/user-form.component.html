@@ -47,8 +47,11 @@
           labelPlacement="stacked"
           formControlName="phone"
           type="tel"
+          [maskito]="phoneMask"
+          [maskitoElement]="maskPredicate"
           placeholder="Enter phone number"
-          helperText="&nbsp;"
+          helperText="Format: +254 7XX XXX XXX"
+          [errorText]="userForm.get('phone')?.errors?.['pattern'] ? 'Invalid phone number format' : ''"
         >
         </ion-input>
       </ion-item>

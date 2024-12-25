@@ -34,6 +34,9 @@ import { PaginatedResource } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
 import { NgTemplateOutlet } from '@angular/common';
 import { IGetStationsQuery, StationStore } from '@lpg-manager/station-store';
+import { MaskitoDirective } from '@maskito/angular';
+import { kenyaPhoneMask } from '../utils/phone-mask.util';
+import { MaskitoElementPredicate } from '@maskito/core';
 
 @Component({
   selector: 'lpg-user-form',
@@ -52,6 +55,7 @@ import { IGetStationsQuery, StationStore } from '@lpg-manager/station-store';
     IonIcon,
     IonLabel,
     NgTemplateOutlet,
+    MaskitoDirective,
   ],
   templateUrl: './user-form.component.html',
   providers: [RoleStore, StationStore],
@@ -97,11 +101,16 @@ export default class UserFormComponent implements IHasUnsavedChanges {
   #route = inject(ActivatedRoute);
   #router = inject(Router);
   #alertController = inject(AlertController);
+  protected readonly phoneMask = kenyaPhoneMask;
+  readonly maskPredicate: MaskitoElementPredicate = async (el) => (el as HTMLIonInputElement).getInputElement();
   userForm = this.#fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    phone: [''],
+    phone: ['', [
+      Validators.pattern(/^\+254 [17]\d{2} \d{3} \d{3}$/),
+      Validators.required
+    ]],
     roles: this.#fb.array(
       [] as Array<{
         id: string;
@@ -235,4 +244,5 @@ export default class UserFormComponent implements IHasUnsavedChanges {
   get hasUnsavedChanges() {
     return this.userForm.dirty;
   }
+
 }
