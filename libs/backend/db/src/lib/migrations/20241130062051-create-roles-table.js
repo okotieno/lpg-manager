@@ -66,6 +66,17 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
+      stationId: {
+        type: Sequelize.UUID,
+        allowNull: true,
+        field: 'station_id',
+        references: {
+          model: 'stations',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
@@ -78,6 +89,13 @@ module.exports = {
         allowNull: false,
         field: 'updated_at',
       }
+    });
+
+    // Add composite unique constraint
+    await queryInterface.addConstraint('role_user', {
+      fields: ['user_id', 'role_id', 'station_id'],
+      type: 'unique',
+      name: 'unique_user_role_station'
     });
   },
 

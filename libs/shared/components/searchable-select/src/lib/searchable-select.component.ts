@@ -64,8 +64,7 @@ import { JsonPipe } from '@angular/common';
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonTextarea,
-    IonChip,
-    JsonPipe,
+    IonChip
   ],
   styleUrl: './searchable-select.component.scss',
 })

@@ -5,9 +5,8 @@ import {
 import { inject } from '@angular/core';
 import {
   IDeletePermissionByIdGQL,
-  IGetPermissionsGQL,
+  IGetPermissionsGQL, IGetPermissionsQuery
 } from './schemas/permission.generated';
-import { IRoleModel } from '@lpg-manager/types';
 import { IGetRolesQueryVariables } from '@lpg-manager/role-store';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
@@ -17,5 +16,7 @@ export const PermissionsStore = signalStore(
     _getItemsGQL: inject(IGetPermissionsGQL),
     _deleteItemWithIdGQL: inject(IDeletePermissionByIdGQL),
   })),
-  withPaginatedItemsStore<IRoleModel, IGetRolesQueryVariables, 'permissions', 'deletePermission'>(),
+  withPaginatedItemsStore<
+    NonNullable<NonNullable<IGetPermissionsQuery['permissions']['items']>[number]>
+    , IGetRolesQueryVariables, 'permissions', 'deletePermission'>(),
 )

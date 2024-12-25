@@ -1,11 +1,16 @@
 extend type Mutation {
   assignRoleToUser(
     userId: String!
-    roles: [SelectCategory]!
+    roles: [UserRoleInput]!
   ): SuccessResponse
 
   givePermissionsToRole(
     roleId: String
     permissions: [SelectCategory]
   ): SuccessResponse
+}
+
+input UserRoleInput {
+  id: String!
+  stationId: UUID
 }

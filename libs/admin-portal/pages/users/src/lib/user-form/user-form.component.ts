@@ -2,14 +2,14 @@ import { Component, computed, effect, inject, input, untracked } from '@angular/
 import {
   IonButton,
   IonCard,
-  IonCardContent, IonCol,
+  IonCardContent, IonCol, IonIcon,
   IonInput,
-  IonItem, IonRow
+  IonItem, IonLabel, IonList, IonListHeader, IonRow
 } from '@ionic/angular/standalone';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICreateUserGQL, IUpdateUserGQL } from '@lpg-manager/user-store';
 import { Router, RouterLink } from '@angular/router';
-import { RoleStore } from '@lpg-manager/role-store';
+import { IGetRolesQuery, RoleStore } from '@lpg-manager/role-store';
 import { IRoleModel, ISelectCategory, IUserModel } from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
@@ -20,8 +20,6 @@ import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    IonCard,
-    IonCardContent,
     IonItem,
     IonInput,
     IonButton,
@@ -29,6 +27,10 @@ import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
     SearchableSelectComponent,
     IonRow,
     IonCol,
+    IonList,
+    IonListHeader,
+    IonIcon,
+    IonLabel,
   ],
   templateUrl: './user-form.component.html',
   providers: [RoleStore],
@@ -43,7 +45,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
     lastName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     phone: [''],
-    roles: [[] as ISelectCategory[]],
+    roles: this.#fb.array([] as Array<{ id: string; stationId?: string }>),
   });
   user = input<IUserModel>();
   isEditing = computed(() => !!this.user());
@@ -58,11 +60,42 @@ export default class UserFormComponent implements IHasUnsavedChanges {
           email: user.email,
           phone: user.phone,
         });
+
+        while (this.roles.length) {
+          this.roles.removeAt(0);
+        }
+
+        // Add existing roles if any
+        user.roles?.forEach((role) => {
+          const roleForm = this.#fb.group({
+            id: [role?.id, Validators.required],
+            stationId: [role?.stationId || ''],
+          });
+          this.roles.push(roleForm);
+        });
       }
     });
   });
 
-  rolesStore: PaginatedResource<IRoleModel> = inject(RoleStore);
+  rolesStore: PaginatedResource<
+    NonNullable<NonNullable<IGetRolesQuery['roles']['items']>[number]>
+  > = inject(RoleStore);
+
+  get roles() {
+    return this.userForm.get('roles') as FormArray;
+  }
+
+  addRole() {
+    const roleForm = this.#fb.group({
+      id: ['', Validators.required],
+      stationId: [''],
+    });
+    this.roles.push(roleForm);
+  }
+
+  removeRole(index: number) {
+    this.roles.removeAt(index);
+  }
 
   async onSubmit() {
     if (this.userForm.valid) {
@@ -94,9 +127,9 @@ export default class UserFormComponent implements IHasUnsavedChanges {
               email: email as string,
               phone: phone as string,
               roles:
-                this.userForm
-                  .get('roles')
-                  ?.value?.map((user) => ({ id: user.id })) ?? [],
+                this.userForm.get('roles')?.value?.map((user) => ({
+                  id: user?.id as string,
+                })) ?? [],
             },
           })
           .subscribe({

@@ -44,7 +44,7 @@ query GetUsers($query: QueryParams) {
 }
 
 mutation AssignRolesToUser(
-  $roles: [SelectCategory]!
+  $roles: [UserRoleInput]!
   $userId: String!
 ) {
   assignRoleToUser(roles: $roles, userId: $userId) {

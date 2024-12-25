@@ -17,9 +17,6 @@
   <ion-icon color="primary" class="ion-padding-horizontal ion-padding-top" slot="end" [name]="modal.isOpen ? 'caret-up':  'caret-down'"></ion-icon>
 </ion-textarea>
 
-{{ totalAvailableElements() | json }}
-{{ items() | json }}
-{{ entities() | json }}
 <div style="position: absolute; top: 30px" #chipsContainerRef >
   @for (item of selectedItemsActive(); track item) {
     <ion-chip style="margin: 4px 4px 0 0;">{{ $any(item)[labelKey()] }}
@@ -63,10 +60,10 @@
             {{ item[labelKey()] }}
             @if (multiple()) {
               <ion-icon slot="end" name="square"></ion-icon>
-              <ion-icon slot="end" name="square-check"></ion-icon>
+              <ion-icon color="primary" slot="end" name="square-check"></ion-icon>
             } @else {
               <ion-icon slot="end" name="circle"></ion-icon>
-              <ion-icon slot="end" name="circle-check"></ion-icon>
+              <ion-icon color="primary" slot="end" name="circle-check"></ion-icon>
             }
           </ion-item>
         }

@@ -1,10 +1,10 @@
-import { Column, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { Column, ForeignKey, Model, Table, BelongsTo } from 'sequelize-typescript';
 import { UserModel } from './user.model';
 import { RoleModel } from './role.model';
+import { StationModel } from './station.model';
 import { DataTypes } from 'sequelize';
 
 @Table({
-
   tableName: 'role_user',
   underscored: true,
   paranoid: false,
@@ -13,14 +13,23 @@ import { DataTypes } from 'sequelize';
 })
 export class RoleUserModel extends Model {
   @ForeignKey(() => UserModel)
-  @Column({ type: DataTypes.INTEGER, allowNull: false })
-  userId!: number;
+  @Column({ type: DataTypes.UUID, allowNull: false })
+  userId!: string;
 
-  user!: UserModel
+  @BelongsTo(() => UserModel)
+  user!: UserModel;
 
   @ForeignKey(() => RoleModel)
-  @Column({ type: DataTypes.INTEGER, allowNull: false })
-  roleId!: number;
+  @Column({ type: DataTypes.UUID, allowNull: false })
+  roleId!: string;
 
-  role!: RoleModel
+  @BelongsTo(() => RoleModel)
+  role!: RoleModel;
+
+  @ForeignKey(() => StationModel)
+  @Column({ type: DataTypes.UUID, allowNull: true })
+  stationId!: string;
+
+  @BelongsTo(() => StationModel)
+  station!: StationModel;
 }

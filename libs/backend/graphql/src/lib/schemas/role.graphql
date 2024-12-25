@@ -1,6 +1,7 @@
 type RoleModel {
   id: UUID!
   name: String!
+  stationId: UUID!
   permissions: [PermissionModel]
 }
 

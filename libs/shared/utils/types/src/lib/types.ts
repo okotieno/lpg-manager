@@ -362,7 +362,7 @@ export type IMutationAddItemToCartArgs = {
 
 
 export type IMutationAssignRoleToUserArgs = {
-  roles: Array<InputMaybe<ISelectCategory>>;
+  roles: Array<InputMaybe<IUserRoleInput>>;
   userId: Scalars['String']['input'];
 };
 
@@ -1039,6 +1039,7 @@ export type IRoleModel = {
   id: Scalars['UUID']['output'];
   name: Scalars['String']['output'];
   permissions?: Maybe<Array<Maybe<IPermissionModel>>>;
+  stationId: Scalars['UUID']['output'];
 };
 
 export type ISelectCategory = {
@@ -1190,7 +1191,13 @@ export type IUserModel = {
   phone?: Maybe<Scalars['String']['output']>;
   phoneVerifiedAt?: Maybe<Scalars['String']['output']>;
   profilePhotoLink?: Maybe<Scalars['String']['output']>;
+  roles?: Maybe<Array<Maybe<IRoleModel>>>;
   updatedAt?: Maybe<Scalars['String']['output']>;
+};
+
+export type IUserRoleInput = {
+  id: Scalars['String']['input'];
+  stationId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 export type IValidatePasswordResetTokenResponse = {

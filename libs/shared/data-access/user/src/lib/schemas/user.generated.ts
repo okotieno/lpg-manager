@@ -33,7 +33,7 @@ export type IGetUsersQueryVariables = Types.Exact<{
 export type IGetUsersQuery = { users: { items?: Array<{ id: string, firstName: string, lastName: string, email: string, phone?: string | null } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IAssignRolesToUserMutationVariables = Types.Exact<{
-  roles: Array<Types.InputMaybe<Types.ISelectCategory>> | Types.InputMaybe<Types.ISelectCategory>;
+  roles: Array<Types.InputMaybe<Types.IUserRoleInput>> | Types.InputMaybe<Types.IUserRoleInput>;
   userId: Types.Scalars['String']['input'];
 }>;
 
@@ -153,7 +153,7 @@ export const GetUsersDocument = gql`
     }
   }
 export const AssignRolesToUserDocument = gql`
-    mutation AssignRolesToUser($roles: [SelectCategory]!, $userId: String!) {
+    mutation AssignRolesToUser($roles: [UserRoleInput]!, $userId: String!) {
   assignRoleToUser(roles: $roles, userId: $userId) {
     message
   }

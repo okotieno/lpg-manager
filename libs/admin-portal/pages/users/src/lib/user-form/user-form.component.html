@@ -53,19 +53,46 @@
         </ion-input>
       </ion-item>
     </ion-col>
-    <ion-col size="12" sizeMd="6">
-      <ion-item lines="none">
-        <lpg-searchable-select
-          [multiple]="true"
-          [itemsStore]="rolesStore"
-          label="Roles"
-          labelPlacement="stacked"
-          formControlName="roles"
-          placeholder="Select roles"
-        ></lpg-searchable-select>
-      </ion-item>
-    </ion-col>
   </ion-row>
+  <ion-list formArrayName="roles">
+    <ion-list-header class="ion-padding-bottom">
+      <ion-label>Roles</ion-label>
+      <ion-button size="small" (click)="addRole()">
+        <ion-icon slot="start" name="plus"></ion-icon>
+        Add Role
+      </ion-button>
+    </ion-list-header>
+    @for (role of roles.controls; track $index) {
+      <ion-item lines="none" [formGroupName]="$index">
+        <ion-row style="width: 100%;" class="ion-margin-horizontal">
+          <ion-col size="12" sizeMd="5">
+            <lpg-searchable-select
+              [itemsStore]="rolesStore"
+              label="Role"
+              labelPlacement="stacked"
+              formControlName="id"
+              placeholder="Select roles"
+            ></lpg-searchable-select>
+          </ion-col>
+          <ion-col size="12" sizeMd="5">
+            <lpg-searchable-select
+              [itemsStore]="rolesStore"
+              label="Station"
+              labelPlacement="stacked"
+              formControlName="stationId"
+              placeholder="Select station"
+            ></lpg-searchable-select>
+          </ion-col>
+          <ion-col size="12" sizeMd="2" class="ion-align-self-end">
+            <ion-button fill="clear" color="danger" (click)="removeRole($index)">
+              <ion-icon name="trash-can"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    }
+
+  </ion-list>
 
   <div class="ion-margin-top ion-text-end">
     <ion-button fill="clear" type="button" [routerLink]="['../../users']">

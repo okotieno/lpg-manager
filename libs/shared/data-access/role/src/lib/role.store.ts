@@ -1,7 +1,6 @@
 import { signalStore, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
-import { IDeleteRoleByIdGQL, IGetRolesGQL, IGetRolesQueryVariables } from './role.generated';
-import { IRoleModel } from '@lpg-manager/types';
+import { IDeleteRoleByIdGQL, IGetRolesGQL, IGetRolesQuery, IGetRolesQueryVariables } from './role.generated';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
 export const RoleStore = signalStore(
@@ -10,5 +9,7 @@ export const RoleStore = signalStore(
     _getItemsGQL: inject(IGetRolesGQL),
     _deleteItemWithIdGQL: inject(IDeleteRoleByIdGQL),
   })),
-  withPaginatedItemsStore<IRoleModel, IGetRolesQueryVariables, 'roles', 'deleteRole'>(),
+  withPaginatedItemsStore<
+    NonNullable<NonNullable<IGetRolesQuery['roles']['items']>[number]>
+    , IGetRolesQueryVariables, 'roles', 'deleteRole'>(),
 )
