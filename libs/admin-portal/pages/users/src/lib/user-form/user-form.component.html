@@ -60,9 +60,9 @@
   <ion-list formArrayName="roles">
     <ng-template
       [ngTemplateOutlet]="addItem"
-      [ngTemplateOutletContext]="{ showLabel: true, showButton: roles.controls.length < 1 }"
+      [ngTemplateOutletContext]="{ showLabel: true, showButton: this.rolesList().length < 1 }"
     />
-    @for (role of roles.controls; track role.value.id) {
+    @for (role of this.rolesList(); track role.id) {
       <ion-item class="ion-margin-start" lines="none" [formGroupName]="$index" @roleAnimation>
         <ion-row style="width: 100%;" class="ion-margin-horizontal">
           <ion-col size="12" sizeMd="3">
