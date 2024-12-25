@@ -1,6 +1,27 @@
-import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
-import { UserModel } from '@lpg-manager/db';
-import { DoesntExist } from '@lpg-manager/validators';
+import { IsArray, IsEmail, IsNotEmpty, IsPhoneNumber, IsString, IsUUID, ValidateNested } from 'class-validator';
+import { RoleModel, UserModel } from '@lpg-manager/db';
+import { DoesntExist, Exists } from '@lpg-manager/validators';
+import { Type } from 'class-transformer';
+
+class UserRoleDto {
+
+  @IsUUID()
+  id!: string;
+
+  @IsUUID()
+  @Exists(RoleModel, 'id', {
+    message: (validationArguments) =>
+      `Role with id ${validationArguments.value}" not found`
+  })
+  roleId!: string;
+
+  @IsUUID()
+  @Exists(RoleModel, 'id', {
+    message: (validationArguments) =>
+      `Station with id ${validationArguments.value}" not found`
+  })
+  stationId!: string;
+}
 
 export class CreateUserInputDto {
 
@@ -20,4 +41,9 @@ export class CreateUserInputDto {
   @IsPhoneNumber('KE')
   @DoesntExist(UserModel, 'phone', {isAdmin: true}, {message: 'Phone already taken'})
   phone = '';
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => UserRoleDto)
+  roles!: UserRoleDto[];
 }

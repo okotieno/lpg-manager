@@ -51,8 +51,10 @@ export class UserResolver {
     const user = await this.userService.create({
       ...params,
       password: hashedPassword,
-      username: params.email
+      username: params.email,
     });
+
+    await this.userService.assignRoleToUser(user, params.roles);
 
     this.eventEmitter.emit(
       'user.created',

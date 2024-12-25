@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { PermissionModel, RoleModel, UserModel } from '@lpg-manager/db';
+import { PermissionModel, RoleModel, RoleUserModel, UserModel } from '@lpg-manager/db';
 import { Op, WhereOptions } from 'sequelize';
 import { InjectModel } from '@nestjs/sequelize';
 import { hash } from 'bcrypt';
@@ -8,7 +8,10 @@ import { hash } from 'bcrypt';
 @Injectable()
 export class UserService extends CrudAbstractService<UserModel> {
   override globalSearchFields = ['firstName', 'lastName', 'email'];
-  constructor(@InjectModel(UserModel) repository: typeof UserModel) {
+  constructor(
+    @InjectModel(UserModel) repository: typeof UserModel,
+    @InjectModel(RoleUserModel) private roleUserModel: typeof UserModel,
+  ) {
     super(repository);
   }
 
@@ -74,4 +77,34 @@ export class UserService extends CrudAbstractService<UserModel> {
   }
 
   hashPassword = (password: string) => hash(password, this.saltOrRounds);
+
+  async assignRoleToUser(user: UserModel, roles: {id: string; roleId: string, stationId: string}[]) {
+    // First remove all existing roles from the user
+    await user.$set('roles', []);
+
+    // Create role-user associations for each role
+    for (const roleInput of roles) {
+      const role = await RoleModel.findByPk(roleInput.roleId);
+
+      if (!role) {
+        throw new Error(`Role with id ${roleInput.roleId} not found`);
+      }
+
+      await this.roleUserModel.create({
+        userId: user.id,
+        roleId: role.id,
+        stationId: roleInput.stationId
+      });
+    }
+
+    // Refresh the user instance to include new roles
+    await user.reload({
+      include: [{
+        model: RoleModel,
+        include: ['permissions']
+      }]
+    });
+
+    return user;
+  }
 }

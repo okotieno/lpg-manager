@@ -2,7 +2,6 @@ import {
   Component,
   computed,
   effect,
-  ElementRef,
   inject,
   input,
   Optional,
@@ -62,8 +61,7 @@ import { PaginatedResource } from '@lpg-manager/data-table';
     IonRow,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
-    IonTextarea,
-    IonChip
+    IonTextarea
   ],
   styleUrl: './searchable-select.component.scss',
 })
