@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CdkTableModule } from '@angular/cdk/table';
-import { StationsStore } from '@lpg-manager/station-store';
+import { StationStore } from '@lpg-manager/station-store';
 import { DataTableComponent, ITableColumn } from '@lpg-manager/data-table';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { IStationModel } from '@lpg-manager/types';
@@ -11,13 +11,13 @@ import { IStationModel } from '@lpg-manager/types';
   imports: [CdkTableModule, DataTableComponent],
   template: `<lpg-data-table
     createNewIcon="plus"
-    [store]="stationsStore"
+    [store]="stationStore"
     [columns]="allColumns"
   ></lpg-data-table>`,
-  providers: [StationsStore],
+  providers: [StationStore],
 })
 export default class StationsLandingPageComponent {
-  stationsStore = inject(StationsStore) as PaginatedResource<IStationModel>;
+  stationStore = inject(StationStore) as PaginatedResource<IStationModel>;
   protected readonly allColumns: ITableColumn<IStationModel>[] = [
     { label: 'ID', key: 'id', fieldType: 'uuid' },
     { label: 'Name', key: 'name', fieldType: 'string' },

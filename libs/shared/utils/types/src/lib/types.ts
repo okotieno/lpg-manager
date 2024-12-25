@@ -1191,8 +1191,16 @@ export type IUserModel = {
   phone?: Maybe<Scalars['String']['output']>;
   phoneVerifiedAt?: Maybe<Scalars['String']['output']>;
   profilePhotoLink?: Maybe<Scalars['String']['output']>;
-  roles?: Maybe<Array<Maybe<IRoleModel>>>;
+  roles?: Maybe<Array<Maybe<IUserRole>>>;
   updatedAt?: Maybe<Scalars['String']['output']>;
+};
+
+export type IUserRole = {
+  id: Scalars['UUID']['output'];
+  role: IRoleModel;
+  roleId: Scalars['UUID']['output'];
+  stationId: Scalars['UUID']['output'];
+  userId: Scalars['UUID']['output'];
 };
 
 export type IUserRoleInput = {

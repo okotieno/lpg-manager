@@ -8,7 +8,7 @@ import {
 import { IStationModel } from '@lpg-manager/types';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
-export const StationsStore = signalStore(
+export const StationStore = signalStore(
   withProps(() => ({
     _getItemKey: 'station',
     _getItemsGQL: inject(IGetStationsGQL),

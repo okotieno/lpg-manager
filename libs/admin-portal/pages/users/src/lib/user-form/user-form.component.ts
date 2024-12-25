@@ -33,6 +33,7 @@ import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
 import { NgTemplateOutlet } from '@angular/common';
+import { IGetStationsQuery, StationStore } from '@lpg-manager/station-store';
 
 @Component({
   selector: 'lpg-user-form',
@@ -50,10 +51,10 @@ import { NgTemplateOutlet } from '@angular/common';
     IonListHeader,
     IonIcon,
     IonLabel,
-    NgTemplateOutlet
+    NgTemplateOutlet,
   ],
   templateUrl: './user-form.component.html',
-  providers: [RoleStore],
+  providers: [RoleStore, StationStore],
   animations: [
     trigger('roleAnimation', [
       transition(':enter', [
@@ -101,7 +102,11 @@ export default class UserFormComponent implements IHasUnsavedChanges {
     email: ['', [Validators.required, Validators.email]],
     phone: [''],
     roles: this.#fb.array(
-      [] as Array<{ id: string; roleId: string; stationId?: string }>
+      [] as Array<{
+        id: string;
+        role: { id: string };
+        station?: { id: string };
+      }>
     ),
   });
   user = input<IUserModel>();
@@ -125,9 +130,9 @@ export default class UserFormComponent implements IHasUnsavedChanges {
         // Add existing roles if any
         user.roles?.forEach((role) => {
           const roleForm = this.#fb.group({
-            id: [crypto.randomUUID(), Validators.required],
-            roleId: [role?.id, Validators.required],
-            stationId: [role?.stationId || '', Validators.required],
+            id: [role?.id, Validators.required],
+            role: [role?.roleId ? { id: role.roleId } : null, Validators.required],
+            station: [role?.stationId || '', Validators.required],
           });
           this.roles.push(roleForm);
         });
@@ -135,9 +140,13 @@ export default class UserFormComponent implements IHasUnsavedChanges {
     });
   });
 
-  rolesStore: PaginatedResource<
+  roleStore: PaginatedResource<
     NonNullable<NonNullable<IGetRolesQuery['roles']['items']>[number]>
   > = inject(RoleStore);
+
+  stationStore: PaginatedResource<
+    NonNullable<NonNullable<IGetStationsQuery['stations']['items']>[number]>
+  > = inject(StationStore);
 
   get roles() {
     return this.userForm.get('roles') as FormArray;
@@ -146,8 +155,8 @@ export default class UserFormComponent implements IHasUnsavedChanges {
   addRole() {
     const roleForm = this.#fb.group({
       id: [crypto.randomUUID(), Validators.required],
-      roleId: ['', Validators.required],
-      stationId: ['', [Validators.required]],
+      roleId: [null, Validators.required],
+      stationId: [null, [Validators.required]],
     });
     this.roles.push(roleForm);
   }
@@ -206,6 +215,8 @@ export default class UserFormComponent implements IHasUnsavedChanges {
               roles:
                 this.userForm.get('roles')?.value?.map((user) => ({
                   id: user?.id as string,
+                  roleId: user?.role.id as string,
+                  stationId: user?.station?.id as string,
                 })) ?? [],
             },
           })
