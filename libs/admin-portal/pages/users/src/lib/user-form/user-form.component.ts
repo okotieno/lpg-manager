@@ -28,7 +28,7 @@ import {
 import { ICreateUserGQL, IGetUserByIdQuery, IUpdateUserGQL } from '@lpg-manager/user-store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IGetRolesQuery, RoleStore } from '@lpg-manager/role-store';
-import { ISelectCategory, IUserModel, IUserRole, IUserRoleInput } from '@lpg-manager/types';
+import { IUserRoleInput } from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
@@ -133,7 +133,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
           const roleForm = this.#fb.group({
             id: [role?.id, Validators.required],
             role: [role?.role.id ? { id: role?.role.id } : null, Validators.required],
-            station: [role?.station.id || '', Validators.required],
+            station: [role?.station.id ? { id: role?.station.id } : null, Validators.required],
           });
           this.roles.push(roleForm);
         });

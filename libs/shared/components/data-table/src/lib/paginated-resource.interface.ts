@@ -22,7 +22,10 @@ export interface PaginatedResource<T> {
 
   deleteItemWithId(id: string): void
 
-  entities: Signal<T[]>;
+  searchedItemsEntities: Signal<T[]>;
+  selectedItemsEntities: Signal<T[]>;
+
+  setSelectedItemIds(param: { id: string }[]): void;
 }
 
 

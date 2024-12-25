@@ -3,11 +3,12 @@ import {
   Column,
   Model,
   DataType,
-  BelongsToMany
+  BelongsToMany, HasMany
 } from 'sequelize-typescript';
 import { ActivityLogModel } from './activity-log.model';
 import { ActivityLogUserModel } from './activity-log-user.model';
 import { RoleModel } from './role.model';
+import { RoleUserModel } from './role-user.model';
 
 @Table({
   tableName: 'users',
@@ -126,4 +127,7 @@ export class UserModel extends Model {
 
   @Column({ type: DataType.STRING, allowNull: true })
   profilePhotoLink?: string;
+
+  @HasMany(() => RoleUserModel)
+  roleUsers!: RoleUserModel[];
 }

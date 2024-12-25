@@ -1,4 +1,11 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { UserService } from '@lpg-manager/user-service';
 import { CreateUserInputDto } from '../dto/create-user-input.dto';
 import {
@@ -15,11 +22,17 @@ import {
   Permissions,
   PermissionsEnum,
 } from '@lpg-manager/permission-service';
-import { IQueryParam, UserModel } from '@lpg-manager/db';
+import {
+  IQueryParam,
+  RoleModel,
+  RoleUserModel,
+  StationModel,
+  UserModel,
+} from '@lpg-manager/db';
 import { UpdateUserInputDto } from '../dto/update-user-input.dto';
 import { UserUpdatedEvent } from '../events/user-updated.event';
 
-@Resolver()
+@Resolver(() => UserModel)
 export class UserResolver {
   constructor(
     private userService: UserService,
@@ -109,5 +122,34 @@ export class UserResolver {
   async userCount() {
     const count = await this.userService.model.count();
     return { count };
+  }
+
+  @ResolveField('roles')
+  async getRoles(@Parent() user: UserModel) {
+    const userWithRoles = await this.userService.findById(user.id, {
+      include: [
+        {
+          model: RoleUserModel,
+          include: [
+            {
+              model: RoleModel,
+              attributes: ['id', 'name'],
+            },
+            {
+              model: StationModel,
+              attributes: ['id', 'name'],
+            },
+          ],
+        },
+      ],
+    });
+
+    return (
+      userWithRoles?.roleUsers?.map((roleUser) => ({
+        id: roleUser.id,
+        role: roleUser.role,
+        station: roleUser.station,
+      })) || []
+    );
   }
 }

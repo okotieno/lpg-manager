@@ -1,24 +1,29 @@
 import {
   patchState,
   signalStoreFeature,
+  type,
   withComputed,
   withMethods,
-  withState,
   withProps,
-  type,
+  withState,
 } from '@ngrx/signals';
 import { computed, inject, InjectionToken, resource } from '@angular/core';
 import { Mutation, MutationResult, Query } from 'apollo-angular';
 import {
   Exact,
   InputMaybe,
+  IQueryOperatorEnum,
   IQueryParams,
   IQueryParamsFilter,
   ISortByEnum,
 } from '@lpg-manager/types';
 import { lastValueFrom, Observable, tap } from 'rxjs';
 import { defaultQueryParams } from './default-variables';
-import { addEntities, setAllEntities, setEntities, withEntities } from '@ngrx/signals/entities';
+import {
+  setAllEntities,
+  setEntities,
+  withEntities,
+} from '@ngrx/signals/entities';
 
 export const GET_ITEMS_INCLUDE_FIELDS = new InjectionToken<
   Record<string, boolean>
@@ -51,6 +56,7 @@ interface StoreState<T> {
   pageSize: number;
   totalItems: number;
   items: T[];
+  _selectedItems: { id: string }[];
 }
 
 export const withPaginatedItemsStore = <
@@ -72,13 +78,21 @@ export const withPaginatedItemsStore = <
         _getItemKey: string;
       }>(),
     },
-    withEntities<IGetItemsQueryItem>(),
+    withEntities({
+      entity: type<IGetItemsQueryItem>(),
+      collection: 'searchedItems',
+    }),
+    withEntities({
+      entity: type<IGetItemsQueryItem>(),
+      collection: 'selectedItems',
+    }),
     withState({
       ...defaultQueryParams.query,
       sortBy: defaultQueryParams.query.sortBy as keyof IGetItemsQueryItem,
       totalItems: 0,
       items: [],
       deleteItemId: undefined,
+      _selectedItems: [],
     } as StoreState<IGetItemsQueryItem>),
     withComputed((store) => ({
       _getItemsKey: computed(() => (store._getItemKey + 's') as RootField),
@@ -88,6 +102,53 @@ export const withPaginatedItemsStore = <
       _getItemsIncludeFields: inject(GET_ITEMS_INCLUDE_FIELDS),
     })),
     withProps((store) => ({
+      _selectedItemResource: resource({
+        request: () => ({ selectedItemIds: store._selectedItems() }),
+        loader: ({ request }) => {
+          if( store._selectedItems().length < 1) {
+            setAllEntities([], {
+              collection: 'selectedItems',
+            });
+            return Promise.resolve(undefined)
+          }
+          return lastValueFrom(
+            store._getItemsGQL
+              ?.fetch(
+                {
+                  query: {
+                    sortBy: store.sortBy(),
+                    sortByDirection: store.sortByDirection(),
+                    searchTerm: '',
+                    currentPage: 1,
+                    pageSize: request.selectedItemIds.length,
+                    filters: [
+                      {
+                        field: 'id',
+                        operator: IQueryOperatorEnum.In,
+                        values: request.selectedItemIds.map((x) => x.id),
+                      },
+                    ],
+                  },
+                } as IGetItemsQueryVariables,
+
+                { fetchPolicy: 'cache-first' }
+              )
+              .pipe(
+                tap((result) => {
+                  if (result) {
+                    const newItems = (
+                      result.data[store._getItemsKey()].items ?? []
+                    ).filter((x) => x !== null);
+
+                    setAllEntities(newItems, {
+                      collection: 'selectedItems',
+                    });
+                  }
+                })
+              )
+          );
+        },
+      }),
       _itemResource: resource({
         request: () =>
           ({
@@ -116,12 +177,22 @@ export const withPaginatedItemsStore = <
                   if (result) {
                     const getItemsKey = store._getItemsKey();
 
-                    const newItems = (result.data[getItemsKey].items ?? []).filter((x) => x !== null);
+                    const newItems = (
+                      result.data[getItemsKey].items ?? []
+                    ).filter((x) => x !== null);
 
-                    if(store.currentPage() < 2) {
-                      patchState(store, setAllEntities(newItems));
+                    if (store.currentPage() < 2) {
+                      patchState(
+                        store,
+                        setAllEntities(newItems, {
+                          collection: 'searchedItems',
+                        })
+                      );
                     } else {
-                      patchState(store, setEntities(newItems));
+                      patchState(
+                        store,
+                        setEntities(newItems, { collection: 'searchedItems' })
+                      );
                     }
 
                     patchState(store, {
@@ -162,6 +233,9 @@ export const withPaginatedItemsStore = <
       ),
     })),
     withMethods((store) => ({
+      setSelectedItemIds(_selectedItems: { id: string }[]) {
+        patchState(store, { _selectedItems });
+      },
       searchItemsByTerm(searchTerm: string) {
         patchState(store, { currentPage: 1, searchTerm, items: [] });
       },

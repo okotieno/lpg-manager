@@ -19,7 +19,6 @@ import {
 import {
   AlertController,
   IonButton,
-  IonChip,
   IonContent,
   IonFooter,
   IonHeader,
@@ -61,11 +60,13 @@ import { PaginatedResource } from '@lpg-manager/data-table';
     IonRow,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
-    IonTextarea
+    IonTextarea,
   ],
   styleUrl: './searchable-select.component.scss',
 })
-export class SearchableSelectComponent<T extends { id: string }> implements ControlValueAccessor {
+export class SearchableSelectComponent<T extends { id: string }>
+  implements ControlValueAccessor
+{
   #alertCtrl = inject(AlertController);
   isDisabled = signal(false);
   multiple = input(false);
@@ -83,7 +84,21 @@ export class SearchableSelectComponent<T extends { id: string }> implements Cont
 
   pageSize = computed(() => this.itemsStore().pageSize());
   items = computed(() => this.itemsStore().items());
-  entities = computed(() => this.itemsStore().entities());
+  searchedItemsEntities = computed(() =>
+    this.itemsStore().searchedItemsEntities()
+  );
+  selectedItemsEntities = computed(() =>
+    this.itemsStore().selectedItemsEntities()
+  );
+  entities = computed(() => {
+    const a1 = this.selectedItemsEntities();
+    const a2 = this.searchedItemsEntities();
+    const hash = new Map();
+    a1.concat(a2).forEach(function (obj) {
+      hash.set(obj.id, Object.assign(hash.get(obj.id) || {}, obj));
+    });
+    return Array.from(hash.values()) as T[];
+  });
   totalAvailableElements = computed(() => this.itemsStore().totalItems());
 
   searchTerm = signal('');
@@ -120,6 +135,11 @@ export class SearchableSelectComponent<T extends { id: string }> implements Cont
 
   writeValue(obj: { id: string }[] | { id: string }): void {
     if (obj) {
+      this.itemsStore().setSelectedItemIds(Array.isArray(obj) ? obj : [obj])
+      setTimeout(() => {
+        console.log(obj, this.entities());
+      }, 2000);
+
       untracked(() => {
         // this.preselectedItems = Array.isArray(obj) ? obj : [obj];
         // this.items.set(this.preselectedItems);
@@ -164,7 +184,6 @@ export class SearchableSelectComponent<T extends { id: string }> implements Cont
   async loadMoreData() {
     this.itemsStore().fetchNextPage();
   }
-
 
   async removeItem($index: number) {
     const alert = await this.#alertCtrl.create({
