@@ -84,15 +84,11 @@ export class UserService extends CrudAbstractService<UserModel> {
 
     // Create role-user associations for each role
     for (const roleInput of roles) {
-      const role = await RoleModel.findByPk(roleInput.roleId);
-
-      if (!role) {
-        throw new Error(`Role with id ${roleInput.roleId} not found`);
-      }
 
       await this.roleUserModel.create({
+        id: roleInput.id,
         userId: user.id,
-        roleId: role.id,
+        roleId: roleInput.roleId,
         stationId: roleInput.stationId
       });
     }

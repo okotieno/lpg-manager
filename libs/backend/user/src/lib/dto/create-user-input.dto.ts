@@ -1,5 +1,5 @@
 import { IsArray, IsEmail, IsNotEmpty, IsPhoneNumber, IsString, IsUUID, ValidateNested } from 'class-validator';
-import { RoleModel, UserModel } from '@lpg-manager/db';
+import { RoleModel, StationModel, UserModel } from '@lpg-manager/db';
 import { DoesntExist, Exists } from '@lpg-manager/validators';
 import { Type } from 'class-transformer';
 
@@ -16,7 +16,7 @@ class UserRoleDto {
   roleId!: string;
 
   @IsUUID()
-  @Exists(RoleModel, 'id', {
+  @Exists(StationModel, 'id', {
     message: (validationArguments) =>
       `Station with id ${validationArguments.value}" not found`
   })

@@ -215,7 +215,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
               roles:
                 this.userForm.get('roles')?.value?.map((user) => ({
                   id: user?.id as string,
-                  roleId: user?.id as string,
+                  roleId: user?.role.id as string,
                   stationId: user?.station?.id as string,
                 })) ?? [],
             },
