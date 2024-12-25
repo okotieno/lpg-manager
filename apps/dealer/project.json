@@ -10,7 +10,7 @@
       "executor": "@nx/angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "plugins": ["apps/admin-portal/env-var-plugin.js"],
+        "plugins": ["apps/dealer/env-var-plugin.js"],
         "outputPath": "dist/apps/dealer",
         "index": "apps/dealer/src/index.html",
         "browser": "apps/dealer/src/main.ts",

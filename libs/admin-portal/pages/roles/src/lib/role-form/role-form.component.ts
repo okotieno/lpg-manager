@@ -2,10 +2,10 @@ import { Component, inject } from '@angular/core';
 import {
   IonButton,
   IonCard,
-  IonCardContent,
+  IonCardContent, IonCol,
   IonInput,
-  IonItem,
-  IonText,
+  IonItem, IonRow,
+  IonText
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICreateRoleGQL, IUpdateRoleGQL } from '@lpg-manager/role-store';
@@ -32,6 +32,8 @@ import { IGetCataloguesQuery } from '@lpg-manager/catalogue-store';
     IonText,
     RouterLink,
     SearchableSelectComponent,
+    IonCol,
+    IonRow,
   ],
   templateUrl: './role-form.component.html',
   providers: [PermissionsStore],

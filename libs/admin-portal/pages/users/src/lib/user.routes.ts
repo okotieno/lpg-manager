@@ -91,7 +91,10 @@ export const USERS_ROUTES: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            children: []
+            loadComponent: () => import('./user-page/user-page.component'),
+            data: {
+              routeLabel: 'User Details | :userName',
+            }
           },
           {
             path: 'edit',

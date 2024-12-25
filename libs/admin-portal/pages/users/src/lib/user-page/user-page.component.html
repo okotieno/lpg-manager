@@ -5,7 +5,7 @@
         <ion-card-header>
           <ion-card-title>
             <ion-text color="lpg-subtitle">
-              Role Details
+              User Details
             </ion-text>
           </ion-card-title>
         </ion-card-header>
@@ -13,34 +13,42 @@
           <div class="details-container">
             <div class="detail-item">
               <strong>Name:</strong>
-              <span>{{ role()?.name | titlecase }}</span>
+              <span>{{ user()?.firstName }} {{ user()?.lastName }}</span>
             </div>
             <div class="detail-item">
-              <strong>ID:</strong>
-              <span>{{ role()?.id }}</span>
+              <strong>Email:</strong>
+              <span>{{ user()?.email }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Phone:</strong>
+              <span>{{ user()?.phone }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Created:</strong>
+              <span>{{ user()?.createdAt | date:'medium' }}</span>
             </div>
           </div>
         </ion-card-content>
         <ion-card-header>
           <ion-card-title>
             <ion-text color="lpg-subtitle">
-              Permissions
+              Assigned Roles
             </ion-text>
           </ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <div class="permissions-container">
-            @if (hasPermissions()) {
-              <div class="permissions-grid">
-                @for (permission of role()?.permissions; track permission?.id) {
-                  <ion-chip color="success">
+          <div class="roles-container">
+            @if (hasRoles()) {
+              <div class="roles-grid">
+                @for (role of user()?.roles; track role?.id) {
+                  <ion-chip color="primary">
                     <ion-icon name="shield-check" class="ion-margin-end" />
-                    {{ permission?.name | titlecase }}
+                    {{ role?.role?.name | titlecase }} at {{ role?.station?.name }}
                   </ion-chip>
                 }
               </div>
             } @else {
-              <p class="no-permissions">No permissions assigned to this role</p>
+              <p class="no-roles">No roles assigned to this user</p>
             }
           </div>
         </ion-card-content>
@@ -48,3 +56,10 @@
     </ion-col>
   </ion-row>
 </ion-grid>
+
+<div class="ion-margin-top ion-text-end">
+  <ion-button fill="clear" [routerLink]="['edit']">
+    <ion-icon name="pencil" slot="start"></ion-icon>
+    Edit User
+  </ion-button>
+</div>

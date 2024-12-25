@@ -45,15 +45,18 @@
   --ion-color-step-100: rgba(var(--ion-text-color-rgb), 0.05);
   --ion-color-step-150: rgba(var(--ion-text-color-rgb), 0.1);
 }
+
 form {
   ion-item {
     --padding-start: 0 !important;
     margin-bottom: 1rem;
+
     ion-input, ion-textarea, ion-select {
       label {
         font-size: 1rem;
       }
     }
+
     input, textarea {
       padding-top: 0.875rem !important;
       padding-bottom: 0.875rem !important;
@@ -73,6 +76,7 @@ form {
   --ion-color-shade: var(--ion-color-dark-shade);
   --ion-color-tint: var(--ion-color-dark-tint);
 }
+
 .ion-color-medium {
   margin-bottom: 24px;
 }
@@ -101,8 +105,9 @@ ion-button.button-solid, ion-button.button-outline, ion-button.button-clear:not(
   --padding-start: 3rem;
   --padding-end: 3rem;
   --padding-top: 1rem;
-  --padding-bottom:1rem;
+  --padding-bottom: 1rem;
 }
+
 ion-button {
   ion-spinner {
     position: absolute;
@@ -111,15 +116,18 @@ ion-button {
     height: 2rem;
   }
 }
+
 ion-toast {
   --border-radius: 1rem;
 }
+
 ion-select {
   &::part(placeholder), &::part(text) {
     padding-top: 0.875rem !important;
     padding-bottom: 0.875rem !important;
   }
 }
+
 .alert-wrapper {
   border-radius: 1rem !important;
 }
