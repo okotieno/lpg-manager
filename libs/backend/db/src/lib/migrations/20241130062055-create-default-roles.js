@@ -2,7 +2,7 @@
 const { v4: uuidv4 } = require('uuid');
 
 const rolePermissions = {
-  super_admin: '*', // Special case - gets all permissions
+  ['super admin']: '*', // Special case - gets all permissions
 
   admin: [
     // User Management
@@ -66,7 +66,7 @@ const rolePermissions = {
     // No write permissions - read-only access is handled at the query level
   ],
 
-  station_manager: [
+  ['station manager']: [
     // Station-specific permissions
     'update station',
     // Inventory Management
@@ -75,21 +75,21 @@ const rolePermissions = {
     'create activity log'
   ],
 
-  station_operator: [
+  ['station operator']: [
     // Inventory Management
     'create inventory', 'update inventory',
     // Activity Log
     'create activity log'
   ],
 
-  inventory_manager: [
+  ['inventory manager']: [
     // Inventory Management
     'create inventory', 'update inventory', 'delete inventory',
     // Activity Log
     'create activity log'
   ],
 
-  sales_agent: [
+  ['sales agent']: [
     // Cart Management
     'create cart',
     // Activity Log
@@ -136,7 +136,7 @@ module.exports = {
 
     for (const role of roles) {
       const rolePerms = rolePermissions[role.name];
-      
+
       if (rolePerms === '*') {
         // Assign all permissions for super_admin
         permissions.forEach(permission => {
@@ -182,4 +182,4 @@ module.exports = {
       name: Object.keys(rolePermissions)
     });
   }
-}; 
+};

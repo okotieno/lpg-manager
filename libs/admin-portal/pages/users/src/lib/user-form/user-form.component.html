@@ -62,10 +62,10 @@
       [ngTemplateOutlet]="addItem"
       [ngTemplateOutletContext]="{ showLabel: true, showButton: roles.controls.length < 1 }"
     />
-    @for (role of roles.controls; track role.value.id || $index) {
-      <ion-item lines="none" [formGroupName]="$index" @roleAnimation>
+    @for (role of roles.controls; track role.value.id) {
+      <ion-item class="ion-margin-start" lines="none" [formGroupName]="$index" @roleAnimation>
         <ion-row style="width: 100%;" class="ion-margin-horizontal">
-          <ion-col size="12" sizeMd="5">
+          <ion-col size="12" sizeMd="3">
             <lpg-searchable-select
               [itemsStore]="roleStore"
               label="Role"
@@ -74,7 +74,16 @@
               placeholder="Select roles"
             ></lpg-searchable-select>
           </ion-col>
-          <ion-col size="12" sizeMd="5">
+          <ion-col size="12" sizeMd="3">
+            <lpg-searchable-select
+              [itemsStore]="roleStore"
+              label="Role"
+              labelPlacement="stacked"
+              formControlName="role"
+              placeholder="Select roles"
+            ></lpg-searchable-select>
+          </ion-col>
+          <ion-col size="12" sizeMd="3">
             <lpg-searchable-select
               [itemsStore]="stationStore"
               label="Station"
@@ -83,7 +92,7 @@
               placeholder="Select station"
             ></lpg-searchable-select>
           </ion-col>
-          <ion-col size="12" offsetLg="1" sizeMd="1" class="ion-align-self-end">
+          <ion-col size="12" offsetLg="2" sizeMd="1" class="ion-align-self-end">
             <ion-button fill="clear" color="danger" (click)="removeRole($index)">
               <ion-icon name="trash-can"></ion-icon>
             </ion-button>

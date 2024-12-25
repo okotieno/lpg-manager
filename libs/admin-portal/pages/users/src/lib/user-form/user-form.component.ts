@@ -93,6 +93,14 @@ import { MaskitoElementPredicate } from '@maskito/core';
       ]),
     ]),
   ],
+  styles: `
+    ion-list {
+      ion-item {
+        border-left: rgba(var(--ion-color-dark-rgb), 1);
+        --background: rgba(var(--ion-color-medium-rgb), 0.05);
+      }
+    }
+  `
 })
 export default class UserFormComponent implements IHasUnsavedChanges {
   #fb = inject(FormBuilder);
