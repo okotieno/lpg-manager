@@ -24,3 +24,4 @@ warehouse
 circle
 caret-up
 caret-down
+eye

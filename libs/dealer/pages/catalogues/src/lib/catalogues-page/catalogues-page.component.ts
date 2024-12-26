@@ -22,7 +22,7 @@ import {
   IonSearchbar,
   IonText,
   ModalController,
-  AlertController
+  AlertController, IonItem
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
 import { CartStore, IGetCartsQuery, AddToCartDialogComponent } from '@lpg-manager/cart-store';
@@ -56,6 +56,7 @@ type ICatalogueDisplay = IGetItemQuery & { cart?: NonNullable<IGetCartsQuery['ca
     IonButtons,
     SearchableSelectComponent,
     ReactiveFormsModule,
+    IonItem,
   ],
   templateUrl: './catalogues-page.component.html',
   styleUrl: './catalogues-page.component.scss',
@@ -81,15 +82,16 @@ export default class CataloguesPageComponent {
   cataloguesStore = inject(CataloguesStore);
   searchForm = this.#fb.group({
     depot: [[] as ISelectCategory[]],
-  })
+  });
 
   constructor() {
     // Initialize depot store with DEPOT type filter
     this.depotStore.setFilters([
       {
-        // field: 'type',
-        // operator: IQueryOperatorEnum.Equals,
-        // value: 'DEPOT',
+        field: 'type',
+        operator: IQueryOperatorEnum.Equals,
+        value: 'DEPOT',
+        values: []
       },
     ]);
   }
