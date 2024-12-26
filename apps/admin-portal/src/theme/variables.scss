@@ -55,7 +55,7 @@ form {
       color: var(--ion-color-primary);
     }
     --padding-start: 0 !important;
-    &:hover {
+    &:hover:not(.textarea-disabled) {
       --border-color:  var(--ion-color-primary) !important;
       .label-text-wrapper {
         color: var(--ion-color-primary);

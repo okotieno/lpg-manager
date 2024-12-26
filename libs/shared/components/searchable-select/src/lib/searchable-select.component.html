@@ -11,6 +11,7 @@
   (click)="modal.isOpen = true"
   (keydown.enter)="modal.isOpen = true"
   [ngModel]="selectedItemsDisplayed()"
+  [disabled]="isDisabled()"
   [rows]="1"
   [autoGrow]="true"
 >

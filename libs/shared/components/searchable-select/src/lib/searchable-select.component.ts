@@ -35,9 +35,8 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { CdkListbox, CdkOption } from '@angular/cdk/listbox';
-import { IQueryParamsFilter } from '@lpg-manager/types';
+import { IQueryParamsFilter, ISortByEnum } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-searchable-select',
@@ -62,7 +61,6 @@ import { JsonPipe } from '@angular/common';
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonTextarea,
-    JsonPipe,
   ],
   styleUrl: './searchable-select.component.scss',
 })
@@ -80,8 +78,27 @@ export class SearchableSelectComponent<T extends { id: string }>
   placeholder = input('--Please Select--');
   idKey = input<keyof T>('id');
   labelKey = input<keyof T>('name' as keyof T);
-
-  ionInfiniteScroll = viewChild(IonInfiniteScroll);
+  defaultParams = input<IQueryParamsFilter[]>([]);
+  sort = input(
+    { key: 'name' as keyof T, direction: ISortByEnum.Asc },
+    {
+      transform: (val: { key: string; direction: string }) => {
+        return val.direction === 'ASC'
+          ? { key: val.key as keyof T, direction: ISortByEnum.Asc }
+          : { key: val.key as keyof T, direction: ISortByEnum.Desc };
+      },
+    }
+  );
+  sortChangeEffect = effect(() => {
+    const sort = this.sort();
+    untracked(() => {
+      this.itemsStore().setSortBy(sort.key);
+      this.itemsStore().setSortByDirection(sort.direction);
+    })
+  });
+  defaultParamsChangeEffect = effect(() => {
+    if (!this.isDisabled()) this.itemsStore().setFilters(this.defaultParams());
+  });
   selectModal = viewChild.required(IonModal);
 
   pageSize = computed(() => this.itemsStore().pageSize());
@@ -133,7 +150,6 @@ export class SearchableSelectComponent<T extends { id: string }>
   showInfiniteScroll = computed(
     () => this.totalAvailableElements() > this.totalItems()
   );
-  defaultParams = signal<IQueryParamsFilter[]>([]);
 
   constructor(@Self() @Optional() private control: NgControl) {
     this.control.valueAccessor = this;
@@ -143,16 +159,11 @@ export class SearchableSelectComponent<T extends { id: string }>
   onTouched?: () => void;
 
   writeValue(obj: { id: string }[] | { id: string }): void {
-    if (obj) {
+    if (obj)
       this.itemsStore().setSelectedItemIds(Array.isArray(obj) ? obj : [obj]);
-
-      untracked(() => {
-        const preselectedItems = Array.isArray(obj) ? obj : [obj];
-        // this.items.set(this.preselectedItems);
-        // this.selectedItems.set(preselectedItems as T[]);
-        // this.selectedItemsActive.set(this.selectedItems());
-        // this.cdr.detectChanges();
-      });
+    else {
+      this.selectedItemsActive.set([]);
+      this.selectedItems.set([]);
     }
   }
 

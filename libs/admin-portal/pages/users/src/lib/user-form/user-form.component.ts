@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  DestroyRef,
   effect,
   inject,
   input,
@@ -18,7 +19,9 @@ import {
   IonList,
   IonListHeader,
   IonRow,
-  AlertController, IonSelect, IonSelectOption
+  AlertController,
+  IonSelect,
+  IonSelectOption,
 } from '@ionic/angular/standalone';
 import {
   FormArray,
@@ -33,15 +36,24 @@ import {
 } from '@lpg-manager/user-store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IGetRolesQuery, RoleStore } from '@lpg-manager/role-store';
-import { IUserRoleInput } from '@lpg-manager/types';
+import {
+  IQueryOperatorEnum,
+  IQueryParamsFilter,
+  IUserRoleInput,
+} from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
-import { NgTemplateOutlet } from '@angular/common';
 import { IGetStationsQuery, StationStore } from '@lpg-manager/station-store';
 import { MaskitoDirective } from '@maskito/angular';
 import { kenyaPhoneMask } from '../utils/phone-mask.util';
 import { MaskitoElementPredicate } from '@maskito/core';
+import { tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  SHOW_ERROR_MESSAGE,
+  SHOW_SUCCESS_MESSAGE,
+} from '@lpg-manager/injection-token';
 
 @Component({
   selector: 'lpg-user-form',
@@ -59,7 +71,6 @@ import { MaskitoElementPredicate } from '@maskito/core';
     IonListHeader,
     IonIcon,
     IonLabel,
-    NgTemplateOutlet,
     MaskitoDirective,
     IonSelect,
     IonSelectOption,
@@ -111,12 +122,14 @@ import { MaskitoElementPredicate } from '@maskito/core';
 })
 export default class UserFormComponent implements IHasUnsavedChanges {
   #fb = inject(FormBuilder);
+  #destroyRef = inject(DestroyRef);
   #createUserGQL = inject(ICreateUserGQL);
   #updateUserGQL = inject(IUpdateUserGQL);
   #route = inject(ActivatedRoute);
   #router = inject(Router);
   #alertController = inject(AlertController);
   protected readonly phoneMask = kenyaPhoneMask;
+  protected readonly equalsOperator = IQueryOperatorEnum.Equals;
   readonly maskPredicate: MaskitoElementPredicate = async (el) =>
     (el as HTMLIonInputElement).getInputElement();
   userForm = this.#fb.group({
@@ -135,7 +148,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
         id: string;
         role: { id: string };
         station?: { id: string };
-        stationType: null | string,
+        stationType: null | string;
       }>
     ),
   });
@@ -177,7 +190,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
               role?.station.id ? { id: role?.station.id } : null,
               Validators.required,
             ],
-            stationType: null as null | string,
+            stationType: role?.station.type ?? null,
           });
           this.roles.push(roleForm);
           this.rolesList.set(this.roles.value);
@@ -202,9 +215,23 @@ export default class UserFormComponent implements IHasUnsavedChanges {
     const roleForm = this.#fb.group({
       id: [crypto.randomUUID(), Validators.required],
       role: [null as null | { id: string }, Validators.required],
-      station: [null as null | { id: string }, [Validators.required]],
       stationType: [null as null | string],
+      station: [
+        { value: null as null | { id: string }, disabled: true },
+        [Validators.required],
+      ],
     });
+    roleForm
+      .get('stationType')
+      ?.valueChanges.pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        tap(() => {
+          roleForm.get('station')?.enable();
+          roleForm.get('station')?.setValue(null);
+          roleForm.get('station')?.updateValueAndValidity();
+        })
+      )
+      .subscribe();
     this.roles.push(roleForm);
     this.rolesList.set(this.roles.value);
   }
@@ -235,19 +262,30 @@ export default class UserFormComponent implements IHasUnsavedChanges {
   async onSubmit() {
     if (this.userForm.valid) {
       const { firstName, lastName, email, phone, roles } = this.userForm.value;
+      const params = {
+        firstName: firstName as string,
+        lastName: lastName as string,
+        email: email as string,
+        phone: phone as string,
+        roles:
+          roles?.map((user) => ({
+            id: user?.id as string,
+            roleId: user?.role.id as string,
+            stationId: user?.station?.id as string,
+          })) ?? [],
+      };
 
       if (this.isEditing()) {
         this.#updateUserGQL
-          .mutate({
-            id: this.userId() as string,
-            params: {
-              firstName: firstName as string,
-              lastName: lastName as string,
-              email: email as string,
-              phone: phone as string,
-              roles: roles as unknown as IUserRoleInput[],
-            },
-          })
+          .mutate(
+            { id: this.userId() as string, params },
+            {
+              context: {
+                [SHOW_ERROR_MESSAGE]: true,
+                [SHOW_SUCCESS_MESSAGE]: true,
+              },
+            }
+          )
           .subscribe({
             next: async () => {
               this.userForm.reset();
@@ -258,21 +296,15 @@ export default class UserFormComponent implements IHasUnsavedChanges {
           });
       } else {
         this.#createUserGQL
-          .mutate({
-            params: {
-              firstName: firstName as string,
-              lastName: lastName as string,
-              email: email as string,
-              phone: phone as string,
-              roles:
-                this.userForm.get('roles')?.value?.map((user) => ({
-                  id: user?.id as string,
-                  roleId: user?.role.id as string,
-                  stationId: user?.station?.id as string,
-                  stationType: null as null | string,
-                })) ?? [],
-            },
-          })
+          .mutate(
+            { params },
+            {
+              context: {
+                [SHOW_ERROR_MESSAGE]: true,
+                [SHOW_SUCCESS_MESSAGE]: true,
+              },
+            }
+          )
           .subscribe({
             next: async () => {
               this.userForm.reset();

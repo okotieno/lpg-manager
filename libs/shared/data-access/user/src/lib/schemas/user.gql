@@ -34,6 +34,7 @@ query GetUserById($id: UUID!) {
       station {
         id
         name
+        type
       }
     }
   }
