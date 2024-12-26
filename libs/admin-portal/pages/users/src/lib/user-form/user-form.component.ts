@@ -183,14 +183,14 @@ export default class UserFormComponent implements IHasUnsavedChanges {
           const roleForm = this.#fb.group({
             id: [role?.id, Validators.required],
             role: [
-              role?.role.id ? { id: role?.role.id } : null,
+              role?.role?.id ? { id: role.role.id } : null,
               Validators.required,
             ],
             station: [
-              role?.station.id ? { id: role?.station.id } : null,
+              role?.station?.id ? { id: role.station.id } : null,
               Validators.required,
             ],
-            stationType: role?.station.type ?? null,
+            stationType: role?.station?.type ?? null,
           });
           this.roles.push(roleForm);
           this.rolesList.set(this.roles.value);

@@ -3,8 +3,8 @@ type UserRole {
   roleId: UUID!
   userId: UUID!
   stationId: UUID!
-  role: RoleModel!
-  station: StationModel!
+  role: RoleModel
+  station: StationModel
 }
 type UserModel {
   id: UUID!

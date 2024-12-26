@@ -25,6 +25,7 @@ import {
 import { BreadcrumbComponent, BreadcrumbStore } from '@lpg-manager/breadcrumb';
 import { TitleCasePipe } from '@angular/common';
 import { CartStore } from '@lpg-manager/cart-store';
+import { AuthStore } from '@lpg-manager/auth-store';
 
 @Component({
   selector: 'lpg-dashboard',
@@ -55,6 +56,7 @@ import { CartStore } from '@lpg-manager/cart-store';
   styleUrl: './dashboard-page.component.scss',
 })
 export default class DashboardComponent {
+  #authStore = inject(AuthStore);
   #themeService = inject(ThemeService);
   #router = inject(Router);
   #breadcrumbStore = inject(BreadcrumbStore);
@@ -82,7 +84,7 @@ export default class DashboardComponent {
   }
 
   async logout() {
-    // await this.authStore.logout();
+    await this.#authStore.logout();
     await this.#router.navigate(['/login']);
   }
 

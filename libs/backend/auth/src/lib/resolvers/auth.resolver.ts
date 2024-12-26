@@ -1,6 +1,6 @@
-import { Args, Mutation, Resolver, Subscription } from '@nestjs/graphql';
+import { Args, Mutation, Parent, ResolveField, Resolver, Subscription } from '@nestjs/graphql';
 import { AuthServiceBackend } from '@lpg-manager/auth-service';
-import { UserModel } from '@lpg-manager/db';
+import { RoleModel, RoleUserModel, StationModel, UserModel } from '@lpg-manager/db';
 import { UserService } from '@lpg-manager/user-service';
 import {
   BadRequestException,
@@ -37,7 +37,7 @@ import { PUB_SUB } from '@lpg-manager/util';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { CurrentDeviceType } from '../decorators/current-device.decorator';
 
-@Resolver()
+@Resolver(() => UserModel)
 export class AuthResolver {
   constructor(
     private authService: AuthServiceBackend,
@@ -282,5 +282,36 @@ export class AuthResolver {
     const user = await this.userService.findByUsernameEmailPhone(identifier);
 
     return this.authService.login(user as UserModel, deviceType);
+  }
+
+  @ResolveField('roles')
+  async getRoles(@Parent() user: UserModel) {
+    const userWithRoles = await this.userService.findById(user.id, {
+      include: [
+        {
+          model: RoleUserModel,
+          include: [
+            {
+              model: RoleModel,
+              attributes: ['id', 'name'],
+            },
+            {
+              model: StationModel,
+              attributes: ['id', 'name'],
+            },
+          ],
+        },
+      ],
+    });
+
+    console.log(userWithRoles?.roleUsers)
+
+    return (
+      userWithRoles?.roleUsers?.map((roleUser) => ({
+        id: roleUser.id,
+        role: roleUser.role,
+        station: roleUser.station,
+      })) || []
+    );
   }
 }

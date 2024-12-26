@@ -126,6 +126,7 @@ export class UserResolver {
 
   @ResolveField('roles')
   async getRoles(@Parent() user: UserModel) {
+
     const userWithRoles = await this.userService.findById(user.id, {
       include: [
         {
@@ -143,7 +144,12 @@ export class UserResolver {
         },
       ],
     });
-
+    console.log('resolving roles', userWithRoles?.roleUsers?.map((roleUser) => ({
+      id: roleUser.id,
+      role: roleUser.role,
+      station: roleUser.station,
+    })) || []
+    );
     return (
       userWithRoles?.roleUsers?.map((roleUser) => ({
         id: roleUser.id,

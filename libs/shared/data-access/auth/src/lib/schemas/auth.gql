@@ -8,6 +8,22 @@ fragment UserFields on UserModel {
   createdAt
   updatedAt
   profilePhotoLink
+  roles {
+    id
+    station {
+      id
+      name
+      type
+    }
+    role {
+      id
+      name
+      permissions {
+        id
+        name
+      }
+    }
+  }
 }
 
 fragment AuthDetails on LoginResponse {

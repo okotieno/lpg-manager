@@ -25,6 +25,7 @@ import {
 } from '@angular/router';
 import { BreadcrumbComponent, BreadcrumbStore } from '@lpg-manager/breadcrumb';
 import { TitleCasePipe } from '@angular/common';
+import { AuthStore } from '@lpg-manager/auth-store';
 
 @Component({
   selector: 'lpg-dashboard',
@@ -62,6 +63,7 @@ export default class DashboardComponent {
   #themeService = inject(ThemeService);
   #router = inject(Router);
   #breadcrumbStore = inject(BreadcrumbStore);
+  #authStore = inject(AuthStore);
 
   pageTitle = this.#breadcrumbStore.pageTitle;
 
@@ -84,7 +86,7 @@ export default class DashboardComponent {
   }
 
   async logout() {
-    // await this.authStore.logout();
+    await this.#authStore.logout();
     await this.#router.navigate(['/login']);
   }
 

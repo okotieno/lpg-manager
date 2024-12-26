@@ -1,11 +1,9 @@
 import { Component, inject } from '@angular/core';
 import {
   IonButton,
-  IonCard,
-  IonCardContent, IonCol,
+  IonCol,
   IonInput,
-  IonItem, IonRow,
-  IonText
+  IonItem, IonRow
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICreateRoleGQL, IUpdateRoleGQL } from '@lpg-manager/role-store';
@@ -15,21 +13,17 @@ import {
   IGetPermissionsQuery,
   PermissionsStore,
 } from '@lpg-manager/permission-store';
-import { IPermissionModel, ISelectCategory } from '@lpg-manager/types';
+import { ISelectCategory } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
-import { IGetCataloguesQuery } from '@lpg-manager/catalogue-store';
 
 @Component({
   selector: 'lpg-role-form',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    IonCard,
-    IonCardContent,
     IonItem,
     IonInput,
     IonButton,
-    IonText,
     RouterLink,
     SearchableSelectComponent,
     IonCol,

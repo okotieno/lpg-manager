@@ -7,17 +7,13 @@ import {
   withState,
   withProps,
 } from '@ngrx/signals';
-import {
-  ILoginResponse,
-  IMutationLoginWithPasswordArgs,
-} from '@lpg-manager/types';
+import { IMutationLoginWithPasswordArgs } from '@lpg-manager/types';
 import {
   computed,
   effect,
   inject,
   Injector,
   resource,
-  ResourceRef,
   ResourceStatus,
   untracked,
 } from '@angular/core';
@@ -32,12 +28,14 @@ import { Preferences } from '@capacitor/preferences';
 import { MutationResult } from '@apollo/client';
 
 interface AuthState {
-  loginResponse: ILoginResponse;
+  refreshTokenInput: string;
+  loginResponse: ILoginWithPasswordMutation['loginWithPassword'];
   loginWithPasswordParams: IMutationLoginWithPasswordArgs;
   errorMessage?: string;
 }
 
 const initialState: AuthState = {
+  refreshTokenInput: '',
   loginWithPasswordParams: { email: '', password: '' },
   loginResponse: {
     accessToken: '',
@@ -86,55 +84,40 @@ export const AuthStore = signalStore(
         ) as Promise<MutationResult<ILoginWithPasswordMutation> | undefined>;
       },
     }),
-  })),
-  withComputed((store) => {
-    const accessToken = computed(() => store.loginResponse.accessToken());
-    const _refreshToken = computed(() => store.loginResponse.refreshToken());
-    const isLoggedIn = computed(() => accessToken().length > 0);
-    const isLoading = computed(() => store._loginResource?.isLoading());
-    return { isLoggedIn, accessToken, _refreshToken, isLoading };
-  }),
-  withMethods((store) => {
-    const removeErrorMessage = () => {
-      patchState(store, { errorMessage: undefined });
-    };
-    const loginWithTokenResource = resource({
+    _loginWithTokenResource: resource({
       request: () => ({
-        refreshToken: store._refreshToken(),
+        refreshToken: store.refreshTokenInput(),
       }),
       loader: (param) => {
-        if (param.previous.status === ResourceStatus.Idle) {
+        console.log('HIT...');
+        if (!param.request.refreshToken) {
           return Promise.resolve(undefined);
         }
         return lastValueFrom(
           store._loginWithTokenGQL
-            .mutate({
-              token: param.request.refreshToken ?? '',
-            })
+            .mutate({ token: param.request.refreshToken ?? '' })
             .pipe(
               tap((res) => {
                 if (res.data?.loginWithToken)
                   patchState(store, {
                     loginResponse: res.data.loginWithToken,
                   });
-                loginWithTokenResource.destroy();
               })
             )
         );
       },
-    });
-
-    const _loadLoggedInUser = async () => {
-      const { value: refreshToken } = await Preferences.get({
-        key: 'refresh-token',
-      });
-      if (refreshToken)
-        patchState(store, {
-          loginResponse: {
-            ...store.loginResponse(),
-            refreshToken: refreshToken,
-          },
-        });
+    }),
+  })),
+  withComputed((store) => {
+    const accessToken = computed(() => store.loginResponse()?.accessToken);
+    const _refreshToken = computed(() => store.loginResponse()?.refreshToken);
+    const isLoggedIn = computed(() => Number(accessToken()?.length) > 0);
+    const isLoading = computed(() => store._loginResource?.isLoading());
+    return { isLoggedIn, accessToken, _refreshToken, isLoading };
+  }),
+  withMethods((store) => {
+    const removeErrorMessage = () => {
+      patchState(store, { errorMessage: undefined });
     };
 
     const login = (params: { email: string; password: string }) => {
@@ -146,11 +129,19 @@ export const AuthStore = signalStore(
       });
       store._loginResource?.reload();
     };
-    return { login, _loadLoggedInUser, removeErrorMessage };
+    const logout = async () => {
+      console.log('LOGOUT CLICKED...');
+      await Preferences.remove({ key: 'refresh-token' });
+      await Preferences.remove({ key: 'access-token' });
+    };
+    return { login, removeErrorMessage, logout };
   }),
   withHooks((store, injector = inject(Injector)) => {
     const onInit = async () => {
-      await store._loadLoggedInUser();
+      const { value: refreshTokenInput } = await Preferences.get({
+        key: 'refresh-token',
+      });
+      if (refreshTokenInput) patchState(store, { refreshTokenInput });
 
       effect(
         async () => {
@@ -159,11 +150,11 @@ export const AuthStore = signalStore(
           await untracked(async () => {
             await Preferences.set({
               key: 'refresh-token',
-              value: refreshToken,
+              value: refreshToken ?? '',
             });
             await Preferences.set({
               key: 'access-token',
-              value: accessToken,
+              value: accessToken ?? '',
             });
           });
         },

@@ -1197,9 +1197,9 @@ export type IUserModel = {
 
 export type IUserRole = {
   id: Scalars['UUID']['output'];
-  role: IRoleModel;
+  role?: Maybe<IRoleModel>;
   roleId: Scalars['UUID']['output'];
-  station: IStationModel;
+  station?: Maybe<IStationModel>;
   stationId: Scalars['UUID']['output'];
   userId: Scalars['UUID']['output'];
 };
