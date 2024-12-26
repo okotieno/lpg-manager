@@ -5,5 +5,11 @@ export const PROFILE_ROUTES: Routes = [
   {
     path: '',
     component: ProfilePageComponent,
+    data: {
+      routeLabel: 'Profile',
+      breadcrumbs: [
+        { label: 'Profile' }
+      ]
+    }
   }
 ];

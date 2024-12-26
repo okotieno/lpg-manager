@@ -29,6 +29,13 @@ export type IRequestAccessTokenMutationVariables = Types.Exact<{
 
 export type IRequestAccessTokenMutation = { requestAccessToken?: { accessToken?: string | null } | null };
 
+export type ISendPasswordResetEmailMutationVariables = Types.Exact<{
+  email: Types.Scalars['String']['input'];
+}>;
+
+
+export type ISendPasswordResetEmailMutation = { sendPasswordResetLinkEmail?: { message: string } | null };
+
 export const UserFieldsFragmentDoc = gql`
     fragment UserFields on UserModel {
   id
@@ -116,6 +123,24 @@ export const RequestAccessTokenDocument = gql`
   })
   export class IRequestAccessTokenGQL extends Apollo.Mutation<IRequestAccessTokenMutation, IRequestAccessTokenMutationVariables> {
     override document = RequestAccessTokenDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const SendPasswordResetEmailDocument = gql`
+    mutation SendPasswordResetEmail($email: String!) {
+  sendPasswordResetLinkEmail(email: $email) {
+    message
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ISendPasswordResetEmailGQL extends Apollo.Mutation<ISendPasswordResetEmailMutation, ISendPasswordResetEmailMutationVariables> {
+    override document = SendPasswordResetEmailDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

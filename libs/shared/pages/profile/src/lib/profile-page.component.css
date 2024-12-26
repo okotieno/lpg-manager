@@ -1,0 +1,25 @@
+.details-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .detail-item {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .roles-container {
+    padding: 1rem 0;
+  }
+
+  .roles-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .no-roles {
+    color: var(--ion-color-medium);
+    font-style: italic;
+  }

@@ -20,6 +20,11 @@ export const DASHBOARD_ROUTES:Routes = [
         data: {
           routeLabel: 'Administration'
         }
+      },
+      {
+        path: 'profile',
+        loadChildren: () =>
+          import('@lpg-manager/profile-page'),
       }
     ]
   }

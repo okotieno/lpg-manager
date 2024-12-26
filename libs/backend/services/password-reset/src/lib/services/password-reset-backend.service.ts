@@ -22,7 +22,6 @@ export class PasswordResetBackendService extends CrudAbstractService<PasswordRes
     if (!user) {
       throw new Error('User not found');
     }
-
     const token = randomBytes(32).toString('hex');
     const expiry = new Date();
     expiry.setHours(expiry.getHours() + 1); // Token valid for 1 hour

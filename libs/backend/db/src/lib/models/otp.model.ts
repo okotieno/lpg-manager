@@ -1,4 +1,4 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 @Table({
   tableName: 'otps',
@@ -8,6 +8,14 @@ import { Column, Model, Table } from 'sequelize-typescript';
   deletedAt: true,
 })
 export class OtpModel extends Model {
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
+    allowNull: false,
+    primaryKey: true
+  })
+  override id!: string;
+
   @Column
   identifier?: string
 

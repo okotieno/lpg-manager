@@ -20,4 +20,5 @@ export const APP_ICONS = [
   'trash-can',
   'circle-minus',
   'circle-plus',
+  'shield-check'
 ];

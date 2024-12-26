@@ -21,12 +21,16 @@ export const DASHBOARD_ROUTES: Routes = [
         data: {
           routeLabel: 'Dashboard',
           breadcrumbs: [{ label: 'Dashboard' }],
-
         }
       },
       {
         path: 'catalogues',
         loadChildren: () => import('@lpg-manager/dealer-catalogues-page'),
+      },
+      {
+        path: 'profile',
+        loadChildren: () =>
+          import('@lpg-manager/profile-page'),
       },
     ],
   },

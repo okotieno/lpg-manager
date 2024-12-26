@@ -89,7 +89,6 @@ export default class DashboardComponent {
   }
 
   goToProfile() {
-    // Implement profile navigation
-    console.log('Navigate to profile');
+    this.#router.navigate(['/dashboard/profile']);
   }
 }

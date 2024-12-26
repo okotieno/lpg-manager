@@ -16,12 +16,13 @@ export class SendPasswordResetLinkConsumer {
     private passwordResetService: PasswordResetBackendService,
     private translationService: TranslationService,
     private activityLogService: ActivityLogBackendService,
-  ) {}
+  ) {
+  }
 
   @Process()
   async sendPasswordResetLinkEmail(job: Job<{ email: string }>): Promise<void> {
-    const user = await this.userService.findByEmail(job.data.email);
 
+    const user = await this.userService.findByEmail(job.data.email);
     if (user) {
       const token = await this.passwordResetService.generatePasswordResetToken(
         job.data.email,

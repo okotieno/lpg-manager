@@ -19,3 +19,4 @@ cart-shopping
 trash-can
 circle-plus
 circle-minus
+shield-check

@@ -1,1 +1,1 @@
-export { AUTH_ROUTES } from './lib/profile.routes';
+export { PROFILE_ROUTES as default } from './lib/profile.routes';

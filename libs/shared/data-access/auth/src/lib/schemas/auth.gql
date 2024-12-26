@@ -59,13 +59,13 @@ mutation RequestAccessToken($refreshToken: String!) {
     accessToken
   }
 }
-#
-#mutation SendPasswordResetEmail($email: String!) {
-#  sendPasswordResetLinkEmail(email: $email) {
-#    message
-#  }
-#}
-#
+
+mutation SendPasswordResetEmail($email: String!) {
+  sendPasswordResetLinkEmail(email: $email) {
+    message
+  }
+}
+
 #mutation ChangePasswordUsingResetToken(
 #  $token: String!
 #  $password: String!

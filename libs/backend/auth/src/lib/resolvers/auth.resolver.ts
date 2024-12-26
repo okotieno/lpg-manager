@@ -1,6 +1,6 @@
-import { Args, Mutation, Parent, ResolveField, Resolver, Subscription } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Subscription } from '@nestjs/graphql';
 import { AuthServiceBackend } from '@lpg-manager/auth-service';
-import { RoleModel, RoleUserModel, StationModel, UserModel } from '@lpg-manager/db';
+import { UserModel } from '@lpg-manager/db';
 import { UserService } from '@lpg-manager/user-service';
 import {
   BadRequestException,

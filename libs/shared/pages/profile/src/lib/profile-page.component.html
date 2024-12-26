@@ -1,1 +1,58 @@
-PROFILE WORKS
+<ion-grid class="ion-no-margin">
+  <ion-row class="ion-no-margin ion-no-padding">
+    <ion-col size="12" size-md="12" class="ion-no-margin">
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-text color="lpg-subtitle">
+              Profile Details
+            </ion-text>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="details-container">
+            <div class="detail-item">
+              <strong>Name:</strong>
+              <span>{{ user()?.firstName }} {{ user()?.lastName }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Email:</strong>
+              <span>{{ user()?.email }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Phone:</strong>
+              <span>{{ user()?.phone }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Created:</strong>
+              <span>{{ user()?.createdAt | date:'medium' }}</span>
+            </div>
+          </div>
+        </ion-card-content>
+        <ion-card-header>
+          <ion-card-title>
+            <ion-text color="lpg-subtitle">
+              Assigned Roles
+            </ion-text>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="roles-container">
+            @if (hasRoles()) {
+              <div class="roles-grid">
+                @for (role of user()?.roles; track role?.id) {
+                  <ion-chip color="primary">
+                    <ion-icon name="shield-check" class="ion-margin-end" />
+                    {{ role?.role?.name | titlecase }} at {{ role?.station?.name }}
+                  </ion-chip>
+                }
+              </div>
+            } @else {
+              <p class="no-roles">No roles assigned to this user</p>
+            }
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>
