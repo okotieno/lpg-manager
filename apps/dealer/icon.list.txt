@@ -20,3 +20,4 @@ trash-can
 circle-plus
 circle-minus
 shield-check
+warehouse

@@ -115,7 +115,7 @@ export const CartStore = signalStore(
         items: store.items(),
       }),
       loader: ({ request, previous }) => {
-        if (previous.status === ResourceStatus.Idle) {
+        if (!store.cartId() || previous.status === ResourceStatus.Idle) {
           return Promise.resolve(undefined);
         }
         return lastValueFrom(

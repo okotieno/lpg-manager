@@ -2,6 +2,11 @@
 const { v4: uuidv4 } = require('uuid');
 
 const permissions = [
+  'access dealer app',
+  'access depot app',
+  'access admin app',
+  'access transporter app',
+
   // User Management
   'create user',
   'delete user',
@@ -68,7 +73,9 @@ const permissions = [
   'update inventory',
 
   // Cart
-  'create cart'
+  'create cart',
+  'update cart',
+  'delete cart',
 
 ];
 

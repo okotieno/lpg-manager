@@ -18,10 +18,28 @@
 
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-row class="ion-margin-start ion-align-items-center" slot="start">
       <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>LPG</ion-title>
+      <ion-text>
+        LPG
+      </ion-text>
+    </ion-row>
+    <ion-select
+      [ngModel]="activeRole?.()?.id"
+      (ionChange)="updateActiveRole($event)"
+      label=""
+      style="max-width: fit-content;"
+
+    >
+      <ion-icon slot="start" name="warehouse"></ion-icon>
+      @for (station of userRoleStation(); track station?.id; ) {
+        <ion-select-option class="ion-margin-end" [value]="station?.id">
+          {{ station?.role?.name | titlecase }} | {{ station?.station?.name | titlecase }}
+        </ion-select-option>
+      }
+
+    </ion-select>
+
     <ion-buttons slot="end">
       @if (cartItemsCount() > 0) {
         <div class="badged-icon-container">

@@ -5,6 +5,8 @@ const rolePermissions = {
   ['super admin']: '*', // Special case - gets all permissions
 
   admin: [
+    // Access Apps
+    'access dealer app', 'access depot app', 'access admin app', 'access transporter app',
     // User Management
     'create user', 'delete user', 'update user',
     // Role Management
@@ -24,7 +26,9 @@ const rolePermissions = {
     // Catalogue Management
     'create brand catalogue', 'delete brand catalogue', 'update brand catalogue',
     // Inventory Management
-    'create inventory', 'delete inventory', 'update inventory'
+    'create inventory', 'delete inventory', 'update inventory',
+    // Cart
+    'create cart', 'update cart', 'delete cart',
   ],
 
   manager: [

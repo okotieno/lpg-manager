@@ -33,6 +33,11 @@ import {
 } from '@lpg-manager/injection-token';
 
 interface AuthState {
+  activeRole?: NonNullable<
+    NonNullable<
+      NonNullable<ILoginWithPasswordMutation['loginWithPassword']>['user']
+    >['roles']
+  >[number];
   refreshTokenInput: string;
   loginResponse: ILoginWithPasswordMutation['loginWithPassword'];
   loginWithPasswordParams: IMutationLoginWithPasswordArgs;
@@ -41,6 +46,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
+  activeRole: undefined,
   refreshTokenInput: '',
   loginWithPasswordParams: { email: '', password: '' },
   loginResponse: {
@@ -97,7 +103,6 @@ export const AuthStore = signalStore(
         refreshToken: store.refreshTokenInput(),
       }),
       loader: (param) => {
-        console.log('hitting login with token', param.request);
         if (!param.request.refreshToken) {
           return Promise.resolve(undefined);
         }
@@ -151,7 +156,15 @@ export const AuthStore = signalStore(
     const isLoggedIn = computed(() => Number(accessToken()?.length) > 0);
     const isLoading = computed(() => store._loginResource?.isLoading());
     const user = computed(() => store.loginResponse()?.user);
-    return { isLoggedIn, accessToken, _refreshToken, isLoading, user };
+    const userRoles = computed(() => user()?.roles ?? []);
+    return {
+      isLoggedIn,
+      accessToken,
+      _refreshToken,
+      isLoading,
+      user,
+      userRoles,
+    };
   }),
   withMethods((store) => {
     const removeErrorMessage = () => {
@@ -178,7 +191,22 @@ export const AuthStore = signalStore(
       await Preferences.remove({ key: 'refresh-token' });
       await Preferences.remove({ key: 'access-token' });
     };
-    return { login, removeErrorMessage, logout, sendResetLink };
+
+    const updateActiveRole = (activeRoleId: string) => {
+      const activeRole = store
+        .userRoles()
+        .find((userRole) => userRole?.id === activeRoleId);
+      if (activeRole) {
+        patchState(store, { activeRole });
+      }
+    };
+    return {
+      login,
+      removeErrorMessage,
+      logout,
+      sendResetLink,
+      updateActiveRole,
+    };
   }),
   withHooks((store, injector = inject(Injector)) => {
     const onInit = async () => {
@@ -186,6 +214,18 @@ export const AuthStore = signalStore(
         key: 'refresh-token',
       });
       if (refreshTokenInput) patchState(store, { refreshTokenInput });
+
+      effect(
+        () => {
+          const roles = store.userRoles();
+          untracked(() => {
+            if (roles.length > 0) {
+              patchState(store, { activeRole: roles[0] });
+            }
+          });
+        },
+        { injector }
+      );
 
       effect(
         async () => {
