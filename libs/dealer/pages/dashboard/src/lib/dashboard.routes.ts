@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { AuthStore } from '@lpg-manager/auth-store';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
@@ -8,6 +10,9 @@ export const DASHBOARD_ROUTES: Routes = [
       routeLabel: 'Dashboard',
       breadcrumbs: [{ label: 'Dashboard' }],
     },
+    canMatch: [
+      () => inject(AuthStore).isLoggedIn()
+    ],
     children: [
       {
         path: '',
@@ -25,4 +30,11 @@ export const DASHBOARD_ROUTES: Routes = [
       },
     ],
   },
+  {
+    path: '**',
+    canMatch: [
+      () => !inject(AuthStore).isLoggedIn()
+    ],
+    redirectTo: '/login'
+  }
 ];

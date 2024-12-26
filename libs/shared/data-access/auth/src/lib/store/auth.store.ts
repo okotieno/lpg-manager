@@ -89,6 +89,7 @@ export const AuthStore = signalStore(
         refreshToken: store.refreshTokenInput(),
       }),
       loader: (param) => {
+        console.log('hitting login with token', param.request);
         if (!param.request.refreshToken) {
           return Promise.resolve(undefined);
         }
@@ -129,7 +130,6 @@ export const AuthStore = signalStore(
       store._loginResource?.reload();
     };
     const logout = async () => {
-      console.log('LOGOUT CLICKED...');
       await Preferences.remove({ key: 'refresh-token' });
       await Preferences.remove({ key: 'access-token' });
     };
