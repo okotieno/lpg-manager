@@ -49,19 +49,44 @@ form {
   ion-item {
     --padding-start: 0 !important;
     margin-bottom: 1rem;
-    ion-input, ion-textarea, ion-select {
-      label {
-        font-size: 1rem;
+  }
+  ion-input, ion-textarea, ion-select {
+    &:hover::part(label) {
+      color: var(--ion-color-primary);
+    }
+    --padding-start: 0 !important;
+    &:hover {
+      --border-color:  var(--ion-color-primary) !important;
+      .label-text-wrapper {
+        color: var(--ion-color-primary);
       }
     }
-    input, textarea {
-      margin: 3px !important;
-      padding-top: 1rem !important;
-      padding-bottom: 1rem !important;
+    label {
+      font-size: 1rem;
     }
-    textarea {
-      margin: 0 !important;
-    }
+  }
+  input, textarea {
+    margin-top: 3px !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+
+  }
+  textarea {
+    margin: 0 !important;
+  }
+  ion-select {
+    --background: none !important;
+    --border-color:  var(--ion-color-step-150);
+  }
+  ion-select::part(icon) {
+    color: var(--ion-color-primary);
+    opacity: 1;
+  }
+  ion-select::part(placeholder),
+  ion-select::part(text) {
+    margin-top: 3px !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
   }
 }
 
@@ -76,9 +101,6 @@ form {
   --ion-color-contrast-rgb: var(-ion-background-color-rgb);
   --ion-color-shade: var(--ion-color-dark-shade);
   --ion-color-tint: var(--ion-color-dark-tint);
-}
-.ion-color-medium {
-  margin-bottom: 24px;
 }
 
 .ion-color-lpg-subtitle {
@@ -101,6 +123,7 @@ form {
 
 ion-button.button-solid, ion-button.button-outline, ion-button.button-clear:not(.button-has-icon-only) {
   text-transform: none;
+  --border-width: .5px;
   --border-radius: 1rem;
   --padding-start: 3rem;
   --padding-end: 3rem;

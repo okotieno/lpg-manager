@@ -58,13 +58,14 @@
     </ion-col>
   </ion-row>
   <ion-list formArrayName="roles">
-    <ng-template
-      [ngTemplateOutlet]="addItem"
-      [ngTemplateOutletContext]="{ showLabel: true, showButton: this.rolesList().length < 1 }"
-    />
-    @for (role of this.rolesList(); track role.id) {
+    <ion-list-header>
+      <ion-label>
+        Assigned roles
+      </ion-label>
+    </ion-list-header>
+    @for (role of rolesList(); track role.id) {
       <ion-item class="ion-margin-start" lines="none" [formGroupName]="$index" @roleAnimation>
-        <ion-row style="width: 100%;" class="ion-margin-horizontal">
+        <ion-row style="width: 100%;">
           <ion-col size="12" sizeMd="3">
             <lpg-searchable-select
               [itemsStore]="roleStore"
@@ -75,13 +76,19 @@
             ></lpg-searchable-select>
           </ion-col>
           <ion-col size="12" sizeMd="3">
-            <lpg-searchable-select
-              [itemsStore]="roleStore"
-              label="Role"
+            <ion-select
+              color="primary"
+              label="Station type"
               labelPlacement="stacked"
-              formControlName="role"
-              placeholder="Select roles"
-            ></lpg-searchable-select>
+              formControlName="stationType"
+              placeholder="Select station type"
+              toggle-icon="caret-down"
+              fill="solid"
+              interface="popover"
+            >
+              <ion-select-option value="DEPOT">Depot</ion-select-option>
+              <ion-select-option value="DEALER">Dealer</ion-select-option>
+            </ion-select>
           </ion-col>
           <ion-col size="12" sizeMd="3">
             <lpg-searchable-select
@@ -100,11 +107,21 @@
         </ion-row>
       </ion-item>
     }
-    <ng-template
-      [ngTemplateOutlet]="addItem"
-      [ngTemplateOutletContext]="{ showLabel: false, showButton: roles.controls.length > 0 }"
-    />
   </ion-list>
+  @if (rolesList().length < 1) {
+    <ion-item class="ion-margin-horizontal">
+      <ion-icon name="circle-info" slot="start"></ion-icon>
+      <ion-label color="medium">
+        No items added yet. Click the Add Item button to begin.
+      </ion-label>
+    </ion-item>
+  }
+
+  <ion-button [disabled]="roles.invalid" class="ion-padding" shape="round" (click)="addRole()" fill="outline"
+              size="small">
+    <ion-icon name="grid-2-plus" slot="start"></ion-icon>
+    Add role
+  </ion-button>
 
   <div class="ion-margin-top ion-text-end">
     <ion-button fill="clear" type="button" [routerLink]="['../../users']">
@@ -115,19 +132,3 @@
     </ion-button>
   </div>
 </form>
-
-<ng-template #addItem let-showLabel="showLabel" let-showButton="showButton">
-  @if (showLabel || showButton) {
-    <ion-list-header>
-      <ion-label>
-        {{ showLabel ? 'Assigned roles' : '' }}
-      </ion-label>
-      @if (showButton) {
-        <ion-button [disabled]="roles.invalid" class="ion-padding" shape="round" (click)="addRole()" fill="clear" size="small">
-          <ion-icon name="grid-2-plus" slot="start"></ion-icon>
-          Add role
-        </ion-button>
-      }
-    </ion-list-header>
-  }
-</ng-template>

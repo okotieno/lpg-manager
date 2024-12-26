@@ -18,7 +18,7 @@ import {
   IonList,
   IonListHeader,
   IonRow,
-  AlertController,
+  AlertController, IonSelect, IonSelectOption
 } from '@ionic/angular/standalone';
 import {
   FormArray,
@@ -37,7 +37,7 @@ import { IUserRoleInput } from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
-import { JsonPipe, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { IGetStationsQuery, StationStore } from '@lpg-manager/station-store';
 import { MaskitoDirective } from '@maskito/angular';
 import { kenyaPhoneMask } from '../utils/phone-mask.util';
@@ -61,7 +61,8 @@ import { MaskitoElementPredicate } from '@maskito/core';
     IonLabel,
     NgTemplateOutlet,
     MaskitoDirective,
-    JsonPipe,
+    IonSelect,
+    IonSelectOption,
   ],
   templateUrl: './user-form.component.html',
   providers: [RoleStore, StationStore],
@@ -102,7 +103,8 @@ import { MaskitoElementPredicate } from '@maskito/core';
   styles: `
     ion-list {
       ion-item {
-        --background: rgba(var(--ion-color-medium-rgb), 0.05);
+        padding-left: 1rem;
+        border-left: 4px solid rgba(var(--ion-color-medium-rgb), 0.3);
       }
     }
   `,
@@ -133,6 +135,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
         id: string;
         role: { id: string };
         station?: { id: string };
+        stationType: null | string,
       }>
     ),
   });
@@ -141,6 +144,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
       id: string;
       role: { id: string };
       station?: { id: string };
+      stationType: null | string;
     }[]
   >([]);
   user = input<IGetUserByIdQuery['user']>();
@@ -173,6 +177,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
               role?.station.id ? { id: role?.station.id } : null,
               Validators.required,
             ],
+            stationType: null as null | string,
           });
           this.roles.push(roleForm);
           this.rolesList.set(this.roles.value);
@@ -198,6 +203,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
       id: [crypto.randomUUID(), Validators.required],
       role: [null as null | { id: string }, Validators.required],
       station: [null as null | { id: string }, [Validators.required]],
+      stationType: [null as null | string],
     });
     this.roles.push(roleForm);
     this.rolesList.set(this.roles.value);
@@ -263,6 +269,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
                   id: user?.id as string,
                   roleId: user?.role.id as string,
                   stationId: user?.station?.id as string,
+                  stationType: null as null | string,
                 })) ?? [],
             },
           })
