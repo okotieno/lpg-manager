@@ -48,7 +48,7 @@ export type IDeleteRoleByIdMutation = { deleteRole?: { message: string } | null 
 
 export type IUpdateRoleMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
-  name: Types.Scalars['String']['input'];
+  params?: Types.InputMaybe<Types.IUpdateRoleInput>;
 }>;
 
 
@@ -182,8 +182,8 @@ export const DeleteRoleByIdDocument = gql`
     }
   }
 export const UpdateRoleDocument = gql`
-    mutation UpdateRole($id: UUID!, $name: String!) {
-  updateRole(id: $id, params: {name: $name}) {
+    mutation UpdateRole($id: UUID!, $params: UpdateRoleInput) {
+  updateRole(id: $id, params: $params) {
     message
     data {
       id

@@ -1,12 +1,24 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  untracked,
+} from '@angular/core';
 import {
   IonButton,
   IonCol,
   IonInput,
-  IonItem, IonRow
+  IonItem,
+  IonRow,
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ICreateRoleGQL, IUpdateRoleGQL } from '@lpg-manager/role-store';
+import {
+  ICreateRoleGQL,
+  IGetRoleByIdQuery,
+  IUpdateRoleGQL,
+} from '@lpg-manager/role-store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import {
@@ -15,6 +27,7 @@ import {
 } from '@lpg-manager/permission-store';
 import { ISelectCategory } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
+import { IGetUserByIdQuery } from '@lpg-manager/user-store';
 
 @Component({
   selector: 'lpg-role-form',
@@ -49,33 +62,41 @@ export default class RoleFormComponent {
     permissions: [[] as ISelectCategory[]],
   });
 
-  isEditing = false;
-  roleId: string | null = null;
+  role = input<IGetRoleByIdQuery['role']>();
+  isEditing = computed(() => !!this.role());
+  roleId = computed(() => this.role()?.id);
 
-  constructor() {
-    const roleId = this.route.snapshot.paramMap.get('id');
-    if (roleId) {
-      this.isEditing = true;
-      this.roleId = roleId;
-      // Load role data if editing
-      const role = this.route.snapshot.data['role'];
+  roleChangeEffect = effect(() => {
+    const role = this.role();
+    const permissions =
+      role?.permissions?.map((permission) => ({
+        id: permission?.id as string,
+      })) ?? [];
+    untracked(() => {
       if (role) {
         this.roleForm.patchValue({
           name: role.name,
+          permissions,
         });
       }
-    }
-  }
+    });
+  });
 
   async onSubmit() {
     if (this.roleForm.valid) {
-      const { name } = this.roleForm.value;
+      const { name, permissions } = this.roleForm.value;
+      const params = {
+        name: name as string,
+        permissions:
+          permissions?.map((permission) => ({ id: permission.id as string })) ??
+          [],
+      };
 
-      if (this.isEditing && this.roleId) {
+      if (this.isEditing()) {
         this.updateRoleGQL
           .mutate({
-            id: this.roleId,
-            name: name as string,
+            id: this.roleId() as string,
+            params,
           })
           .subscribe({
             next: async () => {
@@ -83,21 +104,11 @@ export default class RoleFormComponent {
             },
           });
       } else {
-        this.createRoleGQL
-          .mutate({
-            params: {
-              name: name as string,
-              permissions:
-                this.roleForm
-                  .get('permissions')
-                  ?.value?.map((role) => ({ id: role.id })) ?? [],
-            },
-          })
-          .subscribe({
-            next: async () => {
-              await this.router.navigate(['/roles']);
-            },
-          });
+        this.createRoleGQL.mutate({ params }).subscribe({
+          next: async () => {
+            await this.router.navigate(['/roles']);
+          },
+        });
       }
     }
   }

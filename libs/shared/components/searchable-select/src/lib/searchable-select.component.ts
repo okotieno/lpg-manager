@@ -143,7 +143,7 @@ export class SearchableSelectComponent<T extends { id: string }>
     }
     return this.selectedItems()
       .map((item) => item[this.labelKey() as keyof T])
-      .join(' ,');
+      .join(', ');
   });
 
   totalItems = computed(() => this.entities().length);

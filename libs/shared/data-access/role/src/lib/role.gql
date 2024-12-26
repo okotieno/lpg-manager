@@ -60,10 +60,10 @@ mutation DeleteRoleById($id: UUID!) {
   }
 }
 
-mutation UpdateRole($id: UUID!, $name: String!) {
+mutation UpdateRole($id: UUID!, $params: UpdateRoleInput) {
   updateRole(
     id: $id
-    params: {name: $name}
+    params: $params
   ) {
     message
     data {

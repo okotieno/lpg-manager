@@ -33,7 +33,7 @@
       Cancel
     </ion-button>
     <ion-button type="submit" [disabled]="!roleForm.valid">
-      {{ isEditing ? 'Update' : 'Create' }}
+      {{ isEditing() ? 'Update' : 'Create' }}
     </ion-button>
   </div>
 </form>

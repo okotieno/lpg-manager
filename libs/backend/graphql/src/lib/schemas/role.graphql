@@ -12,6 +12,7 @@ input CreateRoleInput {
 
 input UpdateRoleInput {
   name: String!
+  permissions: [SelectCategory]!
 }
 
 type PaginatedRole {
