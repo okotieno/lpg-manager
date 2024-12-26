@@ -21,5 +21,8 @@ export const APP_ICONS = [
   'circle-minus',
   'circle-plus',
   'shield-check',
-  'warehouse'
+  'warehouse',
+  'circle',
+  'caret-up',
+  'caret-down',
 ];

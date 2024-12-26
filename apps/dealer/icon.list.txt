@@ -21,3 +21,6 @@ circle-plus
 circle-minus
 shield-check
 warehouse
+circle
+caret-up
+caret-down

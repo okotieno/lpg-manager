@@ -1,10 +1,24 @@
 <ion-grid class="ion-padding">
+  <!-- Depot Selection -->
+  <ion-row class="ion-margin-bottom">
+    <ion-col size="12" size-md="6" offset-md="3" [formGroup]="searchForm">
+      <lpg-searchable-select
+        [itemsStore]="depotStore"
+        label="Select Depot"
+        labelPlacement="floating"
+        placeholder="Search and select depot..."
+        formControlName="depot"
+      ></lpg-searchable-select>
+    </ion-col>
+  </ion-row>
+
   <!-- Search Bar -->
   <ion-row class="ion-margin-bottom">
     <ion-col size="12" size-md="6" offset-md="3">
       <ion-searchbar
         placeholder="Search catalogues..."
         (ionInput)="handleSearch($event)"
+        [debounce]="500"
       ></ion-searchbar>
     </ion-col>
   </ion-row>

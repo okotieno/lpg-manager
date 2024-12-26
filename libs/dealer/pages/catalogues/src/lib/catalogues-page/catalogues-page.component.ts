@@ -26,6 +26,10 @@ import {
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
 import { CartStore, IGetCartsQuery, AddToCartDialogComponent } from '@lpg-manager/cart-store';
+import { StationStore } from '@lpg-manager/station-store';
+import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
+import { ISelectCategory, IQueryOperatorEnum } from '@lpg-manager/types';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 
 type IGetItemQuery = NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]
 
@@ -50,11 +54,14 @@ type ICatalogueDisplay = IGetItemQuery & { cart?: NonNullable<IGetCartsQuery['ca
     IonIcon,
     IonButton,
     IonButtons,
+    SearchableSelectComponent,
+    ReactiveFormsModule,
   ],
   templateUrl: './catalogues-page.component.html',
   styleUrl: './catalogues-page.component.scss',
   providers: [
     CataloguesStore,
+    StationStore,
     {
       provide: GET_ITEMS_INCLUDE_FIELDS,
       useValue: {
@@ -67,12 +74,41 @@ type ICatalogueDisplay = IGetItemQuery & { cart?: NonNullable<IGetCartsQuery['ca
 })
 export default class CataloguesPageComponent {
   #cartStore = inject(CartStore);
+  #fb = inject(FormBuilder);
   #modalCtrl = inject(ModalController);
   #alertController = inject(AlertController);
+  depotStore = inject(StationStore) as PaginatedResource<any>;
+  cataloguesStore = inject(CataloguesStore);
+  searchForm = this.#fb.group({
+    depot: [[] as ISelectCategory[]],
+  })
 
-  cataloguesStore = inject(CataloguesStore) as PaginatedResource<
-    NonNullable<NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]>
-  >;
+  constructor() {
+    // Initialize depot store with DEPOT type filter
+    this.depotStore.setFilters([
+      {
+        // field: 'type',
+        // operator: IQueryOperatorEnum.Equals,
+        // value: 'DEPOT',
+      },
+    ]);
+  }
+
+  handleDepotChange(event: CustomEvent) {
+    const selectedDepot = event.detail.value;
+    if (selectedDepot) {
+      this.cataloguesStore.setFilters([
+        // {
+        //   field: 'depotId',
+        //   operator: IQueryOperatorEnum.Equals,
+        //   value: selectedDepot.id,
+        // },
+      ]);
+    } else {
+      this.cataloguesStore.setFilters([]);
+    }
+  }
+
   cartCatalogueItems = computed(() => this.#cartStore.cart?.()?.items ?? []);
   catalogues = this.cataloguesStore.items;
   cataloguesDisplayed = computed<any>(() => {
@@ -112,10 +148,14 @@ export default class CataloguesPageComponent {
   }
 
   async updateQuantity(catalogue: ICatalogueDisplay, increment: boolean) {
-    const cartItem = catalogue.cart as NonNullable<NonNullable<IGetCartsQuery['carts']['items']>[number]>['items'][number];
+    const cartItem = catalogue.cart as NonNullable<
+      NonNullable<IGetCartsQuery['carts']['items']>[number]
+    >['items'][number];
     if (!cartItem) return;
 
-    const newQuantity = increment ? cartItem.quantity + 1 : cartItem.quantity - 1;
+    const newQuantity = increment
+      ? cartItem.quantity + 1
+      : cartItem.quantity - 1;
     if (newQuantity < 1) return;
 
     await this.#cartStore.updateQuantity(cartItem.id, newQuantity);
@@ -131,16 +171,16 @@ export default class CataloguesPageComponent {
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel'
+          role: 'cancel',
         },
         {
           text: 'Remove',
           role: 'destructive',
           handler: async () => {
             await this.#cartStore.removeItem(cartItem.id);
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
