@@ -46,18 +46,18 @@ import { IGetUserByIdQuery } from '@lpg-manager/user-store';
   providers: [PermissionsStore],
 })
 export default class RoleFormComponent {
-  private fb = inject(FormBuilder);
-  private createRoleGQL = inject(ICreateRoleGQL);
-  private updateRoleGQL = inject(IUpdateRoleGQL);
+  #fb = inject(FormBuilder);
+  #createRoleGQL = inject(ICreateRoleGQL);
+  #updateRoleGQL = inject(IUpdateRoleGQL);
   permissionsStore = inject(PermissionsStore) as PaginatedResource<
     NonNullable<
       NonNullable<IGetPermissionsQuery['permissions']['items']>[number]
     >
   >;
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+  #router = inject(Router);
+  #route = inject(ActivatedRoute);
 
-  roleForm = this.fb.group({
+  roleForm = this.#fb.group({
     name: ['', [Validators.required]],
     permissions: [[] as ISelectCategory[]],
   });
@@ -93,20 +93,24 @@ export default class RoleFormComponent {
       };
 
       if (this.isEditing()) {
-        this.updateRoleGQL
+        this.#updateRoleGQL
           .mutate({
             id: this.roleId() as string,
             params,
           })
           .subscribe({
             next: async () => {
-              await this.router.navigate(['/roles']);
+              await this.#router.navigate(['../'], {
+                relativeTo: this.#route,
+              });
             },
           });
       } else {
-        this.createRoleGQL.mutate({ params }).subscribe({
+        this.#createRoleGQL.mutate({ params }).subscribe({
           next: async () => {
-            await this.router.navigate(['/roles']);
+            await this.#router.navigate(['../'], {
+              relativeTo: this.#route,
+            });
           },
         });
       }
