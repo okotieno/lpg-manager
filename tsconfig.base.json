@@ -110,6 +110,7 @@
       "@lpg-manager/permission-store": [
         "libs/shared/data-access/permission/src/index.ts"
       ],
+      "@lpg-manager/profile-page": ["libs/shared/pages/profile/src/index.ts"],
       "@lpg-manager/role": ["libs/backend/role/src/index.ts"],
       "@lpg-manager/role-service": ["libs/backend/services/role/src/index.ts"],
       "@lpg-manager/role-store": ["libs/shared/data-access/role/src/index.ts"],
