@@ -138,18 +138,12 @@ export class UserResolver {
             },
             {
               model: StationModel,
-              attributes: ['id', 'name'],
+              attributes: ['id', 'name', 'type'],
             },
           ],
         },
       ],
     });
-    console.log('resolving roles', userWithRoles?.roleUsers?.map((roleUser) => ({
-      id: roleUser.id,
-      role: roleUser.role,
-      station: roleUser.station,
-    })) || []
-    );
     return (
       userWithRoles?.roleUsers?.map((roleUser) => ({
         id: roleUser.id,

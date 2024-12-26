@@ -89,7 +89,6 @@ export const AuthStore = signalStore(
         refreshToken: store.refreshTokenInput(),
       }),
       loader: (param) => {
-        console.log('HIT...');
         if (!param.request.refreshToken) {
           return Promise.resolve(undefined);
         }

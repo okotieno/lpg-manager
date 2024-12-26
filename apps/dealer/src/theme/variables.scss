@@ -50,17 +50,44 @@ form {
   ion-item {
     --padding-start: 0 !important;
     margin-bottom: 1rem;
-
-    ion-input, ion-textarea, ion-select {
-      label {
-        font-size: 1rem;
+  }
+  ion-input, ion-textarea, ion-select {
+    &:hover::part(label) {
+      color: var(--ion-color-primary);
+    }
+    --padding-start: 0 !important;
+    &:hover:not(.textarea-disabled) {
+      --border-color:  var(--ion-color-primary) !important;
+      .label-text-wrapper {
+        color: var(--ion-color-primary);
       }
     }
-
-    input, textarea {
-      padding-top: 0.875rem !important;
-      padding-bottom: 0.875rem !important;
+    label {
+      font-size: 1rem;
     }
+  }
+  input, textarea {
+    margin-top: 3px !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+
+  }
+  textarea {
+    margin: 0 !important;
+  }
+  ion-select {
+    --background: none !important;
+    --border-color:  var(--ion-color-step-150);
+  }
+  ion-select::part(icon) {
+    color: var(--ion-color-primary);
+    opacity: 1;
+  }
+  ion-select::part(placeholder),
+  ion-select::part(text) {
+    margin-top: 3px !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
   }
 }
 

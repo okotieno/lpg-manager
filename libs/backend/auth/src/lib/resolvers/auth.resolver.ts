@@ -284,34 +284,4 @@ export class AuthResolver {
     return this.authService.login(user as UserModel, deviceType);
   }
 
-  @ResolveField('roles')
-  async getRoles(@Parent() user: UserModel) {
-    const userWithRoles = await this.userService.findById(user.id, {
-      include: [
-        {
-          model: RoleUserModel,
-          include: [
-            {
-              model: RoleModel,
-              attributes: ['id', 'name'],
-            },
-            {
-              model: StationModel,
-              attributes: ['id', 'name'],
-            },
-          ],
-        },
-      ],
-    });
-
-    console.log(userWithRoles?.roleUsers)
-
-    return (
-      userWithRoles?.roleUsers?.map((roleUser) => ({
-        id: roleUser.id,
-        role: roleUser.role,
-        station: roleUser.station,
-      })) || []
-    );
-  }
 }
