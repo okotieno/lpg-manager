@@ -4,5 +4,9 @@ export const CATALOGUES_ROUTES:Routes = [
   {
     path: '',
     loadComponent: () => import('./catalogues-page/catalogues-page.component'),
+    data: {
+      routeLabel: 'Catalogues',
+      breadcrumbs: [{ label: 'Catalogues' }],
+    },
   }
 ]

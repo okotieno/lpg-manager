@@ -29,3 +29,4 @@ square
 square-check
 xmark
 check
+filter-list
