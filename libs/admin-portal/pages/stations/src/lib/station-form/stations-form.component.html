@@ -27,6 +27,21 @@
         </ion-select>
       </ion-item>
     </ion-col>
+    @if (showBrandsField()) {
+      <ion-col size="12">
+        <ion-item lines="none">
+          <lpg-searchable-select
+            [multiple]="true"
+            [itemsStore]="brandStore"
+            label="Brands"
+            labelPlacement="stacked"
+            formControlName="brands"
+            placeholder="Select station"
+          ></lpg-searchable-select>
+        </ion-item>
+      </ion-col>
+    }
+
   </ion-row>
 
   <div class="ion-margin-top ion-text-end">

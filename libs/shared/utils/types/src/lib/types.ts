@@ -230,6 +230,7 @@ export type ICreateSettingSuccessResponse = {
 };
 
 export type ICreateStationInput = {
+  brandIds?: InputMaybe<Array<Scalars['UUID']['input']>>;
   name: Scalars['String']['input'];
   type: IStationType;
 };
@@ -1061,6 +1062,7 @@ export enum ISortByEnum {
 }
 
 export type IStationModel = {
+  brands?: Maybe<Array<IBrandModel>>;
   id: Scalars['UUID']['output'];
   name: Scalars['String']['output'];
   type: IStationType;
@@ -1152,6 +1154,7 @@ export type IUpdatePermissionInput = {
 
 export type IUpdateRoleInput = {
   name: Scalars['String']['input'];
+  permissions: Array<InputMaybe<ISelectCategory>>;
 };
 
 export type IUpdateSettingInput = {
@@ -1159,6 +1162,7 @@ export type IUpdateSettingInput = {
 };
 
 export type IUpdateStationInput = {
+  brandIds?: InputMaybe<Array<Scalars['UUID']['input']>>;
   name: Scalars['String']['input'];
   type?: InputMaybe<IStationType>;
 };

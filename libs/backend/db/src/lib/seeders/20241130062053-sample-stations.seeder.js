@@ -4,6 +4,12 @@ const { v4: uuid } = require('uuid');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface) {
+    // Get existing brands
+    const brands = await queryInterface.sequelize.query(
+      `SELECT id FROM brands;`,
+      { type: queryInterface.sequelize.QueryTypes.SELECT }
+    );
+
     const depots = [
       {
         id: uuid(),
@@ -119,10 +125,30 @@ module.exports = {
       updated_at: new Date(),
     }));
 
+    // Create depot-brand associations
+    const depotBrands = [];
+    for (const depot of depots) {
+      // Randomly assign 2-4 brands to each depot
+      const randomBrands = brands
+        .sort(() => 0.5 - Math.random())
+        .slice(0, Math.floor(Math.random() * 3) + 2);
+      
+      for (const brand of randomBrands) {
+        depotBrands.push({
+          depot_id: depot.id,
+          brand_id: brand.id,
+          created_at: new Date(),
+          updated_at: new Date()
+        });
+      }
+    }
+
     await queryInterface.bulkInsert('stations', [...depots, ...dealers]);
+    await queryInterface.bulkInsert('depot_brands', depotBrands);
   },
 
   async down(queryInterface) {
+    await queryInterface.bulkDelete('depot_brands', null, {});
     await queryInterface.bulkDelete('stations', null, {});
   }
 }; 

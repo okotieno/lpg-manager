@@ -15,7 +15,7 @@ export type IGetStationByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetStationByIdQuery = { station?: { id: string, name: string, type: Types.IStationType } | null };
+export type IGetStationByIdQuery = { station?: { id: string, name: string, type: Types.IStationType, brands?: Array<{ name: string, id: string }> | null } | null };
 
 export type IGetStationsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
@@ -66,6 +66,10 @@ export const GetStationByIdDocument = gql`
     id
     name
     type
+    brands {
+      name
+      id
+    }
   }
 }
     `;

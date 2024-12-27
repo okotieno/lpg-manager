@@ -3,7 +3,9 @@ import {
   Model,
   Table,
   DataType,
+  BelongsToMany
 } from 'sequelize-typescript';
+import { BrandModel } from './brand.model';
 
 @Table({
   tableName: 'stations',
@@ -32,4 +34,10 @@ export class StationModel extends Model {
   })
   type!: 'DEPOT' | 'DEALER';
 
+  @BelongsToMany(() => BrandModel, {
+    through: 'depot_brands',
+    foreignKey: 'depot_id',
+    otherKey: 'brand_id'
+  })
+  brands?: BrandModel[];
 }

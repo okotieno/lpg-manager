@@ -38,8 +38,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IGetRolesQuery, RoleStore } from '@lpg-manager/role-store';
 import {
   IQueryOperatorEnum,
-  IQueryParamsFilter,
-  IUserRoleInput,
 } from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
@@ -203,9 +201,9 @@ export default class UserFormComponent implements IHasUnsavedChanges {
     NonNullable<NonNullable<IGetRolesQuery['roles']['items']>[number]>
   > = inject(RoleStore);
 
-  stationStore: PaginatedResource<
+  stationStore = inject(StationStore) as PaginatedResource<
     NonNullable<NonNullable<IGetStationsQuery['stations']['items']>[number]>
-  > = inject(StationStore);
+  >;
 
   get roles() {
     return this.userForm.get('roles') as FormArray;

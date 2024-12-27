@@ -6,16 +6,19 @@ type StationModel {
   id: UUID!
   name: String!
   type: StationType!
+  brands: [BrandModel!]
 }
 
 input CreateStationInput {
   name: String!
   type: StationType!
+  brands: [SelectCategory!]
 }
 
 input UpdateStationInput {
   name: String!
   type: StationType
+  brands: [SelectCategory!]
 }
 
 type PaginatedStation {

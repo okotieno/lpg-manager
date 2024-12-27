@@ -1,4 +1,11 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Query,
+  Resolver,
+  ResolveField,
+  Root,
+} from '@nestjs/graphql';
 import { CreateStationInputDto } from '../dto/create-station-input.dto';
 import {
   Body,
@@ -15,10 +22,15 @@ import {
 import { StationService } from '@lpg-manager/station-service';
 import { IQueryParam, StationModel } from '@lpg-manager/db';
 import { UpdateStationInputDto } from '../dto/update-station-input.dto';
+// import { BrandModel } from '@lpg-manager/db';
+// import { InjectModel } from '@nestjs/sequelize';
 
 @Resolver(() => StationModel)
 export class StationResolver {
-  constructor(private stationService: StationService) {}
+  constructor(
+    private stationService: StationService
+  ) // @InjectModel(BrandModel) private brandModel: typeof BrandModel
+  {}
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
@@ -30,6 +42,13 @@ export class StationResolver {
       name: params.name,
       type: params.type,
     });
+
+    if (params.type === 'DEPOT' && params.brands?.length) {
+      await station.$set(
+        'brands',
+        params.brands.map(({ id }) => id)
+      );
+    }
 
     return {
       message: 'Station created successfully',
@@ -76,5 +95,13 @@ export class StationResolver {
     return {
       message: 'Successfully deleted station',
     };
+  }
+
+  @ResolveField('brands')
+  async getBrands(@Root() station: StationModel) {
+    if (station.type === 'DEPOT') {
+      return station.$get('brands');
+    }
+    return [];
   }
 }

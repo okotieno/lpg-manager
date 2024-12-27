@@ -16,6 +16,10 @@ query GetStationById($id: UUID!) {
     id
     name
     type
+    brands {
+      name
+      id
+    }
   }
 }
 

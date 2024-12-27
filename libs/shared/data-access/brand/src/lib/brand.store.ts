@@ -11,7 +11,7 @@ import {
 import { IBrandModel } from '@lpg-manager/types';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
-export const BrandsStore = signalStore(
+export const BrandStore = signalStore(
   withProps(() => ({
     _getItemKey: 'brand',
     _getItemsGQL: inject(IGetBrandsGQL),

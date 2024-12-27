@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CdkTableModule } from '@angular/cdk/table';
-import { BrandsStore } from '@lpg-manager/brand-store';
+import { BrandStore } from '@lpg-manager/brand-store';
 import { DataTableComponent, ITableColumn } from '@lpg-manager/data-table';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { IBrandModel } from '@lpg-manager/types';
@@ -14,10 +14,10 @@ import { IBrandModel } from '@lpg-manager/types';
     [store]="brandsStore"
     [columns]="allColumns"
   ></lpg-data-table>`,
-  providers: [BrandsStore],
+  providers: [BrandStore],
 })
 export default class BrandsLandingPageComponent {
-  brandsStore = inject(BrandsStore) as PaginatedResource<IBrandModel>;
+  brandsStore = inject(BrandStore) as PaginatedResource<IBrandModel>;
   protected readonly allColumns: ITableColumn<IBrandModel>[] = [
     { label: 'ID', key: 'id', fieldType: 'uuid' },
     { label: 'Name', key: 'name', fieldType: 'string' },
