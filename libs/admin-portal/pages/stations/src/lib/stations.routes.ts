@@ -71,7 +71,7 @@ export const STATIONS_ROUTES: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        loadComponent: () => import('./station-page/stations-page.component'),
+        loadComponent: () => import('./station-page/station-page.component'),
       },
       {
         path: 'edit',

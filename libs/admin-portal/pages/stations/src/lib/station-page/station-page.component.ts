@@ -3,11 +3,11 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardTitle,
+  IonCardTitle, IonChip,
   IonCol,
   IonGrid,
   IonRow,
-  IonText,
+  IonText
 } from '@ionic/angular/standalone';
 import { IStationModel } from '@lpg-manager/types';
 import { TitleCasePipe } from '@angular/common';
@@ -25,21 +25,15 @@ import { TitleCasePipe } from '@angular/common';
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
+    IonChip,
   ],
-  templateUrl: './stations-page.component.html',
-  styles: `
-    .details-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .detail-item {
-      display: flex;
-      gap: 0.5rem;
-    }
-  `,
+  templateUrl: './station-page.component.html',
+  styleUrls: ['./station-page.component.scss'],
 })
-export default class StationsPageComponent {
+export default class StationPageComponent {
   station = input<IStationModel>();
+
+  get brands() {
+    return this.station()?.brands || [];
+  }
 }

@@ -25,6 +25,22 @@
             </div>
           </div>
         </ion-card-content>
+        <ion-card-header>
+          <ion-card-title>
+            <ion-text color="lpg-subtitle">
+              Brands
+            </ion-text>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          @if (brands.length > 0) {
+            @for (brand of brands; track brand.name) {
+              <ion-chip>{{ brand.name }}</ion-chip>
+            }
+          } @else {
+            <span>No brands available</span>
+          }
+        </ion-card-content>
       </ion-card>
     </ion-col>
   </ion-row>
