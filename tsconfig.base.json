@@ -69,6 +69,9 @@
       "@lpg-manager/dealer-catalogues-page": [
         "libs/dealer/pages/catalogues/src/index.ts"
       ],
+      "@lpg-manager/checkout-page": [
+        "libs/dealer/pages/checkout/src/index.ts"
+      ],
       "@lpg-manager/data-table": [
         "libs/shared/components/data-table/src/index.ts"
       ],
