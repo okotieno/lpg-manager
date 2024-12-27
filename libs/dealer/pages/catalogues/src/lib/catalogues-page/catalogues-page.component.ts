@@ -1,4 +1,11 @@
-import { Component, computed, inject } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  viewChild,
+  ViewChild,
+} from '@angular/core';
 import {
   CataloguesStore,
   IGetCataloguesQuery,
@@ -30,6 +37,8 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
 import {
@@ -40,10 +49,7 @@ import {
 import { StationStore } from '@lpg-manager/station-store';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { ISelectCategory, IQueryOperatorEnum } from '@lpg-manager/types';
-import {
-  FormBuilder,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 type IGetItemQuery = NonNullable<
   IGetCataloguesQuery['catalogues']['items']
@@ -80,6 +86,8 @@ type ICatalogueDisplay = IGetItemQuery & {
     IonToolbar,
     IonTitle,
     IonContent,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
   ],
   templateUrl: './catalogues-page.component.html',
   styleUrl: './catalogues-page.component.scss',
@@ -97,6 +105,7 @@ type ICatalogueDisplay = IGetItemQuery & {
   ],
 })
 export default class CataloguesPageComponent {
+  @ViewChild(IonInfiniteScroll) infiniteScroll?: IonInfiniteScroll;
   #cartStore = inject(CartStore);
   #fb = inject(FormBuilder);
   #modalCtrl = inject(ModalController);
@@ -109,9 +118,7 @@ export default class CataloguesPageComponent {
   catalogues = this.cataloguesStore.searchedItemsEntities;
 
   startRange = computed(() => {
-    const currentPage = this.cataloguesStore.currentPage();
-    const pageSize = this.cataloguesStore.pageSize();
-    return (currentPage - 1) * pageSize + 1;
+    return Math.min(1, this.catalogues().length);
   });
 
   endRange = computed(() => {
@@ -120,7 +127,19 @@ export default class CataloguesPageComponent {
 
   totalItems = computed(() => {
     return this.cataloguesStore.totalItems();
-  })
+  });
+
+  ionInfiniteScroll = viewChild.required(IonInfiniteScroll);
+
+  showInfiniteScroll = computed(
+    () => this.totalItems() > this.catalogues().length
+  );
+
+  isLoadingChangeEffect = effect(async () => {
+    if(!this.cataloguesStore.isLoading()) {
+      await this.ionInfiniteScroll().complete();
+    }
+  });
 
   constructor() {
     // Initialize depot store with DEPOT type filter
@@ -164,7 +183,6 @@ export default class CataloguesPageComponent {
 
   handleSearch(event: any) {
     const searchTerm = event.target.value.toLowerCase();
-    // Implement search functionality through your store
     this.cataloguesStore.setSearchTerm(searchTerm);
   }
 
@@ -223,5 +241,27 @@ export default class CataloguesPageComponent {
     });
 
     await alert.present();
+  }
+
+  async handleInfiniteScroll($event: CustomEvent) {
+    const currentPage = this.cataloguesStore.currentPage();
+    const totalPages = Math.ceil(
+      this.totalItems() / this.cataloguesStore.pageSize()
+    );
+
+    this.cataloguesStore.fetchNextPage();
+
+    console.log('Scrolling', $event);
+
+    // if (currentPage < totalPages) {
+    //   await this.cataloguesStore.loadNextPage();
+    // }
+    //
+    // event.target.complete();
+    //
+    // // Disable infinite scroll if we've loaded all pages
+    // if (currentPage >= totalPages) {
+    //   event.target.disabled = true;
+    // }
   }
 }

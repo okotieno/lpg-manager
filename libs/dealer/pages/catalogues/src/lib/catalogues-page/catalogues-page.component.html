@@ -31,9 +31,9 @@
     <ion-header class="ion-no-border">
       <ion-toolbar color="primary">
         <ion-buttons slot="start" class="ion-hide-lg-up">
-          <ion-button shape="round" (click)="ionMenu.open()">
-            <ion-icon slot="icon-only" name="filter-list"></ion-icon>
-          </ion-button>
+         <ion-button shape="round" (click)="ionMenu.open()">
+           <ion-icon slot="icon-only" name="filter-list"></ion-icon>
+         </ion-button>
         </ion-buttons>
         <ion-title>
           Showing {{ startRange() }} - {{ endRange() }} of {{ totalItems() }} items
@@ -116,6 +116,14 @@
           }
         </ion-row>
       </ion-col>
+      @if (showInfiniteScroll()) {
+        <ion-infinite-scroll (ionInfinite)="handleInfiniteScroll($event)">
+          <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Loading more catalogues...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      }
     </ion-content>
   </div>
 </ion-split-pane>
