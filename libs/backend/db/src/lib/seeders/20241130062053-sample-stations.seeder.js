@@ -135,6 +135,7 @@ module.exports = {
       
       for (const brand of randomBrands) {
         depotBrands.push({
+          id: uuid(),
           depot_id: depot.id,
           brand_id: brand.id,
           created_at: new Date(),
