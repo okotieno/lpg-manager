@@ -30,3 +30,5 @@ square-check
 xmark
 check
 filter-list
+plus
+minus

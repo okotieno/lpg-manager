@@ -44,7 +44,7 @@
       @if (cartItemsCount() > 0) {
         <div class="badged-icon-container">
           <ion-badge color="danger">{{ cartItemsCount() }}</ion-badge>
-          <ion-button>
+          <ion-button [routerLink]="['/checkout']">
             <ion-icon name="cart-shopping" slot="icon-only"></ion-icon>
           </ion-button>
         </div>

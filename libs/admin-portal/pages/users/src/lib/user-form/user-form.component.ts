@@ -297,7 +297,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
           .subscribe({
             next: async () => {
               this.userForm.reset();
-              // await this.#router.navigateByUrl('/dashboard/user-management/users');
+              // await this.#router.navigateByUrl('/user-management/users');
               console.log(this.#route);
               await this.#router.navigate(['../'], {relativeTo: this.#route});
             },

@@ -29,6 +29,16 @@ export const DASHBOARD_ROUTES: Routes = [
         loadChildren: () => import('@lpg-manager/dealer-catalogues-page'),
       },
       {
+        path: 'checkout',
+        loadChildren: () => import('@lpg-manager/checkout-page'),
+        data: {
+          routeLabel: 'Checkout',
+          breadcrumbs: [
+            { label: 'Checkout' },
+          ],
+        },
+      },
+      {
         path: 'profile',
         loadChildren: () =>
           import('@lpg-manager/profile-page'),

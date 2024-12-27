@@ -1,0 +1,13 @@
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  ion-text {
+    min-width: 2rem;
+    text-align: center;
+  }
+}
+
+ion-card {
+  margin: 0;
+}

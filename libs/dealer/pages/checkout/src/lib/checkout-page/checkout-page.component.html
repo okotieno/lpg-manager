@@ -1,1 +1,64 @@
-Works
+<ion-grid>
+  <ion-row>
+    <ion-col size="12" sizeMd="8">
+      <ion-card>
+        <ion-card-header>
+          <ion-title>Cart Items</ion-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            @for (item of cartItems(); track item?.id) {
+              <ion-item>
+                <ion-label>
+                  <h2>{{ item?.catalogue?.name }}</h2>
+                  <p>{{ item?.catalogue?.pricePerUnit | currency }}</p>
+                  <p>{{ item?.catalogue?.quantityPerUnit }} {{ item?.catalogue?.unit }}</p>
+                </ion-label>
+
+                <ion-button class="ion-padding" shape="round" fill="clear" color="danger" (click)="removeItem($any(item?.id))">
+                  <ion-icon name="trash-can" slot="icon-only"></ion-icon>
+                </ion-button>
+
+                <div class="quantity-controls">
+                  <ion-button class="ion-padding" shape="round"  fill="clear" color="primary" (click)="updateQuantity($any(item?.id), $any(item?.quantity) - 1)">
+                    <ion-icon name="minus" slot="icon-only"></ion-icon>
+                  </ion-button>
+                  <ion-text>{{ item?.quantity }}</ion-text>
+                  <ion-button shape="round" class="ion-padding" fill="clear"  color="primary" (click)="updateQuantity($any(item?.id), $any(item?.quantity) + 1)">
+                    <ion-icon name="plus" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </div>
+              </ion-item>
+            } @empty {
+              <ion-item>
+                <ion-label>No items in cart</ion-label>
+              </ion-item>
+            }
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+
+    <ion-col size="12" sizeMd="4">
+      <ion-card>
+        <ion-card-header>
+          <ion-title>Order Summary</ion-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item>
+              <ion-label>Total</ion-label>
+              <ion-text slot="end">{{ cartTotal() | currency }}</ion-text>
+            </ion-item>
+          </ion-list>
+
+          <ion-button expand="block" color="primary" class="ion-margin-top"
+                      [disabled]="!cartItems().length"
+                      (click)="completeOrder()">
+            Complete Order
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>

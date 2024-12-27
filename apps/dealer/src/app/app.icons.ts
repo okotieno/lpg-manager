@@ -30,5 +30,7 @@ export const APP_ICONS = [
   'square-check',
   'xmark',
   'check',
-  'filter-list'
+  'filter-list',
+  'plus',
+  'minus'
 ];

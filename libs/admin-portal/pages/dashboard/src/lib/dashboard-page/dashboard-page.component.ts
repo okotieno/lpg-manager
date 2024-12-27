@@ -91,6 +91,6 @@ export default class DashboardComponent {
   }
 
   goToProfile() {
-    this.#router.navigate(['/dashboard/profile']);
+    this.#router.navigate(['/profile']);
   }
 }
