@@ -1,4 +1,4 @@
-import { Component, computed, inject, viewChild } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import {
   CataloguesStore,
   IGetCataloguesQuery,
@@ -8,38 +8,55 @@ import {
   PaginatedResource,
 } from '@lpg-manager/data-table';
 import {
-  IonButton, IonButtons,
+  IonButton,
+  IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
   IonCol,
-  IonGrid,
   IonIcon,
   IonImg,
   IonRow,
   IonSearchbar,
   IonText,
   ModalController,
-  AlertController, IonItem, IonMenu, IonSplitPane, IonHeader, IonToolbar, IonTitle, IonContent
+  AlertController,
+  IonItem,
+  IonMenu,
+  IonSplitPane,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
-import { CartStore, IGetCartsQuery, AddToCartDialogComponent } from '@lpg-manager/cart-store';
+import {
+  CartStore,
+  IGetCartsQuery,
+  AddToCartDialogComponent,
+} from '@lpg-manager/cart-store';
 import { StationStore } from '@lpg-manager/station-store';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { ISelectCategory, IQueryOperatorEnum } from '@lpg-manager/types';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
-type IGetItemQuery = NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]
+type IGetItemQuery = NonNullable<
+  IGetCataloguesQuery['catalogues']['items']
+>[number];
 
-type ICatalogueDisplay = IGetItemQuery & { cart?: NonNullable<IGetCartsQuery['carts']['items']>[number] }
+type ICatalogueDisplay = IGetItemQuery & {
+  cart?: NonNullable<IGetCartsQuery['carts']['items']>[number];
+};
 
 @Component({
   selector: 'lpg-catalogues',
   standalone: true,
   imports: [
-    IonGrid,
     IonRow,
     IonCol,
     IonCard,
@@ -89,7 +106,22 @@ export default class CataloguesPageComponent {
   searchForm = this.#fb.group({
     depot: [[] as ISelectCategory[]],
   });
-  ionMenu = viewChild.required(IonMenu);
+  catalogues = this.cataloguesStore.searchedItemsEntities;
+
+  startRange = computed(() => {
+    const currentPage = this.cataloguesStore.currentPage();
+    const pageSize = this.cataloguesStore.pageSize();
+    return (currentPage - 1) * pageSize + 1;
+  });
+
+  endRange = computed(() => {
+    return this.catalogues().length;
+  });
+
+  totalItems = computed(() => {
+    return this.cataloguesStore.totalItems();
+  })
+
   constructor() {
     // Initialize depot store with DEPOT type filter
     this.depotStore.setFilters([
@@ -118,7 +150,6 @@ export default class CataloguesPageComponent {
   }
 
   cartCatalogueItems = computed(() => this.#cartStore.cart?.()?.items ?? []);
-  catalogues = this.cataloguesStore.items;
   cataloguesDisplayed = computed<any>(() => {
     const cartCatalogueItems = this.cartCatalogueItems();
     const catalogues = this.catalogues();
