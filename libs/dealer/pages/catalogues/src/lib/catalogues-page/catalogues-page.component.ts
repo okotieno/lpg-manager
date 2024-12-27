@@ -115,7 +115,7 @@ export default class CataloguesPageComponent {
   searchForm = this.#fb.group({
     depot: [[] as ISelectCategory[]],
   });
-  catalogues = this.cataloguesStore.searchedItemsEntities;
+  catalogues = computed(() => this.cataloguesStore.searchedItemsEntities());
 
   startRange = computed(() => {
     return Math.min(1, this.catalogues().length);
@@ -129,15 +129,15 @@ export default class CataloguesPageComponent {
     return this.cataloguesStore.totalItems();
   });
 
-  ionInfiniteScroll = viewChild.required(IonInfiniteScroll);
+  ionInfiniteScroll = viewChild(IonInfiniteScroll);
 
   showInfiniteScroll = computed(
     () => this.totalItems() > this.catalogues().length
   );
 
   isLoadingChangeEffect = effect(async () => {
-    if(!this.cataloguesStore.isLoading()) {
-      await this.ionInfiniteScroll().complete();
+    if (!this.cataloguesStore.isLoading() && this.ionInfiniteScroll?.()) {
+      await this.ionInfiniteScroll()?.complete();
     }
   });
 
@@ -243,25 +243,7 @@ export default class CataloguesPageComponent {
     await alert.present();
   }
 
-  async handleInfiniteScroll($event: CustomEvent) {
-    const currentPage = this.cataloguesStore.currentPage();
-    const totalPages = Math.ceil(
-      this.totalItems() / this.cataloguesStore.pageSize()
-    );
-
+  async handleInfiniteScroll() {
     this.cataloguesStore.fetchNextPage();
-
-    console.log('Scrolling', $event);
-
-    // if (currentPage < totalPages) {
-    //   await this.cataloguesStore.loadNextPage();
-    // }
-    //
-    // event.target.complete();
-    //
-    // // Disable infinite scroll if we've loaded all pages
-    // if (currentPage >= totalPages) {
-    //   event.target.disabled = true;
-    // }
   }
 }

@@ -117,7 +117,7 @@
         </ion-row>
       </ion-col>
       @if (showInfiniteScroll()) {
-        <ion-infinite-scroll (ionInfinite)="handleInfiniteScroll($event)">
+        <ion-infinite-scroll (ionInfinite)="handleInfiniteScroll()">
           <ion-infinite-scroll-content
             loadingSpinner="bubbles"
             loadingText="Loading more catalogues...">
