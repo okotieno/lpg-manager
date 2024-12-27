@@ -63,7 +63,7 @@
         Assigned roles
       </ion-label>
     </ion-list-header>
-    @for (role of rolesList(); track role.id;) {
+    @for (role of rolesList(); track role.id; ) {
       <ion-item class="ion-margin-start" lines="none" [formGroupName]="$index" @roleAnimation>
         <ion-row style="width: 100%;">
           <ion-col size="12" sizeMd="3">
@@ -96,7 +96,8 @@
               label="Station"
               labelPlacement="stacked"
               formControlName="station"
-              [defaultParams]="[{field: 'type', operator: equalsOperator, value: roles.controls[$index].value['stationType'] ?? '', values: []}]"
+              [defaultParams]="
+               roles.controls[$index].value['stationType'] ? [{field: 'type', operator: equalsOperator, value: roles.controls[$index].value['stationType'] ?? '', values: []}]: []"
               placeholder="Select station"
             ></lpg-searchable-select>
           </ion-col>

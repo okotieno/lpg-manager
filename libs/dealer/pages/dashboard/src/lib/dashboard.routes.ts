@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthStore } from '@lpg-manager/auth-store';
+import { map } from 'rxjs';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
@@ -11,7 +12,7 @@ export const DASHBOARD_ROUTES: Routes = [
       breadcrumbs: [{ label: 'Dashboard' }],
     },
     canMatch: [
-      () => inject(AuthStore).isLoggedIn()
+      () => inject(AuthStore).isAuthenticatedGuard()
     ],
     children: [
       {
@@ -36,9 +37,9 @@ export const DASHBOARD_ROUTES: Routes = [
   },
   {
     path: '**',
-    canMatch: [
-      () => !inject(AuthStore).isLoggedIn()
-    ],
+    canMatch: [() => inject(AuthStore).isAuthenticatedGuard().pipe(
+      map(isAuthenticated => !isAuthenticated)
+    )],
     redirectTo: '/login'
   }
 ];

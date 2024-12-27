@@ -1,31 +1,45 @@
-import { Routes } from '@angular/router';
+import { Router, Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { AuthStore } from '@lpg-manager/auth-store';
+import { map } from 'rxjs';
 
-export const DASHBOARD_ROUTES:Routes = [
+export const DASHBOARD_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () => import('./dashboard-page/dashboard-page.component'),
+    canMatch: [() => inject(AuthStore).isAuthenticatedGuard()],
     children: [
       {
         path: 'user-management',
-        loadChildren: () => import('@lpg-manager/users-page').then(r => r.USERS_ROUTES),
+        loadChildren: () =>
+          import('@lpg-manager/users-page').then((r) => r.USERS_ROUTES),
         title: 'LPG - Dashboard',
         data: {
-          routeLabel: 'Dashboard'
-        }
+          routeLabel: 'Dashboard',
+        },
       },
       {
         path: 'administration',
-        loadChildren: () => import('@lpg-manager/administration-page').then(r => r.ADMINISTRATION_ROUTES),
+        loadChildren: () =>
+          import('@lpg-manager/administration-page').then(
+            (r) => r.ADMINISTRATION_ROUTES
+          ),
         title: 'LPG - Administration',
         data: {
-          routeLabel: 'Administration'
-        }
+          routeLabel: 'Administration',
+        },
       },
       {
         path: 'profile',
-        loadChildren: () =>
-          import('@lpg-manager/profile-page'),
-      }
-    ]
-  }
-]
+        loadChildren: () => import('@lpg-manager/profile-page'),
+      },
+    ],
+  },
+  {
+    path: '**',
+    canMatch: [() => inject(AuthStore).isAuthenticatedGuard().pipe(
+      map(isAuthenticated => !isAuthenticated)
+    )],
+    redirectTo: () => '/login',
+  },
+];

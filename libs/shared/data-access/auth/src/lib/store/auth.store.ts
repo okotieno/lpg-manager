@@ -24,7 +24,7 @@ import {
   ILoginWithTokenGQL,
   ISendPasswordResetEmailGQL,
 } from '../schemas/auth.generated';
-import { catchError, EMPTY, lastValueFrom, tap } from 'rxjs';
+import { catchError, EMPTY, filter, lastValueFrom, map, tap, throwError, timer } from 'rxjs';
 import { Preferences } from '@capacitor/preferences';
 import { MutationResult } from '@apollo/client';
 import {
@@ -43,9 +43,11 @@ interface AuthState {
   loginWithPasswordParams: IMutationLoginWithPasswordArgs;
   errorMessage?: string;
   passwordResetLinkEmailInput: string;
+  initialLoadComplete: boolean;
 }
 
 const initialState: AuthState = {
+  initialLoadComplete: false,
   activeRole: undefined,
   refreshTokenInput: '',
   loginWithPasswordParams: { email: '', password: '' },
@@ -61,7 +63,7 @@ const initialState: AuthState = {
 
 export const AuthStore = signalStore(
   { providedIn: 'root' },
-  withState(initialState),
+  withState(() => initialState),
   withProps(() => ({
     _loginWithTokenGQL: inject(ILoginWithTokenGQL),
     _loginWithPasswordGQL: inject(ILoginWithPasswordGQL),
@@ -110,7 +112,12 @@ export const AuthStore = signalStore(
           store._loginWithTokenGQL
             .mutate({ token: param.request.refreshToken ?? '' })
             .pipe(
+              catchError((err) => {
+                patchState(store, { initialLoadComplete: true });
+                return throwError(() => err);
+              }),
               tap((res) => {
+                patchState(store, { initialLoadComplete: true });
                 if (res.data?.loginWithToken)
                   patchState(store, {
                     loginResponse: res.data.loginWithToken,
@@ -157,13 +164,14 @@ export const AuthStore = signalStore(
     const isLoading = computed(() => store._loginResource?.isLoading());
     const user = computed(() => store.loginResponse()?.user);
     const userRoles = computed(() => user()?.roles ?? []);
+
     return {
       isLoggedIn,
       accessToken,
       _refreshToken,
       isLoading,
       user,
-      userRoles,
+      userRoles
     };
   }),
   withMethods((store) => {
@@ -200,12 +208,17 @@ export const AuthStore = signalStore(
         patchState(store, { activeRole });
       }
     };
+    const isAuthenticatedGuard = () => timer(100, 100).pipe(
+      filter(() => store.initialLoadComplete()),
+      map(() => store.isLoggedIn())
+    )
     return {
       login,
       removeErrorMessage,
       logout,
       sendResetLink,
       updateActiveRole,
+      isAuthenticatedGuard
     };
   }),
   withHooks((store, injector = inject(Injector)) => {
@@ -214,6 +227,7 @@ export const AuthStore = signalStore(
         key: 'refresh-token',
       });
       if (refreshTokenInput) patchState(store, { refreshTokenInput });
+      else patchState(store, { initialLoadComplete: true });
 
       effect(
         () => {
