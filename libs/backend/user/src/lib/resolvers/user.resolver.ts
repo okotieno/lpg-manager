@@ -83,11 +83,13 @@ export class UserResolver {
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.UpdateUser)
-  async updateUser(@Body(new ValidationPipe()) params: UpdateUserInputDto) {
-    const user = await this.userService.findById(params.id);
+  async updateUser(@Body(new ValidationPipe()) input: UpdateUserInputDto) {
+    const user = await this.userService.findById(input.id);
     if (user) {
-      await user?.update(params.params);
+      await user?.update(input.params);
       await user?.save();
+
+      await this.userService.assignRoleToUser(user, input.params.roles);
 
       this.eventEmitter.emit('user.updated', new UserUpdatedEvent(user));
       return {

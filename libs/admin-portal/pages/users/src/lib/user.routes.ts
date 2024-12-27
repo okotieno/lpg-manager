@@ -3,7 +3,10 @@ import { inject } from '@angular/core';
 import { map, tap } from 'rxjs';
 import { IGetUserByIdGQL } from '@lpg-manager/user-store';
 import { BreadcrumbStore } from '@lpg-manager/breadcrumb';
-import { FormExitGuardService, IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
+import {
+  FormExitGuardService,
+  IHasUnsavedChanges,
+} from '@lpg-manager/form-exit-guard';
 
 export const USERS_ROUTES: Routes = [
   {
@@ -75,7 +78,10 @@ export const USERS_ROUTES: Routes = [
           user: (route: ActivatedRouteSnapshot) => {
             const breadcrumbStore = inject(BreadcrumbStore);
             return inject(IGetUserByIdGQL)
-              .fetch({ id: route.params['userId'] })
+              .fetch(
+                { id: route.params['userId'] },
+                { fetchPolicy: 'cache-first' }
+              )
               .pipe(
                 map((res) => res.data.user),
                 tap((res) => {
@@ -94,7 +100,7 @@ export const USERS_ROUTES: Routes = [
             loadComponent: () => import('./user-page/user-page.component'),
             data: {
               routeLabel: 'User Details | :userName',
-            }
+            },
           },
           {
             path: 'edit',
@@ -128,6 +134,6 @@ export const USERS_ROUTES: Routes = [
   },
   {
     path: 'roles',
-    loadChildren: () => import('@lpg-manager/roles-page')
-  }
+    loadChildren: () => import('@lpg-manager/roles-page'),
+  },
 ];

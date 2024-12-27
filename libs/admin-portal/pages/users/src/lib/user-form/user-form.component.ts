@@ -30,9 +30,10 @@ import {
   Validators,
 } from '@angular/forms';
 import {
+  GetUserByIdDocument,
   ICreateUserGQL,
   IGetUserByIdQuery,
-  IUpdateUserGQL,
+  IUpdateUserGQL
 } from '@lpg-manager/user-store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IGetRolesQuery, RoleStore } from '@lpg-manager/role-store';
@@ -282,7 +283,16 @@ export default class UserFormComponent implements IHasUnsavedChanges {
                 [SHOW_ERROR_MESSAGE]: true,
                 [SHOW_SUCCESS_MESSAGE]: true,
               },
-            }
+              awaitRefetchQueries: true,
+              refetchQueries: [
+                {
+                  query: GetUserByIdDocument,
+                  variables: {
+                    id: this.userId(),
+                  }
+                }
+              ]
+            },
           )
           .subscribe({
             next: async () => {
