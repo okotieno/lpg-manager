@@ -29,7 +29,7 @@ import { CartStore, IGetCartsQuery, AddToCartDialogComponent } from '@lpg-manage
 import { StationStore } from '@lpg-manager/station-store';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { ISelectCategory, IQueryOperatorEnum } from '@lpg-manager/types';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 type IGetItemQuery = NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]
 
@@ -100,11 +100,11 @@ export default class CataloguesPageComponent {
     const selectedDepot = event.detail.value;
     if (selectedDepot) {
       this.cataloguesStore.setFilters([
-        // {
-        //   field: 'depotId',
-        //   operator: IQueryOperatorEnum.Equals,
-        //   value: selectedDepot.id,
-        // },
+        {
+          field: 'depotId',
+          operator: IQueryOperatorEnum.Equals,
+          value: selectedDepot.id,
+        },
       ]);
     } else {
       this.cataloguesStore.setFilters([]);

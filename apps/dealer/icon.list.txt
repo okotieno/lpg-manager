@@ -25,3 +25,7 @@ circle
 caret-up
 caret-down
 eye
+square
+square-check
+xmark
+check

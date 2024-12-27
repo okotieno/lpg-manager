@@ -25,5 +25,9 @@ export const APP_ICONS = [
   'circle',
   'caret-up',
   'caret-down',
-  'eye'
+  'eye',
+  'square',
+  'square-check',
+  'xmark',
+  'check'
 ];

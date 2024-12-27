@@ -14,7 +14,7 @@ import {
   ControlValueAccessor,
   FormsModule,
   NgControl,
-  ReactiveFormsModule,
+  ReactiveFormsModule, Validators
 } from '@angular/forms';
 import {
   AlertController,
@@ -37,6 +37,7 @@ import {
 import { CdkListbox, CdkOption } from '@angular/cdk/listbox';
 import { IQueryParamsFilter, ISortByEnum } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
+import { take, tap } from 'rxjs';
 
 @Component({
   selector: 'lpg-searchable-select',
@@ -139,7 +140,7 @@ export class SearchableSelectComponent<T extends { id: string }>
   selectedItemsActive = signal<T[]>([]);
   selectedItemsDisplayed = computed(() => {
     if (this.selectedItemsActive().length < 1) {
-      return '';
+      return this.placeholder();
     }
     return this.selectedItems()
       .map((item) => item[this.labelKey() as keyof T])
@@ -150,9 +151,17 @@ export class SearchableSelectComponent<T extends { id: string }>
   showInfiniteScroll = computed(
     () => this.totalAvailableElements() > this.totalItems()
   );
+  isRequired = signal(false)
 
   constructor(@Self() @Optional() private control: NgControl) {
     this.control.valueAccessor = this;
+
+   setTimeout(() => {
+     const isRequired = this.control.control?.hasValidator(Validators.required);
+     if (isRequired)
+       this.isRequired.set(true)
+   }, 0)
+
   }
 
   onChanges?: (param: { id: string }[] | { id: string }) => void;

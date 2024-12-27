@@ -124,6 +124,7 @@ form {
 
 ion-button.button-solid, ion-button.button-outline, ion-button.button-clear:not(.button-has-icon-only) {
   text-transform: none;
+  --border-width: .5px;
   --border-radius: 1rem;
   --padding-start: 3rem;
   --padding-end: 3rem;

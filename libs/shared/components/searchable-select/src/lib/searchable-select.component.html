@@ -15,8 +15,8 @@
   [rows]="1"
   [autoGrow]="true"
 >
-  <ion-icon color="primary" class="ion-padding-horizontal ion-padding-top" slot="end" [name]="modal.isOpen ? 'caret-up':  'caret-down'"></ion-icon>
-</ion-textarea>
+  <ion-icon color="primary" class="ion-padding-horizontal ion-padding-top" slot="end"
+            [name]="modal.isOpen ? 'caret-up':  'caret-down'"></ion-icon></ion-textarea>
 
 <ion-modal [backdropDismiss]="false" #modal [animated]="true" (ionModalWillDismiss)="modal.isOpen = false">
   <ng-template>
@@ -24,7 +24,7 @@
       <ion-toolbar class="ion-no-border">
         <ion-title>{{ label() }}</ion-title>
         <ion-button shape="round" fill="clear" slot="end" color="danger" (click)="closeModal()">
-          <ion-icon slot="icon-only" name="xmark"></ion-icon>
+          <ion-icon slot="icon-only" name="circle-xmark"></ion-icon>
         </ion-button>
       </ion-toolbar>
       <ion-toolbar>
@@ -69,8 +69,8 @@
         </ion-button>
         <ion-button
           (click)="selectItem(modal)"
-          [disabled]="selectedItems().length < 1">
-          <span class="ion-padding-horizontal">Select</span>
+          [disabled]="selectedItems().length < 1 && isRequired() ">
+          <span class="ion-padding-horizontal">Done</span>
           <ion-icon slot="end" name="check"></ion-icon>
         </ion-button>
       </ion-row>

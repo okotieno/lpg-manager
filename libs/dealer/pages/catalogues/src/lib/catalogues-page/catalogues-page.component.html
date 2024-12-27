@@ -8,9 +8,10 @@
           [debounce]="500"
         ></ion-searchbar>
       </ion-item>
-      <ion-item lines="none" size="12" >
-        <form [formGroup]="searchForm">
+
+        <form class="ion-margin-top" [formGroup]="searchForm">
           <lpg-searchable-select
+            [multiple]="true"
             [itemsStore]="depotStore"
             label="Select Depot"
             labelPlacement="floating"
@@ -19,7 +20,6 @@
           ></lpg-searchable-select>
         </form>
 
-      </ion-item>
     </ion-col>
     <ion-col>
       <ion-row>
