@@ -287,9 +287,9 @@ export default class UserFormComponent implements IHasUnsavedChanges {
           .subscribe({
             next: async () => {
               this.userForm.reset();
-              await this.#router.navigate(['../users'], {
-                relativeTo: this.#route,
-              });
+              // await this.#router.navigateByUrl('/dashboard/user-management/users');
+              console.log(this.#route);
+              await this.#router.navigate(['users']);
             },
           });
       } else {
@@ -304,7 +304,8 @@ export default class UserFormComponent implements IHasUnsavedChanges {
             }
           )
           .subscribe({
-            next: async () => {
+            next: async (res) => {
+              console.log(res);
               this.userForm.reset();
               await this.#router.navigate(['../../users'], {
                 relativeTo: this.#route,

@@ -1,5 +1,5 @@
 <ion-breadcrumbs>
-  <ion-breadcrumb href="#dashboard"><ion-icon name="house"></ion-icon></ion-breadcrumb>
+  <ion-breadcrumb href="#"><ion-icon name="house"></ion-icon></ion-breadcrumb>
   @for (crumb of breadcrumbs(); track crumb.label; let last = $last) {
     @if (crumb.path) {
       <ion-breadcrumb [href]="crumb.path">{{ crumb.label | titlecase }}</ion-breadcrumb>

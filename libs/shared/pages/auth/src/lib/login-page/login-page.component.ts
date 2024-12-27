@@ -68,7 +68,7 @@ export class LoginPageComponent {
     const userLoggedIn = this.#authStore.isLoggedIn();
     await untracked(async () => {
       if (userLoggedIn) {
-        await this.#router.navigate(['/dashboard']);
+        await this.#router.navigate(['/']);
       }
     });
   });

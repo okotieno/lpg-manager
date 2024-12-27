@@ -34,12 +34,5 @@ export const DASHBOARD_ROUTES: Routes = [
         loadChildren: () => import('@lpg-manager/profile-page'),
       },
     ],
-  },
-  {
-    path: '**',
-    canMatch: [() => inject(AuthStore).isAuthenticatedGuard().pipe(
-      map(isAuthenticated => !isAuthenticated)
-    )],
-    redirectTo: () => '/login',
-  },
+  }
 ];

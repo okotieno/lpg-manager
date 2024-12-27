@@ -14,7 +14,7 @@ export const BRANDS_ROUTES: Routes = [
     data: {
       routeLabel: 'Brands',
       breadcrumbs: [
-        { label: 'Administration', path: ['/dashboard', 'administration'] },
+        { label: 'Administration', path: ['/administration'] },
         { label: 'Brands' },
       ],
     },
@@ -29,8 +29,8 @@ export const BRANDS_ROUTES: Routes = [
     data: {
       routeLabel: 'Create Brand',
       breadcrumbs: [
-        { label: 'Administration', path: ['/dashboard', 'administration'] },
-        { label: 'Brands', path: ['/dashboard', 'administration', 'brands'] },
+        { label: 'Administration', path: ['/administration'] },
+        { label: 'Brands', path: ['/administration', 'brands'] },
         { label: 'Create brand' },
       ],
     },
@@ -40,8 +40,8 @@ export const BRANDS_ROUTES: Routes = [
     data: {
       routeLabel: 'Brands | :brandName',
       breadcrumbs: [
-        { label: 'Administration', path: ['/dashboard', 'administration'] },
-        { label: 'Brands', path: ['/dashboard', 'administration', 'brands'] },
+        { label: 'Administration', path: ['/administration'] },
+        { label: 'Brands', path: ['/administration', 'brands'] },
         { label: ':brandName' },
       ],
     },
@@ -76,14 +76,14 @@ export const BRANDS_ROUTES: Routes = [
         data: {
           routeLabel: 'Edit brand | :brandName',
           breadcrumbs: [
-            { label: 'Administration', path: ['/dashboard', 'administration'] },
+            { label: 'Administration', path: ['/administration'] },
             {
               label: 'Brands',
-              path: ['/dashboard', 'administration', 'brands'],
+              path: ['/administration', 'brands'],
             },
             {
               label: ':brandName',
-              path: ['/dashboard', 'administration', 'brands', ':brandId'],
+              path: ['/administration', 'brands', ':brandId'],
             },
             { label: 'Edit' },
           ],

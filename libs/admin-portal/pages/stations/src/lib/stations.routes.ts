@@ -14,7 +14,7 @@ export const STATIONS_ROUTES: Routes = [
     data: {
       routeLabel: 'Stations',
       breadcrumbs: [
-        { label: 'Administration', path: ['/dashboard', 'administration'] },
+        { label: 'Administration', path: ['/administration'] },
         { label: 'Stations' },
       ],
     },
@@ -25,10 +25,10 @@ export const STATIONS_ROUTES: Routes = [
     data: {
       routeLabel: 'Create Station',
       breadcrumbs: [
-        { label: 'Administration', path: ['/dashboard', 'administration'] },
+        { label: 'Administration', path: ['/administration'] },
         {
           label: 'Stations',
-          path: ['/dashboard', 'administration', 'stations'],
+          path: ['/administration', 'stations'],
         },
         { label: 'Create station' },
       ],
@@ -43,10 +43,10 @@ export const STATIONS_ROUTES: Routes = [
     data: {
       routeLabel: 'Stations | :stationName',
       breadcrumbs: [
-        { label: 'Administration', path: ['/dashboard', 'administration'] },
+        { label: 'Administration', path: ['/administration'] },
         {
           label: 'Stations',
-          path: ['/dashboard', 'administration', 'stations'],
+          path: ['/administration', 'stations'],
         },
         { label: ':stationName' },
       ],
@@ -79,14 +79,14 @@ export const STATIONS_ROUTES: Routes = [
         data: {
           routeLabel: 'Edit station | :stationName',
           breadcrumbs: [
-            { label: 'Administration', path: ['/dashboard', 'administration'] },
+            { label: 'Administration', path: ['/administration'] },
             {
               label: 'Stations',
-              path: ['/dashboard', 'administration', 'stations'],
+              path: ['/administration', 'stations'],
             },
             {
               label: ':stationName',
-              path: ['/dashboard', 'administration', 'stations', ':stationId'],
+              path: ['/administration', 'stations', ':stationId'],
             },
             { label: 'Edit' },
           ],

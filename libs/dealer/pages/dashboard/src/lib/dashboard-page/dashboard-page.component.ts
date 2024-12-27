@@ -95,7 +95,7 @@ export default class DashboardComponent {
   }
 
   goToProfile() {
-    this.#router.navigate(['/dashboard/profile']);
+    this.#router.navigate(['/profile']);
   }
   updateActiveRole($event: CustomEvent) {
     this.#authStore.updateActiveRole($event.detail.value);
