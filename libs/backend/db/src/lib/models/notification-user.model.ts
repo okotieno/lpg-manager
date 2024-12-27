@@ -18,14 +18,20 @@ import { UserModel } from './user.model';
 })
 export class NotificationUserModel extends Model {
   @ForeignKey(() => NotificationModel)
-  @Column({ type: DataTypes.INTEGER, allowNull: false })
+  @Column({
+    type: DataTypes.UUID,
+    allowNull: false,
+  })
   notificationId!: number;
 
   @BelongsTo(() => NotificationModel)
   notification!: NotificationModel;
 
   @ForeignKey(() => UserModel)
-  @Column({ type: DataTypes.INTEGER, allowNull: false })
+  @Column({
+    type: DataTypes.UUID,
+    allowNull: false,
+  })
   userId!: number;
 
   @BelongsTo(() => UserModel)
