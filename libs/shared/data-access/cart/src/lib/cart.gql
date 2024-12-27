@@ -53,3 +53,12 @@ mutation UpdateItemQuantity($cartId: UUID!, $cartCatalogueId: UUID!, $quantity: 
     data { ...cartFragment }
   }
 }
+
+mutation CompleteCart($cartId: UUID!) {
+  completeCart(cartId: $cartId ) {
+    message
+    data {
+      id
+    }
+  }
+}

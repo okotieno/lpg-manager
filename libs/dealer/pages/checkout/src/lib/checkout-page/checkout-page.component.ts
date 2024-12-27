@@ -1,9 +1,9 @@
 import { Component, computed, inject } from '@angular/core';
 import { CartStore } from '@lpg-manager/cart-store';
-import { 
-  IonContent, 
-  IonHeader, 
-  IonToolbar, 
+import {
+  IonContent,
+  IonHeader,
+  IonToolbar,
   IonTitle,
   IonCard,
   IonCardHeader,
@@ -47,7 +47,7 @@ import { CurrencyPipe } from '@angular/common';
 })
 export default class CheckoutPageComponent {
   #cartStore = inject(CartStore);
-  
+
   cartItems = computed(() => this.#cartStore.cart?.()?.items ?? []);
   cartTotal = computed(() => {
     const items = this.cartItems();
@@ -58,7 +58,7 @@ export default class CheckoutPageComponent {
       return total;
     }, 0);
   });
-  
+
   async updateQuantity(cartCatalogueId: string, quantity: number) {
     await this.#cartStore.updateQuantity(cartCatalogueId, quantity);
   }
@@ -68,7 +68,6 @@ export default class CheckoutPageComponent {
   }
 
   async completeOrder() {
-    // TODO: Implement order completion
-    console.log('Complete order');
+    await this.#cartStore.completeCart();
   }
 }

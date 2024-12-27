@@ -21,7 +21,7 @@ import {
   IGetCartGQL,
   ICreateCartGQL,
   IGetCartsGQL,
-  IGetCartsQuery,
+  IGetCartsQuery, ICompleteCartGQL
 } from './cart.generated';
 import { lastValueFrom, tap } from 'rxjs';
 import {
@@ -54,6 +54,7 @@ export const CartStore = signalStore(
     _removeItemFromCartGQL: inject(IRemoveItemFromCartGQL),
     _updateItemQuantityGQL: inject(IUpdateItemQuantityGQL),
     _getCartGQL: inject(IGetCartGQL),
+    _completeCartGQL: inject(ICompleteCartGQL)
   })),
   withComputed((store) => ({
     cartItems: computed(() => store.items()),
@@ -145,110 +146,38 @@ export const CartStore = signalStore(
         );
       },
     }),
+    _completeCartResource: resource({
+      loader: ({ previous }) => {
+        if (previous.status === ResourceStatus.Idle) {
+          return Promise.resolve(undefined);
+        }
+
+        return lastValueFrom(store._completeCartGQL.mutate(
+          { cartId: store.cartId() as string },
+          {
+            context: {
+              [SHOW_SUCCESS_MESSAGE]: true,
+              [SHOW_ERROR_MESSAGE]: true,
+            },
+          }
+        ).pipe(
+          tap((res) => {
+            untracked(() => {
+              if (res.data?.completeCart.data) {
+                patchState(store, { cart: undefined });
+              }
+            });
+          })
+        ))
+      }
+    })
   })),
   withMethods((store) => ({
     addItem: (catalogueId: string, quantity = 1) => {
       patchState(store, {
         items: [{ id: crypto.randomUUID(), catalogueId, quantity }],
       });
-      // if (!store.cartId()) {
-      //   patchState(store, {
-      //     items: [{ id: crypto.randomUUID(), catalogueId, quantity }],
-      //   });
-      //   store._createCartResource.reload();
-      // } else {
-      //   console.log('Adding to cart');
-      //   store._addToCartResource.reload();
-      // }
     },
-    // async addItem(productId: string, quantity = 1) {
-    //   if (!store.userId()) return;
-    //
-    //   const result = await addItemToCartGQL
-    //     .mutate({
-    //       userId: store.userId() as string,
-    //       productId,
-    //       quantity,
-    //     })
-    //     .toPromise();
-    //
-    //   if (result?.data?.addItemToCart) {
-    //     const { items, totalQuantity, totalPrice } =
-    //       result.data.addItemToCart.data;
-    //     patchState(store, {
-    //       items,
-    //       totalQuantity,
-    //       totalPrice,
-    //     });
-    //   }
-    // },
-    //
-    // async removeItem(itemId: string) {
-    //   if (!store.userId()) return;
-    //
-    //   const result = await removeItemFromCartGQL
-    //     .mutate({
-    //       userId: store.userId() as string,
-    //       itemId,
-    //     })
-    //     .toPromise();
-    //
-    //   if (result?.data?.removeItemFromCart) {
-    //     const { totalQuantity, totalPrice } =
-    //       result.data.removeItemFromCart.data;
-    //     const updatedItems = store
-    //       .items()
-    //       .filter((item) => item.catalogueId !== itemId);
-    //     patchState(store, {
-    //       items: updatedItems,
-    //       totalQuantity,
-    //       totalPrice,
-    //     });
-    //   }
-    // },
-    //
-    // async updateQuantity(itemId: string, quantity: number) {
-    //   if (!store.userId()) return;
-    //
-    //   const result = await updateItemQuantityGQL
-    //     .mutate({
-    //       userId: store.userId() as string,
-    //       itemId,
-    //       quantity,
-    //     })
-    //     .toPromise();
-    //
-    //   if (result?.data?.updateItemQuantity) {
-    //     const { totalQuantity, totalPrice } =
-    //       result.data.updateItemQuantity.data;
-    //     const updatedItems = store
-    //       .items()
-    //       .map((item) =>
-    //         item.catalogueId === itemId ? { ...item, quantity } : item
-    //       );
-    //     patchState(store, {
-    //       items: updatedItems,
-    //       totalQuantity,
-    //       totalPrice,
-    //     });
-    //   }
-    // },
-    //
-    // setUserId(userId: string) {
-    //   patchState(store, { userId });
-    // },
-    //
-    // async loadCart(cartId: string) {
-    //   const result = await getCartGQL.fetch({ id: cartId }).toPromise();
-    //   if (result?.data?.cart) {
-    //     const { items, totalQuantity, totalPrice } = result.data.cart;
-    //     patchState(store, {
-    //       items,
-    //       totalQuantity,
-    //       totalPrice,
-    //     });
-    //   }
-    // },
     async removeItem(cartCatalogueId: string) {
       if (!store.cartId()) return;
 
@@ -301,6 +230,9 @@ export const CartStore = signalStore(
           })
         )
       );
+    },
+    async completeCart() {
+      store._completeCartResource.reload()
     }
   }))
 );

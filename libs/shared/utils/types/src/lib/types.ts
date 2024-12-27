@@ -183,6 +183,19 @@ export type ICreateNotificationSuccessResponse = {
   message: Scalars['String']['output'];
 };
 
+export type ICreateOrderCatalogueInput = {
+  id: Scalars['UUID']['input'];
+};
+
+export type ICreateOrderInput = {
+  name: Scalars['String']['input'];
+};
+
+export type ICreateOrderSuccessResponse = {
+  data: IOrderModel;
+  message: Scalars['String']['output'];
+};
+
 export type ICreateOtpInput = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
@@ -230,7 +243,7 @@ export type ICreateSettingSuccessResponse = {
 };
 
 export type ICreateStationInput = {
-  brandIds?: InputMaybe<Array<Scalars['UUID']['input']>>;
+  brands?: InputMaybe<Array<ISelectCategory>>;
   name: Scalars['String']['input'];
   type: IStationType;
 };
@@ -301,6 +314,7 @@ export type IMutation = {
   createCatalogue?: Maybe<ICreateCatalogueSuccessResponse>;
   createInventory?: Maybe<ICreateInventorySuccessResponse>;
   createNotification?: Maybe<ICreateNotificationSuccessResponse>;
+  createOrder?: Maybe<ICreateOrderSuccessResponse>;
   createOtp?: Maybe<ICreateOtpSuccessResponse>;
   createPasswordReset?: Maybe<ICreatePasswordResetSuccessResponse>;
   createPermission?: Maybe<ICreatePermissionSuccessResponse>;
@@ -313,6 +327,7 @@ export type IMutation = {
   deleteCatalogue?: Maybe<IDeleteSuccessResponse>;
   deleteInventory?: Maybe<IDeleteSuccessResponse>;
   deleteNotification?: Maybe<IDeleteSuccessResponse>;
+  deleteOrder?: Maybe<IDeleteSuccessResponse>;
   deleteOtp?: Maybe<IDeleteSuccessResponse>;
   deletePasswordReset?: Maybe<IDeleteSuccessResponse>;
   deletePermission?: Maybe<IDeleteSuccessResponse>;
@@ -341,6 +356,7 @@ export type IMutation = {
   updateInventory?: Maybe<ICreateInventorySuccessResponse>;
   updateItemQuantity: ICreateCartResponse;
   updateNotification?: Maybe<ICreateNotificationSuccessResponse>;
+  updateOrder?: Maybe<ICreateOrderSuccessResponse>;
   updateOtp?: Maybe<ICreateOtpSuccessResponse>;
   updatePasswordReset?: Maybe<ICreatePasswordResetSuccessResponse>;
   updatePermission?: Maybe<ICreatePermissionSuccessResponse>;
@@ -422,6 +438,11 @@ export type IMutationCreateNotificationArgs = {
 };
 
 
+export type IMutationCreateOrderArgs = {
+  params?: InputMaybe<ICreateOrderInput>;
+};
+
+
 export type IMutationCreateOtpArgs = {
   name: Scalars['String']['input'];
 };
@@ -478,6 +499,11 @@ export type IMutationDeleteInventoryArgs = {
 
 
 export type IMutationDeleteNotificationArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
+export type IMutationDeleteOrderArgs = {
   id: Scalars['UUID']['input'];
 };
 
@@ -622,6 +648,12 @@ export type IMutationUpdateNotificationArgs = {
 };
 
 
+export type IMutationUpdateOrderArgs = {
+  id: Scalars['UUID']['input'];
+  params?: InputMaybe<IUpdateOrderInput>;
+};
+
+
 export type IMutationUpdateOtpArgs = {
   id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateOtpInput>;
@@ -721,6 +753,10 @@ export type INotificationUserModel = {
   updatedAt: Scalars['String']['output'];
 };
 
+export type IOrderModel = {
+  id: Scalars['UUID']['output'];
+};
+
 export type IOtpModel = {
   id: Scalars['UUID']['output'];
   name: Scalars['String']['output'];
@@ -763,6 +799,11 @@ export type IPaginatedInventory = {
 
 export type IPaginatedNotification = {
   items?: Maybe<Array<Maybe<INotificationModel>>>;
+  meta?: Maybe<IPagination>;
+};
+
+export type IPaginatedOrder = {
+  items?: Maybe<Array<Maybe<IOrderModel>>>;
   meta?: Maybe<IPagination>;
 };
 
@@ -843,6 +884,8 @@ export type IQuery = {
   inventory?: Maybe<IInventoryModel>;
   notification?: Maybe<INotificationModel>;
   notifications: IPaginatedNotification;
+  order?: Maybe<IOrderModel>;
+  orders: IPaginatedOrder;
   otp?: Maybe<IOtpModel>;
   otps: IPaginatedOtp;
   passwordReset?: Maybe<IPasswordResetModel>;
@@ -933,6 +976,16 @@ export type IQueryNotificationArgs = {
 
 
 export type IQueryNotificationsArgs = {
+  query?: InputMaybe<IQueryParams>;
+};
+
+
+export type IQueryOrderArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
+export type IQueryOrdersArgs = {
   query?: InputMaybe<IQueryParams>;
 };
 
@@ -1140,6 +1193,14 @@ export type IUpdateNotificationInput = {
   title: Scalars['String']['input'];
 };
 
+export type IUpdateOrderCatalogueInput = {
+  id: Scalars['UUID']['input'];
+};
+
+export type IUpdateOrderInput = {
+  name: Scalars['String']['input'];
+};
+
 export type IUpdateOtpInput = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1162,7 +1223,7 @@ export type IUpdateSettingInput = {
 };
 
 export type IUpdateStationInput = {
-  brandIds?: InputMaybe<Array<Scalars['UUID']['input']>>;
+  brands?: InputMaybe<Array<ISelectCategory>>;
   name: Scalars['String']['input'];
   type?: InputMaybe<IStationType>;
 };

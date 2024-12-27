@@ -1,0 +1,10 @@
+query GetOrders($query: QueryParams) {
+  orders(query: $query) {
+    items {
+      id
+    }
+    meta {
+      totalItems
+    }
+  }
+}

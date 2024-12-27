@@ -1,0 +1,42 @@
+type OrderModel {
+  id: UUID!
+}
+
+input CreateOrderCatalogueInput {
+  id: UUID!
+}
+
+input UpdateOrderCatalogueInput {
+  id: UUID!
+}
+
+input CreateOrderInput {
+  name: String!
+}
+
+input UpdateOrderInput {
+  name: String!
+}
+
+type PaginatedOrder {
+  items: [OrderModel]
+  meta: Pagination
+}
+
+type CreateOrderSuccessResponse {
+  message: String!
+  data: OrderModel!
+}
+
+extend type Query {
+  orders(query: QueryParams): PaginatedOrder!
+  order(id: UUID!): OrderModel
+}
+
+extend type Mutation {
+  updateOrder(id: UUID!, params: UpdateOrderInput): CreateOrderSuccessResponse
+
+  createOrder(params: CreateOrderInput): CreateOrderSuccessResponse
+
+  deleteOrder(id: UUID!): DeleteSuccessResponse
+}

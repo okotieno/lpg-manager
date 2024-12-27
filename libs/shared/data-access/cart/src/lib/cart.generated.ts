@@ -52,6 +52,13 @@ export type IUpdateItemQuantityMutationVariables = Types.Exact<{
 
 export type IUpdateItemQuantityMutation = { updateItemQuantity: { message: string, data: { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ id: string, catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> } } };
 
+export type ICompleteCartMutationVariables = Types.Exact<{
+  cartId: Types.Scalars['UUID']['input'];
+}>;
+
+
+export type ICompleteCartMutation = { completeCart: { message: string, data: { id: string } } };
+
 export const CartFragmentFragmentDoc = gql`
     fragment cartFragment on CartModel {
   id
@@ -195,6 +202,27 @@ export const UpdateItemQuantityDocument = gql`
   })
   export class IUpdateItemQuantityGQL extends Apollo.Mutation<IUpdateItemQuantityMutation, IUpdateItemQuantityMutationVariables> {
     override document = UpdateItemQuantityDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const CompleteCartDocument = gql`
+    mutation CompleteCart($cartId: UUID!) {
+  completeCart(cartId: $cartId) {
+    message
+    data {
+      id
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ICompleteCartGQL extends Apollo.Mutation<ICompleteCartMutation, ICompleteCartMutationVariables> {
+    override document = CompleteCartDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
