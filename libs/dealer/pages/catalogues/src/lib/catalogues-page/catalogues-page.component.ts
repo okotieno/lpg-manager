@@ -50,6 +50,7 @@ import { StationStore } from '@lpg-manager/station-store';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { ISelectCategory, IQueryOperatorEnum } from '@lpg-manager/types';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { tap } from 'rxjs';
 
 type IGetItemQuery = NonNullable<
   IGetCataloguesQuery['catalogues']['items']
@@ -151,16 +152,23 @@ export default class CataloguesPageComponent {
         values: [],
       },
     ]);
+
+    this.searchForm.get('depot')?.valueChanges.pipe(
+      tap(() => {
+        this.handleDepotChange()
+      })
+    ).subscribe()
   }
 
-  handleDepotChange(event: CustomEvent) {
-    const selectedDepot = event.detail.value;
+  handleDepotChange() {
+    const selectedDepot = this.searchForm.get('depot')?.value;
     if (selectedDepot) {
       this.cataloguesStore.setFilters([
         {
           field: 'depotId',
-          operator: IQueryOperatorEnum.Equals,
-          value: selectedDepot.id,
+          operator: IQueryOperatorEnum.In,
+          value: '',
+          values: selectedDepot.map((item) => item.id),
         },
       ]);
     } else {

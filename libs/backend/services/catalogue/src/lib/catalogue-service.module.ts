@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CatalogueService } from './services/catalogue.service';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { CatalogueModel } from '@lpg-manager/db';
+import { BrandModel, CatalogueModel } from '@lpg-manager/db';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([CatalogueModel])
+    SequelizeModule.forFeature([CatalogueModel, BrandModel])
   ],
   providers: [
     CatalogueService

@@ -8,6 +8,7 @@ import {
 } from 'sequelize-typescript';
 import { FileUploadModel } from './file-upload.model';
 import { CatalogueModel } from './catalogue.model';
+import { StationModel } from './station.model';
 
 @Table({
   tableName: 'brands',
@@ -63,4 +64,11 @@ export class BrandModel extends Model {
 
   @HasMany(() => CatalogueModel)
   catalogues!: CatalogueModel[];
+
+  @BelongsToMany(() => StationModel, {
+    through: 'depot_brands',
+    foreignKey: 'brand_id',
+    otherKey: 'depot_id'
+  })
+  brands?: StationModel[];
 }
