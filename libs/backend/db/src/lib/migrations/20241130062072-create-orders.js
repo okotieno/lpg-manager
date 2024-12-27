@@ -21,6 +21,7 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       totalPrice: {
+        field: 'total_price',
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
@@ -39,10 +40,15 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
+      deletedAt: {
+        field: 'deleted_at',
+        type: Sequelize.DATE,
+        allowNull: true
+      }
     });
   },
 
   async down(queryInterface) {
     await queryInterface.dropTable('orders');
   }
-}; 
+};

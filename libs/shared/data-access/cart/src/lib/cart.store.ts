@@ -13,7 +13,7 @@ import {
   withProps,
   withState,
 } from '@ngrx/signals';
-import { ICartCatalogueInput } from '@lpg-manager/types';
+import { ICartCatalogueInput, IQueryOperatorEnum } from '@lpg-manager/types';
 import {
   IAddItemToCartGQL,
   IRemoveItemFromCartGQL,
@@ -21,7 +21,8 @@ import {
   IGetCartGQL,
   ICreateCartGQL,
   IGetCartsGQL,
-  IGetCartsQuery, ICompleteCartGQL
+  IGetCartsQuery,
+  ICompleteCartGQL,
 } from './cart.generated';
 import { lastValueFrom, tap } from 'rxjs';
 import {
@@ -54,7 +55,7 @@ export const CartStore = signalStore(
     _removeItemFromCartGQL: inject(IRemoveItemFromCartGQL),
     _updateItemQuantityGQL: inject(IUpdateItemQuantityGQL),
     _getCartGQL: inject(IGetCartGQL),
-    _completeCartGQL: inject(ICompleteCartGQL)
+    _completeCartGQL: inject(ICompleteCartGQL),
   })),
   withComputed((store) => ({
     cartItems: computed(() => store.items()),
@@ -66,15 +67,29 @@ export const CartStore = signalStore(
   withProps((store) => ({
     _loadCart: rxResource({
       loader: () =>
-        store._getCartsGQL.fetch({ query: { pageSize: 1 } }).pipe(
-          tap((res) => {
-            untracked(() => {
-              if (res.data.carts.items?.[0]) {
-                patchState(store, { cart: res.data.carts.items[0] });
-              }
-            });
+        store._getCartsGQL
+          .fetch({
+            query: {
+              pageSize: 1,
+              filters: [
+                {
+                  operator: IQueryOperatorEnum.Equals,
+                  value: 'PENDING',
+                  values: [],
+                  field: 'status',
+                },
+              ],
+            },
           })
-        ),
+          .pipe(
+            tap((res) => {
+              untracked(() => {
+                if (res.data.carts.items?.[0]) {
+                  patchState(store, { cart: res.data.carts.items[0] });
+                }
+              });
+            })
+          ),
     }),
     _createCartResource: resource({
       request: () => ({
@@ -152,25 +167,29 @@ export const CartStore = signalStore(
           return Promise.resolve(undefined);
         }
 
-        return lastValueFrom(store._completeCartGQL.mutate(
-          { cartId: store.cartId() as string },
-          {
-            context: {
-              [SHOW_SUCCESS_MESSAGE]: true,
-              [SHOW_ERROR_MESSAGE]: true,
-            },
-          }
-        ).pipe(
-          tap((res) => {
-            untracked(() => {
-              if (res.data?.completeCart.data) {
-                patchState(store, { cart: undefined });
+        return lastValueFrom(
+          store._completeCartGQL
+            .mutate(
+              { cartId: store.cartId() as string },
+              {
+                context: {
+                  [SHOW_SUCCESS_MESSAGE]: true,
+                  [SHOW_ERROR_MESSAGE]: true,
+                },
               }
-            });
-          })
-        ))
-      }
-    })
+            )
+            .pipe(
+              tap((res) => {
+                untracked(() => {
+                  if (res.data?.completeCart.data) {
+                    patchState(store, { cart: undefined });
+                  }
+                });
+              })
+            )
+        );
+      },
+    }),
   })),
   withMethods((store) => ({
     addItem: (catalogueId: string, quantity = 1) => {
@@ -182,57 +201,61 @@ export const CartStore = signalStore(
       if (!store.cartId()) return;
 
       return lastValueFrom(
-        store._removeItemFromCartGQL.mutate(
-          {
-            cartId: store.cartId() as string,
-            cartCatalogueId,
-          },
-          {
-            context: {
-              [SHOW_SUCCESS_MESSAGE]: true,
-              [SHOW_ERROR_MESSAGE]: true,
+        store._removeItemFromCartGQL
+          .mutate(
+            {
+              cartId: store.cartId() as string,
+              cartCatalogueId,
             },
-          }
-        ).pipe(
-          tap((res) => {
-            untracked(() => {
-              if (res.data?.removeItemFromCart.data) {
-                patchState(store, { cart: res.data.removeItemFromCart.data });
-              }
-            });
-          })
-        )
+            {
+              context: {
+                [SHOW_SUCCESS_MESSAGE]: true,
+                [SHOW_ERROR_MESSAGE]: true,
+              },
+            }
+          )
+          .pipe(
+            tap((res) => {
+              untracked(() => {
+                if (res.data?.removeItemFromCart.data) {
+                  patchState(store, { cart: res.data.removeItemFromCart.data });
+                }
+              });
+            })
+          )
       );
     },
     async updateQuantity(cartCatalogueId: string, quantity: number) {
       if (!store.cartId()) return;
 
       return lastValueFrom(
-        store._updateItemQuantityGQL.mutate(
-          {
-            cartId: store.cartId() as string,
-            cartCatalogueId,
-            quantity,
-          },
-          {
-            context: {
-              [SHOW_SUCCESS_MESSAGE]: true,
-              [SHOW_ERROR_MESSAGE]: true,
+        store._updateItemQuantityGQL
+          .mutate(
+            {
+              cartId: store.cartId() as string,
+              cartCatalogueId,
+              quantity,
             },
-          }
-        ).pipe(
-          tap((res) => {
-            untracked(() => {
-              if (res.data?.updateItemQuantity.data) {
-                patchState(store, { cart: res.data.updateItemQuantity.data });
-              }
-            });
-          })
-        )
+            {
+              context: {
+                [SHOW_SUCCESS_MESSAGE]: true,
+                [SHOW_ERROR_MESSAGE]: true,
+              },
+            }
+          )
+          .pipe(
+            tap((res) => {
+              untracked(() => {
+                if (res.data?.updateItemQuantity.data) {
+                  patchState(store, { cart: res.data.updateItemQuantity.data });
+                }
+              });
+            })
+          )
       );
     },
     async completeCart() {
-      store._completeCartResource.reload()
-    }
+      store._completeCartResource.reload();
+    },
   }))
 );
