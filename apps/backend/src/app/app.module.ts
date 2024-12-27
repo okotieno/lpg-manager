@@ -16,6 +16,7 @@ import { StationModule } from '@lpg-manager/station';
 import { CatalogueModule } from '@lpg-manager/catalogue';
 import { InventoryModule } from '@lpg-manager/inventory';
 import { CartModule } from '@lpg-manager/cart';
+import { OrderModule } from '@lpg-manager/order';
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { CartModule } from '@lpg-manager/cart';
     StationModule,
     CatalogueModule,
     InventoryModule,
-    CartModule
+    CartModule,
+    OrderModule,
   ],
 })
 export class AppModule {}

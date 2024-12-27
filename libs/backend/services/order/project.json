@@ -1,0 +1,9 @@
+{
+  "name": "order-service",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/services/order/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project order-service --web",
+  "targets": {}
+}

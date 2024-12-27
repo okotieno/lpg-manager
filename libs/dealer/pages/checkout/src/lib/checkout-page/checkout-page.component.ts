@@ -49,7 +49,15 @@ export default class CheckoutPageComponent {
   #cartStore = inject(CartStore);
   
   cartItems = computed(() => this.#cartStore.cart?.()?.items ?? []);
-  cartTotal = computed(() => this.#cartStore.cartTotal());
+  cartTotal = computed(() => {
+    const items = this.cartItems();
+    return items.reduce((total, item) => {
+      if (item && item.catalogue && item.catalogue.pricePerUnit != null) {
+        return total + (item.catalogue.pricePerUnit * item.quantity);
+      }
+      return total;
+    }, 0);
+  });
   
   async updateQuantity(cartCatalogueId: string, quantity: number) {
     await this.#cartStore.updateQuantity(cartCatalogueId, quantity);

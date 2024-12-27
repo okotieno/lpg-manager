@@ -99,6 +99,12 @@
       "@lpg-manager/notification-service": [
         "libs/backend/services/notification/src/index.ts"
       ],
+      "@lpg-manager/order-store": ["libs/shared/data-access/order/src/index.ts"],
+      "@lpg-manager/dealer-orders-page": [
+        "libs/dealer/pages/orders/src/index.ts"
+      ],
+      "@lpg-manager/order-service": ["libs/backend/services/order/src/index.ts"],
+      "@lpg-manager/order": ["libs/backend/order/src/index.ts"],
       "@lpg-manager/otp-service": ["libs/backend/services/otp/src/index.ts"],
       "@lpg-manager/password-reset": [
         "libs/backend/password-reset/src/index.ts"

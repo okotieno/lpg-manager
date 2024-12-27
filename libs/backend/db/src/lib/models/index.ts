@@ -17,3 +17,4 @@ export * from './catalogue.model';
 export * from './inventory.model';
 export * from './cart.model';
 export * from './cart-catalogue.model';
+export * from './order.model';

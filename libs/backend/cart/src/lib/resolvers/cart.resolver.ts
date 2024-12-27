@@ -15,10 +15,14 @@ import {
   UserModel,
 } from '@lpg-manager/db';
 import { CreateCartInputDto } from '../dto/create-cart-input.dto';
+import { OrderService } from '@lpg-manager/order-service';
 
 @Resolver(() => CartModel)
 export class CartResolver {
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private orderService: OrderService
+  ) {}
 
   @Mutation(() => CartModel)
   @UseGuards(JwtAuthGuard, PermissionGuard)
@@ -113,10 +117,13 @@ export class CartResolver {
   @Permissions(PermissionsEnum.UpdateCart)
   async completeCart(@Args('cartId') cartId: string) {
     const cart = await this.cartService.completeCart(cartId);
+    const totalPrice = cart?.totalPrice ?? 0;
+
+    const order = await this.orderService.createOrder(cartId, totalPrice);
 
     return {
       message: 'Cart completed successfully',
-      data: cart,
+      data: { cart, order },
     };
   }
   @ResolveField('items')
