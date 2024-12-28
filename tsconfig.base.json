@@ -103,6 +103,12 @@
       "@lpg-manager/dealer-orders-page": [
         "libs/dealer/pages/orders/src/index.ts"
       ],
+      "@lpg-manager/depot-orders-page": [
+        "libs/depot/pages/orders/src/index.ts"
+      ],
+      "@lpg-manager/depot-dashboard-page": [
+        "libs/depot/pages/dashboard/src/index.ts"
+      ],
       "@lpg-manager/order-service": ["libs/backend/services/order/src/index.ts"],
       "@lpg-manager/order": ["libs/backend/order/src/index.ts"],
       "@lpg-manager/otp-service": ["libs/backend/services/otp/src/index.ts"],

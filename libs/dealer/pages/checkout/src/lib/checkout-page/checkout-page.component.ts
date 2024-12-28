@@ -1,9 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { CartStore } from '@lpg-manager/cart-store';
 import {
-  IonContent,
-  IonHeader,
-  IonToolbar,
   IonTitle,
   IonCard,
   IonCardHeader,
@@ -24,9 +21,6 @@ import { CurrencyPipe } from '@angular/common';
   selector: 'lpg-checkout',
   standalone: true,
   imports: [
-    IonContent,
-    IonHeader,
-    IonToolbar,
     IonTitle,
     IonCard,
     IonCardHeader,
