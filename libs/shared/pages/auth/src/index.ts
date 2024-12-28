@@ -1,1 +1,1 @@
-export { AUTH_ROUTES } from './lib/auth.routes';
+export { AUTH_ROUTES as default } from './lib/auth.routes';

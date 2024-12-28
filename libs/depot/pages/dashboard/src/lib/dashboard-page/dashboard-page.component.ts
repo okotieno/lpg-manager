@@ -14,14 +14,13 @@ import {
   IonToolbar,
   IonPopover,
   IonRow,
-  IonText, IonBadge, IonSelect, IonSelectOption
+  IonText,
+  IonBadge,
+  IonSelect,
+  IonSelectOption,
 } from '@ionic/angular/standalone';
 import { ThemeService } from '@lpg-manager/theme-service';
-import {
-  Router,
-  RouterLink,
-  RouterOutlet,
-} from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BreadcrumbComponent, BreadcrumbStore } from '@lpg-manager/breadcrumb';
 import { TitleCasePipe } from '@angular/common';
 import { CartStore } from '@lpg-manager/cart-store';
@@ -69,7 +68,7 @@ export default class DashboardComponent {
 
   pageTitle = this.#breadcrumbStore.pageTitle;
   userRoleStation = this.#authStore.userRoles;
-  activeRole = this.#authStore.activeRole
+  activeRole = this.#authStore.activeRole;
 
   currentThemeIcon = computed(() => {
     switch (this.#themeService.theme()) {
@@ -91,12 +90,13 @@ export default class DashboardComponent {
 
   async logout() {
     await this.#authStore.logout();
-    await this.#router.navigate(['/login']);
+    await this.#router.navigate(['/auth', 'login']);
   }
 
   goToProfile() {
-    this.#router.navigate(['/profile']);
+    this.#router.navigate(['/dashboard', 'profile']);
   }
+
   updateActiveRole($event: CustomEvent) {
     this.#authStore.updateActiveRole($event.detail.value);
   }

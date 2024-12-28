@@ -24,7 +24,16 @@ import {
   ILoginWithTokenGQL,
   ISendPasswordResetEmailGQL,
 } from '../schemas/auth.generated';
-import { catchError, EMPTY, filter, lastValueFrom, map, tap, throwError, timer } from 'rxjs';
+import {
+  catchError,
+  EMPTY,
+  filter,
+  lastValueFrom,
+  map,
+  tap,
+  throwError,
+  timer,
+} from 'rxjs';
 import { Preferences } from '@capacitor/preferences';
 import { MutationResult } from '@apollo/client';
 import {
@@ -171,7 +180,7 @@ export const AuthStore = signalStore(
       _refreshToken,
       isLoading,
       user,
-      userRoles
+      userRoles,
     };
   }),
   withMethods((store) => {
@@ -198,6 +207,14 @@ export const AuthStore = signalStore(
     const logout = async () => {
       await Preferences.remove({ key: 'refresh-token' });
       await Preferences.remove({ key: 'access-token' });
+      patchState(store, {
+        loginResponse: {
+          accessToken: '',
+          refreshToken: '',
+          refreshTokenKey: '',
+          user: null,
+        },
+      });
     };
 
     const updateActiveRole = (activeRoleId: string) => {
@@ -208,17 +225,21 @@ export const AuthStore = signalStore(
         patchState(store, { activeRole });
       }
     };
-    const isAuthenticatedGuard = () => timer(100, 100).pipe(
-      filter(() => store.initialLoadComplete()),
-      map(() => store.isLoggedIn())
-    )
+    const isAuthenticatedGuard = () =>
+      timer(100, 100).pipe(
+        filter(() => store.initialLoadComplete()),
+        map(() => store.isLoggedIn())
+      );
+    const isGuestGuard = () =>
+      isAuthenticatedGuard().pipe(map((isAuthenticated) => !isAuthenticated));
     return {
       login,
       removeErrorMessage,
       logout,
       sendResetLink,
       updateActiveRole,
-      isAuthenticatedGuard
+      isAuthenticatedGuard,
+      isGuestGuard,
     };
   }),
   withHooks((store, injector = inject(Injector)) => {
