@@ -17,8 +17,9 @@ export class InventoryResolver {
   @Permissions(PermissionsEnum.CreateInventory)
   async createInventory(@Body('params', new ValidationPipe()) params: CreateInventoryInputDto) {
     const inventory = await this.inventoryService.create({
-      name: params.name,
-      companyName: params.companyName,
+      catalogueId: params.catalogueId,
+      stationId: params.stationId,
+      quantity: params.quantity
     });
 
     return {

@@ -1,27 +1,25 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 import { Exists } from '@lpg-manager/validators';
-import { FileUploadModel } from '@lpg-manager/db';
-import { Type } from 'class-transformer';
-
-class FileUploadDto {
-  @Exists(FileUploadModel, 'id', {
-    message: (validationArguments) =>
-      `Permission with id ${validationArguments.value} not found`
-  })
-  id!: string;
-}
+import { CatalogueModel, StationModel } from '@lpg-manager/db';
 
 export class CreateInventoryInputDto {
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
-  name!: string;
+  @Exists(CatalogueModel, 'id', {
+    message: (validationArguments) =>
+      `Catalogue with id ${validationArguments.value} not found`,
+  })
+  catalogueId!: string;
 
-  @IsString()
-  @IsOptional()
-  companyName!: string;
+  @IsUUID()
+  @IsNotEmpty()
+  @Exists(StationModel, 'id', {
+    message: (validationArguments) =>
+      `Station with id ${validationArguments.value} not found`,
+  })
+  stationId!: string;
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => FileUploadDto)
-  images: FileUploadDto[] = [];
+  @IsNumber()
+  @IsNotEmpty()
+  quantity!: number;
 }
