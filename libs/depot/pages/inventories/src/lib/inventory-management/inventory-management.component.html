@@ -11,9 +11,14 @@
 
 <ion-content class="ion-padding">
   <form [formGroup]="inventoryForm" (ngSubmit)="save()">
-    <ion-item>
-      <ion-label position="stacked">Catalogue</ion-label>
-      <ion-input formControlName="catalogueId" type="text"></ion-input>
+    <ion-item lines="none">
+      <lpg-searchable-select
+        [itemsStore]="cataloguesStore"
+        formControlName="catalogue"
+        label="Select Catalogue"
+        labelPlacement="floating"
+        placeholder="--Select catalogue--"
+      ></lpg-searchable-select>
     </ion-item>
 
     <ion-item>

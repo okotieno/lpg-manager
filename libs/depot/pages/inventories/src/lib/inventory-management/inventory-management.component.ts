@@ -10,11 +10,24 @@ import {
   IonLabel,
   IonButtons,
   IonIcon,
-  ModalController
+  ModalController,
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InventoryStore } from '@lpg-manager/inventory-store';
-
+import {
+  CataloguesStore,
+  IGetCataloguesQuery,
+} from '@lpg-manager/catalogue-store';
+import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
+import { AuthStore } from '@lpg-manager/auth-store';
+import { IQueryOperatorEnum, ISelectCategory } from '@lpg-manager/types';
+import { ICreateInventoryGQL } from '@lpg-manager/inventory-store';
+import { JsonPipe } from '@angular/common';
+import {
+  IGetPermissionsQuery,
+  PermissionsStore,
+} from '@lpg-manager/permission-store';
+import { PaginatedResource } from '@lpg-manager/data-table';
 
 @Component({
   selector: 'lpg-inventory-management',
@@ -31,21 +44,43 @@ import { InventoryStore } from '@lpg-manager/inventory-store';
     IonButtons,
     IonIcon,
     ReactiveFormsModule,
+    SearchableSelectComponent,
+    JsonPipe,
   ],
   templateUrl: './inventory-management.component.html',
-  providers: [InventoryStore],
+  providers: [InventoryStore, CataloguesStore],
 })
 export default class InventoryManagementComponent {
   #fb = inject(FormBuilder);
   #inventoryStore = inject(InventoryStore);
   #modalCtrl = inject(ModalController);
+  #authStore = inject(AuthStore);
+  #createInventoryGQL = inject(ICreateInventoryGQL);
+  cataloguesStore = inject(CataloguesStore) as PaginatedResource<
+    NonNullable<NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]>
+  >;
 
   mode = input<'create' | 'edit'>('create');
+  activeStation = this.#authStore.activeStation;
 
   inventoryForm = this.#fb.group({
-    catalogueId: ['', Validators.required],
+    catalogue: [null as null | ISelectCategory, Validators.required],
     quantity: [0, [Validators.required, Validators.min(0)]],
   });
+
+  constructor() {
+    const activeStationId = this.activeStation()?.id;
+    if (activeStationId) {
+      this.cataloguesStore.setFilters([
+        {
+          field: 'depotId',
+          operator: IQueryOperatorEnum.Equals,
+          value: activeStationId,
+          values: [],
+        },
+      ]);
+    }
+  }
 
   async dismiss() {
     await this.#modalCtrl.dismiss(null, 'cancel');
@@ -53,8 +88,22 @@ export default class InventoryManagementComponent {
 
   async save() {
     if (this.inventoryForm.valid) {
-      // TODO: Implement save logic
-      await this.#modalCtrl.dismiss(this.inventoryForm.value, 'confirm');
+      const formValue = this.inventoryForm.value;
+      this.#createInventoryGQL
+        .mutate({
+          params: {
+            catalogueId: formValue.catalogue?.id as string,
+            stationId: this.activeStation()?.id as string,
+            quantity: formValue.quantity as number,
+          },
+        })
+        .subscribe({
+          next: (result) => {
+            if (result?.data) {
+              this.#modalCtrl.dismiss(result.data, 'confirm');
+            }
+          },
+        });
     }
   }
 }

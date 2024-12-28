@@ -1,4 +1,6 @@
-
+:host {
+  --ion-safe-area-right: 0 !important;
+}
 [aria-selected=true] {
   ion-icon[name="circle"], ion-icon[name="square"] {
     display: none;
@@ -18,6 +20,7 @@
 ion-textarea ion-icon {
   margin-top: -9px !important;
   font-size: 22px !important;
+
 }
 .empty {
   --color: rgba(var(--ion-text-color-rgb), 0.6);
