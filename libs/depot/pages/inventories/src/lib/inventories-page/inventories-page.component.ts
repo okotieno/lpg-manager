@@ -20,11 +20,13 @@ import {
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonContent,
+  ModalController
 } from '@ionic/angular/standalone';
 import { InventoryStore } from '@lpg-manager/inventory-store';
 import { CurrencyPipe, JsonPipe } from '@angular/common';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
+import InventoryManagementComponent from '../inventory-management/inventory-management.component';
 
 @Component({
   selector: 'lpg-inventories',
@@ -57,12 +59,16 @@ export default class InventoriesPageComponent {
   activeStationChangeEffect = effect(() => {
     const activeStationId = this.activeStation()?.id;
     untracked(() => {
-      if(activeStationId) {
+      if (activeStationId) {
         this.inventoryStore.setFilters([
-          { operator: IQueryOperatorEnum.Equals, value: activeStationId, field: 'stationId', values: [] },
+          {
+            operator: IQueryOperatorEnum.Equals,
+            value: activeStationId,
+            field: 'stationId',
+            values: [],
+          },
         ]);
       }
-
     });
   });
 
@@ -88,11 +94,30 @@ export default class InventoriesPageComponent {
     () => this.totalItems() > this.inventories().length
   );
 
+  #modalCtrl = inject(ModalController);
+
   async handleInfiniteScroll() {
     this.inventoryStore.fetchNextPage();
   }
 
   async manageInventory(inventoryId: string) {
     // Implement inventory management logic
+  }
+
+  async addInventory() {
+    const modal = await this.#modalCtrl.create({
+      component: InventoryManagementComponent,
+      componentProps: {
+        mode: 'create',
+      },
+    });
+
+    await modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      // Refresh the inventory list
+      // this.inventoryStore.fetchFirstPage();
+    }
   }
 }
