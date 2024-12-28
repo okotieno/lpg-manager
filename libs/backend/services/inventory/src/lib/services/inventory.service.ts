@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { BrandModel } from '@lpg-manager/db';
+import { InventoryModel } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
-export class InventoryService extends CrudAbstractService<BrandModel> {
+export class InventoryService extends CrudAbstractService<InventoryModel> {
   constructor(
-    @InjectModel(BrandModel) inventoryModel: typeof BrandModel,
+    @InjectModel(InventoryModel) inventoryModel: typeof InventoryModel,
   ) {
     super(inventoryModel);
   }
 }
+

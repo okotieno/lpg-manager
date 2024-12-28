@@ -21,10 +21,6 @@ export class InventoryResolver {
       companyName: params.companyName,
     });
 
-    if (params.images?.length) {
-      await inventory.$set('images', params.images.map(img => img.id));
-    }
-
     return {
       message: 'Inventory created successfully',
       data: inventory

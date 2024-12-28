@@ -173,6 +173,7 @@ export const AuthStore = signalStore(
     const isLoading = computed(() => store._loginResource?.isLoading());
     const user = computed(() => store.loginResponse()?.user);
     const userRoles = computed(() => user()?.roles ?? []);
+    const activeStation = computed(() => store.activeRole?.()?.station)
 
     return {
       isLoggedIn,
@@ -181,6 +182,7 @@ export const AuthStore = signalStore(
       isLoading,
       user,
       userRoles,
+      activeStation
     };
   }),
   withMethods((store) => {

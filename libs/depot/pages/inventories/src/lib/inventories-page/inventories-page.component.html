@@ -1,1 +1,54 @@
-Works
+<ion-content class="ion-padding">
+  <ion-row>
+    <ion-col size="12">
+      <h2>
+        Showing {{ startRange() }} - {{ endRange() }} of {{ totalItems() }} items
+      </h2>
+    </ion-col>
+  </ion-row>
+{{ activeStation() | json }}
+  <ion-row>
+    @for (inventory of inventories(); track inventory?.id) {
+      <ion-col size="12" sizeSm="6" sizeMd="4" sizeLg="3">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{ inventory?.catalogue?.name }}</ion-card-title>
+            <ion-card-subtitle>{{ inventory?.catalogue?.brand?.name }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <div class="inventory-details">
+              <p>
+                <ion-text color="medium">Quantity:</ion-text>
+                <ion-text>{{ inventory?.quantity }} {{ inventory?.catalogue?.unit }}</ion-text>
+              </p>
+
+              <p>
+                <ion-text color="medium">Price per unit:</ion-text>
+                <ion-text>{{ inventory?.catalogue?.pricePerUnit | currency }}</ion-text>
+              </p>
+
+              <ion-button
+                expand="block"
+                color="primary"
+                (click)="manageInventory(inventory.id)"
+              >
+                <ion-icon name="gear" slot="start"></ion-icon>
+                Manage Inventory
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    }
+  </ion-row>
+
+  @if (showInfiniteScroll()) {
+    <ion-infinite-scroll (ionInfinite)="handleInfiniteScroll()">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more inventories...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  }
+</ion-content>
