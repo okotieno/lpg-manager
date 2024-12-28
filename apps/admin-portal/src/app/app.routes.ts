@@ -17,7 +17,6 @@ export const appRoutes: Route[] = [
           .isAuthenticatedGuard()
           .pipe(map((isAuthenticated) => !isAuthenticated)),
     ],
-    loadChildren: () =>
-      import('@lpg-manager/auth-page').then((m) => m.AUTH_ROUTES),
+    loadChildren: () => import('@lpg-manager/auth-page'),
   },
 ];

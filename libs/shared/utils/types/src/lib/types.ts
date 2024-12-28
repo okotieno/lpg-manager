@@ -183,15 +183,11 @@ export type ICreateNotificationSuccessResponse = {
   message: Scalars['String']['output'];
 };
 
-export type ICreateOrderCatalogueInput = {
-  id: Scalars['UUID']['input'];
-};
-
 export type ICreateOrderInput = {
-  name: Scalars['String']['input'];
+  items: Array<InputMaybe<IOrderItemInput>>;
 };
 
-export type ICreateOrderSuccessResponse = {
+export type ICreateOrderResponse = {
   data: IOrderModel;
   message: Scalars['String']['output'];
 };
@@ -314,7 +310,7 @@ export type IMutation = {
   createCatalogue?: Maybe<ICreateCatalogueSuccessResponse>;
   createInventory?: Maybe<ICreateInventorySuccessResponse>;
   createNotification?: Maybe<ICreateNotificationSuccessResponse>;
-  createOrder?: Maybe<ICreateOrderSuccessResponse>;
+  createOrder: ICreateOrderResponse;
   createOtp?: Maybe<ICreateOtpSuccessResponse>;
   createPasswordReset?: Maybe<ICreatePasswordResetSuccessResponse>;
   createPermission?: Maybe<ICreatePermissionSuccessResponse>;
@@ -356,7 +352,7 @@ export type IMutation = {
   updateInventory?: Maybe<ICreateInventorySuccessResponse>;
   updateItemQuantity: ICreateCartResponse;
   updateNotification?: Maybe<ICreateNotificationSuccessResponse>;
-  updateOrder?: Maybe<ICreateOrderSuccessResponse>;
+  updateOrder: IUpdateOrderResponse;
   updateOtp?: Maybe<ICreateOtpSuccessResponse>;
   updatePasswordReset?: Maybe<ICreatePasswordResetSuccessResponse>;
   updatePermission?: Maybe<ICreatePermissionSuccessResponse>;
@@ -753,9 +749,33 @@ export type INotificationUserModel = {
   updatedAt: Scalars['String']['output'];
 };
 
-export type IOrderModel = {
+export type IOrderItem = {
+  catalogue: ICatalogueModel;
+  catalogueId: Scalars['UUID']['output'];
   id: Scalars['UUID']['output'];
+  quantity: Scalars['Int']['output'];
 };
+
+export type IOrderItemInput = {
+  catalogueId: Scalars['UUID']['input'];
+  quantity: Scalars['Int']['input'];
+};
+
+export type IOrderModel = {
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['UUID']['output'];
+  items: Array<Maybe<IOrderItem>>;
+  status: IOrderStatus;
+  totalPrice: Scalars['Float']['output'];
+  totalQuantity: Scalars['Int']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export enum IOrderStatus {
+  Canceled = 'CANCELED',
+  Completed = 'COMPLETED',
+  Pending = 'PENDING'
+}
 
 export type IOtpModel = {
   id: Scalars['UUID']['output'];
@@ -1193,12 +1213,13 @@ export type IUpdateNotificationInput = {
   title: Scalars['String']['input'];
 };
 
-export type IUpdateOrderCatalogueInput = {
-  id: Scalars['UUID']['input'];
+export type IUpdateOrderInput = {
+  status: IOrderStatus;
 };
 
-export type IUpdateOrderInput = {
-  name: Scalars['String']['input'];
+export type IUpdateOrderResponse = {
+  data: IOrderModel;
+  message: Scalars['String']['output'];
 };
 
 export type IUpdateOtpInput = {

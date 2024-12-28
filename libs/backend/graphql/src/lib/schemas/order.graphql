@@ -1,31 +1,52 @@
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELED
+}
+
+type OrderItem {
+  id: UUID!
+  catalogueId: UUID!
+  quantity: Int!
+  catalogue: CatalogueModel!
+}
+
 type OrderModel {
   id: UUID!
-}
-
-input CreateOrderCatalogueInput {
-  id: UUID!
-}
-
-input UpdateOrderCatalogueInput {
-  id: UUID!
+  items: [OrderItem]!
+  totalQuantity: Int!
+  totalPrice: Float!
+  status: OrderStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input CreateOrderInput {
-  name: String!
+  items: [OrderItemInput]!
+}
+
+input OrderItemInput {
+  catalogueId: UUID!
+  quantity: Int!
 }
 
 input UpdateOrderInput {
-  name: String!
+  status: OrderStatus!
+}
+
+type CreateOrderResponse {
+  message: String!
+  data: OrderModel!
+}
+
+type UpdateOrderResponse {
+  message: String!
+  data: OrderModel!
 }
 
 type PaginatedOrder {
   items: [OrderModel]
   meta: Pagination
-}
-
-type CreateOrderSuccessResponse {
-  message: String!
-  data: OrderModel!
 }
 
 extend type Query {
@@ -34,9 +55,7 @@ extend type Query {
 }
 
 extend type Mutation {
-  updateOrder(id: UUID!, params: UpdateOrderInput): CreateOrderSuccessResponse
-
-  createOrder(params: CreateOrderInput): CreateOrderSuccessResponse
-
+  createOrder(params: CreateOrderInput): CreateOrderResponse!
+  updateOrder(id: UUID!, params: UpdateOrderInput): UpdateOrderResponse!
   deleteOrder(id: UUID!): DeleteSuccessResponse
 }

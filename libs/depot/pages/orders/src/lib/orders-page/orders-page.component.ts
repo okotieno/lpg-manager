@@ -12,4 +12,4 @@ export default class OrdersPageComponent {
   get orders() {
     return this.#orderStore.orders;
   }
-} 
+}

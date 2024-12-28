@@ -28,6 +28,11 @@ export const DASHBOARD_ROUTES: Routes = [
         loadChildren: () =>
           import('@lpg-manager/profile-page'),
       },
+      {
+        path: 'orders',
+        loadChildren: () =>
+          import('@lpg-manager/depot-orders-page'),
+      },
     ],
   }
 ];

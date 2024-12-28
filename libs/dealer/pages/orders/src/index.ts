@@ -1,1 +1,1 @@
-export { DASHBOARD_ROUTES as default } from './lib/orders.routes'
+export { ORDERS_ROUTES as default } from './lib/orders.routes'
