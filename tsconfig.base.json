@@ -96,6 +96,9 @@
       "@lpg-manager/inventory-service": [
         "libs/backend/services/inventory/src/index.ts"
       ],
+      "@lpg-manager/depot-inventories-page": [
+        "libs/depot/pages/inventories/src/index.ts"
+      ],
       "@lpg-manager/notification-service": [
         "libs/backend/services/notification/src/index.ts"
       ],
