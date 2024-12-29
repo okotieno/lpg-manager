@@ -1,10 +1,10 @@
-import { IsInt, ValidateNested } from 'class-validator';
+import { IsUUID, ValidateNested } from 'class-validator';
 import { CreateActivityLogInputDto } from './create-activity-log-input.dto';
 import { ActivityLogModel } from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
 
 export class UpdateActivityLogInputDto {
-  @IsInt()
+  @IsUUID()
   @Exists(ActivityLogModel, 'id', {
     message: (validationArguments) =>
       `ActivityLog with id  ${validationArguments.value}" not found`,

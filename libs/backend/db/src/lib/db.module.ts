@@ -15,6 +15,7 @@ import {
   InventoryModel,
   CatalogueModel, CartModel, CartCatalogueModel,
   OrderModel,
+  OrderItemModel
 } from './models';
 import { SequelizeOptions } from 'sequelize-typescript';
 
@@ -50,7 +51,8 @@ import { SequelizeOptions } from 'sequelize-typescript';
           CatalogueModel,
           CartModel,
           CartCatalogueModel,
-          OrderModel
+          OrderModel,
+          OrderItemModel
         ],
       }),
     }),

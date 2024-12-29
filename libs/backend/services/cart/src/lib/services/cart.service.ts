@@ -136,15 +136,24 @@ export class CartService extends CrudAbstractService<CartModel> {
     items: Array<{ inventoryId: string; quantity: number }>,
     transaction?: Transaction
   ) {
-    const inventory = (await this.inventoryModel.findByPk(
-      cartId
-    )) as InventoryModel;
-    const cartItems = items.map((item) => ({
-      cartId,
-      inventoryId: item.inventoryId,
-      catalogueId: inventory.catalogueId,
-      quantity: item.quantity,
-    }));
+    const cartItems: {
+      cartId: string;
+      inventoryId: string;
+      catalogueId: string;
+      quantity: number;
+    }[] = [];
+
+     for (const item of items) {
+      const inventory = (await this.inventoryModel.findByPk(
+        item.inventoryId
+      )) as InventoryModel;
+      cartItems.push({
+        cartId,
+        inventoryId: item.inventoryId,
+        catalogueId: inventory.catalogueId,
+        quantity: item.quantity,
+      })
+    }
 
     await this.cartCatalogueModel.bulkCreate(cartItems, { transaction });
   }

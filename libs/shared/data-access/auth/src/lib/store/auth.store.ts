@@ -156,12 +156,6 @@ export const AuthStore = signalStore(
                 },
               }
             )
-            .pipe(
-              tap((res) => {
-                if (res.data?.sendPasswordResetLinkEmail)
-                  console.log(res.data?.sendPasswordResetLinkEmail);
-              })
-            )
         );
       },
     }),

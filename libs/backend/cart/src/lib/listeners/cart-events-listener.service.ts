@@ -10,22 +10,47 @@ export class CartEventsListenerService {
   @OnEvent('cart.completed')
   async createOrders($event: CartEvent) {
     // Group cart items by station
-    const stationOrders = new Map<string, number>();
-    
+    const stationOrders = new Map<string, {
+      totalPrice: number;
+      items: Array<{
+        catalogueId: string;
+        inventoryId: string;
+        quantity: number;
+        pricePerUnit: number;
+      }>;
+    }>();
+
     for (const item of $event.cart.items) {
       const stationId = item.inventory.station.id;
       const itemTotal = item.quantity * (item.catalogue.pricePerUnit || 0);
-      
-      if (stationOrders.has(stationId)) {
-        stationOrders.set(stationId, stationOrders.get(stationId)! + itemTotal);
-      } else {
-        stationOrders.set(stationId, itemTotal);
+
+      if (!stationOrders.has(stationId)) {
+        stationOrders.set(stationId, {
+          totalPrice: 0,
+          items: []
+        });
+      }
+
+      const stationOrder = stationOrders.get(stationId);
+      if (stationOrder) {
+        stationOrder.totalPrice += itemTotal;
+        stationOrder.items.push({
+          catalogueId: item.catalogue.id,
+          inventoryId: item.inventory.id,
+          quantity: item.quantity,
+          pricePerUnit: item.catalogue.pricePerUnit as number,
+        });
       }
     }
 
     // Create an order for each station
-    for (const [stationId, totalPrice] of stationOrders) {
-      await this.orderService.createOrder($event.cart.id, stationId, totalPrice);
+    for (const [stationId, orderData] of stationOrders) {
+      await this.orderService.createOrder(
+        $event.cart.id,
+        stationId,
+        orderData.totalPrice,
+        orderData.items
+      );
     }
   }
 }

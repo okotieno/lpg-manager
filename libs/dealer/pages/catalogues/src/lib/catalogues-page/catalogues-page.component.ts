@@ -170,7 +170,6 @@ export default class CataloguesPageComponent {
   inventoriesDisplayed = computed(() => {
     const cartCatalogueItems = this.cartCatalogueItems();
     const catalogues = this.inventories();
-    console.log({ cartCatalogueItems, catalogues });
 
     return catalogues.map((inventory) => {
       const cartCatalogueItem = cartCatalogueItems.find(
