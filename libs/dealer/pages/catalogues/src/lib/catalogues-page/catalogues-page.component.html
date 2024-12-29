@@ -72,6 +72,10 @@
                         <ion-icon name="cube"></ion-icon>
                         {{ inventory.catalogue.quantityPerUnit }} {{ inventory.catalogue.unit }}
                       </p>
+                      <p>
+                        <ion-icon name="box"></ion-icon>
+                        Stock Available: {{ inventory.quantity }}
+                      </p>
                     </ion-text>
                   </div>
                   <ion-buttons style="justify-content: center; align-items: center">
@@ -92,7 +96,7 @@
 
                     } @else {
                       <ion-button class="add-to-cart-button" fill="outline" color="primary" expand="block"
-                                  (click)="addToCart(inventory.catalogue)">
+                                  (click)="addToCart(inventory)">
                         <ion-icon name="cart-plus" slot="start"></ion-icon>
                         Add to Cart
                       </ion-button>

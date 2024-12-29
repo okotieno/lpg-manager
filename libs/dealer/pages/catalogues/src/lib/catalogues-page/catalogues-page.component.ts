@@ -34,7 +34,6 @@ import { CurrencyPipe } from '@angular/common';
 import {
   CartStore,
   IGetCartsQuery,
-  AddToCartDialogComponent,
 } from '@lpg-manager/cart-store';
 import { IGetStationsQuery, StationStore } from '@lpg-manager/station-store';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
@@ -45,12 +44,13 @@ import {
   IGetInventoriesQuery,
   InventoryStore,
 } from '@lpg-manager/inventory-store';
+import { AddToCartDialogComponent } from '../components/add-to-cart-dialog.component';
 
 type IGetItemQuery = NonNullable<
   IGetInventoriesQuery['inventories']['items']
 >[number];
 
-type ICatalogueDisplay = IGetItemQuery & {
+export type ICatalogueDisplay = IGetItemQuery & {
   cart?: NonNullable<
     NonNullable<IGetCartsQuery['carts']['items']>[number]
   >['items'][number];
@@ -185,13 +185,12 @@ export default class CataloguesPageComponent {
     this.inventoryStore.setSearchTerm(searchTerm);
   }
 
-  async addToCart(
-    catalogue?: NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]
-  ) {
+  async addToCart(inventory: ICatalogueDisplay) {
     const modal = await this.#modalCtrl.create({
       component: AddToCartDialogComponent,
       componentProps: {
-        catalogue,
+        catalogue: inventory.catalogue,
+        inventory: inventory
       },
     });
 

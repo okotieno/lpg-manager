@@ -1,13 +1,12 @@
 import {
-  Component,
+  Component, computed,
   effect,
   inject,
   input,
   untracked,
-  viewChild,
+  viewChild
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ICatalogueModel } from '@lpg-manager/types';
 import {
   IonButton,
   IonButtons,
@@ -32,6 +31,7 @@ import {
   ModalController,
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
+import { ICatalogueDisplay } from '../catalogues-page/catalogues-page.component';
 
 @Component({
   selector: 'lpg-add-to-cart-dialog',
@@ -52,25 +52,25 @@ import { CurrencyPipe } from '@angular/common';
         <ion-row>
           <ion-col size="5">
             <ion-img
-              [src]="catalogue().images?.[0]?.url ?? 'no-image-placeholder.webp'"
+              [src]="inventory().catalogue.images?.[0]?.url ?? 'no-image-placeholder.webp'"
               class="catalogue-image"
             ></ion-img>
           </ion-col>
           <ion-col size="7">
-            @if (catalogue().pricePerUnit) {
+            @if (inventory().catalogue.pricePerUnit) {
             <div class="price-tag">
-              {{ catalogue().pricePerUnit | currency }}
+              {{ inventory().catalogue.pricePerUnit | currency }}
             </div>
             }
             <p class="description">
-              {{ catalogue().description || 'No description available' }}
+              {{  inventory().catalogue.description || 'No description available' }}
             </p>
 
             <div class="specs">
               <ion-text color="medium">
                 <p>
                   <ion-icon name="cube"></ion-icon>
-                  {{ catalogue().quantityPerUnit }} {{ catalogue().unit }}
+                  {{ inventory().catalogue.quantityPerUnit }} {{ inventory().catalogue.unit }}
                 </p>
               </ion-text>
             </div>
@@ -78,20 +78,20 @@ import { CurrencyPipe } from '@angular/common';
         </ion-row>
         <ion-card-header>
           <ion-card-title class="ion-text-wrap"
-            >{{ catalogue().name }}
+            >{{ inventory().catalogue.name }}
           </ion-card-title>
-          <ion-card-subtitle>{{ catalogue().brand.name }}</ion-card-subtitle>
+          <ion-card-subtitle>{{ inventory().catalogue.brand.name }}</ion-card-subtitle>
         </ion-card-header>
 
         <ion-card-content> </ion-card-content>
       </ion-card>
       <ion-item>
-        <ion-label position="stacked">Quantity</ion-label>
+        <ion-label position="stacked">Quantity ({{ maxQuantity() }} available)</ion-label>
         <ion-input
           type="number"
           [(ngModel)]="quantity"
           min="1"
-          [max]="maxQuantity"
+          [max]="maxQuantity()"
         ></ion-input>
       </ion-item>
     </ion-content>
@@ -146,12 +146,12 @@ export class AddToCartDialogComponent {
     });
   });
 
-  catalogue = input.required<ICatalogueModel>();
+  inventory = input.required<ICatalogueDisplay>();
   quantity = 1;
-  maxQuantity = 99; // You might want to set this based on available inventory
+  maxQuantity = computed(() => Math.min(this.inventory()?.quantity || 0, 99));
 
   isValidQuantity(): boolean {
-    return this.quantity >= 1 && this.quantity <= this.maxQuantity;
+    return this.quantity >= 1 && this.quantity <= this.maxQuantity();
   }
 
   async dismiss() {
@@ -162,7 +162,7 @@ export class AddToCartDialogComponent {
     await this.#modalCtrl.dismiss(
       {
         quantity: this.quantity,
-        catalogueId: this.catalogue().id,
+        catalogueId: this.inventory().id,
       },
       'confirm'
     );
