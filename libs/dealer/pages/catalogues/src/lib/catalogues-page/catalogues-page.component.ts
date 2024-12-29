@@ -46,18 +46,19 @@ import {
   IGetCartsQuery,
   AddToCartDialogComponent,
 } from '@lpg-manager/cart-store';
-import { StationStore } from '@lpg-manager/station-store';
+import { IGetStationsQuery, StationStore } from '@lpg-manager/station-store';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { ISelectCategory, IQueryOperatorEnum } from '@lpg-manager/types';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { tap } from 'rxjs';
+import { IGetInventoriesQuery, InventoryStore } from '@lpg-manager/inventory-store';
 
 type IGetItemQuery = NonNullable<
-  IGetCataloguesQuery['catalogues']['items']
+  IGetInventoriesQuery['inventories']['items']
 >[number];
 
 type ICatalogueDisplay = IGetItemQuery & {
-  cart?: NonNullable<IGetCartsQuery['carts']['items']>[number];
+  cart?: NonNullable<NonNullable<IGetCartsQuery['carts']['items']>[number]>['items'][number];
 };
 
 @Component({
@@ -93,26 +94,31 @@ type ICatalogueDisplay = IGetItemQuery & {
   templateUrl: './catalogues-page.component.html',
   styleUrl: './catalogues-page.component.scss',
   providers: [
-    CataloguesStore,
+    InventoryStore,
+    // CataloguesStore,
     StationStore,
     {
       provide: GET_ITEMS_INCLUDE_FIELDS,
       useValue: {
-        includeBrand: true,
-        includeDescription: true,
-        includePricePerUnit: true,
+        // includeBrand: true,
+        // includeDescription: true,
+        // includePricePerUnit: true,
       },
     },
   ],
 })
 export default class CataloguesPageComponent {
-  @ViewChild(IonInfiniteScroll) infiniteScroll?: IonInfiniteScroll;
+  infiniteScroll = viewChild(IonInfiniteScroll);
   #cartStore = inject(CartStore);
   #fb = inject(FormBuilder);
   #modalCtrl = inject(ModalController);
   #alertController = inject(AlertController);
-  depotStore = inject(StationStore) as PaginatedResource<any>;
-  cataloguesStore = inject(CataloguesStore);
+  depotStore = inject(StationStore) as PaginatedResource<
+    NonNullable<
+      NonNullable<IGetStationsQuery['stations']['items']>[number]
+    >
+  >;
+  cataloguesStore = inject(InventoryStore);
   searchForm = this.#fb.group({
     depot: [[] as ISelectCategory[]],
   });
@@ -177,7 +183,7 @@ export default class CataloguesPageComponent {
   }
 
   cartCatalogueItems = computed(() => this.#cartStore.cart?.()?.items ?? []);
-  cataloguesDisplayed = computed<any>(() => {
+  inventoriesDisplayed = computed(() => {
     const cartCatalogueItems = this.cartCatalogueItems();
     const catalogues = this.catalogues();
 

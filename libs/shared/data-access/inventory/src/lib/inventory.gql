@@ -27,7 +27,9 @@ query GetInventories($query: QueryParams) {
         name
       }
       catalogue {
+        id
         name
+        description
         quantityPerUnit
         pricePerUnit
         unit

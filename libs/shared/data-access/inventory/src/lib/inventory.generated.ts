@@ -22,7 +22,7 @@ export type IGetInventoriesQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetInventoriesQuery = { inventories: { items?: Array<{ id: string, quantity: number, station: { id: string, name: string }, catalogue: { name: string, quantityPerUnit: number, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, brand: { id: string, name: string }, images?: Array<{ originalName?: string | null, url?: string | null } | null> | null } } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetInventoriesQuery = { inventories: { items?: Array<{ id: string, quantity: number, station: { id: string, name: string }, catalogue: { id: string, name: string, description?: string | null, quantityPerUnit: number, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, brand: { id: string, name: string }, images?: Array<{ originalName?: string | null, url?: string | null } | null> | null } } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteInventoryByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -89,7 +89,9 @@ export const GetInventoriesDocument = gql`
         name
       }
       catalogue {
+        id
         name
+        description
         quantityPerUnit
         pricePerUnit
         unit
