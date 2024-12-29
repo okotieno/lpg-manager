@@ -13,7 +13,7 @@ import {
   IonLabel,
   IonRow,
   IonCol,
-  IonGrid
+  IonGrid,
 } from '@ionic/angular/standalone';
 import { CurrencyPipe, JsonPipe } from '@angular/common';
 
@@ -43,7 +43,14 @@ import { CurrencyPipe, JsonPipe } from '@angular/common';
 export default class CheckoutPageComponent {
   #cartStore = inject(CartStore);
 
-  cartItems = computed(() => this.#cartStore.cart?.()?.items ?? []);
+  cartItems = computed(() => {
+    const cartItems =  [...(this.#cartStore.cart?.()?.items ?? [])];
+    return cartItems.sort((a, b) =>
+      new Date(a?.createdAt as string) > new Date(b?.createdAt as string)
+        ? 1
+        : -1
+    );
+  });
   cartTotal = computed(() => {
     const items = this.cartItems();
     return items.reduce((total, item) => {

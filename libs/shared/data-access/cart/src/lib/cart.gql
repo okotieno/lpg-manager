@@ -4,6 +4,7 @@ fragment cartFragment on CartModel {
   totalPrice
   items {
     id
+    createdAt
     catalogueId
     quantity
     catalogue {

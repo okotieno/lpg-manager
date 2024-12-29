@@ -9,6 +9,7 @@ type CartCatalogueModel {
   quantity: Float!
   catalogue: CatalogueModel!
   inventory: InventoryModel!
+  createdAt: DateTime!
 }
 
 type CartModel {

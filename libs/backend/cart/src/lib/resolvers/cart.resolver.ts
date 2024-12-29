@@ -1,4 +1,11 @@
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
 import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
 import {
@@ -127,18 +134,22 @@ export class CartResolver {
       data: { cart, order },
     };
   }
+
   @ResolveField('items')
   async getItems(@Parent() cart: CartModel) {
     const cartWithItems = await this.cartService.findById(cart.id, {
-      include: [{
-        model: CartCatalogueModel,
-        include: [
-          CatalogueModel,
-          InventoryModel
-        ]
-      }]
+      include: [
+        {
+          model: CartCatalogueModel,
+          include: [CatalogueModel, InventoryModel],
+        },
+      ],
     });
 
-    return cartWithItems?.items ?? [];
+    return (
+      cartWithItems?.items?.sort(({ createdAt: a }, { createdAt: b }) =>
+        a <= b ? 1 : 0
+      ) ?? []
+    );
   }
 }

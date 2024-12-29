@@ -68,6 +68,7 @@ export type ICartCatalogueInput = {
 export type ICartCatalogueModel = {
   catalogue: ICatalogueModel;
   catalogueId: Scalars['UUID']['output'];
+  createdAt: Scalars['DateTime']['output'];
   id: Scalars['UUID']['output'];
   inventory: IInventoryModel;
   quantity: Scalars['Float']['output'];
