@@ -1,6 +1,7 @@
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { CatalogueModel } from './catalogue.model';
 import { CartModel } from './cart.model';
+import { InventoryModel } from './inventory.model';
 
 @Table({
   tableName: 'cart_catalogues',
@@ -31,6 +32,13 @@ export class CartCatalogueModel extends Model {
   })
   catalogueId!: string;
 
+  @ForeignKey(() => InventoryModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  inventoryId!: string;
+
   @Column({
     type: DataType.DECIMAL(10, 2),
     allowNull: false,
@@ -42,4 +50,7 @@ export class CartCatalogueModel extends Model {
 
   @BelongsTo(() => CatalogueModel)
   catalogue!: CatalogueModel;
+
+  @BelongsTo(() => InventoryModel)
+  inventory!: InventoryModel;
 }

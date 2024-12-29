@@ -15,10 +15,10 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'stations',
-          key: 'id'
+          key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
       },
       catalogueId: {
         field: 'catalogue_id',
@@ -26,30 +26,30 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'catalogues',
-          key: 'id'
+          key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
       },
       quantity: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
-        defaultValue: 0
+        defaultValue: 0,
       },
       createdAt: {
         field: 'created_at',
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       updatedAt: {
         field: 'updated_at',
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       deletedAt: {
         field: 'deleted_at',
         type: Sequelize.DATE,
-        allowNull: true
+        allowNull: true,
       },
     });
 
@@ -58,5 +58,5 @@ module.exports = {
 
   async down(queryInterface) {
     await queryInterface.dropTable('inventory');
-  }
-}; 
+  },
+};

@@ -8,6 +8,7 @@ type CartCatalogueModel {
   catalogueId: UUID!
   quantity: Float!
   catalogue: CatalogueModel!
+  inventory: InventoryModel!
 }
 
 type CartModel {
@@ -21,7 +22,7 @@ type CartModel {
 
 input CartCatalogueInput {
   id: UUID!
-  catalogueId: UUID!
+  inventoryId: UUID!
   quantity: Float!
 }
 
@@ -51,7 +52,7 @@ extend type Query {
 
 extend type Mutation {
   createCart(params: CreateCartInput): CreateCartResponse!
-  addItemToCart(cartId: UUID, catalogueId: UUID!, quantity: Int!): CreateCartResponse!
+  addItemToCart(cartId: UUID, inventoryId: UUID!, quantity: Int!): CreateCartResponse!
   removeItemFromCart(cartId: UUID!, cartCatalogueId: UUID!): CreateCartResponse!
   updateItemQuantity(cartId: UUID!, cartCatalogueId: UUID!, quantity: Int!): CreateCartResponse!
   completeCart(cartId: UUID!): CreateCartResponse!

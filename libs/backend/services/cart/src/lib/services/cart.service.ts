@@ -3,12 +3,14 @@ import { CrudAbstractService } from '@lpg-manager/crud-abstract';
 import { CartModel, CartCatalogueModel, CatalogueModel, CartStatus } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
+import { InventoryModel } from '@lpg-manager/db';
 
 @Injectable()
 export class CartService extends CrudAbstractService<CartModel> {
   constructor(
     @InjectModel(CartModel) cartModel: typeof CartModel,
     @InjectModel(CartCatalogueModel) private cartCatalogueModel: typeof CartCatalogueModel,
+    @InjectModel(InventoryModel) private inventoryModel: typeof InventoryModel,
   ) {
     super(cartModel);
   }
@@ -24,12 +26,18 @@ export class CartService extends CrudAbstractService<CartModel> {
     });
   }
 
-  async addItem(cartId: string, catalogueId: string, quantity: number) {
+  async addItem(cartId: string, inventoryId: string, quantity: number) {
     const transaction = await this.model.sequelize?.transaction();
     try {
+      const inventory = await this.inventoryModel.findByPk(inventoryId);
+      if (!inventory) {
+        throw new Error('Inventory not found');
+      }
+
       await this.cartCatalogueModel.create({
         cartId,
-        catalogueId,
+        catalogueId: inventory.catalogueId,
+        inventoryId,
         quantity
       }, { transaction });
 
@@ -39,7 +47,7 @@ export class CartService extends CrudAbstractService<CartModel> {
       return this.findById(cartId, {
         include: [{
           model: CartCatalogueModel,
-          include: [CatalogueModel]
+          include: [CatalogueModel, InventoryModel]
         }]
       });
     } catch (error) {
@@ -103,10 +111,12 @@ export class CartService extends CrudAbstractService<CartModel> {
     }
   }
 
-  async addItems(cartId: string, items: Array<{ catalogueId: string; quantity: number }>, transaction?: Transaction) {
+  async addItems(cartId: string, items: Array<{ inventoryId: string; quantity: number }>, transaction?: Transaction) {
+    const inventory = await this.inventoryModel.findByPk(cartId) as InventoryModel;
     const cartItems = items.map(item => ({
       cartId,
-      catalogueId: item.catalogueId,
+      inventoryId: item.inventoryId,
+      catalogueId: inventory.catalogueId,
       quantity: item.quantity
     }));
 

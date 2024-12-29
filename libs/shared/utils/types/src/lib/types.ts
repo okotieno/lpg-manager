@@ -60,8 +60,8 @@ export type IBrandModel = {
 };
 
 export type ICartCatalogueInput = {
-  catalogueId: Scalars['UUID']['input'];
   id: Scalars['UUID']['input'];
+  inventoryId: Scalars['UUID']['input'];
   quantity: Scalars['Float']['input'];
 };
 
@@ -69,6 +69,7 @@ export type ICartCatalogueModel = {
   catalogue: ICatalogueModel;
   catalogueId: Scalars['UUID']['output'];
   id: Scalars['UUID']['output'];
+  inventory: IInventoryModel;
   quantity: Scalars['Float']['output'];
 };
 
@@ -369,7 +370,7 @@ export type IMutation = {
 
 export type IMutationAddItemToCartArgs = {
   cartId?: InputMaybe<Scalars['UUID']['input']>;
-  catalogueId: Scalars['UUID']['input'];
+  inventoryId: Scalars['UUID']['input'];
   quantity: Scalars['Int']['input'];
 };
 

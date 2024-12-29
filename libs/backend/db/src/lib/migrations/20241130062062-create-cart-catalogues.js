@@ -31,6 +31,17 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
+      inventoryId: {
+        field: 'inventory_id',
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'inventory',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
       quantity: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,

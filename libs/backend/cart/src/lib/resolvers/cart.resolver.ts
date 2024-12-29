@@ -58,10 +58,10 @@ export class CartResolver {
   @Mutation(() => CartModel)
   async addItemToCart(
     @Args('cartId') cartId: string,
-    @Args('catalogueId') catalogueId: string,
+    @Args('inventoryId') inventoryId: string,
     @Args('quantity') quantity: number
   ) {
-    const cart = await this.cartService.addItem(cartId, catalogueId, quantity);
+    const cart = await this.cartService.addItem(cartId, inventoryId, quantity);
     return {
       message: 'Item added to cart successfully',
       data: cart,

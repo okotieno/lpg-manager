@@ -28,7 +28,7 @@ export type ICreateCartMutation = { createCart: { message: string, data: { id: s
 
 export type IAddItemToCartMutationVariables = Types.Exact<{
   cartId?: Types.InputMaybe<Types.Scalars['UUID']['input']>;
-  catalogueId: Types.Scalars['UUID']['input'];
+  inventoryId: Types.Scalars['UUID']['input'];
   quantity: Types.Scalars['Int']['input'];
 }>;
 
@@ -141,8 +141,8 @@ export const CreateCartDocument = gql`
     }
   }
 export const AddItemToCartDocument = gql`
-    mutation AddItemToCart($cartId: UUID, $catalogueId: UUID!, $quantity: Int!) {
-  addItemToCart(cartId: $cartId, catalogueId: $catalogueId, quantity: $quantity) {
+    mutation AddItemToCart($cartId: UUID, $inventoryId: UUID!, $quantity: Int!) {
+  addItemToCart(cartId: $cartId, inventoryId: $inventoryId, quantity: $quantity) {
     message
     data {
       ...cartFragment

@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 
 class CartCatalogueInput {
   @IsString()
-  catalogueId!: string;
+  inventoryId!: string;
 
   @IsNumber()
   quantity!: number;

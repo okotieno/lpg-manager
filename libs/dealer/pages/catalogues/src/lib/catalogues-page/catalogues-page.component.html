@@ -111,6 +111,8 @@
 
                     } @else {
                       <ion-button
+                        color="primary"
+                        fill="outline"
                         class="add-to-cart-button"
                         (click)="addToCart(inventory)"
                         [disabled]="inventory.quantity <= 0">

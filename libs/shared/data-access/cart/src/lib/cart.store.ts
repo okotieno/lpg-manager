@@ -139,7 +139,7 @@ export const CartStore = signalStore(
             .mutate(
               {
                 cartId: store.cartId(),
-                catalogueId: request.items[0].catalogueId,
+                inventoryId: request.items[0].inventoryId,
                 quantity: request.items[0].quantity,
               },
               {
@@ -192,9 +192,9 @@ export const CartStore = signalStore(
     }),
   })),
   withMethods((store) => ({
-    addItem: (catalogueId: string, quantity = 1) => {
+    addItem: (inventoryId: string, quantity = 1) => {
       patchState(store, {
-        items: [{ id: crypto.randomUUID(), catalogueId, quantity }],
+        items: [{ id: crypto.randomUUID(), inventoryId, quantity }],
       });
     },
     async removeItem(cartCatalogueId: string) {

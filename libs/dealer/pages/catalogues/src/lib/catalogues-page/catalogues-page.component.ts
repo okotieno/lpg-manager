@@ -189,7 +189,6 @@ export default class CataloguesPageComponent {
     const modal = await this.#modalCtrl.create({
       component: AddToCartDialogComponent,
       componentProps: {
-        catalogue: inventory.catalogue,
         inventory: inventory
       },
     });
@@ -198,7 +197,7 @@ export default class CataloguesPageComponent {
 
     const { data, role } = await modal.onWillDismiss();
     if (role === 'confirm' && data) {
-      this.#cartStore.addItem(data.catalogueId, data.quantity);
+      this.#cartStore.addItem(inventory.id, data.quantity);
     }
   }
 
