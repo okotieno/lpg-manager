@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { ActivityLogBackendService } from '@lpg-manager/activity-log-backend-service';
+import { ActivityLogBackendService } from '@lpg-manager/activity-log-service';
 import { CreateActivityLogInputDto } from '../dto/create-activity-log-input.dto';
 import {
   BadRequestException,

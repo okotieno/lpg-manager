@@ -8,5 +8,5 @@ export class DeleteActivityLogInputDto {
     message: (validationArguments) =>
       `ActivityLog with id  ${validationArguments.value}" not found`,
   })
-  id = 0;
+  id!: string;
 }

@@ -23,13 +23,14 @@ import {
   InventoryModel,
 } from '@lpg-manager/db';
 import { CreateCartInputDto } from '../dto/create-cart-input.dto';
-import { OrderService } from '@lpg-manager/order-service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CartEvent } from '../events/cart.event';
 
 @Resolver(() => CartModel)
 export class CartResolver {
   constructor(
     private cartService: CartService,
-    private orderService: OrderService
+    private eventEmitter: EventEmitter2
   ) {}
 
   @Mutation(() => CartModel)
@@ -125,13 +126,17 @@ export class CartResolver {
   @Permissions(PermissionsEnum.UpdateCart)
   async completeCart(@Args('cartId') cartId: string) {
     const cart = await this.cartService.completeCart(cartId);
-    const totalPrice = cart?.totalPrice ?? 0;
 
-    const order = await this.orderService.createOrder(cartId, totalPrice);
+    this.eventEmitter.emit(
+      'cart.completed',
+      new CartEvent(cart as CartModel),
+    );
+
+
 
     return {
       message: 'Cart completed successfully',
-      data: { cart, order },
+      data: { cart },
     };
   }
 

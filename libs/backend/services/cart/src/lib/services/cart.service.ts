@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { CartModel, CartCatalogueModel, CatalogueModel, CartStatus } from '@lpg-manager/db';
+import {
+  CartModel,
+  CartCatalogueModel,
+  CatalogueModel,
+  CartStatus,
+  StationModel,
+} from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
 import { InventoryModel } from '@lpg-manager/db';
@@ -9,8 +15,9 @@ import { InventoryModel } from '@lpg-manager/db';
 export class CartService extends CrudAbstractService<CartModel> {
   constructor(
     @InjectModel(CartModel) cartModel: typeof CartModel,
-    @InjectModel(CartCatalogueModel) private cartCatalogueModel: typeof CartCatalogueModel,
-    @InjectModel(InventoryModel) private inventoryModel: typeof InventoryModel,
+    @InjectModel(CartCatalogueModel)
+    private cartCatalogueModel: typeof CartCatalogueModel,
+    @InjectModel(InventoryModel) private inventoryModel: typeof InventoryModel
   ) {
     super(cartModel);
   }
@@ -22,7 +29,7 @@ export class CartService extends CrudAbstractService<CartModel> {
     return super.create({
       ...data,
       expiresAt,
-      status: CartStatus.PENDING
+      status: CartStatus.PENDING,
     });
   }
 
@@ -34,21 +41,26 @@ export class CartService extends CrudAbstractService<CartModel> {
         throw new Error('Inventory not found');
       }
 
-      await this.cartCatalogueModel.create({
-        cartId,
-        catalogueId: inventory.catalogueId,
-        inventoryId,
-        quantity
-      }, { transaction });
+      await this.cartCatalogueModel.create(
+        {
+          cartId,
+          catalogueId: inventory.catalogueId,
+          inventoryId,
+          quantity,
+        },
+        { transaction }
+      );
 
       await this.updateCartTotals(cartId, transaction);
       await transaction?.commit();
 
       return this.findById(cartId, {
-        include: [{
-          model: CartCatalogueModel,
-          include: [CatalogueModel, InventoryModel]
-        }]
+        include: [
+          {
+            model: CartCatalogueModel,
+            include: [CatalogueModel, InventoryModel],
+          },
+        ],
       });
     } catch (error) {
       await transaction?.rollback();
@@ -62,19 +74,21 @@ export class CartService extends CrudAbstractService<CartModel> {
       await this.cartCatalogueModel.destroy({
         where: {
           id: cartCatalogueId,
-          cartId
+          cartId,
         },
-        transaction
+        transaction,
       });
 
       await this.updateCartTotals(cartId, transaction);
       await transaction?.commit();
 
       return this.findById(cartId, {
-        include: [{
-          model: CartCatalogueModel,
-          include: [CatalogueModel]
-        }]
+        include: [
+          {
+            model: CartCatalogueModel,
+            include: [CatalogueModel],
+          },
+        ],
       });
     } catch (error) {
       await transaction?.rollback();
@@ -82,7 +96,11 @@ export class CartService extends CrudAbstractService<CartModel> {
     }
   }
 
-  async updateItemQuantity(cartId: string, cartCatalogueId: string, quantity: number) {
+  async updateItemQuantity(
+    cartId: string,
+    cartCatalogueId: string,
+    quantity: number
+  ) {
     const transaction = await this.model.sequelize?.transaction();
     try {
       await this.cartCatalogueModel.update(
@@ -90,9 +108,9 @@ export class CartService extends CrudAbstractService<CartModel> {
         {
           where: {
             id: cartCatalogueId,
-            cartId
+            cartId,
           },
-          transaction
+          transaction,
         }
       );
 
@@ -100,10 +118,12 @@ export class CartService extends CrudAbstractService<CartModel> {
       await transaction?.commit();
 
       return this.findById(cartId, {
-        include: [{
-          model: CartCatalogueModel,
-          include: [CatalogueModel]
-        }]
+        include: [
+          {
+            model: CartCatalogueModel,
+            include: [CatalogueModel],
+          },
+        ],
       });
     } catch (error) {
       await transaction?.rollback();
@@ -111,13 +131,19 @@ export class CartService extends CrudAbstractService<CartModel> {
     }
   }
 
-  async addItems(cartId: string, items: Array<{ inventoryId: string; quantity: number }>, transaction?: Transaction) {
-    const inventory = await this.inventoryModel.findByPk(cartId) as InventoryModel;
-    const cartItems = items.map(item => ({
+  async addItems(
+    cartId: string,
+    items: Array<{ inventoryId: string; quantity: number }>,
+    transaction?: Transaction
+  ) {
+    const inventory = (await this.inventoryModel.findByPk(
+      cartId
+    )) as InventoryModel;
+    const cartItems = items.map((item) => ({
       cartId,
       inventoryId: item.inventoryId,
       catalogueId: inventory.catalogueId,
-      quantity: item.quantity
+      quantity: item.quantity,
     }));
 
     await this.cartCatalogueModel.bulkCreate(cartItems, { transaction });
@@ -127,13 +153,16 @@ export class CartService extends CrudAbstractService<CartModel> {
     const cartItems = await this.cartCatalogueModel.findAll({
       where: { cartId },
       include: [CatalogueModel],
-      transaction
+      transaction,
     });
 
-    const totalQuantity = cartItems.reduce((sum, item) => sum + Number(item.quantity), 0);
+    const totalQuantity = cartItems.reduce(
+      (sum, item) => sum + Number(item.quantity),
+      0
+    );
     const totalPrice = cartItems.reduce((sum, item) => {
       const pricePerUnit = Number(item.catalogue.pricePerUnit) || 0;
-      return sum + (pricePerUnit * Number(item.quantity));
+      return sum + pricePerUnit * Number(item.quantity);
     }, 0);
 
     await this.model.update(
@@ -151,22 +180,29 @@ export class CartService extends CrudAbstractService<CartModel> {
         },
         {
           where: { id: cartId },
-          transaction
+          transaction,
         }
       );
 
       await transaction?.commit();
 
       return this.findById(cartId, {
-        include: [{
-          model: CartCatalogueModel,
-          include: [CatalogueModel]
-        }]
+        include: [
+          {
+            model: CartCatalogueModel,
+            include: [
+              CatalogueModel,
+              {
+                model: InventoryModel,
+                include: [StationModel],
+              },
+            ],
+          },
+        ],
       });
     } catch (error) {
       await transaction?.rollback();
       throw error;
     }
   }
-
 }
