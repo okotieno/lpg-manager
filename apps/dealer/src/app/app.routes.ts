@@ -6,7 +6,7 @@ import { map } from 'rxjs';
 export const appRoutes: Route[] = [
   {
     path: '',
-    loadChildren: () => import('@lpg-manager/auth-page').then(m => m.AUTH_ROUTES),
+    loadChildren: () => import('@lpg-manager/auth-page'),
     canMatch: [
       () =>
         inject(AuthStore)

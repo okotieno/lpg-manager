@@ -38,7 +38,6 @@ import {
 import { CdkListbox, CdkOption } from '@angular/cdk/listbox';
 import { IQueryParamsFilter, ISortByEnum } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-searchable-select',
@@ -63,7 +62,6 @@ import { JsonPipe } from '@angular/common';
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonTextarea,
-    JsonPipe,
   ],
   styleUrl: './searchable-select.component.scss',
 })

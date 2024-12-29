@@ -22,11 +22,6 @@ import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { IQueryOperatorEnum, IQueryParamsFilter, ISelectCategory } from '@lpg-manager/types';
 import { ICreateInventoryGQL } from '@lpg-manager/inventory-store';
-import { JsonPipe } from '@angular/common';
-import {
-  IGetPermissionsQuery,
-  PermissionsStore,
-} from '@lpg-manager/permission-store';
 import { PaginatedResource } from '@lpg-manager/data-table';
 
 @Component({
@@ -45,7 +40,6 @@ import { PaginatedResource } from '@lpg-manager/data-table';
     IonIcon,
     ReactiveFormsModule,
     SearchableSelectComponent,
-    JsonPipe,
   ],
   templateUrl: './inventory-management.component.html',
   providers: [InventoryStore, CataloguesStore],
