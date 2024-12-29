@@ -22,7 +22,7 @@ export type IGetOrdersQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetOrdersQuery = { orders: { items?: Array<{ id: string, items: Array<{ catalogue: { name: string } } | null> } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetOrdersQuery = { orders: { items?: Array<{ id: string, createdAt: string, status: Types.IOrderStatus, items: Array<{ catalogue: { id: string, name: string } } | null> } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteOrderByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -83,8 +83,11 @@ export const GetOrdersDocument = gql`
   orders(query: $query) {
     items {
       id
+      createdAt
+      status
       items {
         catalogue {
+          id
           name
         }
       }

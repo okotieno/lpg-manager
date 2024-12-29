@@ -1,19 +1,24 @@
-import { signalStore, withState, withComputed } from '@ngrx/signals';
-import { IOrderModel } from '@lpg-manager/types';
-import { computed } from '@angular/core';
-
-interface OrderState {
-  orders: IOrderModel[];
-}
-
-const initialState: OrderState = {
-  orders: [],
-};
+import { signalStore, withProps } from '@ngrx/signals';
+import { inject } from '@angular/core';
+import {
+  IDeleteOrderByIdGQL,
+  IGetOrdersGQL, IGetOrdersQuery,
+  IGetOrdersQueryVariables
+} from './order.generated';
+import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
 export const OrderStore = signalStore(
-  { providedIn: 'root' },
-  withState(initialState),
-  withComputed((store) => ({
-    orderCount: computed(()  => store.orders.length),
-  }))
+  withProps(() => ({
+    _getItemKey: 'order',
+    _getItemsGQL: inject(IGetOrdersGQL),
+    _deleteItemWithIdGQL: inject(IDeleteOrderByIdGQL),
+  })),
+  withPaginatedItemsStore<
+    NonNullable<
+      NonNullable<IGetOrdersQuery['orders']['items']>[number]
+    >,
+    IGetOrdersQueryVariables,
+    'orders',
+    'deleteOrder'
+  >()
 );

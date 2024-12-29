@@ -21,8 +21,11 @@ query GetOrders($query: QueryParams) {
   orders(query: $query) {
     items {
       id
+      createdAt
+      status
       items {
         catalogue {
+          id
           name
         }
       }

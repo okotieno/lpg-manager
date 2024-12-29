@@ -1,0 +1,31 @@
+ion-accordion {
+  margin-bottom: 1rem;
+}
+
+ion-item {
+  --padding-start: 0;
+}
+
+ion-badge {
+  text-transform: capitalize;
+}
+
+h2 {
+  font-weight: 600;
+  margin: 0;
+}
+
+h3 {
+  font-weight: 500;
+  margin: 4px 0;
+}
+
+p {
+  margin: 2px 0;
+}
+
+ion-item-divider {
+  margin-top: 1rem;
+  --background: var(--ion-color-light);
+  font-weight: 500;
+}
