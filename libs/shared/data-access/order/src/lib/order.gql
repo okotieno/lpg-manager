@@ -1,10 +1,52 @@
+mutation CreateOrder(
+  $params: CreateOrderInput!
+) {
+  createOrder(
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetOrderById($id: UUID!) {
+  order(id: $id) {
+    id
+  }
+}
+
 query GetOrders($query: QueryParams) {
   orders(query: $query) {
     items {
       id
+      items {
+        catalogue {
+          name
+        }
+      }
     }
     meta {
       totalItems
+    }
+  }
+}
+
+mutation DeleteOrderById($id: UUID!) {
+  deleteOrder(id: $id) {
+    message
+  }
+}
+
+mutation UpdateOrder($id: UUID!, $params: UpdateOrderInput!) {
+  updateOrder(
+    id: $id
+    params: $params
+  ) {
+    message
+    data {
+      id
     }
   }
 }
