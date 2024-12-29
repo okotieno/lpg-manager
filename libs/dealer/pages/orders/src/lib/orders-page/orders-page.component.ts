@@ -8,8 +8,8 @@ import {
   IonContent,
   IonAccordionGroup,
   IonAccordion,
-  IonIcon,
-  IonText, IonItemDivider
+  IonText,
+  IonItemDivider,
 } from '@ionic/angular/standalone';
 import { DatePipe, CurrencyPipe, JsonPipe } from '@angular/common';
 
@@ -32,14 +32,19 @@ import { DatePipe, CurrencyPipe, JsonPipe } from '@angular/common';
     IonItemDivider,
     JsonPipe,
   ],
-  providers: [
-    OrderStore
-  ]
+  providers: [OrderStore],
 })
 export default class OrdersPageComponent {
   #orderStore = inject(OrderStore);
 
   orders = computed(() => this.#orderStore.searchedItemsEntities() || []);
+  ordersDisplayed = computed(() =>
+    this.orders().map((order) => ({
+      ...order,
+      color: this.getStatusColor(order.status),
+      varColor: `var(--ion-color-${this.getStatusColor(order.status)})`
+    }))
+  );
 
   getStatusColor(status: string): string {
     switch (status) {

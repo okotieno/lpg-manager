@@ -15,7 +15,7 @@ import {
   IonCol,
   IonGrid,
 } from '@ionic/angular/standalone';
-import { CurrencyPipe, JsonPipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-checkout',
@@ -35,7 +35,6 @@ import { CurrencyPipe, JsonPipe } from '@angular/common';
     IonRow,
     IonCol,
     IonGrid,
-    JsonPipe,
   ],
   templateUrl: './checkout-page.component.html',
   styleUrl: './checkout-page.component.scss',

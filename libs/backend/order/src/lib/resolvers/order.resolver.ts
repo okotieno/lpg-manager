@@ -19,7 +19,7 @@ import {
   OrderModel,
   OrderItemModel,
   CatalogueModel,
-  InventoryModel,
+  InventoryModel, StationModel
 } from '@lpg-manager/db';
 import { CreateOrderInputDto } from '../dto/create-order-input.dto';
 
@@ -95,5 +95,13 @@ export class OrderResolver {
       ],
     });
     return orderWithItems?.items ?? [];
+  }
+
+  @ResolveField('station')
+  async getStation(@Root() order: OrderModel) {
+    const orderWithStation = await this.orderService.findById(order.id, {
+      include: [StationModel],
+    });
+    return orderWithStation?.station;
   }
 }

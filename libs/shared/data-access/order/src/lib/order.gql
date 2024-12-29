@@ -22,9 +22,18 @@ query GetOrders($query: QueryParams) {
     items {
       id
       createdAt
+      totalPrice
       status
+      station {
+        name
+      }
       items {
+        id
+        quantity
         catalogue {
+          pricePerUnit
+          quantityPerUnit
+          unit
           id
           name
         }
