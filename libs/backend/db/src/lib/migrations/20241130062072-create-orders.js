@@ -20,6 +20,17 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
+      stationId: {
+        field: 'station_id',
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'stations',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       totalPrice: {
         field: 'total_price',
         type: Sequelize.DECIMAL(10, 2),

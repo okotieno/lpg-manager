@@ -3,9 +3,11 @@ import {
   DataType,
   ForeignKey,
   Model,
-  Table
+  Table,
+  BelongsTo
 } from 'sequelize-typescript';
 import { CartModel } from './cart.model';
+import { StationModel } from './station.model';
 
 @Table({
   tableName: 'orders',
@@ -29,6 +31,13 @@ export class OrderModel extends Model {
   })
   cartId!: string;
 
+  @ForeignKey(() => StationModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  stationId!: string;
+
   @Column({
     type: DataType.DECIMAL(10, 2),
     allowNull: false,
@@ -41,4 +50,10 @@ export class OrderModel extends Model {
     defaultValue: 'PENDING'
   })
   status!: 'PENDING' | 'COMPLETED';
+
+  @BelongsTo(() => StationModel)
+  station!: StationModel;
+
+  @BelongsTo(() => CartModel)
+  cart!: CartModel;
 } 

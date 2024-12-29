@@ -11,7 +11,7 @@ export class OrderService extends CrudAbstractService<OrderModel> {
     super(orderModel);
   }
 
-  async createOrder(cartId: string, totalPrice: number) {
-    return this.orderModel.create({ cartId, totalPrice });
+  async createOrder(cartId: string, stationId: string, totalPrice: number) {
+    return this.orderModel.create({ cartId, stationId, totalPrice });
   }
 }

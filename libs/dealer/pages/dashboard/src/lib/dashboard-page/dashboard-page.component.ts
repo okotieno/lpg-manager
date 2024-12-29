@@ -91,11 +91,11 @@ export default class DashboardComponent {
 
   async logout() {
     await this.#authStore.logout();
-    await this.#router.navigate(['/login']);
+    await this.#router.navigate(['/auth', 'login']);
   }
 
   goToProfile() {
-    this.#router.navigate(['/profile']);
+    this.#router.navigate(['/dashboard', 'profile']);
   }
   updateActiveRole($event: CustomEvent) {
     this.#authStore.updateActiveRole($event.detail.value);

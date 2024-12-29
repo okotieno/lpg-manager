@@ -18,11 +18,7 @@ import {
   IonText,
 } from '@ionic/angular/standalone';
 import { ThemeService } from '@lpg-manager/theme-service';
-import {
-  Router,
-  RouterLink,
-  RouterOutlet,
-} from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BreadcrumbComponent, BreadcrumbStore } from '@lpg-manager/breadcrumb';
 import { TitleCasePipe } from '@angular/common';
 import { AuthStore } from '@lpg-manager/auth-store';
@@ -87,10 +83,10 @@ export default class DashboardComponent {
 
   async logout() {
     await this.#authStore.logout();
-    await this.#router.navigate(['/login']);
+    await this.#router.navigate(['/auth', 'login']);
   }
 
   goToProfile() {
-    this.#router.navigate(['/profile']);
+    this.#router.navigate(['/dashboard', 'profile']);
   }
 }
