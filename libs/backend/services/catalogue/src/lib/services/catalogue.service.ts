@@ -45,7 +45,7 @@ export class CatalogueService extends CrudAbstractService<CatalogueModel> {
           field: 'brandId',
           value: brands.map((product) => product.id).join(','),
           values: [],
-          operator: QueryOperatorEnum.Equals,
+          operator: QueryOperatorEnum.In,
         });
       } else {
         return {

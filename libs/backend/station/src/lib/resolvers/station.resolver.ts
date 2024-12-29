@@ -80,6 +80,13 @@ export class StationResolver {
       await station.update(params);
       await station.save();
 
+      if (station.type === 'DEPOT' && params.brands?.length) {
+        await station.$set(
+          'brands',
+          params.brands.map(({ id }) => id)
+        );
+      }
+
       return {
         message: 'Successfully updated station',
         data: station,
