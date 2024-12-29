@@ -32,3 +32,4 @@ check
 filter-list
 plus
 minus
+box

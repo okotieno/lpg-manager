@@ -72,6 +72,9 @@
                         <ion-icon name="cube"></ion-icon>
                         {{ inventory.catalogue.quantityPerUnit }} {{ inventory.catalogue.unit }}
                       </p>
+                      <p class="ion-padding-vertical">
+                        {{ inventory.station.name }}
+                      </p>
                       <p>
                         <ion-icon name="box"></ion-icon>
                         <ion-text [color]="inventory.quantity === 0 ? 'danger' : 'success'" class="stock-text">
@@ -86,8 +89,8 @@
                   </div>
                   <ion-buttons style="justify-content: center; align-items: center">
                     @if (inventory.cart) {
-                      <ion-button 
-                        color="primary" 
+                      <ion-button
+                        color="primary"
                         (click)="updateQuantity(inventory, false)"
                         [disabled]="inventory.cart.quantity <= 1">
                         <ion-icon name="circle-minus" slot="icon-only"></ion-icon>
@@ -95,8 +98,8 @@
                       <ion-text class="">
                         {{ inventory.cart.quantity }}
                       </ion-text>
-                      <ion-button 
-                        color="primary" 
+                      <ion-button
+                        color="primary"
                         (click)="updateQuantity(inventory, true)"
                         [disabled]="inventory.quantity <= inventory.cart.quantity">
                         <ion-icon name="circle-plus" slot="icon-only"></ion-icon>
@@ -107,8 +110,8 @@
                       </ion-button>
 
                     } @else {
-                      <ion-button 
-                        class="add-to-cart-button" 
+                      <ion-button
+                        class="add-to-cart-button"
                         (click)="addToCart(inventory)"
                         [disabled]="inventory.quantity <= 0">
                         Add to Cart
