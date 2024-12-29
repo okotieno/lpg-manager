@@ -13,6 +13,7 @@ import {
   CartCatalogueModel,
   CatalogueModel,
   UserModel,
+  InventoryModel,
 } from '@lpg-manager/db';
 import { CreateCartInputDto } from '../dto/create-cart-input.dto';
 import { OrderService } from '@lpg-manager/order-service';
@@ -131,7 +132,10 @@ export class CartResolver {
     const cartWithItems = await this.cartService.findById(cart.id, {
       include: [{
         model: CartCatalogueModel,
-        include: [CatalogueModel]
+        include: [
+          CatalogueModel,
+          InventoryModel
+        ]
       }]
     });
 
