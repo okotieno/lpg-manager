@@ -22,7 +22,7 @@ export type IGetInventoriesQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetInventoriesQuery = { inventories: { items?: Array<{ id: string } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetInventoriesQuery = { inventories: { items?: Array<{ id: string, station: { id: string, name: string }, catalogue: { name: string, quantityPerUnit: number, unit: Types.ICatalogueUnit, images?: Array<{ originalName?: string | null, url?: string | null } | null> | null } } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteInventoryByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -83,6 +83,19 @@ export const GetInventoriesDocument = gql`
   inventories(query: $query) {
     items {
       id
+      station {
+        id
+        name
+      }
+      catalogue {
+        name
+        quantityPerUnit
+        unit
+        images {
+          originalName
+          url
+        }
+      }
     }
     meta {
       totalItems

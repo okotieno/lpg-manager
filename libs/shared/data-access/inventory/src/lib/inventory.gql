@@ -21,6 +21,19 @@ query GetInventories($query: QueryParams) {
   inventories(query: $query) {
     items {
       id
+      station {
+        id
+        name
+      }
+      catalogue {
+        name
+        quantityPerUnit
+        unit
+        images {
+          originalName
+          url
+        }
+      }
     }
     meta {
       totalItems
