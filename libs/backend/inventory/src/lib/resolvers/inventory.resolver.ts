@@ -1,15 +1,21 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, ResolveField, Resolver, Root } from '@nestjs/graphql';
 import { CreateInventoryInputDto } from '../dto/create-inventory-input.dto';
 import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from '@lpg-manager/auth';
 import { PermissionGuard, Permissions, PermissionsEnum } from '@lpg-manager/permission-service';
 import { InventoryService } from '@lpg-manager/inventory-service';
-import { IQueryParam, InventoryModel } from '@lpg-manager/db';
+import { IQueryParam, InventoryModel, StationModel, CatalogueModel } from '@lpg-manager/db';
+import { CatalogueService } from '@lpg-manager/catalogue-service';
+import { StationService } from '@lpg-manager/station-service';
 
 @Resolver(() => InventoryModel)
 export class InventoryResolver {
 
-  constructor(private inventoryService: InventoryService) {
+  constructor(
+    private inventoryService: InventoryService,
+    private stationService: StationService,
+    private catalogueService: CatalogueService
+    ) {
   }
 
   @Mutation()
@@ -54,5 +60,16 @@ export class InventoryResolver {
     return {
       message: 'Successfully deleted inventory'
     };
+  }
+
+
+  @ResolveField('station', () => StationModel)
+  async getStation(@Root() inventory: InventoryModel) {
+    return this.stationService.findById(inventory.stationId);
+  }
+
+  @ResolveField('catalogue', () => CatalogueModel)
+  async getCatalogue(@Root() inventory: InventoryModel) {
+    return this.catalogueService.findById(inventory.catalogueId);
   }
 }

@@ -25,12 +25,12 @@
             <div class="inventory-details">
               <p>
                 <ion-text color="medium">Quantity:</ion-text>
-                <ion-text>{{ inventory?.quantity }} {{ inventory?.catalogue?.unit }}</ion-text>
+                <ion-text>{{ inventory?.quantity }}</ion-text>
               </p>
 
               <p>
                 <ion-text color="medium">Price per unit:</ion-text>
-                <ion-text>{{ inventory?.catalogue?.pricePerUnit | currency }}</ion-text>
+                <ion-text>{{ inventory?.catalogue?.pricePerUnit | currency }} Per {{ inventory?.catalogue?.quantityPerUnit }} {{ inventory?.catalogue?.unit }}</ion-text>
               </p>
 
               <ion-button

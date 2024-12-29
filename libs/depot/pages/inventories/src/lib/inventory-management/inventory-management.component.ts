@@ -20,7 +20,7 @@ import {
 } from '@lpg-manager/catalogue-store';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { AuthStore } from '@lpg-manager/auth-store';
-import { IQueryOperatorEnum, ISelectCategory } from '@lpg-manager/types';
+import { IQueryOperatorEnum, IQueryParamsFilter, ISelectCategory } from '@lpg-manager/types';
 import { ICreateInventoryGQL } from '@lpg-manager/inventory-store';
 import { JsonPipe } from '@angular/common';
 import {
@@ -61,6 +61,7 @@ export default class InventoryManagementComponent {
   >;
 
   mode = input<'create' | 'edit'>('create');
+  defaultFilters = input<IQueryParamsFilter[]>([]);
   activeStation = this.#authStore.activeStation;
 
   inventoryForm = this.#fb.group({

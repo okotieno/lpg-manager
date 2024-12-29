@@ -20,10 +20,10 @@ import {
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonContent,
-  ModalController
+  ModalController,
 } from '@ionic/angular/standalone';
 import { InventoryStore } from '@lpg-manager/inventory-store';
-import { CurrencyPipe, JsonPipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
 import InventoryManagementComponent from '../inventory-management/inventory-management.component';
@@ -46,7 +46,6 @@ import InventoryManagementComponent from '../inventory-management/inventory-mana
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonContent,
-    JsonPipe,
   ],
   templateUrl: './inventories-page.component.html',
   providers: [InventoryStore],
@@ -56,25 +55,27 @@ export default class InventoriesPageComponent {
   readonly #authStore = inject(AuthStore);
   activeRole = this.#authStore.activeRole;
   activeStation = this.#authStore.activeStation;
+  stationFilter = computed(() => {
+    if (this.activeStation()?.id)
+      return {
+        operator: IQueryOperatorEnum.Equals,
+        value: this.activeStation()?.id,
+        field: 'stationId',
+        values: [],
+      };
+    return;
+  });
+  depotFilter = computed(() => ({...this.stationFilter(), field: 'depotId'}));
   activeStationChangeEffect = effect(() => {
-    const activeStationId = this.activeStation()?.id;
+    const stationFilter = this.stationFilter();
     untracked(() => {
-      if (activeStationId) {
-        this.inventoryStore.setFilters([
-          {
-            operator: IQueryOperatorEnum.Equals,
-            value: activeStationId,
-            field: 'stationId',
-            values: [],
-          },
-        ]);
+      if (stationFilter) {
+        this.inventoryStore.setFilters([stationFilter]);
       }
     });
   });
 
-  inventories = computed(
-    () => this.inventoryStore.searchedItemsEntities() as any
-  );
+  inventories = computed(() => this.inventoryStore.searchedItemsEntities());
 
   startRange = computed(() => {
     return Math.min(1, this.inventories().length);
@@ -109,6 +110,7 @@ export default class InventoriesPageComponent {
       component: InventoryManagementComponent,
       componentProps: {
         mode: 'create',
+        defaultFilters: [this.depotFilter()],
       },
     });
 

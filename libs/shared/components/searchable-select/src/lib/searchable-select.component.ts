@@ -14,7 +14,8 @@ import {
   ControlValueAccessor,
   FormsModule,
   NgControl,
-  ReactiveFormsModule, Validators
+  ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import {
   AlertController,
@@ -37,6 +38,7 @@ import {
 import { CdkListbox, CdkOption } from '@angular/cdk/listbox';
 import { IQueryParamsFilter, ISortByEnum } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-searchable-select',
@@ -61,6 +63,7 @@ import { PaginatedResource } from '@lpg-manager/data-table';
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonTextarea,
+    JsonPipe,
   ],
   styleUrl: './searchable-select.component.scss',
 })
@@ -89,15 +92,16 @@ export class SearchableSelectComponent<T extends { id: string }>
       },
     }
   );
-  sortChangeEffect = effect(() => {
+  inputsChangeEffect = effect(() => {
     const sort = this.sort();
+    const defaultParams = this.defaultParams();
     untracked(() => {
-      this.itemsStore().setSortBy(sort.key);
-      this.itemsStore().setSortByDirection(sort.direction);
-    })
-  });
-  defaultParamsChangeEffect = effect(() => {
-    if (!this.isDisabled()) this.itemsStore().setFilters(this.defaultParams());
+      if (!this.isDisabled()) {
+        this.itemsStore().setSortBy(sort.key);
+        this.itemsStore().setSortByDirection(sort.direction);
+        this.itemsStore().setFilters(defaultParams);
+      }
+    });
   });
   selectModal = viewChild.required(IonModal);
 
@@ -150,17 +154,17 @@ export class SearchableSelectComponent<T extends { id: string }>
   showInfiniteScroll = computed(
     () => this.totalAvailableElements() > this.totalItems()
   );
-  isRequired = signal(false)
+  isRequired = signal(false);
 
   constructor(@Self() @Optional() private control: NgControl) {
     this.control.valueAccessor = this;
 
-   setTimeout(() => {
-     const isRequired = this.control.control?.hasValidator(Validators.required);
-     if (isRequired)
-       this.isRequired.set(true)
-   }, 0)
-
+    setTimeout(() => {
+      const isRequired = this.control.control?.hasValidator(
+        Validators.required
+      );
+      if (isRequired) this.isRequired.set(true);
+    }, 0);
   }
 
   onChanges?: (param: { id: string }[] | { id: string }) => void;
