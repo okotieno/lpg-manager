@@ -4,10 +4,12 @@ import {
   ForeignKey,
   Model,
   Table,
-  BelongsTo
+  BelongsTo,
+  HasMany
 } from 'sequelize-typescript';
 import { CartModel } from './cart.model';
 import { StationModel } from './station.model';
+import { OrderItemModel } from './order-item.model';
 
 @Table({
   tableName: 'orders',
@@ -56,4 +58,7 @@ export class OrderModel extends Model {
 
   @BelongsTo(() => CartModel)
   cart!: CartModel;
+
+  @HasMany(() => OrderItemModel)
+  items!: OrderItemModel[];
 } 

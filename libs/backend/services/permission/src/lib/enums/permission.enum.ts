@@ -45,4 +45,8 @@ export enum PermissionsEnum {
   DeleteCart = 'delete cart',
   UpdateCart = 'update cart',
 
+  CreateOrder = 'create order',
+  DeleteOrder = 'delete order',
+  UpdateOrder = 'update order',
+
 }
