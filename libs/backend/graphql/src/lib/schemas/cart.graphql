@@ -28,6 +28,7 @@ input CartCatalogueInput {
 }
 
 input CreateCartInput {
+  dealerId: UUID!
   items: [CartCatalogueInput]!
 }
 

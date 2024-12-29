@@ -1,7 +1,7 @@
 import { IsArray, IsNumber, IsUUID, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Exists } from '@lpg-manager/validators';
-import { InventoryModel } from '@lpg-manager/db';
+import { InventoryModel, StationModel } from '@lpg-manager/db';
 
 class CartCatalogueInput {
   @IsUUID()
@@ -16,6 +16,12 @@ class CartCatalogueInput {
 }
 
 export class CreateCartInputDto {
+  @Exists(StationModel, 'id', {
+    message: (validationArguments) =>
+      `Station with id  ${validationArguments.value}" not found`,
+  })
+  dealerId!: string;
+
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CartCatalogueInput)

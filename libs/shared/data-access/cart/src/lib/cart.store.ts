@@ -30,6 +30,7 @@ import {
   SHOW_SUCCESS_MESSAGE,
 } from '@lpg-manager/injection-token';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { AuthStore } from '@lpg-manager/auth-store';
 
 interface CartState {
   cart?: NonNullable<IGetCartsQuery['carts']['items']>[number];
@@ -48,25 +49,32 @@ const initialState: CartState = {
 export const CartStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withProps(() => ({
-    _getCartsGQL: inject(IGetCartsGQL),
-    _createCartGQL: inject(ICreateCartGQL),
-    _addItemToCartGQL: inject(IAddItemToCartGQL),
-    _removeItemFromCartGQL: inject(IRemoveItemFromCartGQL),
-    _updateItemQuantityGQL: inject(IUpdateItemQuantityGQL),
-    _getCartGQL: inject(IGetCartGQL),
-    _completeCartGQL: inject(ICompleteCartGQL),
-  })),
+  withProps(() => {
+    return {
+      _getCartsGQL: inject(IGetCartsGQL),
+      _createCartGQL: inject(ICreateCartGQL),
+      _addItemToCartGQL: inject(IAddItemToCartGQL),
+      _removeItemFromCartGQL: inject(IRemoveItemFromCartGQL),
+      _updateItemQuantityGQL: inject(IUpdateItemQuantityGQL),
+      _getCartGQL: inject(IGetCartGQL),
+      _completeCartGQL: inject(ICompleteCartGQL),
+      _authStore: inject(AuthStore),
+    };
+  }),
   withComputed((store) => ({
     cartItems: computed(() => store.items()),
     cartItemsCount: computed(() => store.cart?.()?.items.length ?? 0),
     cartId: computed(() => store.cart?.()?.id),
     cartTotal: computed(() => store.totalPrice()),
     itemCount: computed(() => store.totalQuantity()),
+    dealerId: computed(() => store._authStore.activeStation()?.id),
   })),
   withProps((store) => ({
     _loadCart: rxResource({
-      loader: () =>
+      request: () => ({
+        dealerId: store.dealerId(),
+      }),
+      loader: ({ request }) =>
         store._getCartsGQL
           .fetch({
             query: {
@@ -78,6 +86,12 @@ export const CartStore = signalStore(
                   values: [],
                   field: 'status',
                 },
+                {
+                  operator: IQueryOperatorEnum.Equals,
+                  value: request.dealerId as string,
+                  values: [],
+                  field: 'dealerId',
+                },
               ],
             },
           })
@@ -86,6 +100,8 @@ export const CartStore = signalStore(
               untracked(() => {
                 if (res.data.carts.items?.[0]) {
                   patchState(store, { cart: res.data.carts.items[0] });
+                } else {
+                  patchState(store, { cart: null })
                 }
               });
             })
@@ -94,9 +110,14 @@ export const CartStore = signalStore(
     _createCartResource: resource({
       request: () => ({
         items: store.items(),
+        dealerId: store.dealerId(),
       }),
       loader: ({ request, previous }) => {
-        if (store.cartId() || previous.status === ResourceStatus.Idle) {
+        if (
+          store.cartId() ||
+          previous.status === ResourceStatus.Idle ||
+          (!store.cartId() && request.items.length < 1)
+        ) {
           return Promise.resolve(undefined);
         }
         return lastValueFrom(
@@ -105,6 +126,7 @@ export const CartStore = signalStore(
               {
                 params: {
                   items: [...request.items],
+                  dealerId: request.dealerId as string,
                 },
               },
               {
@@ -151,11 +173,9 @@ export const CartStore = signalStore(
             )
             .pipe(
               tap((res) => {
-                untracked(() => {
-                  if (res.data?.addItemToCart.data.items?.[0]) {
-                    patchState(store, { cart: res.data?.addItemToCart.data });
-                  }
-                });
+                if (res.data?.addItemToCart.data.items?.[0]) {
+                  patchState(store, { cart: res.data?.addItemToCart.data });
+                }
               })
             )
         );

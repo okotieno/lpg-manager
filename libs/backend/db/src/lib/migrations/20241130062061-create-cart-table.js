@@ -20,6 +20,17 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
+      dealerId: {
+        field: 'dealer_id',
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'stations',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       totalQuantity: {
         field: 'total_quantity',
         type: Sequelize.INTEGER,

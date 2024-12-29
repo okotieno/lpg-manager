@@ -4,10 +4,12 @@ import {
   ForeignKey,
   HasMany,
   Model,
-  Table
+  Table,
+  BelongsTo
 } from 'sequelize-typescript';
 import { CartCatalogueModel } from './cart-catalogue.model';
 import { UserModel } from './user.model';
+import { StationModel } from './station.model';
 
 export enum CartStatus {
   PENDING = 'PENDING',
@@ -35,6 +37,16 @@ export class CartModel extends Model {
     allowNull: false,
   })
   userId!: string;
+
+  @ForeignKey(() => StationModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  dealerId!: string;
+
+  @BelongsTo(() => StationModel)
+  dealer!: StationModel;
 
   @HasMany(() => CartCatalogueModel)
   items!: CartCatalogueModel[];

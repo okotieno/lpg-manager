@@ -142,6 +142,7 @@ export type ICreateBrandSuccessResponse = {
 };
 
 export type ICreateCartInput = {
+  dealerId: Scalars['UUID']['input'];
   items: Array<InputMaybe<ICartCatalogueInput>>;
 };
 

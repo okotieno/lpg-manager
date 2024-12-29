@@ -6,6 +6,7 @@ import {
   CatalogueModel,
   CartStatus,
   StationModel,
+  IQueryParam,
 } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
@@ -24,13 +25,30 @@ export class CartService extends CrudAbstractService<CartModel> {
 
   override async create(data: Partial<CartModel>) {
     const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 24); // Set expiry to 24 hours from now
+    expiresAt.setHours(expiresAt.getHours() + 24);
 
     return super.create({
       ...data,
       expiresAt,
       status: CartStatus.PENDING,
     });
+  }
+
+  override async findAll(query: IQueryParam) {
+    return super.findAll(
+      {
+        ...query,
+      },
+      [
+        {
+          model: CartCatalogueModel,
+          include: [CatalogueModel, InventoryModel],
+        },
+        {
+          model: StationModel,
+        },
+      ]
+    );
   }
 
   async addItem(cartId: string, inventoryId: string, quantity: number) {
@@ -143,7 +161,7 @@ export class CartService extends CrudAbstractService<CartModel> {
       quantity: number;
     }[] = [];
 
-     for (const item of items) {
+    for (const item of items) {
       const inventory = (await this.inventoryModel.findByPk(
         item.inventoryId
       )) as InventoryModel;
@@ -152,7 +170,7 @@ export class CartService extends CrudAbstractService<CartModel> {
         inventoryId: item.inventoryId,
         catalogueId: inventory.catalogueId,
         quantity: item.quantity,
-      })
+      });
     }
 
     await this.cartCatalogueModel.bulkCreate(cartItems, { transaction });

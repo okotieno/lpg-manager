@@ -42,6 +42,7 @@ export class CartResolver {
   ) {
     const cart = await this.cartService.create({
       userId: user.id,
+      dealerId: params.dealerId,
     });
     if (params.items?.length) {
       await this.cartService.addItems(cart.id, params.items);
