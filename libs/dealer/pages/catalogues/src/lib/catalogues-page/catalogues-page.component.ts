@@ -1,15 +1,5 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  viewChild,
-  ViewChild,
-} from '@angular/core';
-import {
-  CataloguesStore,
-  IGetCataloguesQuery,
-} from '@lpg-manager/catalogue-store';
+import { Component, computed, effect, inject, viewChild } from '@angular/core';
+import { IGetCataloguesQuery } from '@lpg-manager/catalogue-store';
 import {
   GET_ITEMS_INCLUDE_FIELDS,
   PaginatedResource,
@@ -51,14 +41,19 @@ import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { ISelectCategory, IQueryOperatorEnum } from '@lpg-manager/types';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { tap } from 'rxjs';
-import { IGetInventoriesQuery, InventoryStore } from '@lpg-manager/inventory-store';
+import {
+  IGetInventoriesQuery,
+  InventoryStore,
+} from '@lpg-manager/inventory-store';
 
 type IGetItemQuery = NonNullable<
   IGetInventoriesQuery['inventories']['items']
 >[number];
 
 type ICatalogueDisplay = IGetItemQuery & {
-  cart?: NonNullable<NonNullable<IGetCartsQuery['carts']['items']>[number]>['items'][number];
+  cart?: NonNullable<
+    NonNullable<IGetCartsQuery['carts']['items']>[number]
+  >['items'][number];
 };
 
 @Component({
@@ -93,19 +88,7 @@ type ICatalogueDisplay = IGetItemQuery & {
   ],
   templateUrl: './catalogues-page.component.html',
   styleUrl: './catalogues-page.component.scss',
-  providers: [
-    InventoryStore,
-    // CataloguesStore,
-    StationStore,
-    {
-      provide: GET_ITEMS_INCLUDE_FIELDS,
-      useValue: {
-        // includeBrand: true,
-        // includeDescription: true,
-        // includePricePerUnit: true,
-      },
-    },
-  ],
+  providers: [InventoryStore, StationStore],
 })
 export default class CataloguesPageComponent {
   infiniteScroll = viewChild(IonInfiniteScroll);
@@ -114,36 +97,34 @@ export default class CataloguesPageComponent {
   #modalCtrl = inject(ModalController);
   #alertController = inject(AlertController);
   depotStore = inject(StationStore) as PaginatedResource<
-    NonNullable<
-      NonNullable<IGetStationsQuery['stations']['items']>[number]
-    >
+    NonNullable<NonNullable<IGetStationsQuery['stations']['items']>[number]>
   >;
-  cataloguesStore = inject(InventoryStore);
+  inventoryStore = inject(InventoryStore);
   searchForm = this.#fb.group({
     depot: [[] as ISelectCategory[]],
   });
-  catalogues = computed(() => this.cataloguesStore.searchedItemsEntities());
+  inventories = computed(() => this.inventoryStore.searchedItemsEntities());
 
   startRange = computed(() => {
-    return Math.min(1, this.catalogues().length);
+    return Math.min(1, this.inventories().length);
   });
 
   endRange = computed(() => {
-    return this.catalogues().length;
+    return this.inventories().length;
   });
 
   totalItems = computed(() => {
-    return this.cataloguesStore.totalItems();
+    return this.inventoryStore.totalItems();
   });
 
   ionInfiniteScroll = viewChild(IonInfiniteScroll);
 
   showInfiniteScroll = computed(
-    () => this.totalItems() > this.catalogues().length
+    () => this.totalItems() > this.inventories().length
   );
 
   isLoadingChangeEffect = effect(async () => {
-    if (!this.cataloguesStore.isLoading() && this.ionInfiniteScroll?.()) {
+    if (!this.inventoryStore.isLoading() && this.ionInfiniteScroll?.()) {
       await this.ionInfiniteScroll()?.complete();
     }
   });
@@ -159,17 +140,20 @@ export default class CataloguesPageComponent {
       },
     ]);
 
-    this.searchForm.get('depot')?.valueChanges.pipe(
-      tap(() => {
-        this.handleDepotChange()
-      })
-    ).subscribe()
+    this.searchForm
+      .get('depot')
+      ?.valueChanges.pipe(
+        tap(() => {
+          this.handleDepotChange();
+        })
+      )
+      .subscribe();
   }
 
   handleDepotChange() {
     const selectedDepot = this.searchForm.get('depot')?.value;
     if (selectedDepot) {
-      this.cataloguesStore.setFilters([
+      this.inventoryStore.setFilters([
         {
           field: 'depotId',
           operator: IQueryOperatorEnum.In,
@@ -178,26 +162,27 @@ export default class CataloguesPageComponent {
         },
       ]);
     } else {
-      this.cataloguesStore.setFilters([]);
+      this.inventoryStore.setFilters([]);
     }
   }
 
   cartCatalogueItems = computed(() => this.#cartStore.cart?.()?.items ?? []);
   inventoriesDisplayed = computed(() => {
     const cartCatalogueItems = this.cartCatalogueItems();
-    const catalogues = this.catalogues();
+    const catalogues = this.inventories();
+    console.log({ cartCatalogueItems, catalogues });
 
-    return catalogues.map((catalog) => {
+    return catalogues.map((inventory) => {
       const cartCatalogueItem = cartCatalogueItems.find(
-        (item) => item?.catalogueId === catalog?.id
+        (item) => item?.catalogueId === inventory.catalogue.id
       );
-      return { ...catalog, cart: cartCatalogueItem } as ICatalogueDisplay;
+      return { ...inventory, cart: cartCatalogueItem } as ICatalogueDisplay;
     });
   });
 
   handleSearch(event: any) {
     const searchTerm = event.target.value.toLowerCase();
-    this.cataloguesStore.setSearchTerm(searchTerm);
+    this.inventoryStore.setSearchTerm(searchTerm);
   }
 
   async addToCart(
@@ -258,6 +243,6 @@ export default class CataloguesPageComponent {
   }
 
   async handleInfiniteScroll() {
-    this.cataloguesStore.fetchNextPage();
+    this.inventoryStore.fetchNextPage();
   }
 }

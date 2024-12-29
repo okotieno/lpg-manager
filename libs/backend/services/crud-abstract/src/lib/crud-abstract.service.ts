@@ -64,7 +64,7 @@ export abstract class CrudAbstractService<T extends Model> {
       }
     }
 
-    if (Number(query?.searchTerm?.length) > 0) {
+    if ( this.globalSearchFields.length > 0 && Number(query?.searchTerm?.length) > 0) {
       where[Op.or as unknown as string] = [];
       this.globalSearchFields.forEach((field) => {
         where[Op.or as unknown as string].push({
