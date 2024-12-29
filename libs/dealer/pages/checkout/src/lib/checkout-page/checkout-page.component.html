@@ -20,13 +20,27 @@
                 </ion-button>
 
                 <div class="quantity-controls">
-                  <ion-button class="ion-padding" shape="round"  fill="clear" color="primary" (click)="updateQuantity($any(item?.id), $any(item?.quantity) - 1)">
+                  <ion-button
+                    class="ion-padding"
+                    shape="round"
+                    fill="clear"
+                    color="primary"
+                    (click)="updateQuantity($any(item?.id), $any(item?.quantity) - 1)"
+                    [disabled]="$any(item?.quantity) <= 1">
                     <ion-icon name="minus" slot="icon-only"></ion-icon>
                   </ion-button>
                   <ion-text>{{ item?.quantity }}</ion-text>
-                  <ion-button shape="round" class="ion-padding" fill="clear"  color="primary" (click)="updateQuantity($any(item?.id), $any(item?.quantity) + 1)">
+                  <ion-button
+                    shape="round"
+                    class="ion-padding"
+                    fill="clear"
+                    color="primary"
+                    (click)="updateQuantity($any(item?.id), $any(item?.quantity) + 1)"
+
+                  >
                     <ion-icon name="plus" slot="icon-only"></ion-icon>
                   </ion-button>
+                  <pre>{{ item | json }}</pre>
                 </div>
               </ion-item>
             } @empty {

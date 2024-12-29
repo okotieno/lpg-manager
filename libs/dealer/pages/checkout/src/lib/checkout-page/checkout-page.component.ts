@@ -15,7 +15,7 @@ import {
   IonCol,
   IonGrid
 } from '@ionic/angular/standalone';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-checkout',
@@ -34,7 +34,8 @@ import { CurrencyPipe } from '@angular/common';
     CurrencyPipe,
     IonRow,
     IonCol,
-    IonGrid
+    IonGrid,
+    JsonPipe,
   ],
   templateUrl: './checkout-page.component.html',
   styleUrl: './checkout-page.component.scss',
@@ -47,7 +48,7 @@ export default class CheckoutPageComponent {
     const items = this.cartItems();
     return items.reduce((total, item) => {
       if (item && item.catalogue && item.catalogue.pricePerUnit != null) {
-        return total + (item.catalogue.pricePerUnit * item.quantity);
+        return total + item.catalogue.pricePerUnit * item.quantity;
       }
       return total;
     }, 0);

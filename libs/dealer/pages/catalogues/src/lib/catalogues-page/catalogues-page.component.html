@@ -74,19 +74,31 @@
                       </p>
                       <p>
                         <ion-icon name="box"></ion-icon>
-                        Stock Available: {{ inventory.quantity }}
+                        <ion-text [color]="inventory.quantity === 0 ? 'danger' : 'success'" class="stock-text">
+                          @if (inventory.quantity === 0) {
+                            Out of Stock
+                          } @else {
+                            Stock Available: {{ inventory.quantity }}
+                          }
+                        </ion-text>
                       </p>
                     </ion-text>
                   </div>
                   <ion-buttons style="justify-content: center; align-items: center">
                     @if (inventory.cart) {
-                      <ion-button color="primary" (click)="updateQuantity(inventory, false)">
+                      <ion-button 
+                        color="primary" 
+                        (click)="updateQuantity(inventory, false)"
+                        [disabled]="inventory.cart.quantity <= 1">
                         <ion-icon name="circle-minus" slot="icon-only"></ion-icon>
                       </ion-button>
                       <ion-text class="">
                         {{ inventory.cart.quantity }}
                       </ion-text>
-                      <ion-button color="primary" (click)="updateQuantity(inventory, true)">
+                      <ion-button 
+                        color="primary" 
+                        (click)="updateQuantity(inventory, true)"
+                        [disabled]="inventory.quantity <= inventory.cart.quantity">
                         <ion-icon name="circle-plus" slot="icon-only"></ion-icon>
                       </ion-button>
 
@@ -95,9 +107,10 @@
                       </ion-button>
 
                     } @else {
-                      <ion-button class="add-to-cart-button" fill="outline" color="primary" expand="block"
-                                  (click)="addToCart(inventory)">
-                        <ion-icon name="cart-plus" slot="start"></ion-icon>
+                      <ion-button 
+                        class="add-to-cart-button" 
+                        (click)="addToCart(inventory)"
+                        [disabled]="inventory.quantity <= 0">
                         Add to Cart
                       </ion-button>
                     }
