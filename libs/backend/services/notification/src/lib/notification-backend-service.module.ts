@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import {
   NotificationService,
   SEND_NOTIFICATION_QUEUE,
@@ -10,6 +10,7 @@ import { SendNotificationConsumer } from './consumers/send-notification.consumer
 import { PubSubProviderModule } from '@lpg-manager/util';
 import { NotificationUserBackendService } from './services/notification-user-backend.service';
 
+@Global()
 @Module({
   imports: [
     SequelizeModule.forFeature([NotificationModel, NotificationUserModel]),
@@ -23,4 +24,4 @@ import { NotificationUserBackendService } from './services/notification-user-bac
   ],
   exports: [NotificationService, NotificationUserBackendService],
 })
-export class NotificationBackendServiceModule {}
+export class NotificationServiceModule {}

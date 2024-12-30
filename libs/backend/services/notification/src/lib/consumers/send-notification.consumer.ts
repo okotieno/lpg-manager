@@ -17,7 +17,7 @@ export class SendNotificationConsumer {
 
   @Process()
   async sendNotifications(
-    job: Job<{ title: string; description: string; userIds: number[] }>,
+    job: Job<{ title: string; description: string; userIds: string[] }>,
   ): Promise<void> {
     const notification = await this.notificationService.create({
       title: job.data.title,

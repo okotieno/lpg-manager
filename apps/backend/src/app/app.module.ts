@@ -17,6 +17,8 @@ import { CatalogueModule } from '@lpg-manager/catalogue';
 import { InventoryModule } from '@lpg-manager/inventory';
 import { CartModule } from '@lpg-manager/cart';
 import { OrderModule } from '@lpg-manager/order';
+import { NotificationServiceModule } from '@lpg-manager/notification-service';
+import { UserServiceModule } from '@lpg-manager/user-service';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { OrderModule } from '@lpg-manager/order';
     InventoryModule,
     CartModule,
     OrderModule,
+    NotificationServiceModule,
+    UserServiceModule
   ],
 })
 export class AppModule {}

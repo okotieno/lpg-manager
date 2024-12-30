@@ -20,7 +20,7 @@ const modelRepositoryMock = {
 
 const sendNotificationQueueMock = {};
 
-describe('NotificationBackendService', () => {
+describe('NotificationService', () => {
   let service: NotificationService;
 
   beforeEach(async () => {

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { UserService } from './services/user.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import {
@@ -6,6 +6,7 @@ import {
   UserModel
 } from '@lpg-manager/db';
 
+@Global()
 @Module({
   imports: [
     SequelizeModule.forFeature([

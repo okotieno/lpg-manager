@@ -1,0 +1,58 @@
+query GetAuthenticatedUserNotifications(
+  $pageSize: Int!
+  $currentPage: Int!
+  $filters: [QueryParamsFilter]
+) {
+  authenticatedUserNotifications(
+    query: {
+      sortBy: "createdAt"
+      sortByDirection: DESC
+      pageSize: $pageSize
+      currentPage: $currentPage
+      filters: $filters
+    }
+  ) {
+    items {
+      id
+      description
+      createdAt
+      title
+      isRead
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+
+
+query GetAuthenticatedUserNotificationStats {
+  authenticatedUserNotificationStats {
+    unread
+    total
+  }
+}
+
+mutation MarkNotificationAsRead($notifications: [SelectCategory!]!) {
+  markNotificationAsRead(notifications: $notifications) {
+    message
+    data {
+      read
+      unread
+      total
+    }
+  }
+}
+
+subscription NotificationCreatedTrack {
+  notificationCreated {
+    notification {
+      id
+      title
+      isRead
+      description
+      createdAt
+    }
+  }
+}

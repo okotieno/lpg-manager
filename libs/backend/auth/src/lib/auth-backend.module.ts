@@ -4,7 +4,6 @@ import {
   AuthServiceBackendModule,
   JwtAuthModule,
 } from '@lpg-manager/auth-service';
-import { UserServiceModule } from '@lpg-manager/user-service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { PermissionServiceBackendModule } from '@lpg-manager/permission-service';
 import { LocalStrategy } from './strategies/local.strategy';
@@ -38,7 +37,6 @@ import { ActivityLogBackendServiceModule } from '@lpg-manager/activity-log-servi
       { name: SEND_VERIFICATION_LINK_QUEUE },
       { name: SEND_WELCOME_EMAIL_QUEUE },
     ),
-    UserServiceModule,
     PermissionServiceBackendModule,
     OtpBackendServiceModule,
     TranslationServiceModule,

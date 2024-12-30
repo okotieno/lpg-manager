@@ -1,6 +1,16 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { OrderModel, OrderItemModel, CartModel, CatalogueModel, StationModel } from '@lpg-manager/db';
+import {
+  OrderModel,
+  OrderItemModel,
+  CartModel,
+  CatalogueModel,
+  StationModel,
+} from '@lpg-manager/db';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
 import { Transaction } from 'sequelize';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -25,63 +35,60 @@ export class OrderService extends CrudAbstractService<OrderModel> {
       inventoryId: string;
       quantity: number;
       pricePerUnit: number;
-    }>,
+    }>
   ) {
-    return this.orderModel.sequelize?.transaction(async (transaction: Transaction) => {
-      const cart = await this.cartModel.findByPk(cartId);
-      if (!cart) {
-        throw new Error('Cart not found');
-      }
+    return this.orderModel.sequelize?.transaction(
+      async (transaction: Transaction) => {
+        const cart = await this.cartModel.findByPk(cartId);
+        if (!cart) {
+          throw new Error('Cart not found');
+        }
 
-      const order = await this.orderModel.create(
-        { 
-          cartId, 
-          depotId, 
-          dealerId: cart.dealerId,
-          totalPrice 
-        },
-        { transaction }
-      );
+        const order = await this.orderModel.create(
+          {
+            cartId,
+            depotId,
+            dealerId: cart.dealerId,
+            totalPrice,
+          },
+          { transaction }
+        );
 
-      await Promise.all(
-        items.map((item) =>
-          this.orderItemModel.create(
-            {
-              orderId: order.id,
-              ...item,
-            },
-            { transaction }
+        await Promise.all(
+          items.map((item) =>
+            this.orderItemModel.create(
+              {
+                orderId: order.id,
+                ...item,
+              },
+              { transaction }
+            )
           )
-        )
-      );
-
-      return order;
-    });
-
-    if (order) {
-      this.eventEmitter.emit('order.created', { order });
-    }
-
-    return order;
+        );
+        if (order) {
+          this.eventEmitter.emit('order.created', { order });
+        }
+        return order;
+      }
+    );
   }
 
   async updateOrderStatus(orderId: string, status: string) {
     const transaction = await this.orderModel.sequelize?.transaction();
     try {
       const order = await this.orderModel.findByPk(orderId);
-      
+
       if (!order) {
         throw new NotFoundException(`Order with ID "${orderId}" not found`);
       }
 
       if (order.status === 'COMPLETED' || order.status === 'CANCELED') {
-        throw new BadRequestException('Cannot update status of a completed or canceled order');
+        throw new BadRequestException(
+          'Cannot update status of a completed or canceled order'
+        );
       }
 
-      await order.update(
-        { status },
-        { transaction }
-      );
+      await order.update({ status }, { transaction });
 
       await transaction?.commit();
 
@@ -93,12 +100,12 @@ export class OrderService extends CrudAbstractService<OrderModel> {
           },
           {
             model: StationModel,
-            as: 'dealer'
+            as: 'dealer',
           },
           {
             model: StationModel,
-            as: 'depot'
-          }
+            as: 'depot',
+          },
         ],
       });
 
