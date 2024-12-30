@@ -5,34 +5,39 @@
         <ion-accordion style="border-radius: 7px">
           <ion-item slot="header" style="border-left: 10px solid" [style.border-color]="order.varColor">
             <ion-label class="ion-padding">
-              <h2>Order #{{ order.id.slice(-8) }}</h2>
+              <h2><ion-text [color]="order.color">Order #{{ order.id.slice(-8) }}</ion-text></h2>
               <ion-text color="medium">
                 <p>{{ order.createdAt | date:'medium' }}</p>
               </ion-text>
               <ion-text color="medium">
                 <p>{{ order.dealer.name }}</p>
               </ion-text>
+              <ion-text color="medium">
+                <P>{{ order.totalPrice | currency }}</P>
+              </ion-text>
             </ion-label>
             <ion-badge slot="end" [color]="order.color">
               {{ order.status }}
             </ion-badge>
+
+
           </ion-item>
 
           <ion-list style="border-left: 10px solid" [style.border-color]="order.varColorLight" slot="content"
                     class="ion-padding">
-            <ion-item lines="none">
-              <ion-label>
-                <ion-text color="medium">Total Amount</ion-text>
-                <h3>{{ order.totalPrice | currency }}</h3>
-              </ion-label>
-            </ion-item>
+<!--            <ion-item lines="none">-->
+<!--              <ion-label>-->
+<!--                <ion-text color="medium">Total Amount</ion-text>-->
+<!--                <h3>{{ order.totalPrice | currency }}</h3>-->
+<!--              </ion-label>-->
+<!--            </ion-item>-->
 
-            <ion-item lines="none">
-              <ion-label>
-                <ion-text>Dealer</ion-text>
-                <h3>{{ order.dealer.name }}</h3>
-              </ion-label>
-            </ion-item>
+<!--            <ion-item lines="none">-->
+<!--              <ion-label>-->
+<!--                <ion-text>Dealer</ion-text>-->
+<!--                <h3>{{ order.dealer.name }}</h3>-->
+<!--              </ion-label>-->
+<!--            </ion-item>-->
 
             <ion-item-divider>
               <ion-label>Order Items</ion-label>

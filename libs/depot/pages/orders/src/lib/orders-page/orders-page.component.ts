@@ -9,7 +9,7 @@ import {
   IonAccordionGroup,
   IonAccordion,
   IonText,
-  IonItemDivider,
+  IonItemDivider, IonButton
 } from '@ionic/angular/standalone';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
@@ -33,13 +33,17 @@ import { GET_ITEMS_INCLUDE_FIELDS } from '@lpg-manager/data-table';
     DatePipe,
     CurrencyPipe,
     IonItemDivider,
+    IonButton,
   ],
-  providers: [OrderStore, {
-    provide: GET_ITEMS_INCLUDE_FIELDS,
-    useValue: {
-      includeDealer: true,
-    }
-  }],
+  providers: [
+    OrderStore,
+    {
+      provide: GET_ITEMS_INCLUDE_FIELDS,
+      useValue: {
+        includeDealer: true,
+      },
+    },
+  ],
 })
 export default class OrdersPageComponent {
   #orderStore = inject(OrderStore);
@@ -71,8 +75,6 @@ export default class OrdersPageComponent {
       }
     });
   });
-
-  constructor() {}
 
   getStatusColor(status: string): string {
     switch (status) {
