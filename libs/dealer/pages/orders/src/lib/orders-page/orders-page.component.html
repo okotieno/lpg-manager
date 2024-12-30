@@ -1,14 +1,16 @@
-
 <ion-content class="ion-padding">
   <ion-list>
     <ion-accordion-group>
       @for (order of ordersDisplayed(); track order.id) {
-        <ion-accordion>
-          <ion-item slot="header" style="border-left: 5px solid red" [style.border-color]="order.varColor">
-            <ion-label class="ion-padding" >
+        <ion-accordion style="border-radius: 7px">
+          <ion-item slot="header" style="border-left: 10px solid" [style.border-color]="order.varColor">
+            <ion-label class="ion-padding">
               <h2>Order #{{ order.id.slice(-8) }}</h2>
               <ion-text color="medium">
                 <p>{{ order.createdAt | date:'medium' }}</p>
+              </ion-text>
+              <ion-text color="medium">
+                <p>{{ order.station.name }}</p>
               </ion-text>
             </ion-label>
             <ion-badge slot="end" [color]="order.color">
@@ -16,7 +18,8 @@
             </ion-badge>
           </ion-item>
 
-          <ion-list slot="content" class="ion-padding">
+          <ion-list style="border-left: 10px solid" [style.border-color]="order.varColorLight" slot="content"
+                    class="ion-padding">
             <ion-item lines="none">
               <ion-label>
                 <ion-text color="medium">Total Amount</ion-text>
@@ -31,7 +34,7 @@
               </ion-label>
             </ion-item>
 
-            <ion-item-divider color="primary">
+            <ion-item-divider>
               <ion-label>Order Items</ion-label>
             </ion-item-divider>
             @for (item of order.items; track item?.id) {
@@ -40,16 +43,17 @@
                   <h3>{{ item?.catalogue?.name }}</h3>
                   <p>
                     <ion-text color="medium">
-                      Quantity: {{ item?.quantity }} × {{ item?.catalogue?.quantityPerUnit }} {{ item?.catalogue?.unit }}
+                      Quantity: {{ item?.quantity }}
+                      × {{ item?.catalogue?.quantityPerUnit }} {{ item?.catalogue?.unit }}
                     </ion-text>
                   </p>
                   <p>
-                    <ion-text color="primary">
+                    <ion-text [color]="order.color">
                       {{ item?.catalogue?.pricePerUnit | currency: ' ' }} per unit
                     </ion-text>
                   </p>
                 </ion-label>
-                <ion-text slot="end" color="primary">
+                <ion-text slot="end" [color]="order.color">
                   {{ $any(item?.catalogue?.pricePerUnit) * $any(item?.quantity) | currency: ' ' }}
                 </ion-text>
               </ion-item>
