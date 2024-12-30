@@ -14,8 +14,10 @@ import {
   IonRow,
   IonCol,
   IonGrid,
+  AlertController,
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'lpg-checkout',
@@ -35,12 +37,14 @@ import { CurrencyPipe } from '@angular/common';
     IonRow,
     IonCol,
     IonGrid,
+    RouterLink,
   ],
   templateUrl: './checkout-page.component.html',
   styleUrl: './checkout-page.component.scss',
 })
 export default class CheckoutPageComponent {
   #cartStore = inject(CartStore);
+  #alertController = inject(AlertController);
 
   cartItems = computed(() => {
     const cartItems =  [...(this.#cartStore.cart?.()?.items ?? [])];
@@ -65,7 +69,25 @@ export default class CheckoutPageComponent {
   }
 
   async removeItem(cartCatalogueId: string) {
-    await this.#cartStore.removeItem(cartCatalogueId);
+    const alert = await this.#alertController.create({
+      header: 'Remove Item',
+      message: 'Are you sure you want to remove this item from your cart?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Remove',
+          role: 'destructive',
+          handler: async () => {
+            await this.#cartStore.removeItem(cartCatalogueId);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   async completeOrder() {

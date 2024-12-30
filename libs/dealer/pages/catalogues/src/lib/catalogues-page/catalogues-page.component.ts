@@ -99,6 +99,14 @@ export default class CataloguesPageComponent {
   depotStore = inject(StationStore) as PaginatedResource<
     NonNullable<NonNullable<IGetStationsQuery['stations']['items']>[number]>
   >;
+  depotFilters = [
+    {
+      field: 'type',
+      operator: IQueryOperatorEnum.Equals,
+      value: 'DEPOT',
+      values: [],
+    },
+  ]
   inventoryStore = inject(InventoryStore);
   searchForm = this.#fb.group({
     depot: [[] as ISelectCategory[]],
@@ -130,15 +138,6 @@ export default class CataloguesPageComponent {
   });
 
   constructor() {
-    // Initialize depot store with DEPOT type filter
-    this.depotStore.setFilters([
-      {
-        field: 'type',
-        operator: IQueryOperatorEnum.Equals,
-        value: 'DEPOT',
-        values: [],
-      },
-    ]);
 
     this.searchForm
       .get('depot')
@@ -155,7 +154,7 @@ export default class CataloguesPageComponent {
     if (selectedDepot) {
       this.inventoryStore.setFilters([
         {
-          field: 'depotId',
+          field: 'stationId',
           operator: IQueryOperatorEnum.In,
           value: '',
           values: selectedDepot.map((item) => item.id),
