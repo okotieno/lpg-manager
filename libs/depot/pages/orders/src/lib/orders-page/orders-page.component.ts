@@ -9,7 +9,7 @@ import {
   IonAccordionGroup,
   IonAccordion,
   IonText,
-  IonItemDivider, IonButton
+  IonItemDivider, IonButton, IonRow, IonButtons, IonCol
 } from '@ionic/angular/standalone';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
@@ -34,6 +34,9 @@ import { GET_ITEMS_INCLUDE_FIELDS } from '@lpg-manager/data-table';
     CurrencyPipe,
     IonItemDivider,
     IonButton,
+    IonRow,
+    IonButtons,
+    IonCol,
   ],
   providers: [
     OrderStore,

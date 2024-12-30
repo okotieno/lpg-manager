@@ -23,47 +23,63 @@
 
           </ion-item>
 
-          <ion-list style="border-left: 10px solid" [style.border-color]="order.varColorLight" slot="content"
-                    class="ion-padding">
-<!--            <ion-item lines="none">-->
-<!--              <ion-label>-->
-<!--                <ion-text color="medium">Total Amount</ion-text>-->
-<!--                <h3>{{ order.totalPrice | currency }}</h3>-->
-<!--              </ion-label>-->
-<!--            </ion-item>-->
+          <ion-row class="ion-no-margin ion-no-padding" slot="content">
+            <ion-col size="12" class="ion-no-margin ion-no-padding">
+              <ion-list style="border-left: 10px solid" [style.border-color]="order.varColorLight"
+                        class="ion-padding">
+                <!--            <ion-item lines="none">-->
+                <!--              <ion-label>-->
+                <!--                <ion-text color="medium">Total Amount</ion-text>-->
+                <!--                <h3>{{ order.totalPrice | currency }}</h3>-->
+                <!--              </ion-label>-->
+                <!--            </ion-item>-->
 
-<!--            <ion-item lines="none">-->
-<!--              <ion-label>-->
-<!--                <ion-text>Dealer</ion-text>-->
-<!--                <h3>{{ order.dealer.name }}</h3>-->
-<!--              </ion-label>-->
-<!--            </ion-item>-->
+                <!--            <ion-item lines="none">-->
+                <!--              <ion-label>-->
+                <!--                <ion-text>Dealer</ion-text>-->
+                <!--                <h3>{{ order.dealer.name }}</h3>-->
+                <!--              </ion-label>-->
+                <!--            </ion-item>-->
 
-            <ion-item-divider>
-              <ion-label>Order Items</ion-label>
-            </ion-item-divider>
-            @for (item of order.items; track item?.id) {
-              <ion-item>
-                <ion-label>
-                  <h3>{{ item?.catalogue?.name }}</h3>
-                  <p>
-                    <ion-text color="medium">
-                      Quantity: {{ item?.quantity }}
-                      × {{ item?.catalogue?.quantityPerUnit }} {{ item?.catalogue?.unit }}
+                <ion-item-divider>
+                  <ion-label>Order Items</ion-label>
+                </ion-item-divider>
+                @for (item of order.items; track item?.id) {
+                  <ion-item>
+                    <ion-label>
+                      <h3>{{ item?.catalogue?.name }}</h3>
+                      <p>
+                        <ion-text color="medium">
+                          Quantity: {{ item?.quantity }}
+                          × {{ item?.catalogue?.quantityPerUnit }} {{ item?.catalogue?.unit }}
+                        </ion-text>
+                      </p>
+                      <p>
+                        <ion-text [color]="order.color">
+                          {{ item?.catalogue?.pricePerUnit | currency: ' ' }} per unit
+                        </ion-text>
+                      </p>
+                    </ion-label>
+                    <ion-text slot="end" [color]="order.color">
+                      {{ $any(item?.catalogue?.pricePerUnit) * $any(item?.quantity) | currency: ' ' }}
                     </ion-text>
-                  </p>
-                  <p>
-                    <ion-text [color]="order.color">
-                      {{ item?.catalogue?.pricePerUnit | currency: ' ' }} per unit
-                    </ion-text>
-                  </p>
-                </ion-label>
-                <ion-text slot="end" [color]="order.color">
-                  {{ $any(item?.catalogue?.pricePerUnit) * $any(item?.quantity) | currency: ' ' }}
-                </ion-text>
-              </ion-item>
-            }
-          </ion-list>
+                  </ion-item>
+                }
+              </ion-list>
+            </ion-col>
+            <ion-col size="12">
+              <ion-row class="ion-justify-content-end">
+                <ion-buttons>
+                  <ion-button shape="round" fill="outline" color="primary">Confirm for dispatch</ion-button>
+                  <ion-button shape="round" fill="outline" color="danger">Reject</ion-button>
+                </ion-buttons>
+              </ion-row>
+            </ion-col>
+
+          </ion-row>
+
+
+
         </ion-accordion>
       } @empty {
         <ion-item>
