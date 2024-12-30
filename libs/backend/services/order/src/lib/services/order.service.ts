@@ -16,7 +16,7 @@ export class OrderService extends CrudAbstractService<OrderModel> {
 
   async createOrder(
     cartId: string,
-    stationId: string,
+    depotId: string,
     totalPrice: number,
     items: Array<{
       catalogueId: string;
@@ -34,7 +34,7 @@ export class OrderService extends CrudAbstractService<OrderModel> {
       const order = await this.orderModel.create(
         { 
           cartId, 
-          stationId, 
+          depotId, 
           dealerId: cart.dealerId,
           totalPrice 
         },

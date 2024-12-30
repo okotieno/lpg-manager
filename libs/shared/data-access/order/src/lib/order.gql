@@ -24,7 +24,7 @@ query GetOrders($query: QueryParams) {
       createdAt
       totalPrice
       status
-      station {
+      depot {
         name
       }
       items {

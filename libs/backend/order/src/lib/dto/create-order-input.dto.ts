@@ -20,7 +20,7 @@ export class CreateOrderInputDto {
   cartId!: string;
 
   @IsString()
-  stationId!: string;
+  depotId!: string;
 
   @IsNumber()
   totalPrice!: number;

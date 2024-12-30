@@ -766,9 +766,9 @@ export type IOrderItemInput = {
 
 export type IOrderModel = {
   createdAt: Scalars['DateTime']['output'];
+  depot: IStationModel;
   id: Scalars['UUID']['output'];
   items: Array<Maybe<IOrderItem>>;
-  station: IStationModel;
   status: IOrderStatus;
   totalPrice: Scalars['Float']['output'];
   totalQuantity: Scalars['Int']['output'];

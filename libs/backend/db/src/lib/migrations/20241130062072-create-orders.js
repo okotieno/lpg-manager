@@ -20,8 +20,8 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      stationId: {
-        field: 'station_id',
+      depotId: {
+        field: 'depot_id',
         type: Sequelize.UUID,
         allowNull: false,
         references: {
@@ -68,9 +68,5 @@ module.exports = {
         allowNull: true
       }
     });
-  },
-
-  async down(queryInterface) {
-    await queryInterface.dropTable('orders');
   }
 };

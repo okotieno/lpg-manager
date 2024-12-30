@@ -35,7 +35,7 @@ export class OrderResolver {
   ) {
     const order = await this.orderService.createOrder(
       params.cartId,
-      params.stationId,
+      params.depotId,
       params.totalPrice,
       params.items
     );
@@ -97,14 +97,14 @@ export class OrderResolver {
     return orderWithItems?.items ?? [];
   }
 
-  @ResolveField('station')
-  async getStation(@Root() order: OrderModel) {
-    const orderWithStation = await this.orderService.findById(order.id, {
+  @ResolveField('depot')
+  async getDepot(@Root() order: OrderModel) {
+    const orderWithDepot = await this.orderService.findById(order.id, {
       include: [{
         model: StationModel,
-        as: 'station',
+        as: 'depot',
       }],
     });
-    return orderWithStation?.station;
+    return orderWithDepot?.depot;
   }
 }

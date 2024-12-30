@@ -38,7 +38,7 @@ export class OrderModel extends Model {
     type: DataType.UUID,
     allowNull: false,
   })
-  stationId!: string;
+  depotId!: string;
 
   @ForeignKey(() => StationModel)
   @Column({
@@ -60,8 +60,8 @@ export class OrderModel extends Model {
   })
   status!: 'PENDING' | 'COMPLETED';
 
-  @BelongsTo(() => StationModel, 'stationId')
-  station!: StationModel;
+  @BelongsTo(() => StationModel, 'depotId')
+  depot!: StationModel;
 
   @BelongsTo(() => StationModel, 'dealerId')
   dealer!: StationModel;
@@ -71,4 +71,4 @@ export class OrderModel extends Model {
 
   @HasMany(() => OrderItemModel)
   items!: OrderItemModel[];
-} 
+}
