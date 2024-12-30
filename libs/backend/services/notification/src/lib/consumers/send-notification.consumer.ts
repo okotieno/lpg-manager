@@ -30,6 +30,7 @@ export class SendNotificationConsumer {
       description: notification.description,
       createdAt: notification.createdAt,
       userIds: job.data.userIds,
-    });
+    })
+
   }
 }

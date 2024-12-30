@@ -2,6 +2,7 @@ import {
   patchState,
   signalStore,
   type,
+  withHooks,
   withProps,
   withState,
 } from '@ngrx/signals';
@@ -9,6 +10,8 @@ import { inject, resource } from '@angular/core';
 import {
   IGetAuthenticatedUserNotificationsGQL,
   IGetAuthenticatedUserNotificationsQuery,
+  INotificationCreatedTrackGQL,
+  INotificationCreatedTrackSubscription,
 } from './notification.generated';
 import {
   addEntity,
@@ -63,5 +66,27 @@ export const NotificationStore = signalStore(
         return notifications;
       },
     }),
-  }))
+  })),
+  withHooks(
+    (
+      store,
+      notificationCreatedTrackGQL = inject(INotificationCreatedTrackGQL)
+    ) => {
+      const onInit = () => {
+        notificationCreatedTrackGQL.subscribe({}).subscribe({
+          next: (res) => {
+            console.log('notificationCreatedTrackGQL', res);
+          },
+          error: (err) => {
+            console.log('notificationCreatedTrackGQL error', err);
+          },
+          complete: () => {
+            console.log('notificationCreatedTrackGQL complete');
+          },
+        })
+      };
+
+      return { onInit };
+    }
+  )
 );

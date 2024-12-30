@@ -20,11 +20,13 @@ import { OrderModule } from '@lpg-manager/order';
 import { NotificationServiceModule } from '@lpg-manager/notification-service';
 import { UserServiceModule } from '@lpg-manager/user-service';
 import { NotificationModule } from '@lpg-manager/notification';
+import { PubSubProviderModule } from '@lpg-manager/util';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     GraphqlModule,
+    NotificationModule,
     AuthModule,
     TranslationModule,
     DbModule,
@@ -43,7 +45,7 @@ import { NotificationModule } from '@lpg-manager/notification';
     OrderModule,
     NotificationServiceModule,
     UserServiceModule,
-    NotificationModule
+    PubSubProviderModule
   ],
 })
 export class AppModule {}

@@ -41,11 +41,12 @@ export const apolloConfig = ()=> {
 
   const wsLink = new GraphQLWsLink(
     createClient({
-      url: `${backendUrl.replace('http', 'ws') ?? ''}`,
-      connectionParams: () => {
-        const authStore = inject(AuthStore).accessToken;
+      url: `${backendUrl.replace('http', 'ws') ?? ''}/graphql`,
+      connectionParams: async () => {
+        const token = await Preferences.get({ key: 'access-token' });
+
         return {
-          Authorization: authStore() ? `Bearer ${authStore()}` : '',
+          Authorization: token.value ? `Bearer ${token.value}` : '',
         }
       },
     }),

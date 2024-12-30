@@ -17,9 +17,11 @@ export abstract class CrudAbstractService<T extends Model> {
   protected constructor(repository: Repository<T>) {
     this.repository = repository;
   }
+
   get model() {
     return this.repository;
   }
+
   async findAll(query: IQueryParam, include?: Includeable | Includeable[]) {
     const page = (query?.currentPage ?? 1) - 1;
     const pageSize = query?.pageSize ?? 20;
@@ -32,7 +34,7 @@ export abstract class CrudAbstractService<T extends Model> {
       const listValues =
         filter.values && filter.values.length > 0
           ? filter.values
-          : filter.value.split(',');
+          : filter.value?.split(',') ?? [];
       if (filter.operator === QueryOperatorEnum.Equals) {
         where[filter.field] = filter.value;
       }
@@ -64,7 +66,14 @@ export abstract class CrudAbstractService<T extends Model> {
       }
     }
 
-    if ( this.globalSearchFields.length > 0 && Number(query?.searchTerm?.length) > 0) {
+    Object.keys(where).forEach(
+      (k) => (where[k] === null || where[k] === undefined) && delete where[k]
+    );
+
+    if (
+      this.globalSearchFields.length > 0 &&
+      Number(query?.searchTerm?.length) > 0
+    ) {
       where[Op.or as unknown as string] = [];
       this.globalSearchFields.forEach((field) => {
         where[Op.or as unknown as string].push({
@@ -84,8 +93,8 @@ export abstract class CrudAbstractService<T extends Model> {
           {
             page,
             pageSize,
-          },
-        ),
+          }
+        )
       );
     return {
       items,
@@ -97,7 +106,7 @@ export abstract class CrudAbstractService<T extends Model> {
 
   async findById(
     id?: string,
-    params?: { include?: Includeable | Includeable[]; where?: WhereOptions },
+    params?: { include?: Includeable | Includeable[]; where?: WhereOptions }
   ) {
     const { where, include } = params ?? {};
     // return null;
@@ -116,7 +125,7 @@ export abstract class CrudAbstractService<T extends Model> {
   async create(
     params: T['_creationAttributes'],
     include?: Includeable | Includeable[],
-    args?: { findOrCreateOptions?: FindOrCreateOptions },
+    args?: { findOrCreateOptions?: FindOrCreateOptions }
   ) {
     let item: T;
 
@@ -128,7 +137,7 @@ export abstract class CrudAbstractService<T extends Model> {
         { ...params, ...args?.findOrCreateOptions?.where },
         {
           include: include,
-        },
+        }
       );
     }
 
@@ -175,8 +184,8 @@ export abstract class CrudAbstractService<T extends Model> {
           where: {
             id,
           } as WhereOptions,
-        } as FindOptions<T>),
-      ),
+        } as FindOptions<T>)
+      )
     );
     return true;
   }

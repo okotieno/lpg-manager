@@ -9,7 +9,6 @@ import { PermissionServiceBackendModule } from '@lpg-manager/permission-service'
 import { LocalStrategy } from './strategies/local.strategy';
 import { OtpBackendServiceModule } from '@lpg-manager/otp-service';
 import { TranslationServiceModule } from '@lpg-manager/translation';
-import { PubSubProviderModule } from '@lpg-manager/util';
 import { SendPasswordResetLinkConsumer } from './consumers/send-password-reset-link.consumer';
 import {
   SEND_PASSWORD_RESET_OTP_QUEUE,
@@ -40,7 +39,6 @@ import { ActivityLogBackendServiceModule } from '@lpg-manager/activity-log-servi
     PermissionServiceBackendModule,
     OtpBackendServiceModule,
     TranslationServiceModule,
-    PubSubProviderModule,
     EmailModule,
     RoleServiceBackendModule,
     PasswordResetBackendServiceModule,
