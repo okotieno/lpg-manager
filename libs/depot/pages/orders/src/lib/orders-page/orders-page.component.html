@@ -70,7 +70,14 @@
             <ion-col size="12">
               <ion-row class="ion-justify-content-end">
                 <ion-buttons>
-                  <ion-button shape="round" fill="outline" color="primary">Confirm for dispatch</ion-button>
+                  <ion-button 
+                    shape="round" 
+                    fill="outline" 
+                    color="primary" 
+                    (click)="confirmDispatch(order)"
+                    [disabled]="order.status !== 'PENDING'">
+                    Confirm for dispatch
+                  </ion-button>
                   <ion-button shape="round" fill="outline" color="danger">Reject</ion-button>
                 </ion-buttons>
               </ion-row>

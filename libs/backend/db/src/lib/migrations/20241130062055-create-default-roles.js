@@ -29,6 +29,8 @@ const rolePermissions = {
     'create inventory', 'delete inventory', 'update inventory',
     // Cart
     'create cart', 'update cart', 'delete cart',
+    // Order
+    'create order', 'update order', 'update order',
   ],
 
   manager: [

@@ -9,7 +9,7 @@ import {
   IonAccordionGroup,
   IonAccordion,
   IonText,
-  IonItemDivider,
+  IonItemDivider, ModalController
 } from '@ionic/angular/standalone';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
@@ -66,7 +66,6 @@ export default class OrdersPageComponent {
     });
   });
 
-  constructor() {}
 
   getStatusColor(status: string): string {
     switch (status) {

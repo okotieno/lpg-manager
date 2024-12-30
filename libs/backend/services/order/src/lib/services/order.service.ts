@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { OrderModel, OrderItemModel, CartModel } from '@lpg-manager/db';
+import { OrderModel, OrderItemModel, CartModel, CatalogueModel, StationModel } from '@lpg-manager/db';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
 import { Transaction } from 'sequelize';
 
@@ -55,5 +55,48 @@ export class OrderService extends CrudAbstractService<OrderModel> {
 
       return order;
     });
+  }
+
+  async updateOrderStatus(orderId: string, status: string) {
+    const transaction = await this.orderModel.sequelize?.transaction();
+    try {
+      const order = await this.orderModel.findByPk(orderId);
+      
+      if (!order) {
+        throw new NotFoundException(`Order with ID "${orderId}" not found`);
+      }
+
+      // Add any business logic for status transitions here
+      if (order.status === 'COMPLETED' || order.status === 'CANCELED') {
+        throw new BadRequestException('Cannot update status of a completed or canceled order');
+      }
+
+      await order.update(
+        { status },
+        { transaction }
+      );
+
+      await transaction?.commit();
+
+      return this.findById(orderId, {
+        include: [
+          {
+            model: OrderItemModel,
+            include: [CatalogueModel],
+          },
+          {
+            model: StationModel,
+            as: 'dealer'
+          },
+          {
+            model: StationModel,
+            as: 'depot'
+          }
+        ],
+      });
+    } catch (error) {
+      await transaction?.rollback();
+      throw error;
+    }
   }
 }

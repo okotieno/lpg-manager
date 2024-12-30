@@ -77,6 +77,11 @@ const permissions = [
   'update cart',
   'delete cart',
 
+  // Cart
+  'create order',
+  'update order',
+  'delete order',
+
 ];
 
 /** @type {import('sequelize-cli').Migration} */

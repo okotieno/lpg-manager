@@ -22,6 +22,7 @@ import {
   InventoryModel, StationModel
 } from '@lpg-manager/db';
 import { CreateOrderInputDto } from '../dto/create-order-input.dto';
+import { UpdateOrderStatusInput } from '../dto/update-order-status.dto';
 
 @Resolver(() => OrderModel)
 export class OrderResolver {
@@ -117,5 +118,20 @@ export class OrderResolver {
       }],
     });
     return orderWithDepot?.dealer;
+  }
+
+  @Mutation()
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @Permissions(PermissionsEnum.UpdateOrder)
+  async updateOrderStatus(
+    @Args('id') id: string,
+    @Args('params') params: UpdateOrderStatusInput
+  ) {
+    const order = await this.orderService.updateOrderStatus(id, params.status);
+
+    return {
+      message: 'Order status updated successfully',
+      data: order,
+    };
   }
 }

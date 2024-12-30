@@ -1,5 +1,6 @@
 enum OrderStatus {
   PENDING
+  CONFIRMED
   COMPLETED
   CANCELED
 }
@@ -36,6 +37,10 @@ input UpdateOrderInput {
   status: OrderStatus!
 }
 
+input UpdateOrderStatusInput {
+  status: OrderStatus!
+}
+
 type CreateOrderResponse {
   message: String!
   data: OrderModel!
@@ -60,4 +65,5 @@ extend type Mutation {
   createOrder(params: CreateOrderInput): CreateOrderResponse!
   updateOrder(id: UUID!, params: UpdateOrderInput): UpdateOrderResponse!
   deleteOrder(id: UUID!): DeleteSuccessResponse
+  updateOrderStatus(id: UUID!, params: UpdateOrderStatusInput!): UpdateOrderResponse!
 }

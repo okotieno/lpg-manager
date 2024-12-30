@@ -1,20 +1,26 @@
 import { Component, computed, effect, inject, untracked } from '@angular/core';
 import { OrderStore } from '@lpg-manager/order-store';
 import {
-  IonList,
-  IonItem,
-  IonLabel,
-  IonBadge,
-  IonContent,
-  IonAccordionGroup,
   IonAccordion,
+  IonAccordionGroup,
+  IonBadge,
+  IonButton,
+  IonButtons,
+  IonCol,
+  IonContent,
+  IonItem,
+  IonItemDivider,
+  IonLabel,
+  IonList,
+  IonRow,
   IonText,
-  IonItemDivider, IonButton, IonRow, IonButtons, IonCol
+  ModalController,
 } from '@ionic/angular/standalone';
-import { DatePipe, CurrencyPipe } from '@angular/common';
-import { IQueryOperatorEnum } from '@lpg-manager/types';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { IOrderStatus, IQueryOperatorEnum } from '@lpg-manager/types';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { GET_ITEMS_INCLUDE_FIELDS } from '@lpg-manager/data-table';
+import { ConfirmDispatchModalComponent } from '../components/confirm-dispatch-modal.component';
 
 @Component({
   selector: 'lpg-orders',
@@ -51,6 +57,7 @@ import { GET_ITEMS_INCLUDE_FIELDS } from '@lpg-manager/data-table';
 export default class OrdersPageComponent {
   #orderStore = inject(OrderStore);
   #authStore = inject(AuthStore);
+  #modalCtrl = inject(ModalController);
   orders = computed(() => this.#orderStore.searchedItemsEntities() || []);
   ordersDisplayed = computed(() =>
     this.orders().map((order) => ({
@@ -89,6 +96,25 @@ export default class OrdersPageComponent {
         return 'danger';
       default:
         return 'medium';
+    }
+  }
+
+  async confirmDispatch(order: any) {
+    const modal = await this.#modalCtrl.create({
+      component: ConfirmDispatchModalComponent,
+      componentProps: {
+        order: order,
+      },
+    });
+
+    await modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      await this.#orderStore.updateOrderStatus(
+        order.id,
+        IOrderStatus.Confirmed
+      );
     }
   }
 }

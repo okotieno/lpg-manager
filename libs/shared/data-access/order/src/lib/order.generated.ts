@@ -42,6 +42,14 @@ export type IUpdateOrderMutationVariables = Types.Exact<{
 
 export type IUpdateOrderMutation = { updateOrder: { message: string, data: { id: string } } };
 
+export type IUpdateOrderStatusMutationVariables = Types.Exact<{
+  id: Types.Scalars['UUID']['input'];
+  params: Types.IUpdateOrderStatusInput;
+}>;
+
+
+export type IUpdateOrderStatusMutation = { updateOrderStatus: { message: string, data: { id: string, status: Types.IOrderStatus } } };
+
 export const OrderDealerFragmentFragmentDoc = gql`
     fragment orderDealerFragment on OrderModel {
   dealer {
@@ -164,6 +172,28 @@ export const UpdateOrderDocument = gql`
   })
   export class IUpdateOrderGQL extends Apollo.Mutation<IUpdateOrderMutation, IUpdateOrderMutationVariables> {
     override document = UpdateOrderDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateOrderStatusDocument = gql`
+    mutation UpdateOrderStatus($id: UUID!, $params: UpdateOrderStatusInput!) {
+  updateOrderStatus(id: $id, params: $params) {
+    message
+    data {
+      id
+      status
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class IUpdateOrderStatusGQL extends Apollo.Mutation<IUpdateOrderStatusMutation, IUpdateOrderStatusMutationVariables> {
+    override document = UpdateOrderStatusDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

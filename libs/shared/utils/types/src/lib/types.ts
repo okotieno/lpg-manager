@@ -356,6 +356,7 @@ export type IMutation = {
   updateItemQuantity: ICreateCartResponse;
   updateNotification?: Maybe<ICreateNotificationSuccessResponse>;
   updateOrder: IUpdateOrderResponse;
+  updateOrderStatus: IUpdateOrderResponse;
   updateOtp?: Maybe<ICreateOtpSuccessResponse>;
   updatePasswordReset?: Maybe<ICreatePasswordResetSuccessResponse>;
   updatePermission?: Maybe<ICreatePermissionSuccessResponse>;
@@ -653,6 +654,12 @@ export type IMutationUpdateOrderArgs = {
 };
 
 
+export type IMutationUpdateOrderStatusArgs = {
+  id: Scalars['UUID']['input'];
+  params: IUpdateOrderStatusInput;
+};
+
+
 export type IMutationUpdateOtpArgs = {
   id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateOtpInput>;
@@ -779,6 +786,7 @@ export type IOrderModel = {
 export enum IOrderStatus {
   Canceled = 'CANCELED',
   Completed = 'COMPLETED',
+  Confirmed = 'CONFIRMED',
   Pending = 'PENDING'
 }
 
@@ -1225,6 +1233,10 @@ export type IUpdateOrderInput = {
 export type IUpdateOrderResponse = {
   data: IOrderModel;
   message: Scalars['String']['output'];
+};
+
+export type IUpdateOrderStatusInput = {
+  status: IOrderStatus;
 };
 
 export type IUpdateOtpInput = {

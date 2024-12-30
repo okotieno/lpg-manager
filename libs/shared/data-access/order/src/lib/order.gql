@@ -72,3 +72,13 @@ mutation UpdateOrder($id: UUID!, $params: UpdateOrderInput!) {
     }
   }
 }
+
+mutation UpdateOrderStatus($id: UUID!, $params: UpdateOrderStatusInput!) {
+  updateOrderStatus(id: $id, params: $params) {
+    message
+    data {
+      id
+      status
+    }
+  }
+}
