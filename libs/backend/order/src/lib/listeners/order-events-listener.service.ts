@@ -6,7 +6,7 @@ import { ActivityLogBackendService } from '@lpg-manager/activity-log-service';
 import { NotificationService } from '@lpg-manager/notification-service';
 import { UserService } from '@lpg-manager/user-service';
 import { RoleService } from '@lpg-manager/role-service';
-import { RoleModel } from '@lpg-manager/db';
+import { RoleModel, RoleUserModel } from '@lpg-manager/db';
 
 @Injectable()
 export class OrderEventsListener {
@@ -22,7 +22,7 @@ export class OrderEventsListener {
       // Get users with roles for this station
       const stationUsers = await this.userService.model.findAll({
         include: [{
-          model: RoleModel,
+          model: RoleUserModel,
           where: {
             stationId: stationId
           }
@@ -51,16 +51,18 @@ export class OrderEventsListener {
     const order = event.order;
 
     // Create activity log
-    const activity = await this.activityLogService.create({
+    const activity = await this.activityLogService.model.create({
       action: 'order.created',
       description: `New order #${order.id.slice(-8)} created`,
       type: 'INFO',
+      userId: event.userId
     });
 
+    console.log(order);
     // Notify depot users
     await this.notifyStationUsers(order.depotId, {
       title: 'New Order Received',
-      description: `Order #${order.id.slice(-8)} has been created for ${order.totalPrice.toFixed(2)} LPG units`
+      description: `Order #${order.id.slice(-8)} has been created for ${order.totalPrice} LPG units`
     });
 
     // Notify dealer users
@@ -79,6 +81,7 @@ export class OrderEventsListener {
       action: 'order.confirmed',
       description: `Order #${order.id.slice(-8)} confirmed for dispatch`,
       type: 'INFO',
+      userId: event.userId
     });
 
     // Notify dealer users
@@ -103,6 +106,7 @@ export class OrderEventsListener {
       action: 'order.completed',
       description: `Order #${order.id.slice(-8)} completed`,
       type: 'INFO',
+      userId: event.userId
     });
 
     // Notify dealer users
@@ -127,6 +131,7 @@ export class OrderEventsListener {
       action: 'order.canceled',
       description: `Order #${order.id.slice(-8)} canceled`,
       type: 'WARNING',
+      userId: event.userId
     });
 
     // Notify dealer users

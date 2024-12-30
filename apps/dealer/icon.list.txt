@@ -33,3 +33,4 @@ filter-list
 plus
 minus
 box
+arrow-left

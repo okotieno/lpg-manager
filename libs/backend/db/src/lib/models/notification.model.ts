@@ -1,4 +1,4 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 
 @Table({
@@ -9,6 +9,14 @@ import { DataTypes } from 'sequelize';
   deletedAt: true,
 })
 export class NotificationModel extends Model {
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
+    primaryKey: true,
+    allowNull: false,
+  })
+  override id!: string;
+
   @Column({ type: DataTypes.STRING, allowNull: false })
   title?: string;
 

@@ -2,7 +2,7 @@
 import { OrderModel } from '@lpg-manager/db';
 
 export class OrderEvent {
-  constructor(public order: OrderModel) {}
+  constructor(public order: OrderModel, public userId: string) {}
 }
 
 export class OrderCreatedEvent extends OrderEvent {}

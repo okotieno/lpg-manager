@@ -33,5 +33,6 @@ export const APP_ICONS = [
   'filter-list',
   'plus',
   'minus',
-  'box'
+  'box',
+  'arrow-left'
 ];

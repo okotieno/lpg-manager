@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { CartEvent } from '../events/cart.event';
 import { OrderService } from '@lpg-manager/order-service';
 
 @Injectable()
 export class CartEventsListenerService {
-  constructor(private orderService: OrderService) {}
+  constructor(
+    private orderService: OrderService,
+    private eventEmitter: EventEmitter2,
+    ) {}
 
   @OnEvent('cart.completed')
   async createOrders($event: CartEvent) {
@@ -45,12 +48,17 @@ export class CartEventsListenerService {
 
     // Create an order for each station
     for (const [stationId, orderData] of stationOrders) {
-      await this.orderService.createOrder(
+      const userId = $event.cart.userId;
+      const order = await this.orderService.createOrder(
         $event.cart.id,
         stationId,
         orderData.totalPrice,
         orderData.items
       );
+      if (order) {
+        this.eventEmitter.emit('order.created', { order, userId });
+      }
+
     }
   }
 }

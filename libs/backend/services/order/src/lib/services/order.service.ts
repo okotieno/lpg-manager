@@ -65,9 +65,6 @@ export class OrderService extends CrudAbstractService<OrderModel> {
             )
           )
         );
-        if (order) {
-          this.eventEmitter.emit('order.created', { order });
-        }
         return order;
       }
     );
