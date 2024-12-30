@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotificationBackendService } from './notification-backend.service';
+import { NotificationService } from './notification.service';
 import {
   QueryOperatorEnum,
   NotificationModel,
@@ -21,12 +21,12 @@ const modelRepositoryMock = {
 const sendNotificationQueueMock = {};
 
 describe('NotificationBackendService', () => {
-  let service: NotificationBackendService;
+  let service: NotificationService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        NotificationBackendService,
+        NotificationService,
         {
           provide: getModelToken(NotificationModel),
           useValue: modelRepositoryMock,
@@ -42,8 +42,8 @@ describe('NotificationBackendService', () => {
       ],
     }).compile();
 
-    service = module.get<NotificationBackendService>(
-      NotificationBackendService,
+    service = module.get<NotificationService>(
+      NotificationService,
     );
   });
 
@@ -94,7 +94,7 @@ describe('NotificationBackendService', () => {
 
   describe('findById', () => {
     it('should call findOne with correct ID', async () => {
-      await service.findById(1);
+      await service.findById('1');
       expect(modelRepositoryMock.findOne).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: 1 },
@@ -125,7 +125,7 @@ describe('NotificationBackendService', () => {
         update: modelRepositoryMock.update,
       });
       const params = { name: 'Updated Test' };
-      await service.update({ params, id: 1 });
+      await service.update({ params, id: '1' });
       expect(modelRepositoryMock.findOne).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: 1 },
@@ -137,7 +137,7 @@ describe('NotificationBackendService', () => {
 
   describe('deleteById', () => {
     it('should call destroy with correct ID', async () => {
-      await service.deleteById(1);
+      await service.deleteById('1');
       expect(modelRepositoryMock.destroy).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: 1 },

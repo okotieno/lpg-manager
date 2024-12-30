@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { OrderModel, OrderItemModel, CartModel, CatalogueModel, StationModel } from '@lpg-manager/db';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
 import { Transaction } from 'sequelize';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class OrderService extends CrudAbstractService<OrderModel> {
@@ -10,6 +11,7 @@ export class OrderService extends CrudAbstractService<OrderModel> {
     @InjectModel(OrderModel) private orderModel: typeof OrderModel,
     @InjectModel(OrderItemModel) private orderItemModel: typeof OrderItemModel,
     @InjectModel(CartModel) private cartModel: typeof CartModel,
+    private eventEmitter: EventEmitter2
   ) {
     super(orderModel);
   }
@@ -55,6 +57,12 @@ export class OrderService extends CrudAbstractService<OrderModel> {
 
       return order;
     });
+
+    if (order) {
+      this.eventEmitter.emit('order.created', { order });
+    }
+
+    return order;
   }
 
   async updateOrderStatus(orderId: string, status: string) {
@@ -66,7 +74,6 @@ export class OrderService extends CrudAbstractService<OrderModel> {
         throw new NotFoundException(`Order with ID "${orderId}" not found`);
       }
 
-      // Add any business logic for status transitions here
       if (order.status === 'COMPLETED' || order.status === 'CANCELED') {
         throw new BadRequestException('Cannot update status of a completed or canceled order');
       }
@@ -78,7 +85,7 @@ export class OrderService extends CrudAbstractService<OrderModel> {
 
       await transaction?.commit();
 
-      return this.findById(orderId, {
+      const updatedOrder = await this.findById(orderId, {
         include: [
           {
             model: OrderItemModel,
@@ -94,6 +101,20 @@ export class OrderService extends CrudAbstractService<OrderModel> {
           }
         ],
       });
+
+      switch (status) {
+        case 'CONFIRMED':
+          this.eventEmitter.emit('order.confirmed', { order: updatedOrder });
+          break;
+        case 'COMPLETED':
+          this.eventEmitter.emit('order.completed', { order: updatedOrder });
+          break;
+        case 'CANCELED':
+          this.eventEmitter.emit('order.canceled', { order: updatedOrder });
+          break;
+      }
+
+      return updatedOrder;
     } catch (error) {
       await transaction?.rollback();
       throw error;

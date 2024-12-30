@@ -8,7 +8,7 @@ import { Queue } from 'bull';
 export const SEND_NOTIFICATION_QUEUE = 'send-notification-queue';
 
 @Injectable()
-export class NotificationBackendService extends CrudAbstractService<NotificationModel> {
+export class NotificationService extends CrudAbstractService<NotificationModel> {
   constructor(
     @InjectModel(NotificationModel)
     private notificationModel: typeof NotificationModel,

@@ -1,9 +1,9 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Job } from 'bull';
 import {
-  NotificationBackendService,
+  NotificationService,
   SEND_NOTIFICATION_QUEUE,
-} from '../services/notification-backend.service';
+} from '../services/notification.service';
 import { Inject } from '@nestjs/common';
 import { PUB_SUB } from '@lpg-manager/util';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
@@ -11,7 +11,7 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 @Processor(SEND_NOTIFICATION_QUEUE)
 export class SendNotificationConsumer {
   constructor(
-    private notificationService: NotificationBackendService,
+    private notificationService: NotificationService,
     @Inject(PUB_SUB) private pubSub: RedisPubSub,
   ) {}
 

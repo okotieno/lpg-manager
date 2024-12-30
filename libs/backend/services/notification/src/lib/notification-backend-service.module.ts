@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import {
-  NotificationBackendService,
+  NotificationService,
   SEND_NOTIFICATION_QUEUE,
-} from './services/notification-backend.service';
+} from './services/notification.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { NotificationModel, NotificationUserModel } from '@lpg-manager/db';
 import { BullModule } from '@nestjs/bull';
@@ -17,10 +17,10 @@ import { NotificationUserBackendService } from './services/notification-user-bac
     PubSubProviderModule,
   ],
   providers: [
-    NotificationBackendService,
+    NotificationService,
     SendNotificationConsumer,
     NotificationUserBackendService,
   ],
-  exports: [NotificationBackendService, NotificationUserBackendService],
+  exports: [NotificationService, NotificationUserBackendService],
 })
 export class NotificationBackendServiceModule {}
