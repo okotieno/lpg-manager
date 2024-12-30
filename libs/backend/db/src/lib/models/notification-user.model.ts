@@ -3,7 +3,7 @@ import {
   ForeignKey,
   Model,
   Table,
-  BelongsTo,
+  BelongsTo, DataType
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import { NotificationModel } from './notification.model';
@@ -17,12 +17,20 @@ import { UserModel } from './user.model';
   deletedAt: true,
 })
 export class NotificationUserModel extends Model {
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
+    primaryKey: true,
+    allowNull: false,
+  })
+  override id!: string;
+
   @ForeignKey(() => NotificationModel)
   @Column({
     type: DataTypes.UUID,
     allowNull: false,
   })
-  notificationId!: number;
+  notificationId!: string;
 
   @BelongsTo(() => NotificationModel)
   notification!: NotificationModel;
@@ -32,7 +40,7 @@ export class NotificationUserModel extends Model {
     type: DataTypes.UUID,
     allowNull: false,
   })
-  userId!: number;
+  userId!: string;
 
   @BelongsTo(() => UserModel)
   user!: UserModel;

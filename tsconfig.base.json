@@ -104,6 +104,7 @@
         "libs/backend/services/notification/src/index.ts"
       ],
       "@lpg-manager/notification-store": ["libs/shared/data-access/notification/src/index.ts"],
+      "@lpg-manager/notification": ["libs/backend/notification/src/index.ts"],
       "@lpg-manager/order-store": ["libs/shared/data-access/order/src/index.ts"],
       "@lpg-manager/dealer-orders-page": [
         "libs/dealer/pages/orders/src/index.ts"

@@ -18,7 +18,7 @@ export class NotificationService extends CrudAbstractService<NotificationModel> 
     private sendNotificationQueue: Queue<{
       title: string;
       description: string;
-      userIds: number[];
+      userIds: string[];
     }>,
   ) {
     super(notificationModel);
@@ -27,7 +27,7 @@ export class NotificationService extends CrudAbstractService<NotificationModel> 
   async sendNotification(
     title: string,
     description: string,
-    userIds: number[],
+    userIds: string[],
   ) {
     await this.sendNotificationQueue.add({ title, description, userIds });
   }

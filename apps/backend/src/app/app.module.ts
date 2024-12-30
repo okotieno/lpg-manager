@@ -19,6 +19,7 @@ import { CartModule } from '@lpg-manager/cart';
 import { OrderModule } from '@lpg-manager/order';
 import { NotificationServiceModule } from '@lpg-manager/notification-service';
 import { UserServiceModule } from '@lpg-manager/user-service';
+import { NotificationModule } from '@lpg-manager/notification';
 
 @Module({
   imports: [
@@ -41,7 +42,8 @@ import { UserServiceModule } from '@lpg-manager/user-service';
     CartModule,
     OrderModule,
     NotificationServiceModule,
-    UserServiceModule
+    UserServiceModule,
+    NotificationModule
   ],
 })
 export class AppModule {}

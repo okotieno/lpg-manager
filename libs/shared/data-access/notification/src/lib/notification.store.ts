@@ -19,7 +19,10 @@ export const NotificationStore = signalStore(
       >(),
     collection: 'searchedItems',
   }),
-  withState({}),
+  withState({
+    currentPage: 1,
+    pageSize: 20,
+  }),
   withProps(() => ({
     _getAuthenticatedUserNotificationsGQL: inject(
       IGetAuthenticatedUserNotificationsGQL
@@ -27,9 +30,15 @@ export const NotificationStore = signalStore(
   })),
   withProps((store) => ({
     _getAuthenticatedUserNotification: resource({
-      loader: () => {
+      request: () => ({
+        pageSize: store.pageSize(),
+        currentPage: store.currentPage(),
+      }),
+      loader: ({ request }) => {
         const notifications = store._getAuthenticatedUserNotificationsGQL
-          .watch()
+          .watch({
+            ...request,
+          })
           .result();
         console.log({ notifications });
         return notifications;

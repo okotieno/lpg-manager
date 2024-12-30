@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -26,6 +26,7 @@ import { TitleCasePipe } from '@angular/common';
 import { CartStore } from '@lpg-manager/cart-store';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { FormsModule } from '@angular/forms';
+import { NotificationStore } from '../../../../../../shared/data-access/notification/src/lib/notification.store';
 
 @Component({
   selector: 'lpg-dashboard',
@@ -60,6 +61,7 @@ import { FormsModule } from '@angular/forms';
 })
 export default class DashboardComponent {
   #authStore = inject(AuthStore);
+  #notificationStore = inject(NotificationStore);
   #themeService = inject(ThemeService);
   #router = inject(Router);
   #breadcrumbStore = inject(BreadcrumbStore);
