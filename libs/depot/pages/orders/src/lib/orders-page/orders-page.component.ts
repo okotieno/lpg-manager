@@ -11,9 +11,10 @@ import {
   IonText,
   IonItemDivider,
 } from '@ionic/angular/standalone';
-import { DatePipe, CurrencyPipe, JsonPipe } from '@angular/common';
+import { DatePipe, CurrencyPipe } from '@angular/common';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
 import { AuthStore } from '@lpg-manager/auth-store';
+import { GET_ITEMS_INCLUDE_FIELDS } from '@lpg-manager/data-table';
 
 @Component({
   selector: 'lpg-orders',
@@ -33,7 +34,12 @@ import { AuthStore } from '@lpg-manager/auth-store';
     CurrencyPipe,
     IonItemDivider,
   ],
-  providers: [OrderStore],
+  providers: [OrderStore, {
+    provide: GET_ITEMS_INCLUDE_FIELDS,
+    useValue: {
+      includeDealer: true,
+    }
+  }],
 })
 export default class OrdersPageComponent {
   #orderStore = inject(OrderStore);
@@ -56,7 +62,7 @@ export default class OrdersPageComponent {
       if (activeStationId) {
         this.#orderStore.setFilters([
           {
-            field: 'dealerId',
+            field: 'depotId',
             operator: IQueryOperatorEnum.Equals,
             value: activeStationId,
             values: [],

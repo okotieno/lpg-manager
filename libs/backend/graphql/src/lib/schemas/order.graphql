@@ -15,6 +15,7 @@ type OrderModel {
   id: UUID!
   items: [OrderItem]!
   depot: StationModel!
+  dealer: StationModel!
   totalQuantity: Int!
   totalPrice: Float!
   status: OrderStatus!

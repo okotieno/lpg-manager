@@ -3,6 +3,8 @@ import * as Types from '@lpg-manager/types';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
+export type IOrderDealerFragmentFragment = { dealer: { id: string, name: string } };
+
 export type ICreateOrderMutationVariables = Types.Exact<{
   params: Types.ICreateOrderInput;
 }>;
@@ -19,10 +21,11 @@ export type IGetOrderByIdQuery = { order?: { id: string } | null };
 
 export type IGetOrdersQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
+  includeDealer?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
 }>;
 
 
-export type IGetOrdersQuery = { orders: { items?: Array<{ id: string, createdAt: string, totalPrice: number, status: Types.IOrderStatus, depot: { name: string }, items: Array<{ id: string, quantity: number, catalogue: { pricePerUnit?: number | null, quantityPerUnit: number, unit: Types.ICatalogueUnit, id: string, name: string } } | null> } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetOrdersQuery = { orders: { items?: Array<{ id: string, createdAt: string, totalPrice: number, status: Types.IOrderStatus, depot: { name: string }, items: Array<{ id: string, quantity: number, catalogue: { pricePerUnit?: number | null, quantityPerUnit: number, unit: Types.ICatalogueUnit, id: string, name: string } } | null>, dealer: { id: string, name: string } } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteOrderByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -39,6 +42,14 @@ export type IUpdateOrderMutationVariables = Types.Exact<{
 
 export type IUpdateOrderMutation = { updateOrder: { message: string, data: { id: string } } };
 
+export const OrderDealerFragmentFragmentDoc = gql`
+    fragment orderDealerFragment on OrderModel {
+  dealer {
+    id
+    name
+  }
+}
+    `;
 export const CreateOrderDocument = gql`
     mutation CreateOrder($params: CreateOrderInput!) {
   createOrder(params: $params) {
@@ -79,7 +90,7 @@ export const GetOrderByIdDocument = gql`
     }
   }
 export const GetOrdersDocument = gql`
-    query GetOrders($query: QueryParams) {
+    query GetOrders($query: QueryParams, $includeDealer: Boolean = true) {
   orders(query: $query) {
     items {
       id
@@ -89,6 +100,7 @@ export const GetOrdersDocument = gql`
       depot {
         name
       }
+      ...orderDealerFragment @include(if: $includeDealer)
       items {
         id
         quantity
@@ -106,7 +118,7 @@ export const GetOrdersDocument = gql`
     }
   }
 }
-    `;
+    ${OrderDealerFragmentFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'

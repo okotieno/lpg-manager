@@ -107,4 +107,15 @@ export class OrderResolver {
     });
     return orderWithDepot?.depot;
   }
+
+  @ResolveField('dealer')
+  async getDealer(@Root() order: OrderModel) {
+    const orderWithDepot = await this.orderService.findById(order.id, {
+      include: [{
+        model: StationModel,
+        as: 'dealer',
+      }],
+    });
+    return orderWithDepot?.dealer;
+  }
 }

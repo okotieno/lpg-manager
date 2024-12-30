@@ -10,7 +10,7 @@
                 <p>{{ order.createdAt | date:'medium' }}</p>
               </ion-text>
               <ion-text color="medium">
-                <p>{{ order.station.name }}</p>
+                <p>{{ order.dealer.name }}</p>
               </ion-text>
             </ion-label>
             <ion-badge slot="end" [color]="order.color">
@@ -29,8 +29,8 @@
 
             <ion-item lines="none">
               <ion-label>
-                <ion-text>Depot</ion-text>
-                <h3>{{ order.station.name }}</h3>
+                <ion-text>Dealer</ion-text>
+                <h3>{{ order.dealer.name }}</h3>
               </ion-label>
             </ion-item>
 

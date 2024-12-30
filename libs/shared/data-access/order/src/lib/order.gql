@@ -1,3 +1,9 @@
+fragment orderDealerFragment on OrderModel {
+  dealer {
+    id
+    name
+  }
+}
 mutation CreateOrder(
   $params: CreateOrderInput!
 ) {
@@ -17,7 +23,10 @@ query GetOrderById($id: UUID!) {
   }
 }
 
-query GetOrders($query: QueryParams) {
+query GetOrders(
+  $query: QueryParams,
+  $includeDealer: Boolean = true
+) {
   orders(query: $query) {
     items {
       id
@@ -27,6 +36,7 @@ query GetOrders($query: QueryParams) {
       depot {
         name
       }
+      ...orderDealerFragment @include(if: $includeDealer)
       items {
         id
         quantity
