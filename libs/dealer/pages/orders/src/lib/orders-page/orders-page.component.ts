@@ -11,7 +11,7 @@ import {
   IonText,
   IonItemDivider,
 } from '@ionic/angular/standalone';
-import { DatePipe, CurrencyPipe, JsonPipe } from '@angular/common';
+import { DatePipe, CurrencyPipe } from '@angular/common';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
 import { AuthStore } from '@lpg-manager/auth-store';
 
