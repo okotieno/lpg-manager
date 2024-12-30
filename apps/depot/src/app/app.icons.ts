@@ -30,5 +30,6 @@ export const APP_ICONS = [
   'check',
   'filter-list',
   'plus',
-  'minus'
+  'minus',
+  'circle-info'
 ];

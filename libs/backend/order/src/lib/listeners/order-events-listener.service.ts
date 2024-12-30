@@ -31,15 +31,7 @@ export class OrderEventsListener {
 
       if (stationUsers.length) {
         const userIds = stationUsers.map(user => user.id);
-
-        // Create notification
-        const notif = await this.notificationService.create({
-          title: notification.title,
-          description: notification.description
-        });
-
-        // Add users to notification
-        await this.notificationService.addUsers(notif.id, userIds);
+        await this.notificationService.sendNotification(notification.title,  notification.description, userIds)
       }
     } catch (error) {
       Logger.error(`Failed to notify station users: ${error}`);
@@ -58,7 +50,6 @@ export class OrderEventsListener {
       userId: event.userId
     });
 
-    console.log(order);
     // Notify depot users
     await this.notifyStationUsers(order.depotId, {
       title: 'New Order Received',

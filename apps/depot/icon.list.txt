@@ -30,3 +30,4 @@ check
 filter-list
 plus
 minus
+circle-info

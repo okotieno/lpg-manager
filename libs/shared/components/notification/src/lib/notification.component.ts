@@ -1,5 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { IonButton, IonIcon, IonItem, IonLabel, IonList, IonPopover } from '@ionic/angular/standalone';
+import {
+  IonButton,
+  IonIcon,
+  IonItem, IonItemOption,
+  IonItemOptions,
+  IonItemSliding,
+  IonLabel,
+  IonList,
+  IonPopover
+} from '@ionic/angular/standalone';
 import { NotificationStore } from '@lpg-manager/notification-store';
 import { DatePipe } from '@angular/common';
 
@@ -13,6 +22,9 @@ import { DatePipe } from '@angular/common';
     IonItem,
     IonLabel,
     DatePipe,
+    IonItemSliding,
+    IonItemOptions,
+    IonItemOption,
   ],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.css',
