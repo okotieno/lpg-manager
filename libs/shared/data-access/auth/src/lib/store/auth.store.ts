@@ -7,7 +7,6 @@ import {
   withState,
   withProps,
 } from '@ngrx/signals';
-import { IMutationLoginWithPasswordArgs } from '@lpg-manager/types';
 import {
   computed,
   effect,
@@ -40,24 +39,11 @@ import {
   SHOW_ERROR_MESSAGE,
   SHOW_SUCCESS_MESSAGE,
 } from '@lpg-manager/injection-token';
-
-interface AuthState {
-  activeRole?: NonNullable<
-    NonNullable<
-      NonNullable<ILoginWithPasswordMutation['loginWithPassword']>['user']
-    >['roles']
-  >[number];
-  refreshTokenInput: string;
-  loginResponse: ILoginWithPasswordMutation['loginWithPassword'];
-  loginWithPasswordParams: IMutationLoginWithPasswordArgs;
-  errorMessage?: string;
-  passwordResetLinkEmailInput: string;
-  initialLoadComplete: boolean;
-}
+import { AuthState } from './auth.state';
 
 const initialState: AuthState = {
   initialLoadComplete: false,
-  activeRole: undefined,
+  activeRoleId: '',
   refreshTokenInput: '',
   loginWithPasswordParams: { email: '', password: '' },
   loginResponse: {
@@ -146,16 +132,15 @@ export const AuthStore = signalStore(
           return Promise.resolve(undefined);
         }
         return lastValueFrom(
-          store._sendPasswordResetEmailGQL
-            .mutate(
-              { email: param.request.email ?? '' },
-              {
-                context: {
-                  [SHOW_SUCCESS_MESSAGE]: true,
-                  [SHOW_ERROR_MESSAGE]: true,
-                },
-              }
-            )
+          store._sendPasswordResetEmailGQL.mutate(
+            { email: param.request.email ?? '' },
+            {
+              context: {
+                [SHOW_SUCCESS_MESSAGE]: true,
+                [SHOW_ERROR_MESSAGE]: true,
+              },
+            }
+          )
         );
       },
     }),
@@ -167,7 +152,10 @@ export const AuthStore = signalStore(
     const isLoading = computed(() => store._loginResource?.isLoading());
     const user = computed(() => store.loginResponse()?.user);
     const userRoles = computed(() => user()?.roles ?? []);
-    const activeStation = computed(() => store.activeRole?.()?.station)
+    const activeRole = computed(() =>
+      userRoles().find((userRole) => userRole?.id === store.activeRoleId())
+    );
+    const activeStation = computed(() => activeRole()?.station);
 
     return {
       isLoggedIn,
@@ -176,7 +164,8 @@ export const AuthStore = signalStore(
       isLoading,
       user,
       userRoles,
-      activeStation
+      activeRole,
+      activeStation,
     };
   }),
   withMethods((store) => {
@@ -214,12 +203,7 @@ export const AuthStore = signalStore(
     };
 
     const updateActiveRole = (activeRoleId: string) => {
-      const activeRole = store
-        .userRoles()
-        .find((userRole) => userRole?.id === activeRoleId);
-      if (activeRole) {
-        patchState(store, { activeRole });
-      }
+      patchState(store, { activeRoleId });
     };
     const isAuthenticatedGuard = () =>
       timer(100, 100).pipe(
@@ -251,7 +235,7 @@ export const AuthStore = signalStore(
           const roles = store.userRoles();
           untracked(() => {
             if (roles.length > 0) {
-              patchState(store, { activeRole: roles[0] });
+              patchState(store, { activeRoleId: roles[0]?.id });
             }
           });
         },

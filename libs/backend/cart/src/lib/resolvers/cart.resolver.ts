@@ -137,7 +137,7 @@ export class CartResolver {
 
     return {
       message: 'Cart completed successfully',
-      data: { cart },
+      data: cart ,
     };
   }
 
