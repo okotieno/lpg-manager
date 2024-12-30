@@ -1,0 +1,50 @@
+ion-popover::part(content) {
+  min-width: 367px;
+  max-width: 450px;
+}
+
+.notification-item {
+  --padding-start: 1rem;
+  --padding-end: 1rem;
+  --padding-top: 0.75rem;
+  --padding-bottom: 0.75rem;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.notification-title {
+  font-weight: 600;
+  /*color: var(--ion-color-primary);*/
+}
+
+.notification-time {
+  font-size: 0.75rem;
+  color: var(--ion-color-medium);
+}
+
+.notification-description {
+  font-size: 0.875rem;
+  /*color: var(--ion-color-medium);*/
+  margin: 0;
+}
+
+.notification-item.read {
+  border-left: 3px solid rgba(var(--ion-color-primary-rgb), 0.2);
+  color: var(--ion-color-medium);
+}
+
+.notification-item.unread {
+  border-left: 3px solid rgba(var(--ion-color-primary-rgb), 1);
+  color: var(--ion-color-medium);
+}
+
+.empty-notification {
+  padding: 2rem;
+  text-align: center;
+  color: var(--ion-color-medium);
+}

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { IonButton, IonIcon, IonItem, IonLabel, IonList, IonPopover } from '@ionic/angular/standalone';
 import { NotificationStore } from '@lpg-manager/notification-store';
-import { JsonPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-notification-bell',
@@ -12,7 +12,7 @@ import { JsonPipe } from '@angular/common';
     IonPopover,
     IonItem,
     IonLabel,
-    JsonPipe,
+    DatePipe,
   ],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.css',
