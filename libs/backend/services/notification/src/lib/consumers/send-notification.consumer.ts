@@ -26,6 +26,7 @@ export class SendNotificationConsumer {
     await this.notificationService.addUsers(notification.id, job.data.userIds);
     await this.pubSub.publish('notificationCreated', {
       id: notification.id,
+      notificationId: notification.id,
       title: notification.title,
       description: notification.description,
       createdAt: notification.createdAt,

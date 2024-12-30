@@ -6,6 +6,6 @@ import { NotificationCreatedEvent } from '../events/notification-created.event';
 export class NotificationModelEventsListener {
   @OnEvent('notification.created')
   async handleNotificationCreated($event: NotificationCreatedEvent) {
-    console.log($event);
+    // console.log($event);
   }
 }

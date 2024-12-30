@@ -1,3 +1,11 @@
+fragment notificationItem on NotificationUserModel {
+  id
+  description
+  createdAt
+  title
+  isRead
+}
+
 query GetAuthenticatedUserNotifications(
   $pageSize: Int!
   $currentPage: Int!
@@ -13,11 +21,7 @@ query GetAuthenticatedUserNotifications(
     }
   ) {
     items {
-      id
-      description
-      createdAt
-      title
-      isRead
+      ...notificationItem
     }
     meta {
       totalItems
@@ -48,11 +52,7 @@ mutation MarkNotificationAsRead($notifications: [SelectCategory!]!) {
 subscription NotificationCreatedTrack {
   notificationCreated {
     notification {
-      id
-      title
-      isRead
-      description
-      createdAt
+      ...notificationItem
     }
   }
 }

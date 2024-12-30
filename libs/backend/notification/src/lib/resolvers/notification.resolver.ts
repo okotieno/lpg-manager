@@ -125,23 +125,27 @@ export class NotificationResolver {
 
   @Subscription('notificationCreated', {
     async resolve(this: NotificationResolver, value, args, context) {
-     console.log({ context, value });
+
       const userId = context.extra?.user?.id ?? context.user.id;
       const stats = await this.notificationService.userStats(userId);
-      return {
+
+      console.log({
         stats,
         notification: { ...value, isRead: false },
+      });
+
+      return {
+        stats,
+        notification: { ...value, title: '100 yesa', isRead: false },
       };
     },
     filter(this: NotificationResolver, payload, variables, context) {
-      console.log({ context, variables, payload });
-
       const userId = context.extra?.user?.id ?? context.user.id;
       return payload.userIds.includes(userId);
     },
   })
   async notificationCreated() {
     console.log('Notification created...');
-    return this.pubSub.asyncIterator('notificationCreated');
+    return this.pubSub.asyncIterableIterator('notificationCreated');
   }
 }

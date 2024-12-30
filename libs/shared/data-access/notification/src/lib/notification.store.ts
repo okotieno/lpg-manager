@@ -11,13 +11,8 @@ import {
   IGetAuthenticatedUserNotificationsGQL,
   IGetAuthenticatedUserNotificationsQuery,
   INotificationCreatedTrackGQL,
-  INotificationCreatedTrackSubscription,
 } from './notification.generated';
-import {
-  addEntity,
-  setAllEntities,
-  withEntities,
-} from '@ngrx/signals/entities';
+import { setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
 
 export const NotificationStore = signalStore(
   { providedIn: 'root' },
@@ -42,6 +37,7 @@ export const NotificationStore = signalStore(
     _getAuthenticatedUserNotificationsGQL: inject(
       IGetAuthenticatedUserNotificationsGQL
     ),
+    _notificationCreatedTrackGQL: inject(INotificationCreatedTrackGQL),
   })),
   withProps((store) => ({
     _getAuthenticatedUserNotification: resource({
@@ -67,26 +63,20 @@ export const NotificationStore = signalStore(
       },
     }),
   })),
-  withHooks(
-    (
-      store,
-      notificationCreatedTrackGQL = inject(INotificationCreatedTrackGQL)
-    ) => {
-      const onInit = () => {
-        notificationCreatedTrackGQL.subscribe({}).subscribe({
-          next: (res) => {
-            console.log('notificationCreatedTrackGQL', res);
-          },
-          error: (err) => {
-            console.log('notificationCreatedTrackGQL error', err);
-          },
-          complete: () => {
-            console.log('notificationCreatedTrackGQL complete');
-          },
-        })
-      };
+  withHooks((store) => {
+    const onInit = () => {
+      store._notificationCreatedTrackGQL.subscribe().subscribe({
+        next: (res) => {
+          if(res.data?.notificationCreated?.notification) {
+            patchState(
+              store,
+              setEntity(res.data.notificationCreated.notification, { collection: 'searchedItems' })
+            );
+          }
+        },
+      });
+    };
 
-      return { onInit };
-    }
-  )
+    return { onInit };
+  })
 );
