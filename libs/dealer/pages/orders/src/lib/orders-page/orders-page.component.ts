@@ -56,7 +56,7 @@ export default class OrdersPageComponent {
       if (activeStationId) {
         this.#orderStore.setFilters([
           {
-            field: 'stationId',
+            field: 'dealerId',
             operator: IQueryOperatorEnum.Equals,
             value: activeStationId,
             values: [],

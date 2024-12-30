@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { OrderModel, OrderItemModel } from '@lpg-manager/db';
+import { OrderModel, OrderItemModel, CartModel } from '@lpg-manager/db';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
 import { Transaction } from 'sequelize';
 
@@ -9,6 +9,7 @@ export class OrderService extends CrudAbstractService<OrderModel> {
   constructor(
     @InjectModel(OrderModel) private orderModel: typeof OrderModel,
     @InjectModel(OrderItemModel) private orderItemModel: typeof OrderItemModel,
+    @InjectModel(CartModel) private cartModel: typeof CartModel,
   ) {
     super(orderModel);
   }
@@ -25,8 +26,18 @@ export class OrderService extends CrudAbstractService<OrderModel> {
     }>,
   ) {
     return this.orderModel.sequelize?.transaction(async (transaction: Transaction) => {
+      const cart = await this.cartModel.findByPk(cartId);
+      if (!cart) {
+        throw new Error('Cart not found');
+      }
+
       const order = await this.orderModel.create(
-        { cartId, stationId, totalPrice },
+        { 
+          cartId, 
+          stationId, 
+          dealerId: cart.dealerId,
+          totalPrice 
+        },
         { transaction }
       );
 

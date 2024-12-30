@@ -100,7 +100,10 @@ export class OrderResolver {
   @ResolveField('station')
   async getStation(@Root() order: OrderModel) {
     const orderWithStation = await this.orderService.findById(order.id, {
-      include: [StationModel],
+      include: [{
+        model: StationModel,
+        as: 'station',
+      }],
     });
     return orderWithStation?.station;
   }

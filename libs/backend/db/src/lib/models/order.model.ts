@@ -40,6 +40,13 @@ export class OrderModel extends Model {
   })
   stationId!: string;
 
+  @ForeignKey(() => StationModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  dealerId!: string;
+
   @Column({
     type: DataType.DECIMAL(10, 2),
     allowNull: false,
@@ -53,8 +60,11 @@ export class OrderModel extends Model {
   })
   status!: 'PENDING' | 'COMPLETED';
 
-  @BelongsTo(() => StationModel)
+  @BelongsTo(() => StationModel, 'stationId')
   station!: StationModel;
+
+  @BelongsTo(() => StationModel, 'dealerId')
+  dealer!: StationModel;
 
   @BelongsTo(() => CartModel)
   cart!: CartModel;

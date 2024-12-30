@@ -31,6 +31,17 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
+      dealerId: {
+        field: 'dealer_id',
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'stations',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       totalPrice: {
         field: 'total_price',
         type: Sequelize.DECIMAL(10, 2),
