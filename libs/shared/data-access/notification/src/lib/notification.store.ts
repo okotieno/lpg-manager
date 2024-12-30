@@ -1,10 +1,20 @@
-import { signalStore, type, withProps, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  type,
+  withProps,
+  withState,
+} from '@ngrx/signals';
 import { inject, resource } from '@angular/core';
 import {
   IGetAuthenticatedUserNotificationsGQL,
   IGetAuthenticatedUserNotificationsQuery,
 } from './notification.generated';
-import { withEntities } from '@ngrx/signals/entities';
+import {
+  addEntity,
+  setAllEntities,
+  withEntities,
+} from '@ngrx/signals/entities';
 
 export const NotificationStore = signalStore(
   { providedIn: 'root' },
@@ -13,8 +23,10 @@ export const NotificationStore = signalStore(
       type<
         NonNullable<
           NonNullable<
-            IGetAuthenticatedUserNotificationsQuery['authenticatedUserNotifications']
-          >['items']
+            NonNullable<
+              IGetAuthenticatedUserNotificationsQuery['authenticatedUserNotifications']
+            >['items']
+          >[number]
         >
       >(),
     collection: 'searchedItems',
@@ -34,13 +46,20 @@ export const NotificationStore = signalStore(
         pageSize: store.pageSize(),
         currentPage: store.currentPage(),
       }),
-      loader: ({ request }) => {
-        const notifications = store._getAuthenticatedUserNotificationsGQL
-          .watch({
-            ...request,
-          })
+      loader: async ({ request }) => {
+        const notifications = await store._getAuthenticatedUserNotificationsGQL
+          .watch({ ...request })
           .result();
-        console.log({ notifications });
+        const items =
+          notifications.data.authenticatedUserNotifications?.items?.filter(
+            (x) => x !== null
+          );
+        if (items) {
+          patchState(
+            store,
+            setAllEntities(items, { collection: 'searchedItems' })
+          );
+        }
         return notifications;
       },
     }),

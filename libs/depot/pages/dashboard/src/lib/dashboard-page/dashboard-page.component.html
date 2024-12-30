@@ -49,9 +49,7 @@
           </ion-button>
         </div>
       }
-      <ion-button id="notifications-button">
-        <ion-icon name="bell" slot="icon-only"></ion-icon>
-      </ion-button>
+      <lpg-notification-bell />
       <ion-button (click)="toggleTheme()">
         <ion-icon [name]="currentThemeIcon()" slot="icon-only"></ion-icon>
       </ion-button>
@@ -92,13 +90,3 @@
   </ng-template>
 </ion-popover>
 
-<!-- Notifications Popover -->
-<ion-popover trigger="notifications-button">
-  <ng-template>
-    <ion-list>
-      <ion-item>
-        <ion-label>No new notifications</ion-label>
-      </ion-item>
-    </ion-list>
-  </ng-template>
-</ion-popover>

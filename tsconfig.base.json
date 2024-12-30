@@ -139,6 +139,9 @@
       "@lpg-manager/searchable-select": [
         "libs/shared/components/searchable-select/src/index.ts"
       ],
+      "@lpg-manager/notification-component": [
+        "libs/shared/components/notification/src/index.ts"
+      ],
       "@lpg-manager/setting": ["libs/backend/setting/src/index.ts"],
       "@lpg-manager/setting-service": [
         "libs/backend/services/setting/src/index.ts"
