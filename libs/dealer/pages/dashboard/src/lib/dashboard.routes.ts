@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthStore } from '@lpg-manager/auth-store';
-import { map } from 'rxjs';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
