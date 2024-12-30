@@ -230,13 +230,31 @@ export const AuthStore = signalStore(
       if (refreshTokenInput) patchState(store, { refreshTokenInput });
       else patchState(store, { initialLoadComplete: true });
 
+      const { value: activeRoleId } = await Preferences.get({
+        key: 'active-role-id',
+      });
+      if (activeRoleId) patchState(store, { activeRoleId });
+
       effect(
         () => {
           const roles = store.userRoles();
           untracked(() => {
-            if (roles.length > 0) {
+            if (roles.length > 0 && !store.activeRoleId()) {
               patchState(store, { activeRoleId: roles[0]?.id });
             }
+          });
+        },
+        { injector }
+      );
+
+      effect(
+        () => {
+          const activeRoleId = store.activeRoleId();
+          untracked(async () => {
+            await Preferences.set({
+              key: 'active-role-id',
+              value: activeRoleId,
+            });
           });
         },
         { injector }
