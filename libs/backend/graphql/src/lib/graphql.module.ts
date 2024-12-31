@@ -3,6 +3,12 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GraphQLFormattedError } from 'graphql/error';
 import { JwtService } from '@nestjs/jwt';
+import {
+  DateTimeResolver,
+  EmailAddressResolver, PositiveFloatResolver,
+  PositiveIntResolver,
+  URLResolver, UUIDResolver
+} from 'graphql-scalars';
 
 @Module({
   providers: [JwtService],
@@ -66,6 +72,14 @@ import { JwtService } from '@nestjs/jwt';
           },
         };
       },
+      resolvers: {
+        DateTime: DateTimeResolver,
+        EmailAddress: EmailAddressResolver,
+        URL: URLResolver,
+        UUID: UUIDResolver,
+        PositiveInt: PositiveIntResolver,
+        PositiveFloat: PositiveFloatResolver,
+      }
     }),
   ],
 })

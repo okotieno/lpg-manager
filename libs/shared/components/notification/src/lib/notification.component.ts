@@ -35,10 +35,9 @@ export class NotificationBellComponent {
   notifications = computed(() =>
     this.#notificationStore
       .searchedItemsEntities()
-      .sort(({ createdAt: a }, { createdAt: b }) => {
-        console.log(a, b, new Date(a), new Date(b));
-        return  a <= b ? 1 : 0;
-        }
+      .sort(
+        ({ createdAt: a }, { createdAt: b }) =>
+          new Date(b).getTime() - new Date(a).getTime()
       )
   );
 }

@@ -2,14 +2,14 @@ type NotificationModel {
   id: UUID!
   title: String!
   description: String!
-  createdAt: String!
+  createdAt: DateTime!
   updatedAt: String!
 }
 
 type NotificationUserModel {
   id: UUID!
   title: String!
-  createdAt: String!
+  createdAt: DateTime!
   updatedAt: String!
   description: String!
   isRead: Boolean!
