@@ -10,6 +10,7 @@ import {
 import { CartModel } from './cart.model';
 import { StationModel } from './station.model';
 import { OrderItemModel } from './order-item.model';
+import { DispatchModel } from './dispatch.model';
 
 @Table({
   tableName: 'orders',
@@ -71,4 +72,14 @@ export class OrderModel extends Model {
 
   @HasMany(() => OrderItemModel)
   items!: OrderItemModel[];
+
+  @ForeignKey(() => DispatchModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: true,
+  })
+  dispatchId?: string;
+
+  @BelongsTo(() => DispatchModel)
+  dispatch?: DispatchModel;
 }
