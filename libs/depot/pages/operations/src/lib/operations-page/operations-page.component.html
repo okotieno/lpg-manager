@@ -1,0 +1,45 @@
+<ion-content class="ion-padding">
+  <ion-row class="ion-justify-content-between ion-align-items-center">
+    <ion-col>
+      <h1>Dispatches</h1>
+    </ion-col>
+    <ion-col class="ion-text-end">
+      <ion-button [routerLink]="['create']">
+        <ion-icon name="add-circle" slot="start"></ion-icon>
+        Create Dispatch
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <ion-grid>
+    <ion-row class="header-row">
+      <ion-col>Dispatch ID</ion-col>
+      <ion-col>Transporter</ion-col>
+      <ion-col>Driver</ion-col>
+      <ion-col>Vehicle</ion-col>
+      <ion-col>Status</ion-col>
+      <ion-col>Dispatch Date</ion-col>
+      <ion-col>Actions</ion-col>
+    </ion-row>
+
+    @for (dispatch of dispatches(); track dispatch.id) {
+      <ion-row class="data-row">
+        <ion-col>{{ dispatch.id }}</ion-col>
+        <ion-col>{{ dispatch.transporter.name }}</ion-col>
+        <ion-col>{{ dispatch.driver.name }}</ion-col>
+        <ion-col>{{ dispatch.vehicle.registrationNumber }}</ion-col>
+        <ion-col>
+          <ion-badge [color]="getStatusColor(dispatch.status)">
+            {{ dispatch.status }}
+          </ion-badge>
+        </ion-col>
+        <ion-col>{{ dispatch.dispatchDate | date }}</ion-col>
+        <ion-col>
+          <ion-button fill="clear" color="primary">
+            <ion-icon name="eye" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    }
+  </ion-grid>
+</ion-content>

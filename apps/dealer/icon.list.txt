@@ -35,3 +35,4 @@ minus
 box
 arrow-left
 bell-slash
+circle-info

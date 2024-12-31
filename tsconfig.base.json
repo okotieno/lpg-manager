@@ -46,9 +46,7 @@
         "libs/shared/components/breadcrumb/src/index.ts"
       ],
       "@lpg-manager/cart": ["libs/backend/cart/src/index.ts"],
-      "@lpg-manager/cart-service": [
-        "libs/backend/services/cart/src/index.ts"
-      ],
+      "@lpg-manager/cart-service": ["libs/backend/services/cart/src/index.ts"],
       "@lpg-manager/cart-store": ["libs/shared/data-access/cart/src/index.ts"],
       "@lpg-manager/catalogue": ["libs/backend/catalogue/src/index.ts"],
       "@lpg-manager/catalogue-service": [
@@ -57,25 +55,48 @@
       "@lpg-manager/catalogue-store": [
         "libs/shared/data-access/catalogue/src/index.ts"
       ],
+      "@lpg-manager/checkout-page": ["libs/dealer/pages/checkout/src/index.ts"],
       "@lpg-manager/crud-abstract": [
         "libs/backend/services/crud-abstract/src/index.ts"
       ],
       "@lpg-manager/dashboard-page": [
         "libs/admin-portal/pages/dashboard/src/index.ts"
       ],
-      "@lpg-manager/dealer-dashboard-page": [
-        "libs/dealer/pages/dashboard/src/index.ts"
-      ],
-      "@lpg-manager/dealer-catalogues-page": [
-        "libs/dealer/pages/catalogues/src/index.ts"
-      ],
-      "@lpg-manager/checkout-page": [
-        "libs/dealer/pages/checkout/src/index.ts"
-      ],
       "@lpg-manager/data-table": [
         "libs/shared/components/data-table/src/index.ts"
       ],
       "@lpg-manager/db": ["libs/backend/db/src/index.ts"],
+      "@lpg-manager/dealer-catalogues-page": [
+        "libs/dealer/pages/catalogues/src/index.ts"
+      ],
+      "@lpg-manager/dealer-dashboard-page": [
+        "libs/dealer/pages/dashboard/src/index.ts"
+      ],
+      "@lpg-manager/dealer-orders-page": [
+        "libs/dealer/pages/orders/src/index.ts"
+      ],
+      "@lpg-manager/depot-dashboard-page": [
+        "libs/depot/pages/dashboard/src/index.ts"
+      ],
+      "@lpg-manager/depot-inventories-page": [
+        "libs/depot/pages/inventories/src/index.ts"
+      ],
+      "@lpg-manager/depot-operations-page": [
+        "libs/depot/pages/operations/src/index.ts"
+      ],
+      "@lpg-manager/depot-orders-page": [
+        "libs/depot/pages/orders/src/index.ts"
+      ],
+      "@lpg-manager/dispatch": ["libs/backend/dispatch/src/index.ts"],
+      "@lpg-manager/dispatch-service": [
+        "libs/backend/services/dispatch/src/index.ts"
+      ],
+      "@lpg-manager/dispatch-store": [
+        "libs/shared/data-access/dispatch/src/index.ts"
+      ],
+      "@lpg-manager/driver-store": [
+        "libs/shared/data-access/driver/src/index.ts"
+      ],
       "@lpg-manager/email-service": [
         "libs/backend/services/email/src/index.ts"
       ],
@@ -86,7 +107,9 @@
       "@lpg-manager/file-upload-store": [
         "libs/shared/data-access/file-upload/src/index.ts"
       ],
-      "@lpg-manager/form-exit-guard": ["libs/shared/guards/form-exit-guard/src/index.ts"],
+      "@lpg-manager/form-exit-guard": [
+        "libs/shared/guards/form-exit-guard/src/index.ts"
+      ],
       "@lpg-manager/graphql": ["libs/backend/graphql/src/index.ts"],
       "@lpg-manager/icon-service": ["libs/shared/services/icon/src/index.ts"],
       "@lpg-manager/injection-token": [
@@ -96,27 +119,26 @@
       "@lpg-manager/inventory-service": [
         "libs/backend/services/inventory/src/index.ts"
       ],
-      "@lpg-manager/inventory-store": ["libs/shared/data-access/inventory/src/index.ts"],
-      "@lpg-manager/depot-inventories-page": [
-        "libs/depot/pages/inventories/src/index.ts"
+      "@lpg-manager/inventory-store": [
+        "libs/shared/data-access/inventory/src/index.ts"
+      ],
+      "@lpg-manager/notification": ["libs/backend/notification/src/index.ts"],
+      "@lpg-manager/notification-component": [
+        "libs/shared/components/notification/src/index.ts"
       ],
       "@lpg-manager/notification-service": [
         "libs/backend/services/notification/src/index.ts"
       ],
-      "@lpg-manager/notification-store": ["libs/shared/data-access/notification/src/index.ts"],
-      "@lpg-manager/notification": ["libs/backend/notification/src/index.ts"],
-      "@lpg-manager/order-store": ["libs/shared/data-access/order/src/index.ts"],
-      "@lpg-manager/dealer-orders-page": [
-        "libs/dealer/pages/orders/src/index.ts"
+      "@lpg-manager/notification-store": [
+        "libs/shared/data-access/notification/src/index.ts"
       ],
-      "@lpg-manager/depot-orders-page": [
-        "libs/depot/pages/orders/src/index.ts"
-      ],
-      "@lpg-manager/depot-dashboard-page": [
-        "libs/depot/pages/dashboard/src/index.ts"
-      ],
-      "@lpg-manager/order-service": ["libs/backend/services/order/src/index.ts"],
       "@lpg-manager/order": ["libs/backend/order/src/index.ts"],
+      "@lpg-manager/order-service": [
+        "libs/backend/services/order/src/index.ts"
+      ],
+      "@lpg-manager/order-store": [
+        "libs/shared/data-access/order/src/index.ts"
+      ],
       "@lpg-manager/otp-service": ["libs/backend/services/otp/src/index.ts"],
       "@lpg-manager/password-reset": [
         "libs/backend/password-reset/src/index.ts"
@@ -139,9 +161,6 @@
       "@lpg-manager/searchable-select": [
         "libs/shared/components/searchable-select/src/index.ts"
       ],
-      "@lpg-manager/notification-component": [
-        "libs/shared/components/notification/src/index.ts"
-      ],
       "@lpg-manager/setting": ["libs/backend/setting/src/index.ts"],
       "@lpg-manager/setting-service": [
         "libs/backend/services/setting/src/index.ts"
@@ -158,13 +177,19 @@
       ],
       "@lpg-manager/theme-service": ["libs/shared/services/theme/src/index.ts"],
       "@lpg-manager/translation": ["libs/backend/translation/src/index.ts"],
+      "@lpg-manager/transporter-store": [
+        "libs/shared/data-access/transporter/src/index.ts"
+      ],
       "@lpg-manager/types": ["libs/shared/utils/types/src/index.ts"],
       "@lpg-manager/user": ["libs/backend/user/src/index.ts"],
       "@lpg-manager/user-service": ["libs/backend/services/user/src/index.ts"],
       "@lpg-manager/user-store": ["libs/shared/data-access/user/src/index.ts"],
       "@lpg-manager/users-page": ["libs/admin-portal/pages/users/src/index.ts"],
       "@lpg-manager/util": ["libs/backend/util/src/index.ts"],
-      "@lpg-manager/validators": ["libs/backend/validators/src/index.ts"]
+      "@lpg-manager/validators": ["libs/backend/validators/src/index.ts"],
+      "@lpg-manager/vehicle-store": [
+        "libs/shared/data-access/vehicle/src/index.ts"
+      ]
     }
   }
 }

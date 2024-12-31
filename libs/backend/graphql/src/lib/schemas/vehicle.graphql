@@ -1,0 +1,39 @@
+type VehicleModel {
+  id: UUID!
+  transporterId: UUID!
+  registrationNumber: String!
+  capacity: Float!
+  type: String!
+  transporter: TransporterModel!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateVehicleInput {
+  transporterId: UUID!
+  registrationNumber: String!
+  capacity: Float!
+  type: String!
+}
+
+input UpdateVehicleInput {
+  registrationNumber: String
+  capacity: Float
+  type: String
+}
+
+type PaginatedVehicle {
+  items: [VehicleModel]
+  meta: Pagination
+}
+
+extend type Query {
+  vehicles(query: QueryParams): PaginatedVehicle!
+  vehicle(id: UUID!): VehicleModel
+}
+
+extend type Mutation {
+  createVehicle(params: CreateVehicleInput!): CreateSuccessResponse!
+  updateVehicle(id: UUID!, params: UpdateVehicleInput!): UpdateSuccessResponse!
+  deleteVehicle(id: UUID!): DeleteSuccessResponse!
+} 

@@ -1,0 +1,38 @@
+type TransporterModel {
+  id: UUID!
+  name: String!
+  contactPerson: String!
+  contactNumber: String!
+  drivers: [DriverModel]
+  vehicles: [VehicleModel]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateTransporterInput {
+  name: String!
+  contactPerson: String!
+  contactNumber: String!
+}
+
+input UpdateTransporterInput {
+  name: String
+  contactPerson: String
+  contactNumber: String
+}
+
+type PaginatedTransporter {
+  items: [TransporterModel]
+  meta: Pagination
+}
+
+extend type Query {
+  transporters(query: QueryParams): PaginatedTransporter!
+  transporter(id: UUID!): TransporterModel
+}
+
+extend type Mutation {
+  createTransporter(params: CreateTransporterInput!): CreateSuccessResponse!
+  updateTransporter(id: UUID!, params: UpdateTransporterInput!): UpdateSuccessResponse!
+  deleteTransporter(id: UUID!): DeleteSuccessResponse!
+} 

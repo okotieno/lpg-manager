@@ -1,0 +1,53 @@
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import { TransporterModel } from './transporter.model';
+
+@Table({
+  tableName: 'vehicles',
+  underscored: true,
+  paranoid: true,
+  timestamps: true,
+})
+export class VehicleModel extends Model {
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
+    primaryKey: true,
+    allowNull: false,
+  })
+  override id!: string;
+
+  @ForeignKey(() => TransporterModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  transporterId!: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  registrationNumber!: string;
+
+  @Column({
+    type: DataType.DECIMAL(10, 2),
+    allowNull: false,
+  })
+  capacity!: number;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  type!: string;
+
+  @BelongsTo(() => TransporterModel)
+  transporter!: TransporterModel;
+} 

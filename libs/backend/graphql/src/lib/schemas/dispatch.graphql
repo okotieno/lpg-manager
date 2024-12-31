@@ -1,0 +1,51 @@
+enum DispatchStatus {
+  PENDING
+  IN_TRANSIT
+  DELIVERED
+  CANCELED
+}
+
+type DispatchModel {
+  id: UUID!
+  transporterId: UUID!
+  driverId: UUID!
+  vehicleId: UUID!
+  status: DispatchStatus!
+  dispatchDate: DateTime!
+  transporter: TransporterModel!
+  driver: DriverModel!
+  vehicle: VehicleModel!
+  orders: [OrderModel]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateDispatchInput {
+  transporterId: UUID!
+  driverId: UUID!
+  vehicleId: UUID!
+  orderIds: [UUID!]!
+  dispatchDate: DateTime!
+}
+
+input UpdateDispatchInput {
+  status: DispatchStatus
+  dispatchDate: DateTime
+}
+
+type PaginatedDispatch {
+  items: [DispatchModel]
+  meta: Pagination
+}
+
+extend type Query {
+  dispatches(query: QueryParams): PaginatedDispatch!
+  dispatch(id: UUID!): DispatchModel
+}
+
+extend type Mutation {
+  createDispatch(params: CreateDispatchInput!): CreateSuccessResponse!
+  updateDispatch(id: UUID!, params: UpdateDispatchInput!): UpdateSuccessResponse!
+  deleteDispatch(id: UUID!): DeleteSuccessResponse!
+  updateDispatchStatus(id: UUID!, status: DispatchStatus!): UpdateSuccessResponse!
+} 

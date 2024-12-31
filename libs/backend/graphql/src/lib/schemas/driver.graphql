@@ -1,0 +1,39 @@
+type DriverModel {
+  id: UUID!
+  transporterId: UUID!
+  name: String!
+  licenseNumber: String!
+  contactNumber: String!
+  transporter: TransporterModel!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateDriverInput {
+  transporterId: UUID!
+  name: String!
+  licenseNumber: String!
+  contactNumber: String!
+}
+
+input UpdateDriverInput {
+  name: String
+  licenseNumber: String
+  contactNumber: String
+}
+
+type PaginatedDriver {
+  items: [DriverModel]
+  meta: Pagination
+}
+
+extend type Query {
+  drivers(query: QueryParams): PaginatedDriver!
+  driver(id: UUID!): DriverModel
+}
+
+extend type Mutation {
+  createDriver(params: CreateDriverInput!): CreateSuccessResponse!
+  updateDriver(id: UUID!, params: UpdateDriverInput!): UpdateSuccessResponse!
+  deleteDriver(id: UUID!): DeleteSuccessResponse!
+} 
