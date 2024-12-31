@@ -1,0 +1,43 @@
+<ion-grid class="ion-no-margin">
+  <ion-row class="ion-no-margin ion-no-padding">
+    <ion-col size="12" size-md="12" class="ion-no-margin">
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-text color="lpg-subtitle">
+              Transporter Details
+            </ion-text>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="details-container">
+            <div class="detail-item">
+              <strong>Name:</strong>
+              <span>{{ transporter()?.name | titlecase }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>ID:</strong>
+              <span>{{ transporter()?.id }}</span>
+            </div>
+          </div>
+        </ion-card-content>
+        <ion-card-header>
+          <ion-card-title>
+            <ion-text color="lpg-subtitle">
+              Brands
+            </ion-text>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          @if (drivers.length > 0) {
+            @for (brand of drivers; track brand.name) {
+              <ion-chip>{{ brand.name }}</ion-chip>
+            }
+          } @else {
+            <span>No brands available</span>
+          }
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>

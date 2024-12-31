@@ -1,0 +1,55 @@
+<form [formGroup]="transporterForm" (ngSubmit)="onSubmit()">
+  <ion-row class="ion-padding">
+    <ion-col size="12" sizeMd="6">
+      <ion-item lines="none">
+        <ion-input
+          label="Name"
+          labelPlacement="stacked"
+          formControlName="name"
+          placeholder="Enter transporter name"
+          errorText="Transporter name is required"
+          helperText="&nbsp;"
+        >
+        </ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col size="12" sizeMd="6">
+      <ion-item>
+        <ion-select
+          toggle-icon="caret-down"
+          label="Transporter type"
+          labelPlacement="stacked"
+          formControlName="type"
+          placeholder="Select transporter type"
+        >
+          <ion-select-option  value="DEPOT">Depot</ion-select-option>
+          <ion-select-option value="DEALER">Dealer</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+    @if (showBrandsField()) {
+      <ion-col size="12">
+        <ion-item lines="none">
+          <lpg-searchable-select
+            [multiple]="true"
+            [itemsStore]="brandStore"
+            label="Brands"
+            labelPlacement="stacked"
+            formControlName="brands"
+            placeholder="Select transporter"
+          ></lpg-searchable-select>
+        </ion-item>
+      </ion-col>
+    }
+
+  </ion-row>
+
+  <div class="ion-margin-top ion-text-end">
+    <ion-button fill="clear" type="button" [routerLink]="['../']">
+      Cancel
+    </ion-button>
+    <ion-button type="submit" [disabled]="!transporterForm.valid">
+      {{ isEditing() ? 'Update' : 'Create' }}
+    </ion-button>
+  </div>
+</form>

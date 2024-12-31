@@ -182,6 +182,9 @@
       "@lpg-manager/transporter-store": [
         "libs/shared/data-access/transporter/src/index.ts"
       ],
+      "@lpg-manager/transporters-page": [
+        "libs/admin-portal/pages/transporters/src/index.ts"
+      ],
       "@lpg-manager/transporter": ["libs/backend/transporter/src/index.ts"],
       "@lpg-manager/transporter-service": ["libs/backend/services/transporter/src/index.ts"],
       "@lpg-manager/types": ["libs/shared/utils/types/src/index.ts"],

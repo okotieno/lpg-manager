@@ -28,4 +28,12 @@ export const ADMINISTRATION_ROUTES: Routes = [
       breadcrumbs: [{ label: 'Stations' }],
     },
   },
+  {
+    path: 'transporters',
+    loadChildren: () => import('@lpg-manager/transporters-page'),
+    data: {
+      routeLabel: 'Transporters',
+      breadcrumbs: [{ label: 'Transporters' }],
+    },
+  },
 ];
