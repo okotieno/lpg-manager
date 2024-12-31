@@ -1,12 +1,17 @@
 import { Args, Mutation, Query, Resolver, ResolveField, Root } from '@nestjs/graphql';
 import { Body, UseGuards } from '@nestjs/common';
-import { VehicleModel, PermissionsEnum } from '@lpg-manager/db';
+import { IQueryParam, VehicleModel } from '@lpg-manager/db';
 import { VehicleService } from '@lpg-manager/vehicle-service';
 import { TransporterService } from '@lpg-manager/transporter-service';
-import { JwtAuthGuard, PermissionGuard, Permissions } from '@lpg-manager/auth';
+import { JwtAuthGuard } from '@lpg-manager/auth';
 import { ValidationPipe } from '@nestjs/common';
 import { CreateVehicleInputDto } from '../dto/create-vehicle-input.dto';
 import { UpdateVehicleInputDto } from '../dto/update-vehicle-input.dto';
+import {
+  PermissionGuard,
+  Permissions,
+  PermissionsEnum,
+} from '@lpg-manager/permission-service';
 
 @Resolver(() => VehicleModel)
 export class VehicleResolver {
@@ -30,15 +35,14 @@ export class VehicleResolver {
   }
 
   @Query()
-  @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ViewVehicle)
+  @UseGuards(JwtAuthGuard)
   async vehicles(@Args('query') query: IQueryParam) {
     return this.vehicleService.findAll(query);
   }
 
   @Query()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ViewVehicle)
+
   async vehicle(@Args('id') id: string) {
     return this.vehicleService.findById(id);
   }
@@ -50,10 +54,12 @@ export class VehicleResolver {
     @Args('id') id: string,
     @Body('params', new ValidationPipe()) params: UpdateVehicleInputDto
   ) {
-    await this.vehicleService.updateById(id, params);
+
+    const vehicle = this.vehicleService.update({ params, id });
 
     return {
       message: 'Successfully updated vehicle',
+      data: vehicle,
     };
   }
 
@@ -72,4 +78,4 @@ export class VehicleResolver {
   async getTransporter(@Root() vehicle: VehicleModel) {
     return this.transporterService.findById(vehicle.transporterId);
   }
-} 
+}

@@ -82,6 +82,23 @@ const permissions = [
   'update order',
   'delete order',
 
+  // Dispatch Management
+  'create dispatch',
+  'delete dispatch',
+  'update dispatch',
+  'view dispatch',
+
+  // Driver Management
+  'create driver',
+  'delete driver',
+  'update driver',
+  'view driver',
+
+  // Transporter Management
+  'create transporter',
+  'delete transporter',
+  'update transporter',
+  'view transporter',
 ];
 
 /** @type {import('sequelize-cli').Migration} */

@@ -32,7 +32,13 @@ const rolePermissions = {
     // Order
     'create order', 'update order', 'update order',
     // Notification
-    'mark notification as read'
+    'mark notification as read',
+    // Dispatch Management
+    'create dispatch', 'delete dispatch', 'update dispatch', 'view dispatch',
+    // Driver Management
+    'create driver', 'delete driver', 'update driver', 'view driver',
+    // Transporter Management
+    'create transporter', 'delete transporter', 'update transporter', 'view transporter'
   ],
 
   manager: [

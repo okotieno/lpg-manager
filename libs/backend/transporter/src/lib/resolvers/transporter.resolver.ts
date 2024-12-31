@@ -1,20 +1,21 @@
 import { Args, Mutation, Query, Resolver, ResolveField, Root } from '@nestjs/graphql';
 import { Body, UseGuards } from '@nestjs/common';
-import { TransporterModel, PermissionsEnum } from '@lpg-manager/db';
+import { TransporterModel, IQueryParam } from '@lpg-manager/db';
 import { TransporterService } from '@lpg-manager/transporter-service';
-import { DriverService } from '@lpg-manager/driver-service';
 import { VehicleService } from '@lpg-manager/transporter-service';
-import { JwtAuthGuard, PermissionGuard, Permissions } from '@lpg-manager/auth';
+import { JwtAuthGuard } from '@lpg-manager/auth';
 import { ValidationPipe } from '@nestjs/common';
 import { CreateTransporterInputDto } from '../dto/create-transporter-input.dto';
 import { UpdateTransporterInputDto } from '../dto/update-transporter-input.dto';
+import { PermissionGuard, PermissionsEnum, Permissions } from '@lpg-manager/permission-service';
+import { DriverService } from '@lpg-manager/driver-service';
 
 @Resolver(() => TransporterModel)
 export class TransporterResolver {
   constructor(
     private transporterService: TransporterService,
     private driverService: DriverService,
-    private transporterService: VehicleService
+    private vehicleService: VehicleService
   ) {}
 
   @Mutation()
@@ -52,7 +53,7 @@ export class TransporterResolver {
     @Args('id') id: string,
     @Body('params', new ValidationPipe()) params: UpdateTransporterInputDto
   ) {
-    await this.transporterService.updateById(id, params);
+    await this.transporterService.update({ id, params });
 
     return {
       message: 'Successfully updated transporter',

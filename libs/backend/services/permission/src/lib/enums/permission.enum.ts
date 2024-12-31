@@ -49,4 +49,13 @@ export enum PermissionsEnum {
   DeleteOrder = 'delete order',
   UpdateOrder = 'update order',
 
+  CreateVehicle = 'create vehicle',
+  DeleteVehicle = 'delete vehicle',
+  UpdateVehicle = 'update vehicle',
+
+  ViewTransporter = 'view transporter',
+  CreateTransporter = 'create transporter',
+  DeleteTransporter = 'delete transporter',
+  UpdateTransporter = 'update transporter',
+
 }
