@@ -22,6 +22,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BreadcrumbComponent, BreadcrumbStore } from '@lpg-manager/breadcrumb';
 import { TitleCasePipe } from '@angular/common';
 import { AuthStore } from '@lpg-manager/auth-store';
+import { NotificationBellComponent } from '@lpg-manager/notification-component';
 
 @Component({
   selector: 'lpg-dashboard',
@@ -47,6 +48,7 @@ import { AuthStore } from '@lpg-manager/auth-store';
     IonRow,
     IonText,
     TitleCasePipe,
+    NotificationBellComponent,
   ],
   templateUrl: './dashboard-page.component.html',
   styles: `

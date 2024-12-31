@@ -7,10 +7,10 @@
   }
 </div>
 
-<ion-popover trigger="notifications-button">
+<ion-popover side="bottom" trigger="notifications-button">
   <ng-template>
     <ion-content>
-      <ion-list style="border-radius: 1rem">
+      <ion-list style="border-radius: 1rem" class="ion-no-margin ion-no-padding">
         @for (notification of notifications(); track notification?.id) {
           <ion-item-sliding>
             <ion-item-options side="end">
@@ -38,10 +38,10 @@
             </ion-item>
           </ion-item-sliding>
         } @empty {
-          <div class="empty-notification">
-            <ion-icon name="bell-slash" size="large"></ion-icon>
-            <p>No new notifications</p>
-          </div>
+          <ion-item lines="none" class="empty-notification">
+            <ion-icon slot="start" name="bell-slash" size="large"></ion-icon>
+            <ion-label>No new notifications</ion-label>
+          </ion-item>
         }
         @if (showInfiniteScroll()) {
           <ion-infinite-scroll (ionInfinite)="handleInfiniteScroll()">

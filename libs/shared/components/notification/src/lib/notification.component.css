@@ -1,5 +1,6 @@
-ion-list {
+ion-list, ion-content {
   background: none;
+  --background: none;
 }
 ion-popover::part(content) {
   --background: none;
@@ -8,11 +9,13 @@ ion-popover::part(content) {
 }
 
 .notification-item {
+  min-width: 434px;
   max-width: 434px;
   --padding-start: 1rem;
   --padding-end: 1rem;
   --padding-top: 0.75rem;
   --padding-bottom: 0.75rem;
+  margin-bottom: 4px;
 }
 
 .notification-header {
@@ -51,7 +54,8 @@ ion-popover::part(content) {
 }
 
 .empty-notification {
-  padding: 2rem;
+  background-color: var(--ion-background-color);
+  padding: 0.5rem;
   text-align: center;
   color: var(--ion-color-medium);
 }

@@ -28,6 +28,7 @@ import { CartStore } from '@lpg-manager/cart-store';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { FormsModule } from '@angular/forms';
 import { NotificationStore } from '../../../../../../shared/data-access/notification/src/lib/notification.store';
+import { NotificationBellComponent } from '@lpg-manager/notification-component';
 
 @Component({
   selector: 'lpg-dashboard',
@@ -56,6 +57,7 @@ import { NotificationStore } from '../../../../../../shared/data-access/notifica
     IonSelect,
     IonSelectOption,
     FormsModule,
+    NotificationBellComponent,
   ],
   templateUrl: './dashboard-page.component.html',
   styleUrl: './dashboard-page.component.scss',
@@ -71,7 +73,7 @@ export default class DashboardComponent {
 
   pageTitle = this.#breadcrumbStore.pageTitle;
   userRoleStation = this.#authStore.userRoles;
-  activeRole = this.#authStore.activeRole
+  activeRole = this.#authStore.activeRole;
 
   currentThemeIcon = computed(() => {
     switch (this.#themeService.theme()) {
