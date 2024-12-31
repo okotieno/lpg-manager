@@ -1,0 +1,30 @@
+.header-row {
+  background: var(--ion-color-light);
+  font-weight: bold;
+  padding: 1rem;
+}
+
+.data-row {
+  padding: 1rem;
+  border-bottom: 1px solid var(--ion-color-light);
+}
+
+ion-card {
+  max-width: 400px;
+  margin: 2rem auto;
+}
+
+ion-card ion-icon {
+  font-size: 48px;
+  margin: 1rem 0;
+}
+
+ion-card h2 {
+  color: var(--ion-color-dark);
+  margin: 1rem 0;
+}
+
+ion-card p {
+  color: var(--ion-color-medium);
+  margin: 0.5rem 0;
+} 
