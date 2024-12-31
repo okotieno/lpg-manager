@@ -66,7 +66,7 @@
     <h2 class="ion-no-padding ion-no-margin">
       <ion-text color="lpg-title">
         <ion-row class="ion-align-items-center">
-          {{ pageTitle() | titlecase }}
+          <ion-back-button />{{ pageTitle() | titlecase }}
         </ion-row>
       </ion-text>
     </h2>
@@ -74,7 +74,7 @@
 </ion-header>
 
 <ion-content id="main-content" class="ion-padding">
-  <router-outlet />
+  <ion-router-outlet [animated]="true" />
 </ion-content>
 
 <!-- User Dropdown -->

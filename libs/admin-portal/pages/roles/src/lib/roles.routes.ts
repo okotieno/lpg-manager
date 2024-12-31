@@ -16,7 +16,7 @@ export const ROLES_ROUTES: Routes = [
       breadcrumbs: [
         {
           label: 'User management',
-          path: ['/user-management'],
+          path: ['/dashboard', 'user-management'],
         },
         { label: 'Roles' },
       ],
@@ -34,11 +34,11 @@ export const ROLES_ROUTES: Routes = [
       breadcrumbs: [
         {
           label: 'User management',
-          path: ['/user-management'],
+          path: ['/dashboard', 'user-management'],
         },
         {
           label: 'Roles',
-          path: ['/user-management', 'roles'],
+          path: ['/dashboard', 'user-management', 'roles'],
         },
         { label: 'Create role' },
       ],
@@ -51,11 +51,11 @@ export const ROLES_ROUTES: Routes = [
       breadcrumbs: [
         {
           label: 'User management',
-          path: ['/user-management'],
+          path: ['/dashboard', 'user-management'],
         },
         {
           label: 'Roles',
-          path: ['/user-management', 'roles'],
+          path: ['/dashboard', 'user-management', 'roles'],
         },
         { label: ':roleName' },
       ],
@@ -90,15 +90,15 @@ export const ROLES_ROUTES: Routes = [
           breadcrumbs: [
             {
               label: 'User management',
-              path: ['/user-management'],
+              path: ['/dashboard', 'user-management'],
             },
             {
               label: 'Roles',
-              path: ['/user-management', 'roles'],
+              path: ['/dashboard', 'user-management', 'roles'],
             },
             {
               label: ':roleName',
-              path: ['/user-management', 'roles', ':roleId'],
+              path: ['/dashboard', 'user-management', 'roles', ':roleId'],
             },
             { label: 'Edit' },
           ],

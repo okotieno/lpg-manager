@@ -8,7 +8,7 @@ import { APP_ICONS } from './app.icons';
   selector: 'lpg-root',
   template: `
     <ion-app>
-      <ion-router-outlet></ion-router-outlet>
+      <ion-router-outlet [animated]="true"></ion-router-outlet>
     </ion-app>
   `,
   styles: ``,

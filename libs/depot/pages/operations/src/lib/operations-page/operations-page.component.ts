@@ -8,6 +8,8 @@ import {
   IonButton,
   IonIcon,
   IonBadge,
+  IonCard,
+  IonCardContent,
 } from '@ionic/angular/standalone';
 import { DatePipe } from '@angular/common';
 import { DispatchStore } from '@lpg-manager/dispatch-store';
@@ -27,6 +29,8 @@ import { DispatchStore } from '@lpg-manager/dispatch-store';
     IonIcon,
     IonBadge,
     DatePipe,
+    IonCard,
+    IonCardContent,
   ],
   providers: [DispatchStore],
 })

@@ -12,20 +12,23 @@ import {
   IonButton,
   IonList,
   IonCheckbox,
-  IonItemDivider,
+  IonItemDivider, IonRow, IonCol
 } from '@ionic/angular/standalone';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { OrderStore } from '@lpg-manager/order-store';
 import { Router } from '@angular/router';
-import { TransporterStore, IGetTransportersQuery } from '@lpg-manager/transporter-store';
-import { DriverStore, IGetDriversQuery } from '@lpg-manager/driver-store';
-import { VehicleStore } from '@lpg-manager/vehicle-store';
 import {
-  DispatchStore,
-} from '@lpg-manager/dispatch-store';
+  TransporterStore,
+  IGetTransportersQuery,
+} from '@lpg-manager/transporter-store';
+import { DriverStore, IGetDriversQuery } from '@lpg-manager/driver-store';
+import { IGetVehiclesQuery, VehicleStore } from '@lpg-manager/vehicle-store';
+import { DispatchStore } from '@lpg-manager/dispatch-store';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { CurrencyPipe } from '@angular/common';
 import { IQueryOperatorEnum, ISelectCategory } from '@lpg-manager/types';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'lpg-create-dispatch',
@@ -47,6 +50,8 @@ import { IQueryOperatorEnum, ISelectCategory } from '@lpg-manager/types';
     IonCheckbox,
     IonItemDivider,
     CurrencyPipe,
+    IonRow,
+    IonCol,
   ],
   providers: [
     TransporterStore,
@@ -70,14 +75,22 @@ export default class CreateDispatchComponent {
   driverStore: PaginatedResource<
     NonNullable<NonNullable<IGetDriversQuery['drivers']['items']>[number]>
   > = inject(DriverStore);
-  vehicleStore = inject(VehicleStore);
+  vehicleStore: PaginatedResource<
+    NonNullable<NonNullable<IGetVehiclesQuery['vehicles']['items']>[number]>
+  > = inject(VehicleStore);
 
   selectedOrders: string[] = [];
 
   dispatchForm = this.#fb.group({
     transporter: [null as null | ISelectCategory, Validators.required],
-    driver: [null as null | ISelectCategory, Validators.required],
-    vehicle: [null as null | ISelectCategory, Validators.required],
+    driver: [
+      { value: null as null | ISelectCategory, disabled: true },
+      Validators.required,
+    ],
+    vehicle: [
+      { value: null as null | ISelectCategory, disabled: true },
+      Validators.required,
+    ],
   });
 
   confirmedOrders = computed(() =>
@@ -90,13 +103,45 @@ export default class CreateDispatchComponent {
       const transporter = this.dispatchForm.get('transporter')?.value;
       if (transporter) {
         this.driverStore.setFilters([
-          { field: 'transporterId', operator: IQueryOperatorEnum.Equals, value: transporter.id },
+          {
+            field: 'transporterId',
+            operator: IQueryOperatorEnum.Equals,
+            value: transporter.id,
+          },
         ]);
         this.vehicleStore.setFilters([
-          { field: 'transporterId', operator: IQueryOperatorEnum.Equals, value: transporter.id },
+          {
+            field: 'transporterId',
+            operator: IQueryOperatorEnum.Equals,
+            value: transporter.id,
+          },
         ]);
       }
     });
+
+    this.dispatchForm
+      .get('transporter')
+      ?.valueChanges.pipe(
+        tap(() => {
+          this.dispatchForm.get('driver')?.enable();
+          this.dispatchForm.get('vehicle')?.setValue(null);
+          this.dispatchForm.get('vehicle')?.disable();
+          this.dispatchForm.get('driver')?.setValue(null);
+        }),
+        takeUntilDestroyed()
+      )
+      .subscribe();
+
+    this.dispatchForm
+      .get('driver')
+      ?.valueChanges.pipe(
+        tap(() => {
+          this.dispatchForm.get('vehicle')?.enable();
+          this.dispatchForm.get('vehicle')?.setValue(null);
+        }),
+        takeUntilDestroyed()
+      )
+      .subscribe();
   }
 
   onOrderSelect(event: any, order: any) {
@@ -110,7 +155,7 @@ export default class CreateDispatchComponent {
   async createDispatch() {
     if (this.dispatchForm.valid && this.selectedOrders.length > 0) {
       const formValue = this.dispatchForm.value;
-      await this.#dispatchStore.createNewItem({
+      this.#dispatchStore.createNewItem({
         transporterId: formValue.transporter?.id,
         driverId: formValue.driver?.id,
         vehicleId: formValue.vehicle?.id,

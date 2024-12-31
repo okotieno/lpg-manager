@@ -15,7 +15,7 @@ export const OPERATIONS_ROUTES: Routes = [
     data: {
       routeLabel: 'Create Dispatch',
       breadcrumbs: [
-        { label: 'Operations', path: '/operations' },
+        { label: 'Operations', path: ['/dashboard', 'operations'] },
         { label: 'Create Dispatch' },
       ],
     },

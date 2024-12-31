@@ -30,7 +30,7 @@ export const USERS_ROUTES: Routes = [
           breadcrumbs: [
             {
               label: 'User management',
-              path: ['/user-management'],
+              path: ['/dashboard', 'user-management'],
             },
             { label: 'Users' },
           ],
@@ -44,11 +44,11 @@ export const USERS_ROUTES: Routes = [
           breadcrumbs: [
             {
               label: 'User management',
-              path: ['/user-management'],
+              path: ['/dashboard', 'user-management'],
             },
             {
               label: 'Users',
-              path: ['/user-management', 'users'],
+              path: ['/dashboard', 'user-management', 'users'],
             },
             { label: 'Create user' },
           ],
@@ -65,11 +65,11 @@ export const USERS_ROUTES: Routes = [
           breadcrumbs: [
             {
               label: 'User management',
-              path: ['/user-management'],
+              path: ['/dashboard', 'user-management'],
             },
             {
               label: 'Users',
-              path: ['/user-management', 'users'],
+              path: ['/dashboard', 'user-management', 'users'],
             },
             { label: ':userName' },
           ],
@@ -110,15 +110,15 @@ export const USERS_ROUTES: Routes = [
               breadcrumbs: [
                 {
                   label: 'User management',
-                  path: ['/user-management'],
+                  path: ['/dashboard', 'user-management'],
                 },
                 {
                   label: 'Users',
-                  path: ['/user-management', 'users'],
+                  path: ['/dashboard', 'user-management', 'users'],
                 },
                 {
                   label: ':userName',
-                  path: ['/user-management', 'users', ':userId'],
+                  path: ['/dashboard', 'user-management', 'users', ':userId'],
                 },
                 { label: 'Edit' },
               ],
