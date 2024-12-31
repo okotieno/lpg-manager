@@ -31,6 +31,8 @@ const rolePermissions = {
     'create cart', 'update cart', 'delete cart',
     // Order
     'create order', 'update order', 'update order',
+    // Notification
+    'mark notification as read'
   ],
 
   manager: [
@@ -47,7 +49,9 @@ const rolePermissions = {
     // Inventory Management
     'create inventory', 'update inventory',
     // Activity Log
-    'create activity log', 'update activity log'
+    'create activity log', 'update activity log',
+    // Notification
+    'mark notification as read'
   ],
 
   supervisor: [
@@ -58,18 +62,24 @@ const rolePermissions = {
     // Inventory Management
     'create inventory', 'update inventory',
     // Activity Log
-    'create activity log'
+    'create activity log',
+    // Notification
+    'mark notification as read'
   ],
 
   operator: [
     // Inventory Management
     'create inventory', 'update inventory',
     // Activity Log
-    'create activity log'
+    'create activity log',
+    // Notification
+    'mark notification as read'
   ],
 
   viewer: [
     // No write permissions - read-only access is handled at the query level
+    // Notification
+    'mark notification as read'
   ],
 
   ['station manager']: [
@@ -78,33 +88,43 @@ const rolePermissions = {
     // Inventory Management
     'create inventory', 'update inventory',
     // Activity Log
-    'create activity log'
+    'create activity log',
+    // Notification
+    'mark notification as read'
   ],
 
   ['station operator']: [
     // Inventory Management
     'create inventory', 'update inventory',
     // Activity Log
-    'create activity log'
+    'create activity log',
+    // Notification
+    'mark notification as read'
   ],
 
   ['inventory manager']: [
     // Inventory Management
     'create inventory', 'update inventory', 'delete inventory',
     // Activity Log
-    'create activity log'
+    'create activity log',
+    // Notification
+    'mark notification as read'
   ],
 
   ['sales agent']: [
     // Cart Management
     'create cart',
     // Activity Log
-    'create activity log'
+    'create activity log',
+    // Notification
+    'mark notification as read'
   ],
 
   auditor: [
     // Activity Log
-    'create activity log'
+    'create activity log',
+    // Notification
+    'mark notification as read'
   ]
 };
 

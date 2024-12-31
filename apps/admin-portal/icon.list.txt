@@ -80,3 +80,4 @@ xmark
 moon
 sun
 desktop
+bell-slash

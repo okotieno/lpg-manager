@@ -1,15 +1,25 @@
-import { Component, computed, inject } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  untracked,
+  viewChild,
+} from '@angular/core';
 import {
   IonBadge,
   IonButton,
+  IonContent,
   IonIcon,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
   IonItem,
   IonItemOption,
   IonItemOptions,
   IonItemSliding,
   IonLabel,
   IonList,
-  IonPopover
+  IonPopover,
 } from '@ionic/angular/standalone';
 import { NotificationStore } from '@lpg-manager/notification-store';
 import { DatePipe } from '@angular/common';
@@ -28,12 +38,25 @@ import { DatePipe } from '@angular/common';
     IonItemOptions,
     IonItemOption,
     IonBadge,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonContent,
   ],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.css',
 })
 export class NotificationBellComponent {
+  private ionInfiniteScroll = viewChild(IonInfiniteScroll);
   #notificationStore = inject(NotificationStore);
+  notificationsLoadingEffect = effect(async () => {
+    const isLoading = this.#notificationStore.isLoading();
+    await untracked(async () => {
+      if (!isLoading) {
+        await this.ionInfiniteScroll()?.complete();
+      }
+    });
+  });
+
   notificationStats = this.#notificationStore.notificationStats;
   notifications = computed(() =>
     this.#notificationStore
@@ -43,4 +66,16 @@ export class NotificationBellComponent {
           new Date(b).getTime() - new Date(a).getTime()
       )
   );
+
+  markAsRead(notificationId: string) {
+    this.#notificationStore.markAsRead(notificationId);
+  }
+
+  showInfiniteScroll = computed(() => {
+    return true;
+  });
+
+  handleInfiniteScroll() {
+    this.#notificationStore.loadNextPage();
+  }
 }

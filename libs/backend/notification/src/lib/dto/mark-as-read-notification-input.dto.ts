@@ -1,10 +1,10 @@
 import { IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { NotificationModel } from '@lpg-manager/db';
+import { NotificationUserModel } from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
 
 class NotificationSelectedInputDto {
-  @Exists(NotificationModel, 'id', {
+  @Exists(NotificationUserModel, 'id', {
     message: (validationArguments) =>
       `Notification with id  ${validationArguments.value}" not found`,
   })

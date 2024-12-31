@@ -2,22 +2,29 @@ import {
   patchState,
   signalStore,
   type,
+  withComputed,
   withHooks,
+  withMethods,
   withProps,
   withState,
 } from '@ngrx/signals';
-import { inject, resource } from '@angular/core';
+import { computed, inject, resource } from '@angular/core';
 import {
   IGetAuthenticatedUserNotificationsGQL,
   IGetAuthenticatedUserNotificationsQuery,
   IGetAuthenticatedUserNotificationStatsGQL,
+  IMarkNotificationAsReadGQL,
   INotificationCreatedTrackGQL,
 } from './notification.generated';
 import {
+  removeEntity,
   setAllEntities,
+  setEntities,
   setEntity,
   withEntities,
 } from '@ngrx/signals/entities';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { EMPTY, tap } from 'rxjs';
 
 export const NotificationStore = signalStore(
   { providedIn: 'root' },
@@ -42,6 +49,7 @@ export const NotificationStore = signalStore(
       total: 0,
       read: 0,
     },
+    readNotificationId: '',
   }),
   withProps(() => ({
     _getAuthenticatedUserNotificationsGQL: inject(
@@ -51,8 +59,35 @@ export const NotificationStore = signalStore(
     _getAuthenticatedUserNotificationStatsGQL: inject(
       IGetAuthenticatedUserNotificationStatsGQL
     ),
+    _markAsReadGQL: inject(IMarkNotificationAsReadGQL),
   })),
   withProps((store) => ({
+    _markAsReadResource: rxResource({
+      request: () => ({ notificationId: store.readNotificationId() }),
+      loader: ({ request }) => {
+        if (!request.notificationId) {
+          return EMPTY;
+        }
+        return store._markAsReadGQL
+          .mutate({ notifications: [{ id: request.notificationId }] })
+          .pipe(
+            tap((res) => {
+              const responseData = res.data?.markNotificationAsRead?.data;
+              if (responseData) {
+                patchState(
+                  store,
+                  {
+                    notificationStats: { ...responseData },
+                  },
+                  removeEntity(request.notificationId, {
+                    collection: 'searchedItems',
+                  })
+                );
+              }
+            })
+          );
+      },
+    }),
     _getAuthenticatedUserNotificationStats: resource({
       loader: async () => {
         const notificationStats =
@@ -81,15 +116,35 @@ export const NotificationStore = signalStore(
           notifications.data.authenticatedUserNotifications?.items?.filter(
             (x) => x !== null
           );
-        if (items) {
+        if (items && store.currentPage() === 1) {
           patchState(
             store,
             setAllEntities(items, { collection: 'searchedItems' })
+          );
+        } else if (items) {
+          patchState(
+            store,
+            setEntities(items, { collection: 'searchedItems' })
           );
         }
         return notifications;
       },
     }),
+  })),
+  withComputed((store) => ({
+    isLoading: computed(
+      () =>
+        store._markAsReadResource.isLoading() ||
+        store._getAuthenticatedUserNotification.isLoading()
+    ),
+  })),
+  withMethods((store) => ({
+    markAsRead: (readNotificationId: string) => {
+      patchState(store, { readNotificationId });
+    },
+    loadNextPage: () => {
+      patchState(store, { currentPage: store.currentPage() + 1 });
+    },
   })),
   withHooks((store) => {
     const onInit = () => {

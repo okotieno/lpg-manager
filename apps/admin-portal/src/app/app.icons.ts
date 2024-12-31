@@ -80,5 +80,6 @@ export const APP_ICONS = [
   'xmark',
   'moon',
   'sun',
-  'desktop'
+  'desktop',
+  'bell-slash'
 ];

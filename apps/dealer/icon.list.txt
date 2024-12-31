@@ -34,3 +34,4 @@ plus
 minus
 box
 arrow-left
+bell-slash
