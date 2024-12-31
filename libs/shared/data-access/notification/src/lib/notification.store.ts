@@ -10,6 +10,7 @@ import {
 } from '@ngrx/signals';
 import { computed, inject, resource } from '@angular/core';
 import {
+  GetAuthenticatedUserNotificationsDocument,
   IGetAuthenticatedUserNotificationsGQL,
   IGetAuthenticatedUserNotificationsQuery,
   IGetAuthenticatedUserNotificationStatsGQL,
@@ -74,7 +75,7 @@ export const NotificationStore = signalStore(
       }),
       loader: async ({ request }) => {
         const notifications = await store._getAuthenticatedUserNotificationsGQL
-          .watch({ ...request }, { fetchPolicy: 'network-only' })
+          .watch({ ...request }, { fetchPolicy: 'cache-first' })
           .result();
         const items =
           notifications.data.authenticatedUserNotifications?.items?.filter(
@@ -107,14 +108,31 @@ export const NotificationStore = signalStore(
           if (!request.notificationId) {
             return EMPTY;
           }
+
+          const newCurrentPage = Math.ceil(
+            store.searchedItemsEntities().length / store.pageSize()
+          );
+
           return store._markAsReadGQL
-            .mutate({ notifications: [{ id: request.notificationId }] })
+            .mutate(
+              { notifications: [{ id: request.notificationId }] },
+              {
+                awaitRefetchQueries: true,
+                refetchQueries: [
+                  {
+                    query: GetAuthenticatedUserNotificationsDocument,
+                    variables: {
+                      pageSize: store.pageSize(),
+                      currentPage: newCurrentPage,
+                      filters: store.filters(),
+                    },
+                  },
+                ],
+              }
+            )
             .pipe(
               tap((res) => {
                 const responseData = res.data?.markNotificationAsRead?.data;
-                const newCurrentPage = Math.ceil(
-                  store.searchedItemsEntities().length / store.pageSize()
-                );
                 if (responseData) {
                   patchState(
                     store,
