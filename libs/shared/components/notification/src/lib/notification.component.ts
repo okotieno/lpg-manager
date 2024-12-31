@@ -1,5 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import {
+  IonBadge,
   IonButton,
   IonIcon,
   IonItem,
@@ -8,7 +9,7 @@ import {
   IonItemSliding,
   IonLabel,
   IonList,
-  IonPopover,
+  IonPopover
 } from '@ionic/angular/standalone';
 import { NotificationStore } from '@lpg-manager/notification-store';
 import { DatePipe } from '@angular/common';
@@ -26,12 +27,14 @@ import { DatePipe } from '@angular/common';
     IonItemSliding,
     IonItemOptions,
     IonItemOption,
+    IonBadge,
   ],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.css',
 })
 export class NotificationBellComponent {
   #notificationStore = inject(NotificationStore);
+  notificationStats = this.#notificationStore.notificationStats;
   notifications = computed(() =>
     this.#notificationStore
       .searchedItemsEntities()

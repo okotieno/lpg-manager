@@ -1,9 +1,14 @@
+ion-list {
+  background: none;
+}
 ion-popover::part(content) {
+  --background: none;
   min-width: 450px;
   max-width: 450px;
 }
 
 .notification-item {
+  max-width: 434px;
   --padding-start: 1rem;
   --padding-end: 1rem;
   --padding-top: 0.75rem;
@@ -49,4 +54,13 @@ ion-popover::part(content) {
   padding: 2rem;
   text-align: center;
   color: var(--ion-color-medium);
+}
+.notification-close-button {
+  padding: 1rem;
+  position: absolute;
+  top: -16px; right: -16px;
+  opacity: 0.2;
+  &:hover {
+    opacity: 1;
+  }
 }

@@ -1,6 +1,11 @@
-<ion-button id="notifications-button">
-  <ion-icon name="bell" slot="icon-only"></ion-icon>
-</ion-button>
+<div class="badged-icon-container">
+  <ion-button id="notifications-button">
+    <ion-icon name="bell" slot="icon-only"></ion-icon>
+  </ion-button>
+  @if (notificationStats().unread > 0) {
+    <ion-badge color="danger" class="badge-count">{{ notificationStats().unread }}</ion-badge>
+  }
+</div>
 
 <ion-popover trigger="notifications-button">
   <ng-template>
@@ -11,7 +16,7 @@
             <ion-item-option color="primary">Mark as read</ion-item-option>
           </ion-item-options>
 
-          <ion-item style="border-radius: 1rem" [class]="{'notification-item': true, 'unread': !notification.isRead}" button>
+          <ion-item style="border-radius: 1rem" [class]="{'notification-item': true, 'unread': !notification.isRead}">
             <ion-icon slot="start" name="circle-info"></ion-icon>
             <ion-label>
               <div class="notification-header">
@@ -19,6 +24,10 @@
                 <span class="notification-time">{{ notification.createdAt | date:'short' }}</span>
               </div>
               <p class="notification-description">{{ notification.description }}</p>
+
+              <ion-button class="notification-close-button" shape="round" color="danger" fill="clear">
+                <ion-icon slot="icon-only" name="circle-xmark"></ion-icon>
+              </ion-button>
             </ion-label>
 
           </ion-item>

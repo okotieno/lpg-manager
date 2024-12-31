@@ -10,9 +10,14 @@ import { inject, resource } from '@angular/core';
 import {
   IGetAuthenticatedUserNotificationsGQL,
   IGetAuthenticatedUserNotificationsQuery,
+  IGetAuthenticatedUserNotificationStatsGQL,
   INotificationCreatedTrackGQL,
 } from './notification.generated';
-import { setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
+import {
+  setAllEntities,
+  setEntity,
+  withEntities,
+} from '@ngrx/signals/entities';
 
 export const NotificationStore = signalStore(
   { providedIn: 'root' },
@@ -32,14 +37,37 @@ export const NotificationStore = signalStore(
   withState({
     currentPage: 1,
     pageSize: 20,
+    notificationStats: {
+      unread: 0,
+      total: 0,
+      read: 0,
+    },
   }),
   withProps(() => ({
     _getAuthenticatedUserNotificationsGQL: inject(
       IGetAuthenticatedUserNotificationsGQL
     ),
     _notificationCreatedTrackGQL: inject(INotificationCreatedTrackGQL),
+    _getAuthenticatedUserNotificationStatsGQL: inject(
+      IGetAuthenticatedUserNotificationStatsGQL
+    ),
   })),
   withProps((store) => ({
+    _getAuthenticatedUserNotificationStats: resource({
+      loader: async () => {
+        const notificationStats =
+          await store._getAuthenticatedUserNotificationStatsGQL
+            .watch()
+            .result();
+        const total =
+          notificationStats.data.authenticatedUserNotificationStats?.total ?? 0;
+        const unread =
+          notificationStats.data.authenticatedUserNotificationStats?.unread ??
+          0;
+        const read = total - unread;
+        patchState(store, { notificationStats: { unread, total, read } });
+      },
+    }),
     _getAuthenticatedUserNotification: resource({
       request: () => ({
         pageSize: store.pageSize(),
@@ -67,10 +95,12 @@ export const NotificationStore = signalStore(
     const onInit = () => {
       store._notificationCreatedTrackGQL.subscribe().subscribe({
         next: (res) => {
-          if(res.data?.notificationCreated?.notification) {
+          if (res.data?.notificationCreated?.notification) {
             patchState(
               store,
-              setEntity(res.data.notificationCreated.notification, { collection: 'searchedItems' })
+              setEntity(res.data.notificationCreated.notification, {
+                collection: 'searchedItems',
+              })
             );
           }
         },
