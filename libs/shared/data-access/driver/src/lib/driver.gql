@@ -1,12 +1,18 @@
-mutation CreateDriver(
-  $params: CreateDriverInput!
-) {
-  createDriver(
-    params: $params
-  ) {
+mutation CreateDriver($params: CreateDriverInput!) {
+  createDriver(params: $params) {
     message
     data {
       id
+      name
+      licenseNumber
+      contactNumber
+      transporterId
+      transporter {
+        id
+        name
+      }
+      createdAt
+      updatedAt
     }
   }
 }
@@ -15,16 +21,32 @@ query GetDriverById($id: UUID!) {
   driver(id: $id) {
     id
     name
+    licenseNumber
+    contactNumber
+    transporterId
+    transporter {
+      id
+      name
+    }
+    createdAt
+    updatedAt
   }
 }
 
-query GetDrivers(
-  $query: QueryParams
-) {
+query GetDrivers($query: QueryParams) {
   drivers(query: $query) {
     items {
       id
       name
+      licenseNumber
+      contactNumber
+      transporterId
+      transporter {
+        id
+        name
+      }
+      createdAt
+      updatedAt
     }
     meta {
       totalItems
@@ -39,13 +61,20 @@ mutation DeleteDriverById($id: UUID!) {
 }
 
 mutation UpdateDriver($id: UUID!, $params: UpdateDriverInput!) {
-  updateDriver(
-    id: $id
-    params: $params
-  ) {
+  updateDriver(id: $id, params: $params) {
     message
     data {
       id
+      name
+      licenseNumber
+      contactNumber
+      transporterId
+      transporter {
+        id
+        name
+      }
+      createdAt
+      updatedAt
     }
   }
 }

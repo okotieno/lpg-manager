@@ -8,21 +8,21 @@ export type ICreateDispatchMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateDispatchMutation = { createDispatch: { message: string, data: { id: string } } };
+export type ICreateDispatchMutation = { createDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, name: string }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
 
 export type IGetDispatchByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetDispatchByIdQuery = { dispatch?: { id: string } | null };
+export type IGetDispatchByIdQuery = { dispatch?: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, name: string }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } | null };
 
 export type IGetDispatchesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetDispatchesQuery = { dispatches: { items?: Array<{ id: string } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetDispatchesQuery = { dispatches: { items?: Array<{ id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, name: string }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteDispatchByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -37,7 +37,7 @@ export type IUpdateDispatchMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateDispatchMutation = { updateDispatch: { message: string, data: { id: string } } };
+export type IUpdateDispatchMutation = { updateDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, name: string }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
 
 export const CreateDispatchDocument = gql`
     mutation CreateDispatch($params: CreateDispatchInput!) {
@@ -45,6 +45,30 @@ export const CreateDispatchDocument = gql`
     message
     data {
       id
+      status
+      dispatchDate
+      transporterId
+      driverId
+      vehicleId
+      transporter {
+        id
+        name
+      }
+      driver {
+        id
+        name
+      }
+      vehicle {
+        id
+        registrationNumber
+      }
+      orders {
+        id
+        status
+        totalPrice
+      }
+      createdAt
+      updatedAt
     }
   }
 }
@@ -64,6 +88,30 @@ export const GetDispatchByIdDocument = gql`
     query GetDispatchById($id: UUID!) {
   dispatch(id: $id) {
     id
+    status
+    dispatchDate
+    transporterId
+    driverId
+    vehicleId
+    transporter {
+      id
+      name
+    }
+    driver {
+      id
+      name
+    }
+    vehicle {
+      id
+      registrationNumber
+    }
+    orders {
+      id
+      status
+      totalPrice
+    }
+    createdAt
+    updatedAt
   }
 }
     `;
@@ -83,6 +131,30 @@ export const GetDispatchesDocument = gql`
   dispatches(query: $query) {
     items {
       id
+      status
+      dispatchDate
+      transporterId
+      driverId
+      vehicleId
+      transporter {
+        id
+        name
+      }
+      driver {
+        id
+        name
+      }
+      vehicle {
+        id
+        registrationNumber
+      }
+      orders {
+        id
+        status
+        totalPrice
+      }
+      createdAt
+      updatedAt
     }
     meta {
       totalItems
@@ -125,6 +197,30 @@ export const UpdateDispatchDocument = gql`
     message
     data {
       id
+      status
+      dispatchDate
+      transporterId
+      driverId
+      vehicleId
+      transporter {
+        id
+        name
+      }
+      driver {
+        id
+        name
+      }
+      vehicle {
+        id
+        registrationNumber
+      }
+      orders {
+        id
+        status
+        totalPrice
+      }
+      createdAt
+      updatedAt
     }
   }
 }

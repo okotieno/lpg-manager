@@ -8,21 +8,21 @@ export type ICreateVehicleMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateVehicleMutation = { createVehicle: { message: string, data?: { id: string } | null } };
+export type ICreateVehicleMutation = { createVehicle: { message: string, data?: { id: string, registrationNumber: string, capacity: number, type: string, transporterId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string } } | null } };
 
 export type IGetVehicleByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetVehicleByIdQuery = { vehicle?: { id: string } | null };
+export type IGetVehicleByIdQuery = { vehicle?: { id: string, registrationNumber: string, capacity: number, type: string, transporterId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string } } | null };
 
 export type IGetVehiclesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetVehiclesQuery = { vehicles: { items?: Array<{ id: string } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetVehiclesQuery = { vehicles: { items?: Array<{ id: string, registrationNumber: string, capacity: number, type: string, transporterId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string } } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteVehicleByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -37,7 +37,7 @@ export type IUpdateVehicleMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateVehicleMutation = { updateVehicle: { message: string, data?: { id: string } | null } };
+export type IUpdateVehicleMutation = { updateVehicle: { message: string, data?: { id: string, registrationNumber: string, capacity: number, type: string, transporterId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string } } | null } };
 
 export const CreateVehicleDocument = gql`
     mutation CreateVehicle($params: CreateVehicleInput!) {
@@ -45,6 +45,16 @@ export const CreateVehicleDocument = gql`
     message
     data {
       id
+      registrationNumber
+      capacity
+      type
+      transporterId
+      transporter {
+        id
+        name
+      }
+      createdAt
+      updatedAt
     }
   }
 }
@@ -64,6 +74,16 @@ export const GetVehicleByIdDocument = gql`
     query GetVehicleById($id: UUID!) {
   vehicle(id: $id) {
     id
+    registrationNumber
+    capacity
+    type
+    transporterId
+    transporter {
+      id
+      name
+    }
+    createdAt
+    updatedAt
   }
 }
     `;
@@ -83,6 +103,16 @@ export const GetVehiclesDocument = gql`
   vehicles(query: $query) {
     items {
       id
+      registrationNumber
+      capacity
+      type
+      transporterId
+      transporter {
+        id
+        name
+      }
+      createdAt
+      updatedAt
     }
     meta {
       totalItems
@@ -125,6 +155,16 @@ export const UpdateVehicleDocument = gql`
     message
     data {
       id
+      registrationNumber
+      capacity
+      type
+      transporterId
+      transporter {
+        id
+        name
+      }
+      createdAt
+      updatedAt
     }
   }
 }

@@ -8,21 +8,21 @@ export type ICreateDriverMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateDriverMutation = { createDriver: { message: string, data: { id: string } } };
+export type ICreateDriverMutation = { createDriver: { message: string, data: { id: string, name: string, licenseNumber: string, contactNumber: string, transporterId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string } } } };
 
 export type IGetDriverByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetDriverByIdQuery = { driver?: { id: string, name: string } | null };
+export type IGetDriverByIdQuery = { driver?: { id: string, name: string, licenseNumber: string, contactNumber: string, transporterId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string } } | null };
 
 export type IGetDriversQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetDriversQuery = { drivers: { items?: Array<{ id: string, name: string } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetDriversQuery = { drivers: { items?: Array<{ id: string, name: string, licenseNumber: string, contactNumber: string, transporterId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string } } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteDriverByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -37,7 +37,7 @@ export type IUpdateDriverMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateDriverMutation = { updateDriver: { message: string, data: { id: string } } };
+export type IUpdateDriverMutation = { updateDriver: { message: string, data: { id: string, name: string, licenseNumber: string, contactNumber: string, transporterId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string } } } };
 
 export const CreateDriverDocument = gql`
     mutation CreateDriver($params: CreateDriverInput!) {
@@ -45,6 +45,16 @@ export const CreateDriverDocument = gql`
     message
     data {
       id
+      name
+      licenseNumber
+      contactNumber
+      transporterId
+      transporter {
+        id
+        name
+      }
+      createdAt
+      updatedAt
     }
   }
 }
@@ -65,6 +75,15 @@ export const GetDriverByIdDocument = gql`
   driver(id: $id) {
     id
     name
+    licenseNumber
+    contactNumber
+    transporterId
+    transporter {
+      id
+      name
+    }
+    createdAt
+    updatedAt
   }
 }
     `;
@@ -85,6 +104,15 @@ export const GetDriversDocument = gql`
     items {
       id
       name
+      licenseNumber
+      contactNumber
+      transporterId
+      transporter {
+        id
+        name
+      }
+      createdAt
+      updatedAt
     }
     meta {
       totalItems
@@ -127,6 +155,16 @@ export const UpdateDriverDocument = gql`
     message
     data {
       id
+      name
+      licenseNumber
+      contactNumber
+      transporterId
+      transporter {
+        id
+        name
+      }
+      createdAt
+      updatedAt
     }
   }
 }

@@ -1,12 +1,13 @@
-mutation CreateTransporter(
-  $params: CreateTransporterInput!
-) {
-  createTransporter(
-    params: $params
-  ) {
+mutation CreateTransporter($params: CreateTransporterInput!) {
+  createTransporter(params: $params) {
     message
     data {
       id
+      name
+      contactPerson
+      contactNumber
+      createdAt
+      updatedAt
     }
   }
 }
@@ -14,16 +15,35 @@ mutation CreateTransporter(
 query GetTransporterById($id: UUID!) {
   transporter(id: $id) {
     id
+    name
+    contactPerson
+    contactNumber
+    drivers {
+      id
+      name
+      licenseNumber
+      contactNumber
+    }
+    vehicles {
+      id
+      registrationNumber
+      capacity
+      type
+    }
+    createdAt
+    updatedAt
   }
 }
 
-query GetTransporters(
-  $query: QueryParams
-) {
+query GetTransporters($query: QueryParams) {
   transporters(query: $query) {
     items {
       id
-
+      name
+      contactPerson
+      contactNumber
+      createdAt
+      updatedAt
     }
     meta {
       totalItems
@@ -38,13 +58,15 @@ mutation DeleteTransporterById($id: UUID!) {
 }
 
 mutation UpdateTransporter($id: UUID!, $params: UpdateTransporterInput!) {
-  updateTransporter(
-    id: $id
-    params: $params
-  ) {
+  updateTransporter(id: $id, params: $params) {
     message
     data {
       id
+      name
+      contactPerson
+      contactNumber
+      createdAt
+      updatedAt
     }
   }
 }

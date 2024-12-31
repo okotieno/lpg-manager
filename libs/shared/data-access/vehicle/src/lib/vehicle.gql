@@ -1,12 +1,18 @@
-mutation CreateVehicle(
-  $params: CreateVehicleInput!
-) {
-  createVehicle(
-    params: $params
-  ) {
+mutation CreateVehicle($params: CreateVehicleInput!) {
+  createVehicle(params: $params) {
     message
     data {
       id
+      registrationNumber
+      capacity
+      type
+      transporterId
+      transporter {
+        id
+        name
+      }
+      createdAt
+      updatedAt
     }
   }
 }
@@ -14,16 +20,33 @@ mutation CreateVehicle(
 query GetVehicleById($id: UUID!) {
   vehicle(id: $id) {
     id
+    registrationNumber
+    capacity
+    type
+    transporterId
+    transporter {
+      id
+      name
+    }
+    createdAt
+    updatedAt
   }
 }
 
-query GetVehicles(
-  $query: QueryParams
-) {
+query GetVehicles($query: QueryParams) {
   vehicles(query: $query) {
     items {
       id
-
+      registrationNumber
+      capacity
+      type
+      transporterId
+      transporter {
+        id
+        name
+      }
+      createdAt
+      updatedAt
     }
     meta {
       totalItems
@@ -38,13 +61,20 @@ mutation DeleteVehicleById($id: UUID!) {
 }
 
 mutation UpdateVehicle($id: UUID!, $params: UpdateVehicleInput!) {
-  updateVehicle(
-    id: $id
-    params: $params
-  ) {
+  updateVehicle(id: $id, params: $params) {
     message
     data {
       id
+      registrationNumber
+      capacity
+      type
+      transporterId
+      transporter {
+        id
+        name
+      }
+      createdAt
+      updatedAt
     }
   }
 }

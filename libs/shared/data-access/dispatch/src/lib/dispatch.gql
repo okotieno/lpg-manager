@@ -1,12 +1,32 @@
-mutation CreateDispatch(
-  $params: CreateDispatchInput!
-) {
-  createDispatch(
-    params: $params
-  ) {
+mutation CreateDispatch($params: CreateDispatchInput!) {
+  createDispatch(params: $params) {
     message
     data {
       id
+      status
+      dispatchDate
+      transporterId
+      driverId
+      vehicleId
+      transporter {
+        id
+        name
+      }
+      driver {
+        id
+        name
+      }
+      vehicle {
+        id
+        registrationNumber
+      }
+      orders {
+        id
+        status
+        totalPrice
+      }
+      createdAt
+      updatedAt
     }
   }
 }
@@ -14,16 +34,61 @@ mutation CreateDispatch(
 query GetDispatchById($id: UUID!) {
   dispatch(id: $id) {
     id
+    status
+    dispatchDate
+    transporterId
+    driverId
+    vehicleId
+    transporter {
+      id
+      name
+    }
+    driver {
+      id
+      name
+    }
+    vehicle {
+      id
+      registrationNumber
+    }
+    orders {
+      id
+      status
+      totalPrice
+    }
+    createdAt
+    updatedAt
   }
 }
 
-query GetDispatches(
-  $query: QueryParams
-) {
+query GetDispatches($query: QueryParams) {
   dispatches(query: $query) {
     items {
       id
-
+      status
+      dispatchDate
+      transporterId
+      driverId
+      vehicleId
+      transporter {
+        id
+        name
+      }
+      driver {
+        id
+        name
+      }
+      vehicle {
+        id
+        registrationNumber
+      }
+      orders {
+        id
+        status
+        totalPrice
+      }
+      createdAt
+      updatedAt
     }
     meta {
       totalItems
@@ -38,13 +103,34 @@ mutation DeleteDispatchById($id: UUID!) {
 }
 
 mutation UpdateDispatch($id: UUID!, $params: UpdateDispatchInput!) {
-  updateDispatch(
-    id: $id
-    params: $params
-  ) {
+  updateDispatch(id: $id, params: $params) {
     message
     data {
       id
+      status
+      dispatchDate
+      transporterId
+      driverId
+      vehicleId
+      transporter {
+        id
+        name
+      }
+      driver {
+        id
+        name
+      }
+      vehicle {
+        id
+        registrationNumber
+      }
+      orders {
+        id
+        status
+        totalPrice
+      }
+      createdAt
+      updatedAt
     }
   }
 }
