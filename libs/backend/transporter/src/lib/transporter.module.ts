@@ -1,21 +1,17 @@
 import { Module } from '@nestjs/common';
-import { DispatchResolver } from './resolvers/dispatch.resolver';
-import { DispatchServiceModule } from '@lpg-manager/dispatch-service';
+import { TransporterResolver } from './resolvers/transporter.resolver';
 import { TransporterServiceModule } from '@lpg-manager/transporter-service';
 import { DriverServiceModule } from '@lpg-manager/driver-service';
 import { VehicleServiceModule } from '@lpg-manager/vehicle-service';
-import { OrderServiceModule } from '@lpg-manager/order-service';
 
 @Module({
   imports: [
-    DispatchServiceModule,
     TransporterServiceModule,
     DriverServiceModule,
-    VehicleServiceModule,
-    OrderServiceModule
+    VehicleServiceModule
   ],
   providers: [
-    DispatchResolver
+    TransporterResolver
   ],
 })
-export class DispatchModule {}
+export class TransporterModule {}

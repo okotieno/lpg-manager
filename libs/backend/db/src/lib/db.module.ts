@@ -15,7 +15,11 @@ import {
   InventoryModel,
   CatalogueModel, CartModel, CartCatalogueModel,
   OrderModel,
-  OrderItemModel
+  OrderItemModel,
+  VehicleModel,
+  DriverModel,
+  DispatchModel,
+  TransporterModel
 } from './models';
 import { SequelizeOptions } from 'sequelize-typescript';
 
@@ -52,7 +56,11 @@ import { SequelizeOptions } from 'sequelize-typescript';
           CartModel,
           CartCatalogueModel,
           OrderModel,
-          OrderItemModel
+          OrderItemModel,
+          VehicleModel,
+          DriverModel,
+          DispatchModel,
+          TransporterModel
         ],
       }),
     }),

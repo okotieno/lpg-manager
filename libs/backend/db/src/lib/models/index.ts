@@ -19,3 +19,7 @@ export * from './cart.model';
 export * from './cart-catalogue.model';
 export * from './order.model';
 export * from './order-item.model';
+export * from './dispatch.model';
+export * from './transporter.model';
+export * from './driver.model';
+export * from './vehicle.model';

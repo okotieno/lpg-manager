@@ -21,6 +21,10 @@ import { NotificationServiceModule } from '@lpg-manager/notification-service';
 import { UserServiceModule } from '@lpg-manager/user-service';
 import { NotificationModule } from '@lpg-manager/notification';
 import { PubSubProviderModule } from '@lpg-manager/util';
+import { VehicleModule } from '../../../../libs/backend/vehicle/src/lib/vehicle.module';
+import { TransporterModule } from '../../../../libs/backend/transporter/src/lib/transporter.module';
+import { DispatchModule } from '@lpg-manager/dispatch';
+import { DriverModule } from '../../../../libs/backend/driver/src/lib/driver.module';
 
 @Module({
   imports: [
@@ -45,7 +49,11 @@ import { PubSubProviderModule } from '@lpg-manager/util';
     OrderModule,
     NotificationServiceModule,
     UserServiceModule,
-    PubSubProviderModule
+    PubSubProviderModule,
+    VehicleModule,
+    TransporterModule,
+    DispatchModule,
+    DriverModule,
   ],
 })
 export class AppModule {}
