@@ -21,6 +21,7 @@ import { IOrderStatus, IQueryOperatorEnum } from '@lpg-manager/types';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { GET_ITEMS_INCLUDE_FIELDS } from '@lpg-manager/data-table';
 import { ConfirmDispatchModalComponent } from '../components/confirm-dispatch-modal.component';
+import { RejectOrderModalComponent } from '../components/reject-order-modal.component';
 
 @Component({
   selector: 'lpg-orders',
@@ -93,6 +94,7 @@ export default class OrdersPageComponent {
       case 'COMPLETED':
         return 'success';
       case 'CANCELED':
+      case 'REJECTED':
         return 'danger';
       default:
         return 'medium';
@@ -114,6 +116,25 @@ export default class OrdersPageComponent {
       await this.#orderStore.updateOrderStatus(
         order.id,
         IOrderStatus.Confirmed
+      );
+    }
+  }
+
+  async rejectOrder(order: any) {
+    const modal = await this.#modalCtrl.create({
+      component: RejectOrderModalComponent,
+      componentProps: {
+        order: order,
+      },
+    });
+
+    await modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      await this.#orderStore.updateOrderStatus(
+        order.id,
+        IOrderStatus.Rejected
       );
     }
   }

@@ -137,4 +137,29 @@ export class OrderEventsListener {
       description: `Order #${order.id.slice(-8)} has been canceled`
     });
   }
+
+  @OnEvent('order.rejected')
+  async handleOrderRejected(event: OrderEvent) {
+    const order = event.order;
+
+    // Create activity log
+    const activity = await this.activityLogService.create({
+      action: 'order.rejected',
+      description: `Order #${order.id.slice(-8)} rejected`,
+      type: 'WARNING',
+      userId: event.userId
+    });
+
+    // Notify dealer users
+    await this.notifyStationUsers(order.dealerId, {
+      title: 'Order Rejected',
+      description: `Order #${order.id.slice(-8)} has been rejected`
+    });
+
+    // Notify depot users
+    await this.notifyStationUsers(order.depotId, {
+      title: 'Order Rejected',
+      description: `Order #${order.id.slice(-8)} has been rejected`
+    });
+  }
 }

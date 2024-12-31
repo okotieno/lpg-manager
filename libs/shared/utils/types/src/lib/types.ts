@@ -787,7 +787,8 @@ export enum IOrderStatus {
   Canceled = 'CANCELED',
   Completed = 'COMPLETED',
   Confirmed = 'CONFIRMED',
-  Pending = 'PENDING'
+  Pending = 'PENDING',
+  Rejected = 'REJECTED'
 }
 
 export type IOtpModel = {

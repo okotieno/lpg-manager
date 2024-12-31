@@ -78,7 +78,14 @@
                     [disabled]="order.status !== 'PENDING'">
                     Confirm for dispatch
                   </ion-button>
-                  <ion-button shape="round" fill="outline" color="danger">Reject</ion-button>
+                  <ion-button 
+                    shape="round" 
+                    fill="outline" 
+                    color="danger" 
+                    (click)="rejectOrder(order)"
+                    [disabled]="order.status !== 'PENDING'">
+                    Reject Order
+                  </ion-button>
                 </ion-buttons>
               </ion-row>
             </ion-col>

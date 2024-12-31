@@ -3,6 +3,7 @@ enum OrderStatus {
   CONFIRMED
   COMPLETED
   CANCELED
+  REJECTED
 }
 
 type OrderItem {
