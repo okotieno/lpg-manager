@@ -15,7 +15,7 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
     super(dispatchModel);
   }
 
-  async create(data: {
+  override async create(data: {
     transporterId: string;
     driverId: string;
     vehicleId: string;
@@ -25,7 +25,7 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
     return this.dispatchModel.sequelize?.transaction(
       async (transaction: Transaction) => {
         // Create the dispatch record
-        const dispatch = await super.create({
+        const dispatch = await super.model.create({
           transporterId: data.transporterId,
           driverId: data.driverId,
           vehicleId: data.vehicleId,
@@ -51,6 +51,6 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
 
         return dispatch;
       }
-    );
+    ) as Promise<DispatchModel>;
   }
-} 
+}

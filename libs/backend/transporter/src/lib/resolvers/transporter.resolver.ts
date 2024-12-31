@@ -1,14 +1,14 @@
 import { Args, Mutation, Query, Resolver, ResolveField, Root } from '@nestjs/graphql';
 import { Body, UseGuards } from '@nestjs/common';
-import { TransporterModel, IQueryParam } from '@lpg-manager/db';
+import { TransporterModel, IQueryParam, QueryOperatorEnum, SortByDirectionEnum } from '@lpg-manager/db';
 import { TransporterService } from '@lpg-manager/transporter-service';
-import { VehicleService } from '@lpg-manager/transporter-service';
 import { JwtAuthGuard } from '@lpg-manager/auth';
 import { ValidationPipe } from '@nestjs/common';
 import { CreateTransporterInputDto } from '../dto/create-transporter-input.dto';
 import { UpdateTransporterInputDto } from '../dto/update-transporter-input.dto';
 import { PermissionGuard, PermissionsEnum, Permissions } from '@lpg-manager/permission-service';
 import { DriverService } from '@lpg-manager/driver-service';
+import { VehicleService } from '@lpg-manager/vehicle-service';
 
 @Resolver(() => TransporterModel)
 export class TransporterResolver {
@@ -74,10 +74,11 @@ export class TransporterResolver {
   @ResolveField('drivers')
   async getDrivers(@Root() transporter: TransporterModel) {
     return this.driverService.findAll({
+      sortByDirection: SortByDirectionEnum.DESC,
       filters: [
         {
           field: 'transporterId',
-          operator: 'equals',
+          operator: QueryOperatorEnum.Equals,
           value: transporter.id,
           values: [],
         },
@@ -85,13 +86,14 @@ export class TransporterResolver {
     });
   }
 
-  @ResolveField('transporters')
+  @ResolveField('vehicles')
   async getVehicles(@Root() transporter: TransporterModel) {
-    return this.transporterService.findAll({
+    return this.vehicleService.findAll({
+      sortByDirection: SortByDirectionEnum.DESC,
       filters: [
         {
           field: 'transporterId',
-          operator: 'equals',
+          operator: QueryOperatorEnum.Equals,
           value: transporter.id,
           values: [],
         },
