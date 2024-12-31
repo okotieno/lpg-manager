@@ -23,8 +23,8 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
       <ion-toolbar>
         <ion-title>Confirm Dispatch</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="dismiss()">
-            <ion-icon name="close" slot="icon-only"></ion-icon>
+          <ion-button fil="clear" (click)="dismiss()">
+            <ion-icon name="circle-xmark" slot="icon-only"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>

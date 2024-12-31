@@ -141,6 +141,7 @@ export class OrderEventsListener {
   @OnEvent('order.rejected')
   async handleOrderRejected(event: OrderEvent) {
     const order = event.order;
+    const userId = event.userId;
 
     // Create activity log
     const activity = await this.activityLogService.create({

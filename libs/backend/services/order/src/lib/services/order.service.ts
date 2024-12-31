@@ -21,7 +21,6 @@ export class OrderService extends CrudAbstractService<OrderModel> {
     @InjectModel(OrderModel) private orderModel: typeof OrderModel,
     @InjectModel(OrderItemModel) private orderItemModel: typeof OrderItemModel,
     @InjectModel(CartModel) private cartModel: typeof CartModel,
-    private eventEmitter: EventEmitter2
   ) {
     super(orderModel);
   }
@@ -105,18 +104,6 @@ export class OrderService extends CrudAbstractService<OrderModel> {
           },
         ],
       });
-
-      switch (status) {
-        case 'CONFIRMED':
-          this.eventEmitter.emit('order.confirmed', { order: updatedOrder });
-          break;
-        case 'COMPLETED':
-          this.eventEmitter.emit('order.completed', { order: updatedOrder });
-          break;
-        case 'CANCELED':
-          this.eventEmitter.emit('order.canceled', { order: updatedOrder });
-          break;
-      }
 
       return updatedOrder;
     } catch (error) {

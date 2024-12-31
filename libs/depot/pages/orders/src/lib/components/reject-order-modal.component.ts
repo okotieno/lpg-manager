@@ -13,8 +13,8 @@ import { FormsModule } from '@angular/forms';
       <ion-toolbar>
         <ion-title>Reject Order</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="dismiss()">
-            <ion-icon name="close" slot="icon-only"></ion-icon>
+          <ion-button shape="round" fill="clear" color="danger" (click)="dismiss()">
+            <ion-icon name="circle-xmark" slot="icon-only"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>

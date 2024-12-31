@@ -9,3 +9,4 @@ export class OrderCreatedEvent extends OrderEvent {}
 export class OrderConfirmedEvent extends OrderEvent {}
 export class OrderCompletedEvent extends OrderEvent {}
 export class OrderCanceledEvent extends OrderEvent {}
+export class OrderRejectedEvent extends OrderEvent {}
