@@ -1,1 +1,2 @@
-export * from './lib/vehicle-store.component';
+export * from './lib/vehicle.store';
+export * from './lib/vehicle.generated';

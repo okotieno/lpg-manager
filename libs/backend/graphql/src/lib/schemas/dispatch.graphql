@@ -15,7 +15,7 @@ type DispatchModel {
   transporter: TransporterModel!
   driver: DriverModel!
   vehicle: VehicleModel!
-  orders: [OrderModel]!
+  orders: [OrderModel!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -24,8 +24,8 @@ input CreateDispatchInput {
   transporterId: UUID!
   driverId: UUID!
   vehicleId: UUID!
-  orderIds: [UUID!]!
   dispatchDate: DateTime!
+  orderIds: [UUID!]!
 }
 
 input UpdateDispatchInput {
@@ -44,8 +44,7 @@ extend type Query {
 }
 
 extend type Mutation {
-  createDispatch(params: CreateDispatchInput!): CreateSuccessResponse!
-  updateDispatch(id: UUID!, params: UpdateDispatchInput!): UpdateSuccessResponse!
+  createDispatch(params: CreateDispatchInput!): SuccessResponse!
+  updateDispatch(id: UUID!, params: UpdateDispatchInput!): SuccessResponse!
   deleteDispatch(id: UUID!): DeleteSuccessResponse!
-  updateDispatchStatus(id: UUID!, status: DispatchStatus!): UpdateSuccessResponse!
-} 
+}

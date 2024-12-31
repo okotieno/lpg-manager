@@ -33,7 +33,7 @@ extend type Query {
 }
 
 extend type Mutation {
-  createVehicle(params: CreateVehicleInput!): CreateSuccessResponse!
-  updateVehicle(id: UUID!, params: UpdateVehicleInput!): UpdateSuccessResponse!
+  createVehicle(params: CreateVehicleInput!): SuccessResponse!
+  updateVehicle(id: UUID!, params: UpdateVehicleInput!): SuccessResponse!
   deleteVehicle(id: UUID!): DeleteSuccessResponse!
-} 
+}

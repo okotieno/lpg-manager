@@ -33,7 +33,7 @@ extend type Query {
 }
 
 extend type Mutation {
-  createDriver(params: CreateDriverInput!): CreateSuccessResponse!
-  updateDriver(id: UUID!, params: UpdateDriverInput!): UpdateSuccessResponse!
+  createDriver(params: CreateDriverInput!): SuccessResponse!
+  updateDriver(id: UUID!, params: UpdateDriverInput!): SuccessResponse!
   deleteDriver(id: UUID!): DeleteSuccessResponse!
-} 
+}
