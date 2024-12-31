@@ -1,13 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import {
   IonButton,
   IonIcon,
-  IonItem, IonItemOption,
+  IonItem,
+  IonItemOption,
   IonItemOptions,
   IonItemSliding,
   IonLabel,
   IonList,
-  IonPopover
+  IonPopover,
 } from '@ionic/angular/standalone';
 import { NotificationStore } from '@lpg-manager/notification-store';
 import { DatePipe } from '@angular/common';
@@ -31,5 +32,13 @@ import { DatePipe } from '@angular/common';
 })
 export class NotificationBellComponent {
   #notificationStore = inject(NotificationStore);
-  notifications = this.#notificationStore.searchedItemsEntities;
+  notifications = computed(() =>
+    this.#notificationStore
+      .searchedItemsEntities()
+      .sort(({ createdAt: a }, { createdAt: b }) => {
+        console.log(a, b, new Date(a), new Date(b));
+        return  a <= b ? 1 : 0;
+        }
+      )
+  );
 }

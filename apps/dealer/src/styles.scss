@@ -1,5 +1,6 @@
 @use "./theme/variables";
 .badged-icon-container {
+  max-width: fit-content;
   position: relative;
   ion-badge {
     position: absolute;
