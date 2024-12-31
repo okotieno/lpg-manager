@@ -50,5 +50,9 @@ module.exports = {
         allowNull: true
       }
     });
+  },
+
+  async down(queryInterface) {
+    await queryInterface.dropTable('drivers');
   }
 }; 

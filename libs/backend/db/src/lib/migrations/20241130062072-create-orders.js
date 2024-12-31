@@ -68,5 +68,10 @@ module.exports = {
         allowNull: true
       }
     });
+  },
+
+  async down(queryInterface) {
+    await queryInterface.dropTable('orders');
+    await queryInterface.sequelize.query('DROP TYPE IF EXISTS enum_orders_status;');
   }
 };

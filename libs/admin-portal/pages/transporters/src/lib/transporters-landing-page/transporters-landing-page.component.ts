@@ -21,5 +21,7 @@ export default class TransportersLandingPageComponent {
   protected readonly allColumns: ITableColumn<ITransporterModel>[] = [
     { label: 'ID', key: 'id', fieldType: 'uuid' },
     { label: 'Name', key: 'name', fieldType: 'string' },
+    { label: 'Contact Person', key: 'contactPerson', fieldType: 'string' },
+    { label: 'Contact Number', key: 'contactNumber', fieldType: 'string' }
   ];
 }

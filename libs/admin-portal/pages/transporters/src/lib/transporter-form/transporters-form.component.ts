@@ -4,7 +4,6 @@ import {
   effect,
   inject,
   input,
-  signal,
   untracked,
 } from '@angular/core';
 import {
@@ -13,13 +12,10 @@ import {
   IonInput,
   IonItem,
   IonRow,
-  IonSelect,
-  IonSelectOption,
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
-import { BrandStore, IGetBrandsQuery } from '@lpg-manager/brand-store';
 import {
   ISelectCategory,
   ITransporterModel,
@@ -33,9 +29,8 @@ import {
   SHOW_ERROR_MESSAGE,
   SHOW_SUCCESS_MESSAGE,
 } from '@lpg-manager/injection-token';
-import { defaultQueryParams, PaginatedResource } from '@lpg-manager/data-table';
+import { defaultQueryParams } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
-import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 
 @Component({
   selector: 'lpg-transporter-form',
@@ -46,25 +41,22 @@ import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
     IonInput,
     IonButton,
     RouterLink,
-    IonSelect,
-    IonSelectOption,
     IonRow,
     IonCol,
-    SearchableSelectComponent,
   ],
   templateUrl: './transporters-form.component.html',
-  providers: [BrandStore],
+  providers: [],
 })
 export default class TransportersFormComponent implements IHasUnsavedChanges {
   #fb = inject(FormBuilder);
   #createTransporterGQL = inject(ICreateTransporterGQL);
   #updateTransporterGQL = inject(IUpdateTransporterGQL);
-  brandStore = inject(BrandStore) as PaginatedResource<
-    NonNullable<NonNullable<IGetBrandsQuery['brands']['items']>[number]>
-  >;
+
   transporterForm = this.#fb.group({
     name: ['', [Validators.required]],
     drivers: [[] as ISelectCategory[]],
+    contactPerson: ['', [Validators.required]],
+    contactNumber: ['', [Validators.required]]
   });
   #router = inject(Router);
   #route = inject(ActivatedRoute);
@@ -87,8 +79,6 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
     });
   });
 
-  showBrandsField = signal(false);
-
   get hasUnsavedChanges() {
     return this.transporterForm.dirty;
   }
@@ -96,10 +86,12 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
   async onSubmit() {
     this.transporterForm.updateValueAndValidity();
     if (this.transporterForm.valid) {
-      const { name, drivers } = this.transporterForm.value;
+      const { name, drivers, contactNumber, contactPerson } = this.transporterForm.value;
       const params = {
         name: name as string,
-        brands: drivers?.map((brand) => ({ id: brand?.id as string })) ?? [],
+        contactNumber: contactNumber as string,
+        contactPerson: contactPerson as string,
+        // drivers: drivers?.map((brand) => ({ id: brand?.id as string })) ?? [],
       };
 
       if (this.isEditing() && this.roleId()) {

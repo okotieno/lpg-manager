@@ -82,3 +82,4 @@ sun
 desktop
 bell-slash
 circle-info
+truck-arrow-right

@@ -82,5 +82,6 @@ export const APP_ICONS = [
   'sun',
   'desktop',
   'bell-slash',
-  'circle-info'
+  'circle-info',
+  'truck-arrow-right'
 ];
