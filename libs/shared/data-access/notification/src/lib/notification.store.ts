@@ -60,6 +60,7 @@ export const NotificationStore = signalStore(
       IGetAuthenticatedUserNotificationStatsGQL
     ),
     _markAsReadGQL: inject(IMarkNotificationAsReadGQL),
+    _audio: new Audio('/sounds/doorbell-tone.wav'),
   })),
   withProps((store) => ({
     _markAsReadResource: rxResource({
@@ -145,11 +146,20 @@ export const NotificationStore = signalStore(
     loadNextPage: () => {
       patchState(store, { currentPage: store.currentPage() + 1 });
     },
+    playNotificationAudio: async () => {
+      await store._audio.play();
+    },
   })),
   withHooks((store) => {
     const onInit = () => {
       store._notificationCreatedTrackGQL.subscribe().subscribe({
         next: (res) => {
+          if (res.data?.notificationCreated?.stats) {
+            patchState(store, {
+              notificationStats: { ...res.data?.notificationCreated?.stats },
+            });
+            store.playNotificationAudio();
+          }
           if (res.data?.notificationCreated?.notification) {
             patchState(
               store,

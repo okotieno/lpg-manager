@@ -28,7 +28,7 @@ export type IAccessToken = {
 
 export type IActivityLogModel = {
   action: Scalars['String']['output'];
-  createdAt: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   id: Scalars['UUID']['output'];
   type?: Maybe<IActivityLogType>;
@@ -44,7 +44,7 @@ export enum IActivityLogType {
 
 export type IActivityLogUserModel = {
   action: Scalars['String']['output'];
-  createdAt: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   id: Scalars['UUID']['output'];
   type?: Maybe<IActivityLogType>;
@@ -737,7 +737,7 @@ export type INotificationMarkedAsReadResponse = {
 };
 
 export type INotificationModel = {
-  createdAt: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   id: Scalars['UUID']['output'];
   title: Scalars['String']['output'];
@@ -751,7 +751,7 @@ export type INotificationStat = {
 };
 
 export type INotificationUserModel = {
-  createdAt: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   id: Scalars['UUID']['output'];
   isRead: Scalars['Boolean']['output'];
