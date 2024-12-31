@@ -58,4 +58,13 @@ export enum PermissionsEnum {
   DeleteTransporter = 'delete transporter',
   UpdateTransporter = 'update transporter',
 
+  ViewDispatch = 'view dispatch',
+  CreateDispatch = 'create dispatch',
+  DeleteDispatch = 'delete dispatch',
+  UpdateDispatch = 'update dispatch',
+
+  ViewDriver = 'view driver',
+  CreateDriver = 'create driver',
+  DeleteDriver = 'delete driver',
+  UpdateDriver = 'update driver',
 }

@@ -1,12 +1,13 @@
 import { Args, Mutation, Query, Resolver, ResolveField, Root } from '@nestjs/graphql';
 import { Body, UseGuards } from '@nestjs/common';
-import { DriverModel, PermissionsEnum } from '@lpg-manager/db';
+import { DriverModel, IQueryParam } from '@lpg-manager/db';
 import { DriverService } from '@lpg-manager/driver-service';
 import { TransporterService } from '@lpg-manager/transporter-service';
-import { JwtAuthGuard, PermissionGuard, Permissions } from '@lpg-manager/auth';
+import { JwtAuthGuard } from '@lpg-manager/auth';
 import { ValidationPipe } from '@nestjs/common';
 import { CreateDriverInputDto } from '../dto/create-driver-input.dto';
 import { UpdateDriverInputDto } from '../dto/update-driver-input.dto';
+import { PermissionGuard, PermissionsEnum, Permissions } from '@lpg-manager/permission-service';
 
 @Resolver(() => DriverModel)
 export class DriverResolver {
@@ -50,7 +51,7 @@ export class DriverResolver {
     @Args('id') id: string,
     @Body('params', new ValidationPipe()) params: UpdateDriverInputDto
   ) {
-    await this.driverService.updateById(id, params);
+    await this.driverService.update({ id, params });
 
     return {
       message: 'Successfully updated driver',
@@ -72,4 +73,4 @@ export class DriverResolver {
   async getTransporter(@Root() driver: DriverModel) {
     return this.transporterService.findById(driver.transporterId);
   }
-} 
+}

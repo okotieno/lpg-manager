@@ -1,15 +1,32 @@
-import { Args, Mutation, Query, Resolver, ResolveField, Root } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Query,
+  Resolver,
+  ResolveField,
+  Root,
+} from '@nestjs/graphql';
 import { Body, UseGuards } from '@nestjs/common';
-import { DispatchModel, PermissionsEnum } from '@lpg-manager/db';
+import {
+  DispatchModel,
+  IQueryParam,
+  QueryOperatorEnum,
+  SortByDirectionEnum,
+} from '@lpg-manager/db';
 import { DispatchService } from '@lpg-manager/dispatch-service';
 import { TransporterService } from '@lpg-manager/transporter-service';
 import { DriverService } from '@lpg-manager/driver-service';
 import { VehicleService } from '@lpg-manager/vehicle-service';
 import { OrderService } from '@lpg-manager/order-service';
-import { JwtAuthGuard, PermissionGuard, Permissions } from '@lpg-manager/auth';
+import { JwtAuthGuard } from '@lpg-manager/auth';
 import { ValidationPipe } from '@nestjs/common';
 import { CreateDispatchInputDto } from '../dto/create-dispatch-input.dto';
 import { UpdateDispatchInputDto } from '../dto/update-dispatch-input.dto';
+import {
+  PermissionGuard,
+  PermissionsEnum,
+  Permissions,
+} from '@lpg-manager/permission-service';
 
 @Resolver(() => DispatchModel)
 export class DispatchResolver {
@@ -53,10 +70,9 @@ export class DispatchResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.UpdateDispatch)
   async updateDispatch(
-    @Args('id') id: string,
-    @Body('params', new ValidationPipe()) params: UpdateDispatchInputDto
+    @Body(new ValidationPipe()) { id, params }: UpdateDispatchInputDto
   ) {
-    await this.dispatchService.updateById(id, params);
+    await this.dispatchService.update({ id, params });
 
     return {
       message: 'Successfully updated dispatch',
@@ -92,14 +108,16 @@ export class DispatchResolver {
   @ResolveField('orders')
   async getOrders(@Root() dispatch: DispatchModel) {
     return this.orderService.findAll({
+      sortBy: 'createdAt',
+      sortByDirection: SortByDirectionEnum.DESC,
       filters: [
         {
           field: 'dispatchId',
-          operator: 'equals',
+          operator: QueryOperatorEnum.Equals,
           value: dispatch.id,
           values: [],
         },
       ],
     });
   }
-} 
+}
