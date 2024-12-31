@@ -23,6 +23,7 @@ import {
 } from '@ionic/angular/standalone';
 import { NotificationStore } from '@lpg-manager/notification-store';
 import { DatePipe } from '@angular/common';
+import { IQueryOperatorEnum } from '@lpg-manager/types';
 
 @Component({
   selector: 'lpg-notification-bell',
@@ -67,13 +68,32 @@ export class NotificationBellComponent {
       )
   );
 
+  showInfiniteScroll = computed(() => {
+    console.log(
+      this.#notificationStore.totalItems(),
+      this.#notificationStore.searchedItemsEntities().length
+    );
+
+    return (
+      this.#notificationStore.totalItems() >
+      this.#notificationStore.searchedItemsEntities().length
+    );
+  });
+
+  constructor() {
+    this.#notificationStore.setFilters([
+      {
+        field: 'isRead',
+        operator: IQueryOperatorEnum.Equals,
+        value: 'false',
+        values: [],
+      },
+    ]);
+  }
+
   markAsRead(notificationId: string) {
     this.#notificationStore.markAsRead(notificationId);
   }
-
-  showInfiniteScroll = computed(() => {
-    return true;
-  });
 
   handleInfiniteScroll() {
     this.#notificationStore.loadNextPage();

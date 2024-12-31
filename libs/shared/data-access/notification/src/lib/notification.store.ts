@@ -25,6 +25,7 @@ import {
 } from '@ngrx/signals/entities';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { EMPTY, tap } from 'rxjs';
+import { IQueryParamsFilter } from '@lpg-manager/types';
 
 export const NotificationStore = signalStore(
   { providedIn: 'root' },
@@ -43,7 +44,9 @@ export const NotificationStore = signalStore(
   }),
   withState({
     currentPage: 1,
-    pageSize: 20,
+    filters: [] as IQueryParamsFilter[],
+    pageSize: 10,
+    totalItems: 0,
     notificationStats: {
       unread: 0,
       total: 0,
@@ -62,56 +65,16 @@ export const NotificationStore = signalStore(
     _markAsReadGQL: inject(IMarkNotificationAsReadGQL),
     _audio: new Audio('/sounds/doorbell-tone.wav'),
   })),
-  withProps((store) => ({
-    _markAsReadResource: rxResource({
-      request: () => ({ notificationId: store.readNotificationId() }),
-      loader: ({ request }) => {
-        if (!request.notificationId) {
-          return EMPTY;
-        }
-        return store._markAsReadGQL
-          .mutate({ notifications: [{ id: request.notificationId }] })
-          .pipe(
-            tap((res) => {
-              const responseData = res.data?.markNotificationAsRead?.data;
-              if (responseData) {
-                patchState(
-                  store,
-                  {
-                    notificationStats: { ...responseData },
-                  },
-                  removeEntity(request.notificationId, {
-                    collection: 'searchedItems',
-                  })
-                );
-              }
-            })
-          );
-      },
-    }),
-    _getAuthenticatedUserNotificationStats: resource({
-      loader: async () => {
-        const notificationStats =
-          await store._getAuthenticatedUserNotificationStatsGQL
-            .watch()
-            .result();
-        const total =
-          notificationStats.data.authenticatedUserNotificationStats?.total ?? 0;
-        const unread =
-          notificationStats.data.authenticatedUserNotificationStats?.unread ??
-          0;
-        const read = total - unread;
-        patchState(store, { notificationStats: { unread, total, read } });
-      },
-    }),
-    _getAuthenticatedUserNotification: resource({
+  withProps((store) => {
+    const _getAuthenticatedUserNotification = resource({
       request: () => ({
         pageSize: store.pageSize(),
         currentPage: store.currentPage(),
+        filters: store.filters(),
       }),
       loader: async ({ request }) => {
         const notifications = await store._getAuthenticatedUserNotificationsGQL
-          .watch({ ...request })
+          .watch({ ...request }, { fetchPolicy: 'network-only' })
           .result();
         const items =
           notifications.data.authenticatedUserNotifications?.items?.filter(
@@ -120,7 +83,12 @@ export const NotificationStore = signalStore(
         if (items && store.currentPage() === 1) {
           patchState(
             store,
-            setAllEntities(items, { collection: 'searchedItems' })
+            setAllEntities(items, { collection: 'searchedItems' }),
+            {
+              totalItems:
+                notifications.data.authenticatedUserNotifications?.meta
+                  ?.totalItems ?? 0,
+            }
           );
         } else if (items) {
           patchState(
@@ -130,8 +98,60 @@ export const NotificationStore = signalStore(
         }
         return notifications;
       },
-    }),
-  })),
+    });
+
+    return {
+      _markAsReadResource: rxResource({
+        request: () => ({ notificationId: store.readNotificationId() }),
+        loader: ({ request }) => {
+          if (!request.notificationId) {
+            return EMPTY;
+          }
+          return store._markAsReadGQL
+            .mutate({ notifications: [{ id: request.notificationId }] })
+            .pipe(
+              tap((res) => {
+                const responseData = res.data?.markNotificationAsRead?.data;
+                const newCurrentPage = Math.ceil(
+                  store.searchedItemsEntities().length / store.pageSize()
+                );
+                if (responseData) {
+                  patchState(
+                    store,
+                    { totalItems: store.totalItems() - 1 },
+                    { currentPage: newCurrentPage },
+                    {
+                      notificationStats: { ...responseData },
+                    },
+                    removeEntity(request.notificationId, {
+                      collection: 'searchedItems',
+                    })
+                  );
+                  _getAuthenticatedUserNotification.reload();
+                }
+              })
+            );
+        },
+      }),
+      _getAuthenticatedUserNotificationStats: resource({
+        loader: async () => {
+          const notificationStats =
+            await store._getAuthenticatedUserNotificationStatsGQL
+              .watch()
+              .result();
+          const total =
+            notificationStats.data.authenticatedUserNotificationStats?.total ??
+            0;
+          const unread =
+            notificationStats.data.authenticatedUserNotificationStats?.unread ??
+            0;
+          const read = total - unread;
+          patchState(store, { notificationStats: { unread, total, read } });
+        },
+      }),
+      _getAuthenticatedUserNotification,
+    };
+  }),
   withComputed((store) => ({
     isLoading: computed(
       () =>
@@ -148,6 +168,9 @@ export const NotificationStore = signalStore(
     },
     playNotificationAudio: async () => {
       await store._audio.play();
+    },
+    setFilters: (filters: IQueryParamsFilter[]) => {
+      patchState(store, { filters });
     },
   })),
   withHooks((store) => {
