@@ -29,7 +29,7 @@ export type IDeleteStationByIdMutationVariables = Types.Exact<{
 }>;
 
 
-export type IDeleteStationByIdMutation = { deleteStation?: { message: string } | null };
+export type IDeleteStationByIdMutation = { deleteStation: { message: string } };
 
 export type IUpdateStationMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];

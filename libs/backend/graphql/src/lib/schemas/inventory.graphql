@@ -39,5 +39,5 @@ extend type Mutation {
 
   createInventory(params: CreateInventoryInput): CreateInventorySuccessResponse
 
-  deleteInventory(id: UUID!): DeleteSuccessResponse
+  deleteInventory(id: UUID!): DeleteSuccessResponse!
 }

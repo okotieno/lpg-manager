@@ -72,7 +72,7 @@ extend type Mutation {
     params: CreateNotificationInput
   ): CreateNotificationSuccessResponse
 
-  deleteNotification(id: UUID!): DeleteSuccessResponse
+  deleteNotification(id: UUID!): DeleteSuccessResponse!
 
   markNotificationAsRead(
     notifications: [SelectCategory]!

@@ -165,6 +165,31 @@ export type ICreateCatalogueSuccessResponse = {
   message: Scalars['String']['output'];
 };
 
+export type ICreateDispatchInput = {
+  dispatchDate: Scalars['DateTime']['input'];
+  driverId: Scalars['UUID']['input'];
+  orderIds: Array<Scalars['UUID']['input']>;
+  transporterId: Scalars['UUID']['input'];
+  vehicleId: Scalars['UUID']['input'];
+};
+
+export type ICreateDispatchSuccessResponse = {
+  data: IDispatchModel;
+  message: Scalars['String']['output'];
+};
+
+export type ICreateDriverInput = {
+  contactNumber: Scalars['String']['input'];
+  licenseNumber: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  transporterId: Scalars['UUID']['input'];
+};
+
+export type ICreateDriverSuccessResponse = {
+  data: IDriverModel;
+  message: Scalars['String']['output'];
+};
+
 export type ICreateInventoryInput = {
   catalogueId: Scalars['String']['input'];
   quantity: Scalars['Float']['input'];
@@ -257,6 +282,17 @@ export type ICreateSuccessStringIdResponse = {
   message: Scalars['String']['output'];
 };
 
+export type ICreateTransporterInput = {
+  contactNumber: Scalars['String']['input'];
+  contactPerson: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+};
+
+export type ICreateTransporterSuccessResponse = {
+  data: ITransporterModel;
+  message: Scalars['String']['output'];
+};
+
 export type ICreateUserInput = {
   email: Scalars['String']['input'];
   firstName: Scalars['String']['input'];
@@ -271,8 +307,53 @@ export type ICreateUserSuccessResponse = {
   message: Scalars['String']['output'];
 };
 
+export type ICreateVehicleInput = {
+  capacity: Scalars['Float']['input'];
+  registrationNumber: Scalars['String']['input'];
+  transporterId: Scalars['UUID']['input'];
+  type: Scalars['String']['input'];
+};
+
+export type ICreateVehicleSuccessResponse = {
+  data?: Maybe<IVehicleModel>;
+  message: Scalars['String']['output'];
+};
+
 export type IDeleteSuccessResponse = {
   message: Scalars['String']['output'];
+};
+
+export type IDispatchModel = {
+  createdAt: Scalars['DateTime']['output'];
+  dispatchDate: Scalars['DateTime']['output'];
+  driver: IDriverModel;
+  driverId: Scalars['UUID']['output'];
+  id: Scalars['UUID']['output'];
+  orders: Array<IOrderModel>;
+  status: IDispatchStatus;
+  transporter: ITransporterModel;
+  transporterId: Scalars['UUID']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  vehicle: IVehicleModel;
+  vehicleId: Scalars['UUID']['output'];
+};
+
+export enum IDispatchStatus {
+  Canceled = 'CANCELED',
+  Delivered = 'DELIVERED',
+  InTransit = 'IN_TRANSIT',
+  Pending = 'PENDING'
+}
+
+export type IDriverModel = {
+  contactNumber: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['UUID']['output'];
+  licenseNumber: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  transporter: ITransporterModel;
+  transporterId: Scalars['UUID']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type IFileUploadModel = {
@@ -311,6 +392,8 @@ export type IMutation = {
   createBrand?: Maybe<ICreateBrandSuccessResponse>;
   createCart: ICreateCartResponse;
   createCatalogue?: Maybe<ICreateCatalogueSuccessResponse>;
+  createDispatch: ICreateDispatchSuccessResponse;
+  createDriver: ICreateDriverSuccessResponse;
   createInventory?: Maybe<ICreateInventorySuccessResponse>;
   createNotification?: Maybe<ICreateNotificationSuccessResponse>;
   createOrder: ICreateOrderResponse;
@@ -320,20 +403,26 @@ export type IMutation = {
   createRole?: Maybe<ICreateRoleSuccessResponse>;
   createSetting?: Maybe<ICreateSettingSuccessResponse>;
   createStation?: Maybe<ICreateStationSuccessResponse>;
+  createTransporter: ICreateTransporterSuccessResponse;
   createUser?: Maybe<ICreateUserSuccessResponse>;
-  deleteActivityLog?: Maybe<IDeleteSuccessResponse>;
-  deleteBrand?: Maybe<IDeleteSuccessResponse>;
-  deleteCatalogue?: Maybe<IDeleteSuccessResponse>;
-  deleteInventory?: Maybe<IDeleteSuccessResponse>;
-  deleteNotification?: Maybe<IDeleteSuccessResponse>;
-  deleteOrder?: Maybe<IDeleteSuccessResponse>;
-  deleteOtp?: Maybe<IDeleteSuccessResponse>;
-  deletePasswordReset?: Maybe<IDeleteSuccessResponse>;
-  deletePermission?: Maybe<IDeleteSuccessResponse>;
-  deleteRole?: Maybe<IDeleteSuccessResponse>;
-  deleteSetting?: Maybe<IDeleteSuccessResponse>;
-  deleteStation?: Maybe<IDeleteSuccessResponse>;
-  deleteUser?: Maybe<IDeleteSuccessResponse>;
+  createVehicle: ICreateVehicleSuccessResponse;
+  deleteActivityLog: IDeleteSuccessResponse;
+  deleteBrand: IDeleteSuccessResponse;
+  deleteCatalogue: IDeleteSuccessResponse;
+  deleteDispatch: IDeleteSuccessResponse;
+  deleteDriver: IDeleteSuccessResponse;
+  deleteInventory: IDeleteSuccessResponse;
+  deleteNotification: IDeleteSuccessResponse;
+  deleteOrder: IDeleteSuccessResponse;
+  deleteOtp: IDeleteSuccessResponse;
+  deletePasswordReset: IDeleteSuccessResponse;
+  deletePermission: IDeleteSuccessResponse;
+  deleteRole: IDeleteSuccessResponse;
+  deleteSetting: IDeleteSuccessResponse;
+  deleteStation: IDeleteSuccessResponse;
+  deleteTransporter: IDeleteSuccessResponse;
+  deleteUser: IDeleteSuccessResponse;
+  deleteVehicle: IDeleteSuccessResponse;
   givePermissionsToRole?: Maybe<ISuccessResponse>;
   healthCheck?: Maybe<Scalars['String']['output']>;
   loginWithPassword?: Maybe<ILoginResponse>;
@@ -352,6 +441,8 @@ export type IMutation = {
   updateActivityLog?: Maybe<ICreateActivityLogSuccessResponse>;
   updateBrand?: Maybe<ICreateBrandSuccessResponse>;
   updateCatalogue?: Maybe<ICreateCatalogueSuccessResponse>;
+  updateDispatch: ICreateDispatchSuccessResponse;
+  updateDriver: ICreateDriverSuccessResponse;
   updateInventory?: Maybe<ICreateInventorySuccessResponse>;
   updateItemQuantity: ICreateCartResponse;
   updateNotification?: Maybe<ICreateNotificationSuccessResponse>;
@@ -363,7 +454,9 @@ export type IMutation = {
   updateRole?: Maybe<ICreateRoleSuccessResponse>;
   updateSetting?: Maybe<ICreateSettingSuccessResponse>;
   updateStation?: Maybe<ICreateStationSuccessResponse>;
+  updateTransporter: ICreateTransporterSuccessResponse;
   updateUser?: Maybe<ICreateUserSuccessResponse>;
+  updateVehicle: ICreateVehicleSuccessResponse;
   uploadSingleFile: IUploadSuccessResponse;
   validateOtp?: Maybe<ILoginResponse>;
   validatePasswordResetToken?: Maybe<IValidatePasswordResetTokenResponse>;
@@ -428,6 +521,16 @@ export type IMutationCreateCatalogueArgs = {
 };
 
 
+export type IMutationCreateDispatchArgs = {
+  params: ICreateDispatchInput;
+};
+
+
+export type IMutationCreateDriverArgs = {
+  params: ICreateDriverInput;
+};
+
+
 export type IMutationCreateInventoryArgs = {
   params?: InputMaybe<ICreateInventoryInput>;
 };
@@ -473,8 +576,18 @@ export type IMutationCreateStationArgs = {
 };
 
 
+export type IMutationCreateTransporterArgs = {
+  params: ICreateTransporterInput;
+};
+
+
 export type IMutationCreateUserArgs = {
   params?: InputMaybe<ICreateUserInput>;
+};
+
+
+export type IMutationCreateVehicleArgs = {
+  params: ICreateVehicleInput;
 };
 
 
@@ -489,6 +602,16 @@ export type IMutationDeleteBrandArgs = {
 
 
 export type IMutationDeleteCatalogueArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
+export type IMutationDeleteDispatchArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
+export type IMutationDeleteDriverArgs = {
   id: Scalars['UUID']['input'];
 };
 
@@ -538,7 +661,17 @@ export type IMutationDeleteStationArgs = {
 };
 
 
+export type IMutationDeleteTransporterArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
 export type IMutationDeleteUserArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
+export type IMutationDeleteVehicleArgs = {
   id: Scalars['UUID']['input'];
 };
 
@@ -629,6 +762,18 @@ export type IMutationUpdateCatalogueArgs = {
 };
 
 
+export type IMutationUpdateDispatchArgs = {
+  id: Scalars['UUID']['input'];
+  params: IUpdateDispatchInput;
+};
+
+
+export type IMutationUpdateDriverArgs = {
+  id: Scalars['UUID']['input'];
+  params: IUpdateDriverInput;
+};
+
+
 export type IMutationUpdateInventoryArgs = {
   id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateInventoryInput>;
@@ -696,9 +841,21 @@ export type IMutationUpdateStationArgs = {
 };
 
 
+export type IMutationUpdateTransporterArgs = {
+  id: Scalars['UUID']['input'];
+  params: IUpdateTransporterInput;
+};
+
+
 export type IMutationUpdateUserArgs = {
   id: Scalars['UUID']['input'];
   params?: InputMaybe<IUpdateUserInput>;
+};
+
+
+export type IMutationUpdateVehicleArgs = {
+  id: Scalars['UUID']['input'];
+  params: IUpdateVehicleInput;
 };
 
 
@@ -821,6 +978,16 @@ export type IPaginatedCatalogue = {
   meta?: Maybe<IPagination>;
 };
 
+export type IPaginatedDispatch = {
+  items?: Maybe<Array<Maybe<IDispatchModel>>>;
+  meta?: Maybe<IPagination>;
+};
+
+export type IPaginatedDriver = {
+  items?: Maybe<Array<Maybe<IDriverModel>>>;
+  meta?: Maybe<IPagination>;
+};
+
 export type IPaginatedFileUpload = {
   items?: Maybe<Array<Maybe<IFileUploadModel>>>;
   meta?: Maybe<IPagination>;
@@ -871,6 +1038,11 @@ export type IPaginatedStation = {
   meta?: Maybe<IPagination>;
 };
 
+export type IPaginatedTransporter = {
+  items?: Maybe<Array<Maybe<ITransporterModel>>>;
+  meta?: Maybe<IPagination>;
+};
+
 export type IPaginatedUser = {
   items?: Maybe<Array<Maybe<IUserModel>>>;
   meta?: Maybe<IPagination>;
@@ -883,6 +1055,11 @@ export type IPaginatedUserNotification = {
 
 export type IPaginatedUserRoles = {
   items?: Maybe<Array<Maybe<IRoleModel>>>;
+  meta?: Maybe<IPagination>;
+};
+
+export type IPaginatedVehicle = {
+  items?: Maybe<Array<Maybe<IVehicleModel>>>;
   meta?: Maybe<IPagination>;
 };
 
@@ -912,6 +1089,10 @@ export type IQuery = {
   carts: IPaginatedCart;
   catalogue?: Maybe<ICatalogueModel>;
   catalogues: IPaginatedCatalogue;
+  dispatch?: Maybe<IDispatchModel>;
+  dispatches: IPaginatedDispatch;
+  driver?: Maybe<IDriverModel>;
+  drivers: IPaginatedDriver;
   fileUploads: IPaginatedFileUpload;
   healthCheck?: Maybe<Scalars['String']['output']>;
   inventories: IPaginatedInventory;
@@ -932,10 +1113,14 @@ export type IQuery = {
   settings: IPaginatedSetting;
   station?: Maybe<IStationModel>;
   stations: IPaginatedStation;
+  transporter?: Maybe<ITransporterModel>;
+  transporters: IPaginatedTransporter;
   user?: Maybe<IUserModel>;
   userCount: IUserCount;
   userRoles?: Maybe<IPaginatedUserRoles>;
   users: IPaginatedUser;
+  vehicle?: Maybe<IVehicleModel>;
+  vehicles: IPaginatedVehicle;
 };
 
 
@@ -985,6 +1170,26 @@ export type IQueryCatalogueArgs = {
 
 
 export type IQueryCataloguesArgs = {
+  query?: InputMaybe<IQueryParams>;
+};
+
+
+export type IQueryDispatchArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
+export type IQueryDispatchesArgs = {
+  query?: InputMaybe<IQueryParams>;
+};
+
+
+export type IQueryDriverArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
+export type IQueryDriversArgs = {
   query?: InputMaybe<IQueryParams>;
 };
 
@@ -1084,6 +1289,16 @@ export type IQueryStationsArgs = {
 };
 
 
+export type IQueryTransporterArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
+export type IQueryTransportersArgs = {
+  query?: InputMaybe<IQueryParams>;
+};
+
+
 export type IQueryUserArgs = {
   id: Scalars['UUID']['input'];
 };
@@ -1095,6 +1310,16 @@ export type IQueryUserRolesArgs = {
 
 
 export type IQueryUsersArgs = {
+  query?: InputMaybe<IQueryParams>;
+};
+
+
+export type IQueryVehicleArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
+export type IQueryVehiclesArgs = {
   query?: InputMaybe<IQueryParams>;
 };
 
@@ -1182,6 +1407,17 @@ export type ISuccessResponse = {
   success: Scalars['Boolean']['output'];
 };
 
+export type ITransporterModel = {
+  contactNumber: Scalars['String']['output'];
+  contactPerson: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  drivers?: Maybe<Array<Maybe<IDriverModel>>>;
+  id: Scalars['UUID']['output'];
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  vehicles?: Maybe<Array<Maybe<IVehicleModel>>>;
+};
+
 export type IUpdateActivityLogInput = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1214,6 +1450,17 @@ export type IUpdateCatalogueInput = {
   pricePerUnit?: InputMaybe<Scalars['Float']['input']>;
   quantityPerUnit: Scalars['Float']['input'];
   unit: ICatalogueUnit;
+};
+
+export type IUpdateDispatchInput = {
+  dispatchDate?: InputMaybe<Scalars['DateTime']['input']>;
+  status?: InputMaybe<IDispatchStatus>;
+};
+
+export type IUpdateDriverInput = {
+  contactNumber?: InputMaybe<Scalars['String']['input']>;
+  licenseNumber?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type IUpdateInventoryInput = {
@@ -1267,6 +1514,12 @@ export type IUpdateStationInput = {
   type?: InputMaybe<IStationType>;
 };
 
+export type IUpdateTransporterInput = {
+  contactNumber?: InputMaybe<Scalars['String']['input']>;
+  contactPerson?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type IUpdateUserInput = {
   email: Scalars['String']['input'];
   firstName: Scalars['String']['input'];
@@ -1274,6 +1527,12 @@ export type IUpdateUserInput = {
   middleName?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
   roles?: InputMaybe<Array<InputMaybe<IUserRoleInput>>>;
+};
+
+export type IUpdateVehicleInput = {
+  capacity?: InputMaybe<Scalars['Float']['input']>;
+  registrationNumber?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type IUploadSuccessResponse = {
@@ -1316,4 +1575,15 @@ export type IUserRoleInput = {
 
 export type IValidatePasswordResetTokenResponse = {
   user?: Maybe<IUserModel>;
+};
+
+export type IVehicleModel = {
+  capacity: Scalars['Float']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['UUID']['output'];
+  registrationNumber: Scalars['String']['output'];
+  transporter: ITransporterModel;
+  transporterId: Scalars['UUID']['output'];
+  type: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };

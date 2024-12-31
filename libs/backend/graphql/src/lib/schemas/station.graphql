@@ -41,5 +41,5 @@ extend type Mutation {
 
   createStation(params: CreateStationInput): CreateStationSuccessResponse
 
-  deleteStation(id: UUID!): DeleteSuccessResponse
+  deleteStation(id: UUID!): DeleteSuccessResponse!
 }

@@ -1,0 +1,50 @@
+mutation CreateTransporter(
+  $params: CreateTransporterInput!
+) {
+  createTransporter(
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetTransporterById($id: UUID!) {
+  transporter(id: $id) {
+    id
+  }
+}
+
+query GetTransporters(
+  $query: QueryParams
+) {
+  transporters(query: $query) {
+    items {
+      id
+
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+mutation DeleteTransporterById($id: UUID!) {
+  deleteTransporter(id: $id) {
+    message
+  }
+}
+
+mutation UpdateTransporter($id: UUID!, $params: UpdateTransporterInput!) {
+  updateTransporter(
+    id: $id
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}

@@ -65,6 +65,6 @@ extend type Query {
 extend type Mutation {
   createOrder(params: CreateOrderInput): CreateOrderResponse!
   updateOrder(id: UUID!, params: UpdateOrderInput): UpdateOrderResponse!
-  deleteOrder(id: UUID!): DeleteSuccessResponse
+  deleteOrder(id: UUID!): DeleteSuccessResponse!
   updateOrderStatus(id: UUID!, params: UpdateOrderStatusInput!): UpdateOrderResponse!
 }

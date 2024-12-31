@@ -41,9 +41,9 @@ export type IGetItemsQuery<RootField extends string, TItem> = {
 };
 
 export type IDeleteItemMutation<D extends string> = {
-  [K in D]?: {
+  [K in D]: {
     message: string;
-  } | null;
+  };
 };
 
 interface StoreState<T> {
@@ -268,5 +268,8 @@ export const withPaginatedItemsStore = <
       deleteItemWithId(id: string) {
         patchState(store, { deleteItemId: id });
       },
+      createNewItem(params: any) {
+        console.log('Function not implemented!!!');
+      }
     }))
   );

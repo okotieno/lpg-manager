@@ -32,7 +32,7 @@ export type IDeleteOrderByIdMutationVariables = Types.Exact<{
 }>;
 
 
-export type IDeleteOrderByIdMutation = { deleteOrder?: { message: string } | null };
+export type IDeleteOrderByIdMutation = { deleteOrder: { message: string } };
 
 export type IUpdateOrderMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];

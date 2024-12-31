@@ -45,7 +45,7 @@ export type IDeleteUserByIdMutationVariables = Types.Exact<{
 }>;
 
 
-export type IDeleteUserByIdMutation = { deleteUser?: { message: string } | null };
+export type IDeleteUserByIdMutation = { deleteUser: { message: string } };
 
 export type IUserWithRolesQueryVariables = Types.Exact<{
   userId: Types.Scalars['UUID']['input'];

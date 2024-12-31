@@ -34,7 +34,7 @@ export type IDeleteCatalogueByIdMutationVariables = Types.Exact<{
 }>;
 
 
-export type IDeleteCatalogueByIdMutation = { deleteCatalogue?: { message: string } | null };
+export type IDeleteCatalogueByIdMutation = { deleteCatalogue: { message: string } };
 
 export type IUpdateCatalogueMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];

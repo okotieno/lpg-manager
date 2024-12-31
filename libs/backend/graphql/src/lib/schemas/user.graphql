@@ -75,5 +75,5 @@ extend type Mutation {
 
   createUser(params: CreateUserInput): CreateUserSuccessResponse
 
-  deleteUser(id: UUID!): DeleteSuccessResponse
+  deleteUser(id: UUID!): DeleteSuccessResponse!
 }

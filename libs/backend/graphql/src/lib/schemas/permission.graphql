@@ -34,5 +34,5 @@ extend type Mutation {
 
   createPermission(name: String!): CreatePermissionSuccessResponse
 
-  deletePermission(id: UUID!): DeleteSuccessResponse
+  deletePermission(id: UUID!): DeleteSuccessResponse!
 }

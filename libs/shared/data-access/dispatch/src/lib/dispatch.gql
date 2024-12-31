@@ -1,0 +1,50 @@
+mutation CreateDispatch(
+  $params: CreateDispatchInput!
+) {
+  createDispatch(
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetDispatchById($id: UUID!) {
+  dispatch(id: $id) {
+    id
+  }
+}
+
+query GetDispatches(
+  $query: QueryParams
+) {
+  dispatches(query: $query) {
+    items {
+      id
+
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+mutation DeleteDispatchById($id: UUID!) {
+  deleteDispatch(id: $id) {
+    message
+  }
+}
+
+mutation UpdateDispatch($id: UUID!, $params: UpdateDispatchInput!) {
+  updateDispatch(
+    id: $id
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}

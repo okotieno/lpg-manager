@@ -61,5 +61,5 @@ extend type Mutation {
     params: CreateActivityLogInput
   ): CreateActivityLogSuccessResponse
 
-  deleteActivityLog(id: UUID!): DeleteSuccessResponse
+  deleteActivityLog(id: UUID!): DeleteSuccessResponse!
 }

@@ -38,13 +38,19 @@ type PaginatedDispatch {
   meta: Pagination
 }
 
+type CreateDispatchSuccessResponse {
+  message: String!
+  data: DispatchModel!
+}
+
+
 extend type Query {
   dispatches(query: QueryParams): PaginatedDispatch!
   dispatch(id: UUID!): DispatchModel
 }
 
 extend type Mutation {
-  createDispatch(params: CreateDispatchInput!): SuccessResponse!
-  updateDispatch(id: UUID!, params: UpdateDispatchInput!): SuccessResponse!
+  createDispatch(params: CreateDispatchInput!): CreateDispatchSuccessResponse!
+  updateDispatch(id: UUID!, params: UpdateDispatchInput!): CreateDispatchSuccessResponse!
   deleteDispatch(id: UUID!): DeleteSuccessResponse!
 }

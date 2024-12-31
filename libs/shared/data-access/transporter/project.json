@@ -15,6 +15,14 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "graphql-codegen": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "graphql-codegen --config ./libs/shared/data-access/transporter/codegen.ts"
+        ]
+      }
     }
   }
 }

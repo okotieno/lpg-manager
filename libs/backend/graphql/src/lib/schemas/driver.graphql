@@ -27,13 +27,18 @@ type PaginatedDriver {
   meta: Pagination
 }
 
+type CreateDriverSuccessResponse {
+  message: String!
+  data: DriverModel!
+}
+
 extend type Query {
   drivers(query: QueryParams): PaginatedDriver!
   driver(id: UUID!): DriverModel
 }
 
 extend type Mutation {
-  createDriver(params: CreateDriverInput!): SuccessResponse!
-  updateDriver(id: UUID!, params: UpdateDriverInput!): SuccessResponse!
+  createDriver(params: CreateDriverInput!): CreateDriverSuccessResponse!
+  updateDriver(id: UUID!, params: UpdateDriverInput!): CreateDriverSuccessResponse!
   deleteDriver(id: UUID!): DeleteSuccessResponse!
 }

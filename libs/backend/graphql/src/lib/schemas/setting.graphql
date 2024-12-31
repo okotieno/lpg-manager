@@ -34,5 +34,5 @@ extend type Mutation {
 
   createSetting(params: CreateSettingInput): CreateSettingSuccessResponse
 
-  deleteSetting(id: UUID!): DeleteSuccessResponse
+  deleteSetting(id: UUID!): DeleteSuccessResponse!
 }

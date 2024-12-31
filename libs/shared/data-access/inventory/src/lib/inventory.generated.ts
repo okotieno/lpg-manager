@@ -29,7 +29,7 @@ export type IDeleteInventoryByIdMutationVariables = Types.Exact<{
 }>;
 
 
-export type IDeleteInventoryByIdMutation = { deleteInventory?: { message: string } | null };
+export type IDeleteInventoryByIdMutation = { deleteInventory: { message: string } };
 
 export type IUpdateInventoryMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];

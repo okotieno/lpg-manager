@@ -20,4 +20,4 @@ export const VehicleStore = signalStore(
     'vehicles',
     'deleteVehicle'
   >()
-); 
+);

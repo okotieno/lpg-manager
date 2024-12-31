@@ -35,5 +35,5 @@ extend type Mutation {
 
   createRole(params: CreateRoleInput): CreateRoleSuccessResponse
 
-  deleteRole(id: UUID!): DeleteSuccessResponse
+  deleteRole(id: UUID!): DeleteSuccessResponse!
 }

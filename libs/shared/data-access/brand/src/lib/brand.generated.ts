@@ -29,7 +29,7 @@ export type IDeleteBrandByIdMutationVariables = Types.Exact<{
 }>;
 
 
-export type IDeleteBrandByIdMutation = { deleteBrand?: { message: string } | null };
+export type IDeleteBrandByIdMutation = { deleteBrand: { message: string } };
 
 export type IUpdateBrandMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];

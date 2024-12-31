@@ -10,7 +10,7 @@ import {
   IonBadge,
 } from '@ionic/angular/standalone';
 import { DatePipe } from '@angular/common';
-import { DispatchStore } from '../stores/dispatch.store';
+import { DispatchStore } from '@lpg-manager/dispatch-store';
 
 @Component({
   selector: 'lpg-operations',

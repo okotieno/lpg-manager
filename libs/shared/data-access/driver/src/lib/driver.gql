@@ -1,0 +1,51 @@
+mutation CreateDriver(
+  $params: CreateDriverInput!
+) {
+  createDriver(
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetDriverById($id: UUID!) {
+  driver(id: $id) {
+    id
+    name
+  }
+}
+
+query GetDrivers(
+  $query: QueryParams
+) {
+  drivers(query: $query) {
+    items {
+      id
+      name
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+mutation DeleteDriverById($id: UUID!) {
+  deleteDriver(id: $id) {
+    message
+  }
+}
+
+mutation UpdateDriver($id: UUID!, $params: UpdateDriverInput!) {
+  updateDriver(
+    id: $id
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}

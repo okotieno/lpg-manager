@@ -27,13 +27,18 @@ type PaginatedVehicle {
   meta: Pagination
 }
 
+type CreateVehicleSuccessResponse {
+  message: String!
+  data: VehicleModel
+}
+
 extend type Query {
   vehicles(query: QueryParams): PaginatedVehicle!
   vehicle(id: UUID!): VehicleModel
 }
 
 extend type Mutation {
-  createVehicle(params: CreateVehicleInput!): SuccessResponse!
-  updateVehicle(id: UUID!, params: UpdateVehicleInput!): SuccessResponse!
+  createVehicle(params: CreateVehicleInput!): CreateVehicleSuccessResponse!
+  updateVehicle(id: UUID!, params: UpdateVehicleInput!): CreateVehicleSuccessResponse!
   deleteVehicle(id: UUID!): DeleteSuccessResponse!
 }

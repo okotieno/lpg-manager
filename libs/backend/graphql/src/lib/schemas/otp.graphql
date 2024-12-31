@@ -31,5 +31,5 @@ extend type Mutation {
 
   createOtp(name: String!): CreateOtpSuccessResponse
 
-  deleteOtp(id: UUID!): DeleteSuccessResponse
+  deleteOtp(id: UUID!): DeleteSuccessResponse!
 }

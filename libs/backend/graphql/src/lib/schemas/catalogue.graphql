@@ -54,5 +54,5 @@ extend type Mutation {
 
   createCatalogue(params: CreateCatalogueInput): CreateCatalogueSuccessResponse
 
-  deleteCatalogue(id: UUID!): DeleteSuccessResponse
+  deleteCatalogue(id: UUID!): DeleteSuccessResponse!
 }

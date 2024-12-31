@@ -25,6 +25,10 @@ type PaginatedTransporter {
   items: [TransporterModel]
   meta: Pagination
 }
+type CreateTransporterSuccessResponse {
+  message: String!
+  data: TransporterModel!
+}
 
 extend type Query {
   transporters(query: QueryParams): PaginatedTransporter!
@@ -32,7 +36,7 @@ extend type Query {
 }
 
 extend type Mutation {
-  createTransporter(params: CreateTransporterInput!): SuccessResponse!
-  updateTransporter(id: UUID!, params: UpdateTransporterInput!): SuccessResponse!
+  createTransporter(params: CreateTransporterInput!): CreateTransporterSuccessResponse!
+  updateTransporter(id: UUID!, params: UpdateTransporterInput!): CreateTransporterSuccessResponse!
   deleteTransporter(id: UUID!): DeleteSuccessResponse!
 }

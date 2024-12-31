@@ -1,0 +1,50 @@
+mutation CreateVehicle(
+  $params: CreateVehicleInput!
+) {
+  createVehicle(
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetVehicleById($id: UUID!) {
+  vehicle(id: $id) {
+    id
+  }
+}
+
+query GetVehicles(
+  $query: QueryParams
+) {
+  vehicles(query: $query) {
+    items {
+      id
+
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+mutation DeleteVehicleById($id: UUID!) {
+  deleteVehicle(id: $id) {
+    message
+  }
+}
+
+mutation UpdateVehicle($id: UUID!, $params: UpdateVehicleInput!) {
+  updateVehicle(
+    id: $id
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}

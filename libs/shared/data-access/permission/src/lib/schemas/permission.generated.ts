@@ -29,7 +29,7 @@ export type IDeletePermissionByIdMutationVariables = Types.Exact<{
 }>;
 
 
-export type IDeletePermissionByIdMutation = { deletePermission?: { message: string } | null };
+export type IDeletePermissionByIdMutation = { deletePermission: { message: string } };
 
 export const CreatePermissionDocument = gql`
     mutation CreatePermission($name: String!) {
