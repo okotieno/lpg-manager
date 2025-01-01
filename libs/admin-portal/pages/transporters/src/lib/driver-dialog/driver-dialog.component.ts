@@ -32,71 +32,7 @@ import {
     IonFooter,
     IonRow,
   ],
-  template: `
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Add Driver</ion-title>
-        <ion-buttons slot="end">
-          <ion-button
-            color="danger"
-            fill="clear"
-            shape="round"
-            (click)="dismiss()"
-          >
-            <ion-icon slot="icon-only" name="circle-xmark"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content class="ion-padding">
-      <form [formGroup]="driverForm" (ngSubmit)="onSubmit()" id="driver-form">
-        <ion-item lines="none">
-          <ion-input
-            label="Driver Name"
-            labelPlacement="stacked"
-            formControlName="name"
-            placeholder="Enter driver name"
-            [errorText]="nameErrorText"
-            helperText="format: firstname lastname"
-          ></ion-input>
-        </ion-item>
-
-        <ion-item lines="none">
-          <ion-input
-            label="License Number"
-            labelPlacement="stacked"
-            formControlName="licenseNumber"
-            placeholder="Enter license number"
-            errorText="License number is required"
-          ></ion-input>
-        </ion-item>
-
-        <ion-item lines="none">
-          <ion-input
-            label="Contact Number"
-            labelPlacement="stacked"
-            formControlName="contactNumber"
-            placeholder="Enter contact number"
-            errorText="Contact number is required"
-          ></ion-input>
-        </ion-item>
-      </form>
-    </ion-content>
-    <ion-footer>
-      <ion-row class="ion-padding ion-justify-content-end">
-        <ion-button
-          form="driver-form"
-          type="submit"
-          expand="block"
-          class="ion-margin-top"
-          [disabled]="!driverForm.valid"
-        >
-          Add Driver
-        </ion-button>
-      </ion-row>
-    </ion-footer>
-  `,
+  templateUrl: 'driver-dialog.component.html',
 })
 export class DriverDialogComponent {
   #modalCtrl = inject(ModalController);

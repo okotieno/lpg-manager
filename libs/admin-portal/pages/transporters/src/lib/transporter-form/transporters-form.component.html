@@ -58,11 +58,11 @@
         </tr>
         </thead>
         <tbody>
-          @for (vehicle of vehicles.controls; track vehicle.value.id; let i = $index) {
+          @for (vehicle of vehicles(); track vehicle.id; let i = $index) {
             <tr>
-              <td>{{ vehicle.get('registrationNumber')?.value }}</td>
-              <td>{{ vehicle.get('type')?.value }}</td>
-              <td>{{ vehicle.get('capacity')?.value }}</td>
+              <td>{{ vehicle.registrationNumber }}</td>
+              <td>{{ vehicle.type }}</td>
+              <td>{{ vehicle.capacity }}</td>
               <td>
                 <ion-button fill="clear" color="danger" (click)="removeVehicle(i)">
                   <ion-icon slot="icon-only" name="trash-can"></ion-icon>
@@ -99,11 +99,11 @@
         </tr>
         </thead>
         <tbody>
-          @for (driver of drivers.controls; track driver.value.id; let i = $index) {
+          @for (driver of drivers(); track driver.id; let i = $index) {
             <tr>
-              <td>{{ driver.get('name')?.value }}</td>
-              <td>{{ driver.get('licenseNumber')?.value }}</td>
-              <td>{{ driver.get('contactNumber')?.value }}</td>
+              <td>{{ driver.name }}</td>
+              <td>{{ driver.licenseNumber }}</td>
+              <td>{{ driver.contactNumber }}</td>
               <td>
                 <ion-button fill="clear" color="danger" (click)="removeDriver(i)">
                   <ion-icon slot="icon-only" name="trash-can"></ion-icon>

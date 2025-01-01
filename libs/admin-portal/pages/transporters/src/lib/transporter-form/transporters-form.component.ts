@@ -4,24 +4,27 @@ import {
   effect,
   inject,
   input,
+  signal,
   untracked,
 } from '@angular/core';
 import {
-  IonAccordion,
-  IonAccordionGroup,
   IonButton,
-  IonCol, IonIcon,
+  IonCol,
+  IonIcon,
   IonInput,
-  IonItem, IonLabel,
-  IonRow, IonText,
-  ModalController
+  IonItem,
+  IonRow,
+  ModalController,
 } from '@ionic/angular/standalone';
-import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
-import {
-  ITransporterModel,
-} from '@lpg-manager/types';
+import { ITransporterModel } from '@lpg-manager/types';
 import {
   GetTransportersDocument,
   ICreateTransporterGQL,
@@ -47,10 +50,6 @@ import { DriverDialogComponent } from '../driver-dialog/driver-dialog.component'
     IonRow,
     IonCol,
     IonIcon,
-    IonAccordionGroup,
-    IonAccordion,
-    IonLabel,
-    IonText,
     RouterLink,
   ],
   templateUrl: './transporters-form.component.html',
@@ -75,6 +74,22 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
   transporter = input<ITransporterModel>();
   isEditing = computed(() => !!this.transporter());
   roleId = computed(() => this.transporter()?.id);
+  drivers = signal<
+    {
+      id: string;
+      name: string;
+      licenseNumber: string;
+      contactNumber: string;
+    }[]
+  >([]);
+  vehicles = signal<
+    {
+      id: string;
+      registrationNumber: string;
+      capacity: number | null;
+      type: string;
+    }[]
+  >([]);
   transporterChangeEffect = effect(() => {
     const transporter = this.transporter();
     const drivers =
@@ -91,11 +106,11 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
     });
   });
 
-  get drivers() {
+  get driverInput() {
     return this.transporterForm.get('drivers') as FormArray;
   }
 
-  get vehicles() {
+  get vehicleInput() {
     return this.transporterForm.get('vehicles') as FormArray;
   }
 
@@ -112,19 +127,27 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
 
     const { data, role } = await modal.onWillDismiss();
     if (role === 'confirm' && data) {
-      const driverForm = this.#fb.group({
+      const driverForm = this.#fb.nonNullable.group({
         id: [data.id],
         name: [data.name],
         licenseNumber: [data.licenseNumber],
         contactNumber: [data.contactNumber],
       });
 
-      this.drivers.push(driverForm);
+      this.driverInput.push(driverForm);
+      this.drivers.update((drivers) => [
+        ...drivers,
+        driverForm.value as Required<typeof driverForm.value>,
+      ]);
     }
   }
 
   removeDriver(index: number) {
-    this.drivers.removeAt(index);
+    this.driverInput.removeAt(index);
+    this.drivers.update((drivers) => {
+      drivers.splice(index, 1);
+      return [...drivers];
+    });
   }
 
   async addVehicle() {
@@ -143,12 +166,20 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
         type: [data.type],
       });
 
-      this.vehicles.push(vehicleForm);
+      this.vehicleInput.push(vehicleForm);
+      this.vehicles.update((vehicles) => [
+        ...vehicles,
+        vehicleForm.value as Required<typeof vehicleForm.value>,
+      ]);
     }
   }
 
   removeVehicle(index: number) {
-    this.vehicles.removeAt(index);
+    this.vehicleInput.removeAt(index);
+    this.vehicles.update((vehicles) => {
+      vehicles.splice(index, 1);
+      return [...vehicles];
+    });
   }
 
   async onSubmit() {
