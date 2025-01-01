@@ -348,14 +348,13 @@ export enum IDispatchStatus {
 }
 
 export type IDriverModel = {
-  contactNumber: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['UUID']['output'];
   licenseNumber: Scalars['String']['output'];
-  name: Scalars['String']['output'];
   transporter: ITransporterModel;
   transporterId: Scalars['UUID']['output'];
   updatedAt: Scalars['DateTime']['output'];
+  user: IUserModel;
 };
 
 export type IFileUploadModel = {

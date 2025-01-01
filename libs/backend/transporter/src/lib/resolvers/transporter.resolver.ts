@@ -1,12 +1,28 @@
-import { Args, Mutation, Query, Resolver, ResolveField, Root } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Query,
+  Resolver,
+  ResolveField,
+  Root,
+} from '@nestjs/graphql';
 import { Body, UseGuards } from '@nestjs/common';
-import { TransporterModel, IQueryParam, QueryOperatorEnum, SortByDirectionEnum } from '@lpg-manager/db';
+import {
+  TransporterModel,
+  IQueryParam,
+  QueryOperatorEnum,
+  SortByDirectionEnum,
+} from '@lpg-manager/db';
 import { TransporterService } from '@lpg-manager/transporter-service';
 import { JwtAuthGuard } from '@lpg-manager/auth';
 import { ValidationPipe } from '@nestjs/common';
 import { CreateTransporterInputDto } from '../dto/create-transporter-input.dto';
 import { UpdateTransporterInputDto } from '../dto/update-transporter-input.dto';
-import { PermissionGuard, PermissionsEnum, Permissions } from '@lpg-manager/permission-service';
+import {
+  PermissionGuard,
+  PermissionsEnum,
+  Permissions,
+} from '@lpg-manager/permission-service';
 import { DriverService } from '@lpg-manager/driver-service';
 import { VehicleService } from '@lpg-manager/vehicle-service';
 import { UserService } from '@lpg-manager/user-service';
@@ -23,9 +39,7 @@ export class TransporterResolver {
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.CreateTransporter)
-  async createTransporter(
-    @Body('params') params: CreateTransporterInputDto
-  ) {
+  async createTransporter(@Body('params') params: CreateTransporterInputDto) {
     const transporter = await this.transporterService.create({
       name: params.name,
       contactPerson: params.contactPerson,
@@ -35,7 +49,7 @@ export class TransporterResolver {
     // Create vehicles
     if (params.vehicles?.length) {
       await Promise.all(
-        params.vehicles.map(vehicle =>
+        params.vehicles.map((vehicle) =>
           this.vehicleService.create({
             ...vehicle,
             transporterId: transporter.id,
@@ -46,7 +60,7 @@ export class TransporterResolver {
     // Create drivers with user accounts
     if (params.drivers?.length) {
       await Promise.all(
-        params.drivers.map(async driver => {
+        params.drivers.map(async (driver) => {
           // Create user account
           const user = await this.userService.create({
             email: driver.email,
@@ -114,31 +128,16 @@ export class TransporterResolver {
 
   @ResolveField('drivers')
   async getDrivers(@Root() transporter: TransporterModel) {
-    return this.driverService.findAll({
-      sortByDirection: SortByDirectionEnum.DESC,
-      filters: [
-        {
-          field: 'transporterId',
-          operator: QueryOperatorEnum.Equals,
-          value: transporter.id,
-          values: [],
-        },
-      ],
+    return this.driverService.model.findAll({
+      where: { transporterId: transporter.id },
     });
   }
 
   @ResolveField('vehicles')
   async getVehicles(@Root() transporter: TransporterModel) {
-    return this.vehicleService.findAll({
-      sortByDirection: SortByDirectionEnum.DESC,
-      filters: [
-        {
-          field: 'transporterId',
-          operator: QueryOperatorEnum.Equals,
-          value: transporter.id,
-          values: [],
-        },
-      ],
+    console.log(transporter);
+    return this.vehicleService.model.findAll({
+      where: { transporterId: transporter.id },
     });
   }
 }

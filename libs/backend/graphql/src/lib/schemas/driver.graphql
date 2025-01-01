@@ -1,9 +1,8 @@
 type DriverModel {
   id: UUID!
   transporterId: UUID!
-  name: String!
+  user: UserModel!
   licenseNumber: String!
-  contactNumber: String!
   transporter: TransporterModel!
   createdAt: DateTime!
   updatedAt: DateTime!

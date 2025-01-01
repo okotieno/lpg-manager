@@ -15,7 +15,7 @@ export type IGetTransporterByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetTransporterByIdQuery = { transporter?: { id: string, name: string, contactPerson: string, contactNumber: string, createdAt: string, updatedAt: string, drivers?: Array<{ id: string, name: string, licenseNumber: string, contactNumber: string } | null> | null, vehicles?: Array<{ id: string, registrationNumber: string, capacity: number, type: string } | null> | null } | null };
+export type IGetTransporterByIdQuery = { transporter?: { id: string, name: string, contactPerson: string, contactNumber: string, createdAt: string, updatedAt: string, drivers?: Array<{ id: string, licenseNumber: string, user: { firstName: string, lastName: string, phone?: string | null, email: string } } | null> | null, vehicles?: Array<{ id: string, registrationNumber: string, capacity: number, type: string } | null> | null } | null };
 
 export type IGetTransportersQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
@@ -74,9 +74,13 @@ export const GetTransporterByIdDocument = gql`
     contactNumber
     drivers {
       id
-      name
+      user {
+        firstName
+        lastName
+        phone
+        email
+      }
       licenseNumber
-      contactNumber
     }
     vehicles {
       id

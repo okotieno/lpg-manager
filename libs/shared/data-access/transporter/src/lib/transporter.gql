@@ -20,9 +20,13 @@ query GetTransporterById($id: UUID!) {
     contactNumber
     drivers {
       id
-      name
+      user {
+        firstName
+        lastName
+        phone
+        email
+      }
       licenseNumber
-      contactNumber
     }
     vehicles {
       id

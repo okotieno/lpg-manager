@@ -14,7 +14,10 @@ mutation CreateDispatch($params: CreateDispatchInput!) {
       }
       driver {
         id
-        name
+        user {
+          firstName
+          lastName
+        }
       }
       vehicle {
         id
@@ -45,7 +48,10 @@ query GetDispatchById($id: UUID!) {
     }
     driver {
       id
-      name
+      user {
+        firstName
+        lastName
+      }
     }
     vehicle {
       id
@@ -76,7 +82,10 @@ query GetDispatches($query: QueryParams) {
       }
       driver {
         id
-        name
+        user {
+          firstName
+          lastName
+        }
       }
       vehicle {
         id
@@ -118,7 +127,10 @@ mutation UpdateDispatch($id: UUID!, $params: UpdateDispatchInput!) {
       }
       driver {
         id
-        name
+        user {
+          firstName
+          lastName
+        }
       }
       vehicle {
         id

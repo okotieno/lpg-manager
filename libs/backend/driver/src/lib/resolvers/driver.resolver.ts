@@ -1,19 +1,32 @@
-import { Args, Mutation, Query, Resolver, ResolveField, Root } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Query,
+  Resolver,
+  ResolveField,
+  Root,
+} from '@nestjs/graphql';
 import { Body, UseGuards } from '@nestjs/common';
-import { DriverModel, IQueryParam } from '@lpg-manager/db';
+import { DriverModel, IQueryParam, UserModel } from '@lpg-manager/db';
 import { DriverService } from '@lpg-manager/driver-service';
 import { TransporterService } from '@lpg-manager/transporter-service';
 import { JwtAuthGuard } from '@lpg-manager/auth';
 import { ValidationPipe } from '@nestjs/common';
 import { CreateDriverInputDto } from '../dto/create-driver-input.dto';
 import { UpdateDriverInputDto } from '../dto/update-driver-input.dto';
-import { PermissionGuard, PermissionsEnum, Permissions } from '@lpg-manager/permission-service';
+import {
+  PermissionGuard,
+  PermissionsEnum,
+  Permissions,
+} from '@lpg-manager/permission-service';
+import { UserService } from '@lpg-manager/user-service';
 
 @Resolver(() => DriverModel)
 export class DriverResolver {
   constructor(
     private driverService: DriverService,
-    private transporterService: TransporterService
+    private transporterService: TransporterService,
+    private userService: UserService
   ) {}
 
   @Mutation()
@@ -72,5 +85,10 @@ export class DriverResolver {
   @ResolveField('transporter')
   async getTransporter(@Root() driver: DriverModel) {
     return this.transporterService.findById(driver.transporterId);
+  }
+
+  @ResolveField('user')
+  async getDriverName(@Root() driver: DriverModel) {
+    return this.userService.findById(driver.userId);
   }
 }

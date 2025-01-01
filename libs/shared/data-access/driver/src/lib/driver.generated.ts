@@ -8,21 +8,21 @@ export type ICreateDriverMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateDriverMutation = { createDriver: { message: string, data: { id: string, name: string, licenseNumber: string, contactNumber: string, transporterId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string } } } };
+export type ICreateDriverMutation = { createDriver: { message: string, data: { id: string, licenseNumber: string, contactNumber: string, createdAt: string, updatedAt: string, user: { id: string, firstName: string, lastName: string }, transporter: { id: string, name: string } } } };
 
 export type IGetDriverByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetDriverByIdQuery = { driver?: { id: string, name: string, licenseNumber: string, contactNumber: string, transporterId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string } } | null };
+export type IGetDriverByIdQuery = { driver?: { id: string, licenseNumber: string, contactNumber: string, createdAt: string, updatedAt: string, user: { firstName: string, lastName: string }, transporter: { id: string, name: string } } | null };
 
 export type IGetDriversQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetDriversQuery = { drivers: { items?: Array<{ id: string, name: string, licenseNumber: string, contactNumber: string, transporterId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string } } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetDriversQuery = { drivers: { items?: Array<{ id: string, licenseNumber: string, contactNumber: string, createdAt: string, updatedAt: string, user: { firstName: string, lastName: string }, transporter: { id: string, name: string } } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteDriverByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -37,7 +37,7 @@ export type IUpdateDriverMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateDriverMutation = { updateDriver: { message: string, data: { id: string, name: string, licenseNumber: string, contactNumber: string, transporterId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string } } } };
+export type IUpdateDriverMutation = { updateDriver: { message: string, data: { id: string, licenseNumber: string, contactNumber: string, transporterId: string, createdAt: string, updatedAt: string, user: { firstName: string, lastName: string }, transporter: { id: string, name: string } } } };
 
 export const CreateDriverDocument = gql`
     mutation CreateDriver($params: CreateDriverInput!) {
@@ -45,10 +45,13 @@ export const CreateDriverDocument = gql`
     message
     data {
       id
-      name
+      user {
+        id
+        firstName
+        lastName
+      }
       licenseNumber
       contactNumber
-      transporterId
       transporter {
         id
         name
@@ -74,10 +77,12 @@ export const GetDriverByIdDocument = gql`
     query GetDriverById($id: UUID!) {
   driver(id: $id) {
     id
-    name
+    user {
+      firstName
+      lastName
+    }
     licenseNumber
     contactNumber
-    transporterId
     transporter {
       id
       name
@@ -103,10 +108,12 @@ export const GetDriversDocument = gql`
   drivers(query: $query) {
     items {
       id
-      name
+      user {
+        firstName
+        lastName
+      }
       licenseNumber
       contactNumber
-      transporterId
       transporter {
         id
         name
@@ -155,7 +162,10 @@ export const UpdateDriverDocument = gql`
     message
     data {
       id
-      name
+      user {
+        firstName
+        lastName
+      }
       licenseNumber
       contactNumber
       transporterId

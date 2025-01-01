@@ -3,10 +3,13 @@ mutation CreateDriver($params: CreateDriverInput!) {
     message
     data {
       id
-      name
+      user {
+        id
+        firstName
+        lastName
+      }
       licenseNumber
       contactNumber
-      transporterId
       transporter {
         id
         name
@@ -20,10 +23,12 @@ mutation CreateDriver($params: CreateDriverInput!) {
 query GetDriverById($id: UUID!) {
   driver(id: $id) {
     id
-    name
+    user {
+      firstName
+      lastName
+    }
     licenseNumber
     contactNumber
-    transporterId
     transporter {
       id
       name
@@ -37,10 +42,12 @@ query GetDrivers($query: QueryParams) {
   drivers(query: $query) {
     items {
       id
-      name
+      user {
+        firstName
+        lastName
+      }
       licenseNumber
       contactNumber
-      transporterId
       transporter {
         id
         name
@@ -65,7 +72,10 @@ mutation UpdateDriver($id: UUID!, $params: UpdateDriverInput!) {
     message
     data {
       id
-      name
+      user {
+        firstName
+        lastName
+      }
       licenseNumber
       contactNumber
       transporterId
