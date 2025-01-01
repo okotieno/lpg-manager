@@ -160,7 +160,10 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
   async addDriver(existingDriver?: any) {
     const modal = await this.#modalCtrl.create({
       component: DriverDialogComponent,
-      componentProps: { driver: existingDriver }
+      componentProps: {
+        driver: existingDriver,
+        vehicles: this.vehicles(),
+      }
     });
 
     await modal.present();

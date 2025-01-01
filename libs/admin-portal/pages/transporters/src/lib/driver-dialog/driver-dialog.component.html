@@ -56,6 +56,22 @@
         errorText="Please enter a valid email address"
       ></ion-input>
     </ion-item>
+    <ion-item>
+      <ion-select
+        [multiple]="true"
+        interface="popover"
+        placeholder="--Select Vehicles--"
+        style="width: fit-content"
+        formControlName="vehicles"
+        label="Assigned vehicle"
+        labelPlacement="stacked"
+        class="custom">
+
+        @for (vehicle of vehicles(); track vehicle.id) {
+          <ion-select-option [value]="vehicle.id">{{ vehicle.registrationNumber }}</ion-select-option>
+        }
+      </ion-select>
+    </ion-item>
   </form>
 </ion-content>
 <ion-footer>

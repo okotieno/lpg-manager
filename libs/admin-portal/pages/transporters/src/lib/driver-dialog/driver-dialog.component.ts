@@ -9,11 +9,12 @@ import {
   IonIcon,
   IonInput,
   IonItem,
-  IonRow,
+  IonRow, IonSelect, IonSelectOption,
   IonTitle,
   IonToolbar,
-  ModalController,
+  ModalController
 } from '@ionic/angular/standalone';
+import { JsonPipe } from '@angular/common';
 
 interface IDriverData {
   id: string;
@@ -21,6 +22,12 @@ interface IDriverData {
   licenseNumber: string;
   contactNumber: string;
   email: string;
+}
+interface IVehicleData {
+  id: string;
+  registrationNumber: string;
+  capacity: number;
+  type: string;
 }
 
 @Component({
@@ -39,6 +46,8 @@ interface IDriverData {
     IonInput,
     IonFooter,
     IonRow,
+    IonSelect,
+    IonSelectOption,
   ],
   templateUrl: 'driver-dialog.component.html',
 })
@@ -47,10 +56,11 @@ export class DriverDialogComponent {
   #fb = inject(FormBuilder);
 
   driver = input<IDriverData>();
-  isEditing = computed(() => !!this.driver()?.id)
+  vehicles = input<IVehicleData[]>([]);
+  isEditing = computed(() => !!this.driver()?.id);
 
   driverForm = this.#fb.group({
-    id: [crypto.randomUUID() as string,],
+    id: [crypto.randomUUID() as string],
     name: [
       '',
       [
@@ -61,6 +71,7 @@ export class DriverDialogComponent {
     licenseNumber: ['', Validators.required],
     contactNumber: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
+    vehicles: [[] as string[], Validators.required],
   });
   driverChangedEffect = effect(() => {
     const driver = this.driver();
@@ -76,7 +87,6 @@ export class DriverDialogComponent {
       }
     });
   });
-
 
   get nameErrorText() {
     if (this.driverForm.get('name')?.hasError('pattern'))
