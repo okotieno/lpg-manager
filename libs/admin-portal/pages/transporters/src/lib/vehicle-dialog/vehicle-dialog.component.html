@@ -1,0 +1,60 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Add Vehicle</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" fill="clear" shape="round" (click)="dismiss()">
+        <ion-icon slot="icon-only" name="circle-xmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()" id="vehicle-form">
+    <ion-item lines="none">
+      <ion-input
+        label="Registration Number"
+        labelPlacement="stacked"
+        formControlName="registrationNumber"
+        placeholder="Enter registration number"
+        errorText="Registration number is required"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-input
+        type="number"
+        label="Capacity"
+        labelPlacement="stacked"
+        formControlName="capacity"
+        placeholder="Enter capacity"
+        errorText="Capacity is required"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-input
+        label="Vehicle Type"
+        labelPlacement="stacked"
+        formControlName="type"
+        placeholder="Enter vehicle type"
+        errorText="Vehicle type is required"
+      ></ion-input>
+    </ion-item>
+  </form>
+</ion-content>
+
+
+<ion-footer>
+  <ion-row class="ion-padding ion-justify-content-end">
+    <ion-button
+      form="vehicle-form"
+      type="submit"
+      expand="block"
+      class="ion-margin-top"
+      [disabled]="!vehicleForm.valid"
+    >
+      Add Driver
+    </ion-button>
+  </ion-row>
+</ion-footer>
