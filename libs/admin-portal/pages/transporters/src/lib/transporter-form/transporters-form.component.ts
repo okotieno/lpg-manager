@@ -7,13 +7,15 @@ import {
   untracked,
 } from '@angular/core';
 import {
+  IonAccordion,
+  IonAccordionGroup,
   IonButton,
-  IonCol,
+  IonCol, IonIcon,
   IonInput,
-  IonItem,
-  IonRow,
+  IonItem, IonLabel,
+  IonRow
 } from '@ionic/angular/standalone';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import {
@@ -43,6 +45,10 @@ import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
     RouterLink,
     IonRow,
     IonCol,
+    IonIcon,
+    IonAccordionGroup,
+    IonAccordion,
+    IonLabel,
   ],
   templateUrl: './transporters-form.component.html',
   providers: [],
@@ -54,9 +60,10 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
 
   transporterForm = this.#fb.group({
     name: ['', [Validators.required]],
-    drivers: [[] as ISelectCategory[]],
     contactPerson: ['', [Validators.required]],
-    contactNumber: ['', [Validators.required]]
+    contactNumber: ['', [Validators.required]],
+    drivers: this.#fb.array([]),
+    vehicles: this.#fb.array([]),
   });
   #router = inject(Router);
   #route = inject(ActivatedRoute);
@@ -79,14 +86,51 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
     });
   });
 
+  get drivers() {
+    return this.transporterForm.get('drivers') as FormArray;
+  }
+
+  get vehicles() {
+    return this.transporterForm.get('vehicles') as FormArray;
+  }
+
   get hasUnsavedChanges() {
     return this.transporterForm.dirty;
+  }
+
+  addDriver() {
+    const driverForm = this.#fb.group({
+      name: ['', Validators.required],
+      licenseNumber: ['', Validators.required],
+      contactNumber: ['', Validators.required],
+    });
+
+    this.drivers.push(driverForm);
+  }
+
+  removeDriver(index: number) {
+    this.drivers.removeAt(index);
+  }
+
+  addVehicle() {
+    const vehicleForm = this.#fb.group({
+      registrationNumber: ['', Validators.required],
+      capacity: [0, [Validators.required, Validators.min(0)]],
+      type: ['', Validators.required],
+    });
+
+    this.vehicles.push(vehicleForm);
+  }
+
+  removeVehicle(index: number) {
+    this.vehicles.removeAt(index);
   }
 
   async onSubmit() {
     this.transporterForm.updateValueAndValidity();
     if (this.transporterForm.valid) {
-      const { name, drivers, contactNumber, contactPerson } = this.transporterForm.value;
+      const { name, drivers, contactNumber, contactPerson } =
+        this.transporterForm.value;
       const params = {
         name: name as string,
         contactNumber: contactNumber as string,

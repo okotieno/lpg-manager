@@ -39,14 +39,106 @@
         </ion-input>
       </ion-item>
     </ion-col>
+    <!-- Vehicles Section -->
+    <ion-col size="12">
+      <ion-accordion-group>
+        <ion-accordion>
+          <ion-item slot="header">
+            <ion-label>Vehicles</ion-label>
+          </ion-item>
+
+          <div slot="content" class="ion-padding">
+            <div formArrayName="vehicles">
+              @for (vehicle of vehicles.controls; track vehicle.value.id) {
+                <div [formGroupName]="$index">
+                  <ion-row>
+                    <ion-col size="12" sizeMd="3">
+                      <ion-item lines="none">
+                        <ion-input formControlName="registrationNumber" label="Registration Number" labelPlacement="stacked"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="12" sizeMd="3">
+                      <ion-item lines="none">
+                        <ion-input type="number" formControlName="capacity" label="Capacity" labelPlacement="stacked"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="12" sizeMd="3">
+                      <ion-item lines="none">
+                        <ion-input formControlName="type" label="Vehicle Type" labelPlacement="stacked"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="12" sizeMd="1" class="ion-align-self-end">
+                      <ion-button fill="clear" (click)="removeVehicle($index)">
+                        <ion-icon slot="icon-only" name="trash-can"></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              }
+
+            </div>
+            <ion-button (click)="addVehicle()">
+              <ion-icon slot="start" name="plus"></ion-icon>
+              Add Vehicle
+            </ion-button>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </ion-col>
+
+    <!-- Drivers Section -->
+    <ion-col size="12">
+      <ion-accordion-group>
+        <ion-accordion>
+          <ion-item slot="header">
+            <ion-label>Drivers</ion-label>
+          </ion-item>
+
+          <div slot="content" class="ion-padding">
+            <div formArrayName="drivers">
+              @for (driver of drivers.controls; track driver.value.id) {
+                <div [formGroupName]="$index">
+                  <ion-row>
+                    <ion-col size="12" sizeMd="4">
+                      <ion-item lines="none">
+                        <ion-input formControlName="name" label="Driver Name" labelPlacement="stacked"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="12" sizeMd="4">
+                      <ion-item lines="none">
+                        <ion-input formControlName="licenseNumber" label="License Number" labelPlacement="stacked"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="12" sizeMd="3">
+                      <ion-item lines="none">
+                        <ion-input formControlName="contactNumber" label="Contact Number" labelPlacement="stacked"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="12" sizeMd="1" class="ion-align-self-end">
+                      <ion-button fill="clear" (click)="removeDriver($index)">
+                        <ion-icon slot="icon-only" name="trash-can"></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              }
+            </div>
+            <ion-button (click)="addDriver()">
+              <ion-icon slot="start" name="plus"></ion-icon>
+              Add Driver
+            </ion-button>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </ion-col>
+
   </ion-row>
 
-  <div class="ion-margin-top ion-text-end">
-    <ion-button fill="clear" type="button" [routerLink]="['../']">
-      Cancel
-    </ion-button>
-    <ion-button type="submit" [disabled]="!transporterForm.valid">
-      {{ isEditing() ? 'Update' : 'Create' }}
-    </ion-button>
-  </div>
+  <ion-row class="ion-padding">
+    <ion-col>
+      <ion-button type="submit" [disabled]="!transporterForm.valid">
+        Save Transporter
+      </ion-button>
+    </ion-col>
+  </ion-row>
 </form>
