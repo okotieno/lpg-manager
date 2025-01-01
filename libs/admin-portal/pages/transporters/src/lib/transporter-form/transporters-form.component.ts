@@ -83,6 +83,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
       licenseNumber: string;
       contactNumber: string;
       email: string;
+      vehicles: string[]
     }[]
   >([]);
   vehicles = signal<
@@ -113,6 +114,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
                 licenseNumber: [driver.licenseNumber],
                 contactNumber: [driver.user.phone || ''],
                 email: [driver.user.email],
+                vehicles: [driver.vehicles?.map((v) => v?.id as string ) ?? []]
               });
               this.driverInput.push(driverForm);
               this.drivers.update(drivers => [
@@ -188,6 +190,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
           licenseNumber: [data.licenseNumber],
           contactNumber: [data.contactNumber],
           email: [data.email],
+          vehicles: [data.vehicles],
         });
 
         this.driverInput.push(driverForm);
@@ -304,6 +307,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
           email: driver?.email as string,
           licenseNumber: driver?.licenseNumber as string,
           name: driver?.name as string,
+          vehicles: driver?.vehicles as string[],
         })) ?? [],
         vehicles: vehicles?.map((vehicle) => ({
           id: vehicle?.id as string,

@@ -2,24 +2,32 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigService } from '@nestjs/config';
 import {
-  ActivityLogModel, ActivityLogUserModel, BrandModel,
-  FileUploadModel, NotificationModel,
+  ActivityLogModel,
+  ActivityLogUserModel,
+  BrandModel,
+  FileUploadModel,
+  NotificationModel,
   OtpModel,
   PasswordResetModel,
   PermissionModel,
   RoleModel,
-  RoleUserModel, SettingModel,
+  RoleUserModel,
+  SettingModel,
   UserModel,
-  BrandFileUploadModel, StationModel,
+  BrandFileUploadModel,
+  StationModel,
   NotificationUserModel,
   InventoryModel,
-  CatalogueModel, CartModel, CartCatalogueModel,
+  CatalogueModel,
+  CartModel,
+  CartCatalogueModel,
   OrderModel,
   OrderItemModel,
   VehicleModel,
   DriverModel,
   DispatchModel,
-  TransporterModel
+  TransporterModel,
+  DriverVehicleModel,
 } from './models';
 import { SequelizeOptions } from 'sequelize-typescript';
 
@@ -28,7 +36,9 @@ import { SequelizeOptions } from 'sequelize-typescript';
     SequelizeModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        dialect: configService.get<SequelizeOptions['dialect']>('LPG_DATABASE_DIALECT'),
+        dialect: configService.get<SequelizeOptions['dialect']>(
+          'LPG_DATABASE_DIALECT'
+        ),
         host: configService.get('LPG_DATABASE_HOST'),
         port: configService.get('LPG_DATABASE_PORT', { infer: true }),
         username: configService.get('LPG_DATABASE_USERNAME'),
@@ -60,7 +70,8 @@ import { SequelizeOptions } from 'sequelize-typescript';
           VehicleModel,
           DriverModel,
           DispatchModel,
-          TransporterModel
+          TransporterModel,
+          DriverVehicleModel,
         ],
       }),
     }),

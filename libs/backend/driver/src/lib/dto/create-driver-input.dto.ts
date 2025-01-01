@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsUUID, IsEmail } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, IsEmail, IsArray, IsOptional } from 'class-validator';
 import { TransporterModel } from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
 
@@ -27,4 +27,9 @@ export class CreateDriverInputDto {
   @IsNotEmpty()
   @IsEmail()
   email!: string;
+
+  @IsArray()
+  @IsOptional()
+  @IsUUID(undefined, { each: true })
+  vehicles?: string[];
 } 

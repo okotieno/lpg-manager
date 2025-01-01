@@ -355,6 +355,7 @@ export type IDriverModel = {
   transporterId: Scalars['UUID']['output'];
   updatedAt: Scalars['DateTime']['output'];
   user: IUserModel;
+  vehicles?: Maybe<Array<IVehicleModel>>;
 };
 
 export type IFileUploadModel = {
@@ -1414,6 +1415,7 @@ export type ITransporterDriverInput = {
   id: Scalars['UUID']['input'];
   licenseNumber: Scalars['String']['input'];
   name: Scalars['String']['input'];
+  vehicles?: InputMaybe<Array<InputMaybe<Scalars['UUID']['input']>>>;
 };
 
 export type ITransporterModel = {

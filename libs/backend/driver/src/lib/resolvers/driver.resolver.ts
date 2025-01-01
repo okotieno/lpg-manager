@@ -6,12 +6,11 @@ import {
   ResolveField,
   Root,
 } from '@nestjs/graphql';
-import { Body, UseGuards } from '@nestjs/common';
-import { DriverModel, IQueryParam, UserModel } from '@lpg-manager/db';
+import { UseGuards } from '@nestjs/common';
+import { DriverModel, IQueryParam, VehicleModel } from '@lpg-manager/db';
 import { DriverService } from '@lpg-manager/driver-service';
 import { TransporterService } from '@lpg-manager/transporter-service';
 import { JwtAuthGuard } from '@lpg-manager/auth';
-import { ValidationPipe } from '@nestjs/common';
 import { CreateDriverInputDto } from '../dto/create-driver-input.dto';
 import { UpdateDriverInputDto } from '../dto/update-driver-input.dto';
 import {
@@ -32,13 +31,14 @@ export class DriverResolver {
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.CreateDriver)
-  async createDriver(
-    @Body('params', new ValidationPipe()) params: CreateDriverInputDto
-  ) {
+  async createDriver(@Args('params') params: CreateDriverInputDto) {
     const driver = await this.driverService.create(params);
+    if (params.vehicles?.length) {
+      await driver.$set('vehicles', params.vehicles);
+    }
 
     return {
-      message: 'Driver created successfully',
+      message: 'Successfully created driver',
       data: driver,
     };
   }
@@ -62,12 +62,16 @@ export class DriverResolver {
   @Permissions(PermissionsEnum.UpdateDriver)
   async updateDriver(
     @Args('id') id: string,
-    @Body('params', new ValidationPipe()) params: UpdateDriverInputDto
+    @Args('params') params: UpdateDriverInputDto
   ) {
-    await this.driverService.update({ id, params });
+    const driver = await this.driverService.update({ id, params });
+    if (params.vehicles) {
+      await driver.$set('vehicles', params.vehicles);
+    }
 
     return {
       message: 'Successfully updated driver',
+      data: driver,
     };
   }
 
@@ -90,5 +94,13 @@ export class DriverResolver {
   @ResolveField('user')
   async getDriverName(@Root() driver: DriverModel) {
     return this.userService.findById(driver.userId);
+  }
+
+  @ResolveField('vehicles')
+  async getVehicles(@Root() driver: DriverModel) {
+    const driverWithVehicles = await this.driverService.findById(driver.id, {
+      include: [VehicleModel]
+    });
+    return driverWithVehicles?.vehicles || [];
   }
 }

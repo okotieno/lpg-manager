@@ -21,6 +21,9 @@ class DriverInput {
   @IsString()
   @IsNotEmpty()
   email!: string;
+
+  @IsArray()
+  vehicles: string[] = [];
 }
 
 class VehicleInput {

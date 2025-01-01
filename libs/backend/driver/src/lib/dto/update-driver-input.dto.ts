@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsString, ValidateNested, IsArray, IsOptional, IsUUID } from 'class-validator';
 import { DriverModel } from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
 import { CreateDriverInputDto } from './create-driver-input.dto';
@@ -14,4 +14,9 @@ export class UpdateDriverInputDto {
 
   @ValidateNested()
   params!: CreateDriverInputDto;
+
+  @IsArray()
+  @IsOptional()
+  @IsUUID(undefined, { each: true })
+  vehicles?: string[];
 } 

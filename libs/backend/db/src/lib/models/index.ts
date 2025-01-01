@@ -23,3 +23,4 @@ export * from './dispatch.model';
 export * from './transporter.model';
 export * from './driver.model';
 export * from './vehicle.model';
+export * from './driver-vehicle.model';

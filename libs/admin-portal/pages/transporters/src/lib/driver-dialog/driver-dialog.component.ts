@@ -14,9 +14,9 @@ import {
   IonToolbar,
   ModalController
 } from '@ionic/angular/standalone';
-import { JsonPipe } from '@angular/common';
 
 interface IDriverData {
+  vehicles: string[];
   id: string;
   name: string;
   licenseNumber: string;
@@ -83,6 +83,7 @@ export class DriverDialogComponent {
           licenseNumber: driver.licenseNumber,
           contactNumber: driver.contactNumber,
           email: driver.email,
+          vehicles: driver.vehicles,
         });
       }
     });

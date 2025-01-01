@@ -5,8 +5,11 @@ import {
   ForeignKey,
   Model,
   Table,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { TransporterModel } from './transporter.model';
+import { DriverModel } from './driver.model';
+import { DriverVehicleModel } from './driver-vehicle.model';
 
 @Table({
   tableName: 'vehicles',
@@ -50,4 +53,7 @@ export class VehicleModel extends Model {
 
   @BelongsTo(() => TransporterModel)
   transporter!: TransporterModel;
+
+  @BelongsToMany(() => DriverModel, () => DriverVehicleModel)
+  drivers!: DriverModel[];
 } 

@@ -15,6 +15,7 @@ input TransporterDriverInput {
   licenseNumber: String!
   contactNumber: String!
   email: EmailAddress!
+  vehicles: [UUID]
 }
 input TransporterVehicleInput {
   id:  UUID!

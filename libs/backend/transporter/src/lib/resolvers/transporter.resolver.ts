@@ -67,11 +67,14 @@ export class TransporterResolver {
           });
 
           // Create driver record
-          await this.driverService.create({
+          const driverCreated = await this.driverService.model.create({
             userId: user.id,
             transporterId: transporter.id,
             licenseNumber: driver.licenseNumber,
           });
+
+          await driverCreated.$set('vehicles', driver.vehicles);
+
         })
       );
     }
@@ -200,11 +203,13 @@ export class TransporterResolver {
             password: Math.random().toString(36).slice(-8), // Generate random password
           });
 
-          await this.driverService.create({
+          const driverCreated = await this.driverService.create({
             userId: user.id,
             transporterId: id,
             licenseNumber: driver.licenseNumber,
           });
+
+          await driverCreated.$set('vehicles', driver.vehicles);
         })
       );
 

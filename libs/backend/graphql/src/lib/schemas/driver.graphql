@@ -4,6 +4,7 @@ type DriverModel {
   user: UserModel!
   licenseNumber: String!
   transporter: TransporterModel!
+  vehicles: [VehicleModel!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }

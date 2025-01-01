@@ -1,3 +1,27 @@
+fragment transporterVehicles on TransporterModel {
+  vehicles {
+    id
+    registrationNumber
+    capacity
+    type
+  }
+}
+fragment transporterDrivers on TransporterModel {
+  drivers {
+    id
+    vehicles {
+      id
+      registrationNumber
+    }
+    user {
+      firstName
+      lastName
+      phone
+      email
+    }
+    licenseNumber
+  }
+}
 mutation CreateTransporter($params: CreateTransporterInput!) {
   createTransporter(params: $params) {
     message
@@ -18,24 +42,10 @@ query GetTransporterById($id: UUID!) {
     name
     contactPerson
     contactNumber
-    drivers {
-      id
-      user {
-        firstName
-        lastName
-        phone
-        email
-      }
-      licenseNumber
-    }
-    vehicles {
-      id
-      registrationNumber
-      capacity
-      type
-    }
     createdAt
     updatedAt
+    ...transporterDrivers
+    ...transporterVehicles
   }
 }
 
