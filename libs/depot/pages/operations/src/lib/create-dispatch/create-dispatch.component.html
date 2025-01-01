@@ -20,7 +20,12 @@
             label="Select Driver"
             labelPlacement="floating"
             placeholder="--Select driver--"
-          ></lpg-searchable-select>
+            [valueLabelFormatter]="driverValueLabelFormatter"
+          >
+            <ng-template let-driver>
+              {{ driver.user.firstName }} {{ driver.user.lastName }}
+            </ng-template>
+          </lpg-searchable-select>
         </ion-item>
       </ion-col>
 
@@ -32,7 +37,11 @@
             label="Select Vehicle"
             labelPlacement="floating"
             placeholder="--Select vehicle--"
-          ></lpg-searchable-select>
+          >
+            <ng-template let-vehicle>
+              {{ vehicle.registrationNumber }} {{ vehicle.registrationNumber }}
+            </ng-template>
+          </lpg-searchable-select>
         </ion-item>
       </ion-col>
 

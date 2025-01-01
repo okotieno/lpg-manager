@@ -1,18 +1,15 @@
 import { Component, computed, effect, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonBackButton,
-  IonTitle,
   IonContent,
   IonItem,
   IonLabel,
   IonButton,
   IonList,
   IonCheckbox,
-  IonItemDivider, IonRow, IonCol
+  IonItemDivider,
+  IonRow,
+  IonCol,
 } from '@ionic/angular/standalone';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { OrderStore } from '@lpg-manager/order-store';
@@ -25,10 +22,18 @@ import { DriverStore, IGetDriversQuery } from '@lpg-manager/driver-store';
 import { IGetVehiclesQuery, VehicleStore } from '@lpg-manager/vehicle-store';
 import { DispatchStore } from '@lpg-manager/dispatch-store';
 import { PaginatedResource } from '@lpg-manager/data-table';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, JsonPipe } from '@angular/common';
 import { IQueryOperatorEnum, ISelectCategory } from '@lpg-manager/types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
+
+type IDriverItem = NonNullable<
+  NonNullable<IGetDriversQuery['drivers']['items']>[number]
+>;
+
+type IVehicleItem = NonNullable<
+  NonNullable<IGetVehiclesQuery['vehicles']['items']>[number]
+>;
 
 @Component({
   selector: 'lpg-create-dispatch',
@@ -37,11 +42,6 @@ import { tap } from 'rxjs';
   imports: [
     ReactiveFormsModule,
     SearchableSelectComponent,
-    IonHeader,
-    IonToolbar,
-    IonButtons,
-    IonBackButton,
-    IonTitle,
     IonContent,
     IonItem,
     IonLabel,
@@ -72,12 +72,8 @@ export default class CreateDispatchComponent {
       NonNullable<IGetTransportersQuery['transporters']['items']>[number]
     >
   > = inject(TransporterStore);
-  driverStore: PaginatedResource<
-    NonNullable<NonNullable<IGetDriversQuery['drivers']['items']>[number]>
-  > = inject(DriverStore);
-  vehicleStore: PaginatedResource<
-    NonNullable<NonNullable<IGetVehiclesQuery['vehicles']['items']>[number]>
-  > = inject(VehicleStore);
+  driverStore: PaginatedResource<IDriverItem> = inject(DriverStore);
+  vehicleStore: PaginatedResource<IVehicleItem> = inject(VehicleStore);
 
   selectedOrders: string[] = [];
 
@@ -151,6 +147,9 @@ export default class CreateDispatchComponent {
       this.selectedOrders = this.selectedOrders.filter((id) => id !== order.id);
     }
   }
+
+  driverValueLabelFormatter = (item: IDriverItem) =>
+    `${item.user.firstName} ${item.user.lastName}`;
 
   async createDispatch() {
     if (this.dispatchForm.valid && this.selectedOrders.length > 0) {

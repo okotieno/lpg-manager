@@ -1,12 +1,14 @@
 import {
   Component,
   computed,
+  contentChild,
   effect,
   inject,
   input,
   Optional,
   Self,
   signal,
+  TemplateRef,
   untracked,
   viewChild,
 } from '@angular/core';
@@ -38,6 +40,7 @@ import {
 import { CdkListbox, CdkOption } from '@angular/cdk/listbox';
 import { IQueryParamsFilter, ISortByEnum } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'lpg-searchable-select',
@@ -62,6 +65,7 @@ import { PaginatedResource } from '@lpg-manager/data-table';
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonTextarea,
+    NgTemplateOutlet,
   ],
   styleUrl: './searchable-select.component.scss',
 })
@@ -69,6 +73,7 @@ export class SearchableSelectComponent<T extends { id: string }>
   implements ControlValueAccessor
 {
   #alertCtrl = inject(AlertController);
+  labelTemplate = contentChild(TemplateRef);
   isDisabled = signal(false);
   multiple = input(false);
   label = input('');
@@ -78,7 +83,12 @@ export class SearchableSelectComponent<T extends { id: string }>
   helperText = input('\u00A0');
   placeholder = input('--Please Select--');
   idKey = input<keyof T>('id');
-  labelKey = input<keyof T>('name' as keyof T);
+  valueLabelFormatter = input<(t: T) => string>(
+    (t: T) => t['name' as keyof T] as string
+  );
+  selectLabelFormatter = input<(t: T) => string>(
+    (t: T) => t['name' as keyof T] as string
+  );
   defaultParams = input<IQueryParamsFilter[]>([]);
   sort = input(
     { key: 'name' as keyof T, direction: ISortByEnum.Asc },
@@ -118,7 +128,10 @@ export class SearchableSelectComponent<T extends { id: string }>
     a1.concat(a2).forEach(function (obj) {
       hash.set(obj.id, Object.assign(hash.get(obj.id) || {}, obj));
     });
-    return Array.from(hash.values()) as T[];
+    return (Array.from(hash.values()) as T[]).map((item) => ({
+      ...item,
+      selectLabel: this.selectLabelFormatter()(item),
+    }));
   });
   totalAvailableElements = computed(() => this.itemsStore().totalItems());
 
@@ -144,7 +157,7 @@ export class SearchableSelectComponent<T extends { id: string }>
       return this.placeholder();
     }
     return this.selectedItems()
-      .map((item) => item[this.labelKey() as keyof T])
+      .map((item) => this.valueLabelFormatter()(item) ?? this.selectLabelFormatter()(item))
       .join(', ');
   });
 

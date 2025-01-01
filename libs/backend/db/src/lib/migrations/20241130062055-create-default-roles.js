@@ -30,7 +30,7 @@ const rolePermissions = {
     // Cart
     'create cart', 'update cart', 'delete cart',
     // Order
-    'create order', 'update order', 'update order',
+    'create order', 'update order', 'delete order',
     // Notification
     'mark notification as read',
     // Dispatch Management
