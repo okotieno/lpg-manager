@@ -9,6 +9,17 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
+      userId: {
+        field: 'user_id',
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       transporterId: {
         field: 'transporter_id',
         type: Sequelize.UUID,
@@ -20,17 +31,8 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
       licenseNumber: {
         field: 'license_number',
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      contactNumber: {
-        field: 'contact_number',
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -55,4 +57,4 @@ module.exports = {
   async down(queryInterface) {
     await queryInterface.dropTable('drivers');
   }
-}; 
+};

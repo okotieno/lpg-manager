@@ -7,6 +7,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { TransporterModel } from './transporter.model';
+import { UserModel } from './user.model';
 
 @Table({
   tableName: 'drivers',
@@ -23,6 +24,13 @@ export class DriverModel extends Model {
   })
   override id!: string;
 
+  @ForeignKey(() => UserModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  userId!: string;
+
   @ForeignKey(() => TransporterModel)
   @Column({
     type: DataType.UUID,
@@ -34,26 +42,11 @@ export class DriverModel extends Model {
     type: DataType.STRING,
     allowNull: false,
   })
-  name!: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
   licenseNumber!: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  contactNumber!: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  email!: string;
 
   @BelongsTo(() => TransporterModel)
   transporter!: TransporterModel;
-} 
+
+  @BelongsTo(() => UserModel)
+  user!: UserModel;
+}

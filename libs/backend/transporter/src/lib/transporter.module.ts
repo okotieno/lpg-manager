@@ -8,6 +8,7 @@ import { VehicleServiceModule } from '@lpg-manager/vehicle-service';
   imports: [
     TransporterServiceModule,
     DriverServiceModule,
+    VehicleServiceModule,
     VehicleServiceModule
   ],
   providers: [

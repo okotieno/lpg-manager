@@ -9,12 +9,14 @@ import { UpdateTransporterInputDto } from '../dto/update-transporter-input.dto';
 import { PermissionGuard, PermissionsEnum, Permissions } from '@lpg-manager/permission-service';
 import { DriverService } from '@lpg-manager/driver-service';
 import { VehicleService } from '@lpg-manager/vehicle-service';
+import { UserService } from '@lpg-manager/user-service';
 
 @Resolver(() => TransporterModel)
 export class TransporterResolver {
   constructor(
     private transporterService: TransporterService,
     private driverService: DriverService,
+    private userService: UserService,
     private vehicleService: VehicleService
   ) {}
 
@@ -22,9 +24,47 @@ export class TransporterResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.CreateTransporter)
   async createTransporter(
-    @Body('params', new ValidationPipe()) params: CreateTransporterInputDto
+    @Body('params') params: CreateTransporterInputDto
   ) {
-    const transporter = await this.transporterService.create(params);
+    const transporter = await this.transporterService.create({
+      name: params.name,
+      contactPerson: params.contactPerson,
+      contactNumber: params.contactNumber,
+    });
+
+    // Create vehicles
+    if (params.vehicles?.length) {
+      await Promise.all(
+        params.vehicles.map(vehicle =>
+          this.vehicleService.create({
+            ...vehicle,
+            transporterId: transporter.id,
+          })
+        )
+      );
+    }
+    // Create drivers with user accounts
+    if (params.drivers?.length) {
+      await Promise.all(
+        params.drivers.map(async driver => {
+          // Create user account
+          const user = await this.userService.create({
+            email: driver.email,
+            name: driver.name,
+            phoneNumber: driver.contactNumber,
+            role: 'DRIVER',
+            password: Math.random().toString(36).slice(-8), // Generate random password
+          });
+
+          // Create driver record
+          await this.driverService.create({
+            userId: user.id,
+            transporterId: transporter.id,
+            licenseNumber: driver.licenseNumber,
+          });
+        })
+      );
+    }
 
     return {
       message: 'Transporter created successfully',
