@@ -41,8 +41,8 @@
     </ion-col>
     <!-- Vehicles Section -->
     <ion-col size="12">
-      <ion-accordion-group>
-        <ion-accordion>
+      <ion-accordion-group value="1">
+        <ion-accordion value="1">
           <ion-item slot="header">
             <ion-label>Vehicles</ion-label>
           </ion-item>
@@ -52,34 +52,59 @@
               @for (vehicle of vehicles.controls; track vehicle.value.id) {
                 <div [formGroupName]="$index">
                   <ion-row>
-                    <ion-col size="12" sizeMd="3">
+                    <ion-col size="12" sizeMd="6" sizeXl="3">
                       <ion-item lines="none">
-                        <ion-input formControlName="registrationNumber" label="Registration Number" labelPlacement="stacked"></ion-input>
+                        <ion-input
+                          placeholder="Enter registraion Number"
+                          formControlName="registrationNumber"
+                          label="Registration Number"
+                          helperText="format: KLL NNNL"
+                          errorText="Vehicle registration is required"
+                          labelPlacement="stacked" />
                       </ion-item>
                     </ion-col>
-                    <ion-col size="12" sizeMd="3">
+                    <ion-col size="12" sizeMd="6" sizeXl="3">
                       <ion-item lines="none">
-                        <ion-input type="number" formControlName="capacity" label="Capacity" labelPlacement="stacked"></ion-input>
+                        <ion-input
+                          placeholder="Enter capacity"
+                          type="number"
+                          formControlName="capacity"
+                          label="Capacity"
+                          labelPlacement="stacked"
+                          errorText="capacity registration is required"
+                          helperText="Enter capacity in tonnes"
+                        />
                       </ion-item>
                     </ion-col>
-                    <ion-col size="12" sizeMd="3">
+                    <ion-col size="12" sizeMd="6" sizeXl="3">
                       <ion-item lines="none">
-                        <ion-input formControlName="type" label="Vehicle Type" labelPlacement="stacked"></ion-input>
+                        <ion-input
+                          helperText="&nbsp;"
+                          placeholder="Enter vehicle type"
+                          formControlName="type"
+                          label="Vehicle Type"
+                          labelPlacement="stacked"
+                        />
                       </ion-item>
                     </ion-col>
-                    <ion-col size="12" sizeMd="1" class="ion-align-self-end">
-                      <ion-button fill="clear" (click)="removeVehicle($index)">
+                    <ion-col size="12" sizeMd="12" offsetLg="1" sizeXl="1">
+                      <ion-button class="ion-padding" shape="round" color="danger" fill="clear"
+                                  (click)="removeVehicle($index)">
                         <ion-icon slot="icon-only" name="trash-can"></ion-icon>
                       </ion-button>
                     </ion-col>
                   </ion-row>
                 </div>
+              } @empty {
+                <div class="empty-message">
+                  <ion-text color="medium">
+                    <p>No vehicles added yet. Click the button below to add vehicles.</p>
+                  </ion-text>
+                </div>
               }
-
             </div>
-            <ion-button (click)="addVehicle()">
-              <ion-icon slot="start" name="plus"></ion-icon>
-              Add Vehicle
+            <ion-button color="primary" fill="clear" shape="round" (click)="addVehicle()" aria-label="Add vehicle">
+              <ion-icon slot="icon-only" name="grid-2-plus"></ion-icon>
             </ion-button>
           </div>
         </ion-accordion>
@@ -98,28 +123,49 @@
             <div formArrayName="drivers">
               @for (driver of drivers.controls; track driver.value.id) {
                 <div [formGroupName]="$index">
-                  <ion-row>
+                  <ion-row class="ion-align-items-start">
                     <ion-col size="12" sizeMd="4">
                       <ion-item lines="none">
-                        <ion-input formControlName="name" label="Driver Name" labelPlacement="stacked"></ion-input>
+                        <ion-input
+                          formControlName="name"
+                          label="Driver Name"
+                          labelPlacement="stacked"
+                          helperText="&nbsp;"
+                        ></ion-input>
                       </ion-item>
                     </ion-col>
                     <ion-col size="12" sizeMd="4">
                       <ion-item lines="none">
-                        <ion-input formControlName="licenseNumber" label="License Number" labelPlacement="stacked"></ion-input>
+                        <ion-input
+                          formControlName="licenseNumber"
+                          label="License Number"
+                          labelPlacement="stacked"
+                          helperText="&nbsp;"
+                        />
                       </ion-item>
                     </ion-col>
                     <ion-col size="12" sizeMd="3">
                       <ion-item lines="none">
-                        <ion-input formControlName="contactNumber" label="Contact Number" labelPlacement="stacked"></ion-input>
+                        <ion-input
+                          formControlName="contactNumber"
+                          label="Contact Number"
+                          labelPlacement="stacked"
+                          helperText="&nbsp;"
+                        />
                       </ion-item>
                     </ion-col>
-                    <ion-col size="12" sizeMd="1" class="ion-align-self-end">
+                    <ion-col size="12" offsetMd="2" sizeMd="1">
                       <ion-button fill="clear" (click)="removeDriver($index)">
                         <ion-icon slot="icon-only" name="trash-can"></ion-icon>
                       </ion-button>
                     </ion-col>
                   </ion-row>
+                </div>
+              } @empty {
+                <div class="empty-message">
+                  <ion-text color="medium">
+                    <p>No drivers added yet. Click the button below to add drivers.</p>
+                  </ion-text>
                 </div>
               }
             </div>

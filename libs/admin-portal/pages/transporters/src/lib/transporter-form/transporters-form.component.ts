@@ -13,13 +13,12 @@ import {
   IonCol, IonIcon,
   IonInput,
   IonItem, IonLabel,
-  IonRow
+  IonRow, IonText
 } from '@ionic/angular/standalone';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import {
-  ISelectCategory,
   ITransporterModel,
 } from '@lpg-manager/types';
 import {
@@ -42,15 +41,16 @@ import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
     IonItem,
     IonInput,
     IonButton,
-    RouterLink,
     IonRow,
     IonCol,
     IonIcon,
     IonAccordionGroup,
     IonAccordion,
     IonLabel,
+    IonText,
   ],
   templateUrl: './transporters-form.component.html',
+  styleUrl: './transporters-form.component.scss',
   providers: [],
 })
 export default class TransportersFormComponent implements IHasUnsavedChanges {
@@ -100,6 +100,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
 
   addDriver() {
     const driverForm = this.#fb.group({
+      id: [crypto.randomUUID(), [Validators.required]],
       name: ['', Validators.required],
       licenseNumber: ['', Validators.required],
       contactNumber: ['', Validators.required],
@@ -114,8 +115,9 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
 
   addVehicle() {
     const vehicleForm = this.#fb.group({
+      id: [crypto.randomUUID(), [Validators.required]],
       registrationNumber: ['', Validators.required],
-      capacity: [0, [Validators.required, Validators.min(0)]],
+      capacity: [null as null | number, [Validators.required, Validators.min(0)]],
       type: ['', Validators.required],
     });
 
