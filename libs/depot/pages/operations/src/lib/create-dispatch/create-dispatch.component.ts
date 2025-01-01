@@ -22,10 +22,9 @@ import { DriverStore, IGetDriversQuery } from '@lpg-manager/driver-store';
 import { IGetVehiclesQuery, VehicleStore } from '@lpg-manager/vehicle-store';
 import { DispatchStore } from '@lpg-manager/dispatch-store';
 import { PaginatedResource } from '@lpg-manager/data-table';
-import { CurrencyPipe, JsonPipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { IQueryOperatorEnum, ISelectCategory } from '@lpg-manager/types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { tap } from 'rxjs';
 
 type IDriverItem = NonNullable<
   NonNullable<IGetDriversQuery['drivers']['items']>[number]
@@ -33,6 +32,10 @@ type IDriverItem = NonNullable<
 
 type IVehicleItem = NonNullable<
   NonNullable<IGetVehiclesQuery['vehicles']['items']>[number]
+>;
+
+type ITransporterItem = NonNullable<
+  NonNullable<IGetTransportersQuery['transporters']['items']>[number]
 >;
 
 @Component({
@@ -67,16 +70,12 @@ export default class CreateDispatchComponent {
   #dispatchStore = inject(DispatchStore);
   #orderStore = inject(OrderStore);
 
-  transporterStore: PaginatedResource<
-    NonNullable<
-      NonNullable<IGetTransportersQuery['transporters']['items']>[number]
-    >
-  > = inject(TransporterStore);
+  transporterStore: PaginatedResource<ITransporterItem> =
+    inject(TransporterStore);
   driverStore: PaginatedResource<IDriverItem> = inject(DriverStore);
   vehicleStore: PaginatedResource<IVehicleItem> = inject(VehicleStore);
 
   selectedOrders: string[] = [];
-
   dispatchForm = this.#fb.group({
     transporter: [null as null | ISelectCategory, Validators.required],
     driver: [
@@ -94,50 +93,43 @@ export default class CreateDispatchComponent {
   );
 
   constructor() {
-    // Update available drivers and vehicles when transporter changes
-    effect(() => {
-      const transporter = this.dispatchForm.get('transporter')?.value;
-      if (transporter) {
-        this.driverStore.setFilters([
-          {
-            field: 'transporterId',
-            operator: IQueryOperatorEnum.Equals,
-            value: transporter.id,
-          },
-        ]);
-        this.vehicleStore.setFilters([
-          {
-            field: 'transporterId',
-            operator: IQueryOperatorEnum.Equals,
-            value: transporter.id,
-          },
-        ]);
-      }
-    });
-
     this.dispatchForm
       .get('transporter')
-      ?.valueChanges.pipe(
-        tap(() => {
+      ?.valueChanges.pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (value) => {
           this.dispatchForm.get('driver')?.enable();
+          this.dispatchForm.get('driver')?.setValue(null);
           this.dispatchForm.get('vehicle')?.setValue(null);
           this.dispatchForm.get('vehicle')?.disable();
-          this.dispatchForm.get('driver')?.setValue(null);
-        }),
-        takeUntilDestroyed()
-      )
-      .subscribe();
+          this.driverStore.setFilters([
+            {
+              field: 'transporterId',
+              operator: IQueryOperatorEnum.Equals,
+              value: value?.id,
+            },
+          ]);
+        },
+      });
 
     this.dispatchForm
       .get('driver')
-      ?.valueChanges.pipe(
-        tap(() => {
+      ?.valueChanges.pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (value) => {
           this.dispatchForm.get('vehicle')?.enable();
           this.dispatchForm.get('vehicle')?.setValue(null);
-        }),
-        takeUntilDestroyed()
-      )
-      .subscribe();
+          if (value?.id) {
+            this.vehicleStore.setFilters([
+              {
+                field: 'driverId',
+                operator: IQueryOperatorEnum.Equals,
+                value: value.id,
+              },
+            ]);
+          }
+        },
+      });
   }
 
   onOrderSelect(event: any, order: any) {
@@ -150,6 +142,9 @@ export default class CreateDispatchComponent {
 
   driverValueLabelFormatter = (item: IDriverItem) =>
     `${item.user.firstName} ${item.user.lastName}`;
+
+  vehicleValueLabelFormatter= (item: IVehicleItem) =>
+    `${item.registrationNumber}`;
 
   async createDispatch() {
     if (this.dispatchForm.valid && this.selectedOrders.length > 0) {

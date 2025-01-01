@@ -37,6 +37,7 @@
             label="Select Vehicle"
             labelPlacement="floating"
             placeholder="--Select vehicle--"
+            [valueLabelFormatter]="vehicleValueLabelFormatter"
           >
             <ng-template let-vehicle>
               {{ vehicle.registrationNumber }} {{ vehicle.registrationNumber }}

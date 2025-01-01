@@ -37,7 +37,11 @@ export class VehicleResolver {
   @Query()
   @UseGuards(JwtAuthGuard)
   async vehicles(@Args('query') query: IQueryParam) {
-    return this.vehicleService.findAll(query);
+
+    return this.vehicleService.findAll({
+      ...query,
+      filters: query?.filters ?? [],
+    });
   }
 
   @Query()
