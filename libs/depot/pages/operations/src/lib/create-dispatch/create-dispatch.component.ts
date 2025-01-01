@@ -173,16 +173,15 @@ export default class CreateDispatchComponent {
     `${item.registrationNumber}`;
 
   async createDispatch() {
-    if (this.dispatchForm.valid && this.selectedOrders.length > 0) {
-      const formValue = this.dispatchForm.value;
-      this.#dispatchStore.createNewItem({
-        transporterId: formValue.transporter?.id,
-        driverId: formValue.driver?.id,
-        vehicleId: formValue.vehicle?.id,
-        orderIds: this.selectedOrders,
-        dispatchDate: new Date(),
-      });
-      await this.#router.navigate(['/operations']);
-    }
+
+    const formValue = this.dispatchForm.value;
+    this.#dispatchStore.createNewItem({
+      transporterId: formValue.transporter?.id as string,
+      driverId: formValue.driver?.id as string,
+      vehicleId: formValue.vehicle?.id as string,
+      orderIds: this.selectedOrders,
+      dispatchDate: new Date(),
+    });
+
   }
 }
