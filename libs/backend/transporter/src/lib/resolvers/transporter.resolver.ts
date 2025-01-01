@@ -50,7 +50,8 @@ export class TransporterResolver {
           // Create user account
           const user = await this.userService.create({
             email: driver.email,
-            name: driver.name,
+            firstName: driver.name.split(' ')[0],
+            lastName: driver.name.split(' ')[1],
             phoneNumber: driver.contactNumber,
             role: 'DRIVER',
             password: Math.random().toString(36).slice(-8), // Generate random password
