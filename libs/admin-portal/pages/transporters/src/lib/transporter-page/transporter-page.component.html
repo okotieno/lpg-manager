@@ -30,8 +30,8 @@
         </ion-card-header>
         <ion-card-content>
           @if (drivers.length > 0) {
-            @for (driver of drivers; track driver?.name) {
-              <ion-chip>{{ driver?.name }}</ion-chip>
+            @for (driver of drivers; track driver?.id) {
+              <ion-chip>{{ driver?.user?.firstName }} {{ driver?.user?.lastName }}</ion-chip>
             }
           } @else {
             <span>No brands available</span>

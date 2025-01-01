@@ -2,7 +2,7 @@ type TransporterModel {
   id: UUID!
   name: String!
   contactPerson: String!
-  contactNumber: String!
+  phone: String!
   drivers: [DriverModel]
   vehicles: [VehicleModel]
   createdAt: DateTime!
@@ -13,7 +13,7 @@ input TransporterDriverInput {
   id: UUID!
   name: String!
   licenseNumber: String!
-  contactNumber: String!
+  phone: String!
   email: EmailAddress!
   vehicles: [UUID]
 }
@@ -27,7 +27,7 @@ input TransporterVehicleInput {
 input CreateTransporterInput {
   name: String!
   contactPerson: String!
-  contactNumber: String!
+  phone: String!
   drivers: [TransporterDriverInput]
   vehicles: [TransporterVehicleInput]
 }
@@ -35,7 +35,7 @@ input CreateTransporterInput {
 input UpdateTransporterInput {
   name: String!
   contactPerson: String!
-  contactNumber: String!
+  phone: String!
   drivers: [TransporterDriverInput]
   vehicles: [TransporterVehicleInput]
 }

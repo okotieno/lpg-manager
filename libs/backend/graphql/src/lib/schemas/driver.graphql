@@ -13,13 +13,13 @@ input CreateDriverInput {
   transporterId: UUID!
   name: String!
   licenseNumber: String!
-  contactNumber: String!
+  phone: String!
 }
 
 input UpdateDriverInput {
   name: String
   licenseNumber: String
-  contactNumber: String
+  phone: String
 }
 
 type PaginatedDriver {

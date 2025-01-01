@@ -16,7 +16,7 @@ class DriverInput {
 
   @IsString()
   @IsNotEmpty()
-  contactNumber!: string;
+  phone!: string;
 
   @IsString()
   @IsNotEmpty()
@@ -56,7 +56,7 @@ export class CreateTransporterInputDto {
 
   @IsString()
   @IsNotEmpty()
-  contactNumber!: string;
+  phone!: string;
 
   @IsArray()
   @IsOptional()

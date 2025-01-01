@@ -67,7 +67,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
   transporterForm = this.#fb.group({
     name: ['', [Validators.required]],
     contactPerson: ['', [Validators.required]],
-    contactNumber: ['', [Validators.required]],
+    phone: ['', [Validators.required]],
     drivers: this.#fb.array([] as FormGroup[]),
     vehicles: this.#fb.array([] as FormGroup[]),
   });
@@ -81,7 +81,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
       id: string;
       name: string;
       licenseNumber: string;
-      contactNumber: string;
+      phone: string;
       email: string;
       vehicles: string[]
     }[]
@@ -101,7 +101,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
         this.transporterForm.patchValue({
           name: transporter.name,
           contactPerson: transporter.contactPerson,
-          contactNumber: transporter.contactNumber,
+          phone: transporter.phone,
         });
 
         // Populate drivers
@@ -112,7 +112,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
                 id: [driver.id],
                 name: [`${driver.user.firstName} ${driver.user.lastName}`],
                 licenseNumber: [driver.licenseNumber],
-                contactNumber: [driver.user.phone || ''],
+                phone: [driver.user.phone || ''],
                 email: [driver.user.email],
                 vehicles: [driver.vehicles?.map((v) => v?.id as string ) ?? []]
               });
@@ -188,7 +188,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
           id: [data.id],
           name: [data.name],
           licenseNumber: [data.licenseNumber],
-          contactNumber: [data.contactNumber],
+          phone: [data.phone],
           email: [data.email],
           vehicles: [data.vehicles],
         });
@@ -295,15 +295,15 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
   async onSubmit() {
     this.transporterForm.updateValueAndValidity();
     if (this.transporterForm.valid) {
-      const { name, drivers, vehicles, contactNumber, contactPerson } =
+      const { name, drivers, vehicles, phone, contactPerson } =
         this.transporterForm.value;
       const params = {
         name: name as string,
-        contactNumber: contactNumber as string,
+        phone: phone as string,
         contactPerson: contactPerson as string,
         drivers: drivers?.map((driver) => ({
           id: driver?.id as string,
-          contactNumber: driver?.contactNumber as string,
+          phone: driver?.phone as string,
           email: driver?.email as string,
           licenseNumber: driver?.licenseNumber as string,
           name: driver?.name as string,

@@ -29,7 +29,7 @@ mutation CreateTransporter($params: CreateTransporterInput!) {
       id
       name
       contactPerson
-      contactNumber
+      phone
       createdAt
       updatedAt
     }
@@ -41,7 +41,7 @@ query GetTransporterById($id: UUID!) {
     id
     name
     contactPerson
-    contactNumber
+    phone
     createdAt
     updatedAt
     ...transporterDrivers
@@ -55,7 +55,7 @@ query GetTransporters($query: QueryParams) {
       id
       name
       contactPerson
-      contactNumber
+      phone
       createdAt
       updatedAt
     }
@@ -78,7 +78,7 @@ mutation UpdateTransporter($id: UUID!, $params: UpdateTransporterInput!) {
       id
       name
       contactPerson
-      contactNumber
+      phone
       createdAt
       updatedAt
     }

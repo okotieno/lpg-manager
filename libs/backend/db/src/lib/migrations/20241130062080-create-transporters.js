@@ -18,8 +18,8 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      contactNumber: {
-        field: 'contact_number',
+      phone: {
+        field: 'phone',
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -44,4 +44,4 @@ module.exports = {
   async down(queryInterface) {
     await queryInterface.dropTable('transporters');
   }
-}; 
+};

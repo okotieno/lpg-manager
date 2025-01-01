@@ -39,11 +39,11 @@ export class TransporterModel extends Model {
     type: DataType.STRING,
     allowNull: false,
   })
-  contactNumber!: string;
+  phone!: string;
 
   @HasMany(() => DriverModel)
   drivers!: DriverModel[];
 
   @HasMany(() => VehicleModel)
   vehicles!: VehicleModel[];
-} 
+}

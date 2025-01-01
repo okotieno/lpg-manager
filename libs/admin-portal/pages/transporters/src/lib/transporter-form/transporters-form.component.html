@@ -31,7 +31,7 @@
         <ion-input
           label="Contact Number"
           labelPlacement="stacked"
-          formControlName="contactNumber"
+          formControlName="phone"
           placeholder="Enter contact number"
           errorText="Contact number is required"
           helperText="&nbsp;"
@@ -107,7 +107,7 @@
             <tr>
               <td>{{ driver.name }}</td>
               <td>{{ driver.licenseNumber }}</td>
-              <td>{{ driver.contactNumber }}</td>
+              <td>{{ driver.phone }}</td>
               <td>{{ driver.email }}</td>
               <td>
                 <ion-button fill="clear" color="primary" (click)="addDriver(driver)">

@@ -20,7 +20,7 @@ interface IDriverData {
   id: string;
   name: string;
   licenseNumber: string;
-  contactNumber: string;
+  phone: string;
   email: string;
 }
 interface IVehicleData {
@@ -69,7 +69,7 @@ export class DriverDialogComponent {
       ],
     ],
     licenseNumber: ['', Validators.required],
-    contactNumber: ['', Validators.required],
+    phone: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     vehicles: [[] as string[], Validators.required],
   });
@@ -81,7 +81,7 @@ export class DriverDialogComponent {
           id: driver.id,
           name: driver.name,
           licenseNumber: driver.licenseNumber,
-          contactNumber: driver.contactNumber,
+          phone: driver.phone,
           email: driver.email,
           vehicles: driver.vehicles,
         });

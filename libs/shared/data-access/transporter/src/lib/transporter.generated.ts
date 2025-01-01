@@ -12,21 +12,21 @@ export type ICreateTransporterMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateTransporterMutation = { createTransporter: { message: string, data: { id: string, name: string, contactPerson: string, contactNumber: string, createdAt: string, updatedAt: string } } };
+export type ICreateTransporterMutation = { createTransporter: { message: string, data: { id: string, name: string, contactPerson: string, phone: string, createdAt: string, updatedAt: string } } };
 
 export type IGetTransporterByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetTransporterByIdQuery = { transporter?: { id: string, name: string, contactPerson: string, contactNumber: string, createdAt: string, updatedAt: string, drivers?: Array<{ id: string, licenseNumber: string, vehicles?: Array<{ id: string, registrationNumber: string }> | null, user: { firstName: string, lastName: string, phone?: string | null, email: string } } | null> | null, vehicles?: Array<{ id: string, registrationNumber: string, capacity: number, type: string } | null> | null } | null };
+export type IGetTransporterByIdQuery = { transporter?: { id: string, name: string, contactPerson: string, phone: string, createdAt: string, updatedAt: string, drivers?: Array<{ id: string, licenseNumber: string, vehicles?: Array<{ id: string, registrationNumber: string }> | null, user: { firstName: string, lastName: string, phone?: string | null, email: string } } | null> | null, vehicles?: Array<{ id: string, registrationNumber: string, capacity: number, type: string } | null> | null } | null };
 
 export type IGetTransportersQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetTransportersQuery = { transporters: { items?: Array<{ id: string, name: string, contactPerson: string, contactNumber: string, createdAt: string, updatedAt: string } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetTransportersQuery = { transporters: { items?: Array<{ id: string, name: string, contactPerson: string, phone: string, createdAt: string, updatedAt: string } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteTransporterByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -41,7 +41,7 @@ export type IUpdateTransporterMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateTransporterMutation = { updateTransporter: { message: string, data: { id: string, name: string, contactPerson: string, contactNumber: string, createdAt: string, updatedAt: string } } };
+export type IUpdateTransporterMutation = { updateTransporter: { message: string, data: { id: string, name: string, contactPerson: string, phone: string, createdAt: string, updatedAt: string } } };
 
 export const TransporterVehiclesFragmentDoc = gql`
     fragment transporterVehicles on TransporterModel {
@@ -79,7 +79,7 @@ export const CreateTransporterDocument = gql`
       id
       name
       contactPerson
-      contactNumber
+      phone
       createdAt
       updatedAt
     }
@@ -92,7 +92,7 @@ export const CreateTransporterDocument = gql`
   })
   export class ICreateTransporterGQL extends Apollo.Mutation<ICreateTransporterMutation, ICreateTransporterMutationVariables> {
     override document = CreateTransporterDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -103,7 +103,7 @@ export const GetTransporterByIdDocument = gql`
     id
     name
     contactPerson
-    contactNumber
+    phone
     createdAt
     updatedAt
     ...transporterDrivers
@@ -118,7 +118,7 @@ ${TransporterVehiclesFragmentDoc}`;
   })
   export class IGetTransporterByIdGQL extends Apollo.Query<IGetTransporterByIdQuery, IGetTransporterByIdQueryVariables> {
     override document = GetTransporterByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -130,7 +130,7 @@ export const GetTransportersDocument = gql`
       id
       name
       contactPerson
-      contactNumber
+      phone
       createdAt
       updatedAt
     }
@@ -146,7 +146,7 @@ export const GetTransportersDocument = gql`
   })
   export class IGetTransportersGQL extends Apollo.Query<IGetTransportersQuery, IGetTransportersQueryVariables> {
     override document = GetTransportersDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -164,7 +164,7 @@ export const DeleteTransporterByIdDocument = gql`
   })
   export class IDeleteTransporterByIdGQL extends Apollo.Mutation<IDeleteTransporterByIdMutation, IDeleteTransporterByIdMutationVariables> {
     override document = DeleteTransporterByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -177,7 +177,7 @@ export const UpdateTransporterDocument = gql`
       id
       name
       contactPerson
-      contactNumber
+      phone
       createdAt
       updatedAt
     }
@@ -190,7 +190,7 @@ export const UpdateTransporterDocument = gql`
   })
   export class IUpdateTransporterGQL extends Apollo.Mutation<IUpdateTransporterMutation, IUpdateTransporterMutationVariables> {
     override document = UpdateTransporterDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

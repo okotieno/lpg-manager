@@ -21,7 +21,7 @@ export class CreateDriverInputDto {
 
   @IsString()
   @IsNotEmpty()
-  contactNumber!: string;
+  phone!: string;
 
   @IsString()
   @IsNotEmpty()
@@ -32,4 +32,4 @@ export class CreateDriverInputDto {
   @IsOptional()
   @IsUUID(undefined, { each: true })
   vehicles?: string[];
-} 
+}

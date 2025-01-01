@@ -38,7 +38,7 @@ export class TransporterResolver {
     const transporter = await this.transporterService.create({
       name: params.name,
       contactPerson: params.contactPerson,
-      contactNumber: params.contactNumber,
+      phone: params.phone,
     });
 
     // Create vehicles
@@ -61,7 +61,7 @@ export class TransporterResolver {
             email: driver.email,
             firstName: driver.name.split(' ')[0],
             lastName: driver.name.split(' ')[1],
-            phoneNumber: driver.contactNumber,
+            phone: driver.phone,
             role: 'DRIVER',
             password: Math.random().toString(36).slice(-8), // Generate random password
           });
@@ -111,7 +111,7 @@ export class TransporterResolver {
       params: {
         name: params.name,
         contactPerson: params.contactPerson,
-        contactNumber: params.contactNumber,
+        phone: params.phone,
       },
     });
 
@@ -198,7 +198,7 @@ export class TransporterResolver {
             email: driver.email,
             firstName: driver.name.split(' ')[0],
             lastName: driver.name.split(' ')[1],
-            phoneNumber: driver.contactNumber,
+            phone: driver.phone,
             role: 'DRIVER',
             password: Math.random().toString(36).slice(-8), // Generate random password
           });
@@ -235,7 +235,7 @@ export class TransporterResolver {
                   email: driver.email,
                   firstName: driver.name.split(' ')[0],
                   lastName: driver.name.split(' ')[1],
-                  phoneNumber: driver.contactNumber,
+                  phone: driver.phone,
                 },
               });
             }

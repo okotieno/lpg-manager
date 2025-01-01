@@ -179,7 +179,7 @@ export type ICreateDispatchSuccessResponse = {
 };
 
 export type ICreateDriverInput = {
-  contactNumber: Scalars['String']['input'];
+  phone: Scalars['String']['input'];
   licenseNumber: Scalars['String']['input'];
   name: Scalars['String']['input'];
   transporterId: Scalars['UUID']['input'];
@@ -283,7 +283,7 @@ export type ICreateSuccessStringIdResponse = {
 };
 
 export type ICreateTransporterInput = {
-  contactNumber: Scalars['String']['input'];
+  phone: Scalars['String']['input'];
   contactPerson: Scalars['String']['input'];
   drivers?: InputMaybe<Array<InputMaybe<ITransporterDriverInput>>>;
   name: Scalars['String']['input'];
@@ -1410,7 +1410,7 @@ export type ISuccessResponse = {
 };
 
 export type ITransporterDriverInput = {
-  contactNumber: Scalars['String']['input'];
+  phone: Scalars['String']['input'];
   email: Scalars['EmailAddress']['input'];
   id: Scalars['UUID']['input'];
   licenseNumber: Scalars['String']['input'];
@@ -1419,7 +1419,7 @@ export type ITransporterDriverInput = {
 };
 
 export type ITransporterModel = {
-  contactNumber: Scalars['String']['output'];
+  phone: Scalars['String']['output'];
   contactPerson: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   drivers?: Maybe<Array<Maybe<IDriverModel>>>;
@@ -1476,7 +1476,7 @@ export type IUpdateDispatchInput = {
 };
 
 export type IUpdateDriverInput = {
-  contactNumber?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
   licenseNumber?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1533,7 +1533,7 @@ export type IUpdateStationInput = {
 };
 
 export type IUpdateTransporterInput = {
-  contactNumber: Scalars['String']['input'];
+  phone: Scalars['String']['input'];
   contactPerson: Scalars['String']['input'];
   drivers?: InputMaybe<Array<InputMaybe<ITransporterDriverInput>>>;
   name: Scalars['String']['input'];
