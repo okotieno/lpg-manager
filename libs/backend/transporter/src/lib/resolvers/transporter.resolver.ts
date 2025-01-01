@@ -7,12 +7,7 @@ import {
   Root,
 } from '@nestjs/graphql';
 import { Body, UseGuards } from '@nestjs/common';
-import {
-  TransporterModel,
-  IQueryParam,
-  QueryOperatorEnum,
-  SortByDirectionEnum,
-} from '@lpg-manager/db';
+import { TransporterModel, IQueryParam } from '@lpg-manager/db';
 import { TransporterService } from '@lpg-manager/transporter-service';
 import { JwtAuthGuard } from '@lpg-manager/auth';
 import { ValidationPipe } from '@nestjs/common';
@@ -105,13 +100,148 @@ export class TransporterResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.UpdateTransporter)
   async updateTransporter(
-    @Args('id') id: string,
-    @Body('params', new ValidationPipe()) params: UpdateTransporterInputDto
+    @Body(new ValidationPipe()) { id, params }: UpdateTransporterInputDto
   ) {
-    await this.transporterService.update({ id, params });
+    // Update transporter basic info
+    const transporter = await this.transporterService.update({
+      id,
+      params: {
+        name: params.name,
+        contactPerson: params.contactPerson,
+        contactNumber: params.contactNumber,
+      },
+    });
+
+    // Update vehicles
+    if (params.vehicles?.length) {
+      // Fetch existing vehicles
+      const existingVehicles = await this.vehicleService.model.findAll({
+        where: { transporterId: id },
+      });
+
+      const existingVehicleIds = existingVehicles.map((vehicle) => vehicle.id);
+
+      // Determine which vehicles to remove, update, or add
+      const vehiclesToRemove = existingVehicles.filter(
+        (vehicle) => !params.vehicles?.some((v) => v.id === vehicle.id)
+      );
+      const vehiclesToAdd = params.vehicles.filter(
+        (vehicle) => !existingVehicleIds.includes(vehicle.id)
+      );
+      const vehiclesToUpdate = params.vehicles.filter((vehicle) =>
+        existingVehicleIds.includes(vehicle.id)
+      );
+
+      // Remove deleted vehicles
+      await Promise.all(
+        vehiclesToRemove.map((vehicle) =>
+          this.vehicleService.model.destroy({ where: { id: vehicle.id } })
+        )
+      );
+
+      // Add new vehicles
+      await Promise.all(
+        vehiclesToAdd.map((vehicle) =>
+          this.vehicleService.model.create({
+            ...vehicle,
+            transporterId: id,
+          })
+        )
+      );
+
+      // Update existing vehicles
+      await Promise.all(
+        vehiclesToUpdate.map((vehicle) =>
+          this.vehicleService.model.update(
+            { ...vehicle },
+            { where: { id: vehicle.id, transporterId: id } }
+          )
+        )
+      );
+    }
+
+    // Update drivers
+    if (params.drivers?.length) {
+      // Fetch existing drivers
+      const existingDrivers = await this.driverService.model.findAll({
+        where: { transporterId: id },
+      });
+
+      const existingDriverIds = existingDrivers.map((driver) => driver.id);
+
+      // Determine which drivers to remove, update, or add
+      const driversToRemove = existingDrivers.filter(
+        (driver) => !params.drivers?.some((d) => d.id === driver.id)
+      );
+      const driversToAdd = params.drivers.filter(
+        (driver) => !existingDriverIds.includes(driver.id)
+      );
+      const driversToUpdate = params.drivers.filter((driver) =>
+        existingDriverIds.includes(driver.id)
+      );
+
+      // Remove deleted drivers and their user accounts
+      await Promise.all(
+        driversToRemove.map(async (driver) => {
+          await this.userService.deleteById(driver.userId);
+          await this.driverService.deleteById(driver.id);
+        })
+      );
+
+      // Add new drivers with user accounts
+      await Promise.all(
+        driversToAdd.map(async (driver) => {
+          const user = await this.userService.create({
+            email: driver.email,
+            firstName: driver.name.split(' ')[0],
+            lastName: driver.name.split(' ')[1],
+            phoneNumber: driver.contactNumber,
+            role: 'DRIVER',
+            password: Math.random().toString(36).slice(-8), // Generate random password
+          });
+
+          await this.driverService.create({
+            userId: user.id,
+            transporterId: id,
+            licenseNumber: driver.licenseNumber,
+          });
+        })
+      );
+
+      // Update existing drivers (if needed)
+      await Promise.all(
+        driversToUpdate.map(async (driver) => {
+          const existingDriver = existingDrivers.find(
+            (d) => d.id === driver.id
+          );
+          if (existingDriver) {
+            // Update driver information
+            await this.driverService.model.update(
+              { ...driver },
+              { where: { id: driver.id, transporterId: id } }
+            );
+
+            // Update user info if necessary
+            const user = await this.userService.findById(existingDriver.userId);
+            if (user) {
+              await this.userService.update({
+                id: user.id,
+                params: {
+                  email: driver.email,
+                  firstName: driver.name.split(' ')[0],
+                  lastName: driver.name.split(' ')[1],
+                  phoneNumber: driver.contactNumber,
+                },
+              });
+            }
+          }
+        })
+      );
+    }
 
     return {
       message: 'Successfully updated transporter',
+      data: transporter,
     };
   }
 

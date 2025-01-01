@@ -1,7 +1,11 @@
-import { IsNotEmpty, IsString, IsArray, ValidateNested, IsOptional, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString, IsArray, ValidateNested, IsOptional, IsNumber, IsUUID } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class DriverInput {
+  @IsUUID()
+  @IsNotEmpty()
+  id!: string;
+
   @IsString()
   @IsNotEmpty()
   name!: string;
@@ -20,6 +24,10 @@ class DriverInput {
 }
 
 class VehicleInput {
+  @IsUUID()
+  @IsNotEmpty()
+  id!: string;
+
   @IsString()
   @IsNotEmpty()
   registrationNumber!: string;
@@ -34,6 +42,7 @@ class VehicleInput {
 }
 
 export class CreateTransporterInputDto {
+
   @IsString()
   @IsNotEmpty()
   name!: string;

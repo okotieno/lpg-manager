@@ -7,9 +7,10 @@ mutation CreateDriver($params: CreateDriverInput!) {
         id
         firstName
         lastName
+        phone
+        email
       }
       licenseNumber
-      contactNumber
       transporter {
         id
         name
@@ -26,9 +27,10 @@ query GetDriverById($id: UUID!) {
     user {
       firstName
       lastName
+      phone
+      email
     }
     licenseNumber
-    contactNumber
     transporter {
       id
       name
@@ -45,9 +47,10 @@ query GetDrivers($query: QueryParams) {
       user {
         firstName
         lastName
+        phone
+        email
       }
       licenseNumber
-      contactNumber
       transporter {
         id
         name
@@ -75,9 +78,10 @@ mutation UpdateDriver($id: UUID!, $params: UpdateDriverInput!) {
       user {
         firstName
         lastName
+        phone
+        email
       }
       licenseNumber
-      contactNumber
       transporterId
       transporter {
         id

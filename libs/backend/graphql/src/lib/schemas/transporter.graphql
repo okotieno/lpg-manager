@@ -32,9 +32,11 @@ input CreateTransporterInput {
 }
 
 input UpdateTransporterInput {
-  name: String
-  contactPerson: String
-  contactNumber: String
+  name: String!
+  contactPerson: String!
+  contactNumber: String!
+  drivers: [TransporterDriverInput]
+  vehicles: [TransporterVehicleInput]
 }
 
 type PaginatedTransporter {

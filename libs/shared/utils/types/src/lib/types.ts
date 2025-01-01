@@ -1531,9 +1531,11 @@ export type IUpdateStationInput = {
 };
 
 export type IUpdateTransporterInput = {
-  contactNumber?: InputMaybe<Scalars['String']['input']>;
-  contactPerson?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
+  contactNumber: Scalars['String']['input'];
+  contactPerson: Scalars['String']['input'];
+  drivers?: InputMaybe<Array<InputMaybe<ITransporterDriverInput>>>;
+  name: Scalars['String']['input'];
+  vehicles?: InputMaybe<Array<InputMaybe<ITransporterVehicleInput>>>;
 };
 
 export type IUpdateUserInput = {

@@ -298,7 +298,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
               refetchQueries: [
                 {
                   query: GetTransportersDocument,
-                  variables: {},
+                  variables: defaultQueryParams,
                 },
               ],
             }
