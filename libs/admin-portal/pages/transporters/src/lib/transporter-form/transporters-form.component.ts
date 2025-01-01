@@ -95,16 +95,52 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
   >([]);
   transporterChangeEffect = effect(() => {
     const transporter = this.transporter();
-    const drivers =
-      transporter?.drivers?.map((brand) => ({
-        id: brand?.id as string,
-      })) ?? [];
     untracked(() => {
       if (transporter) {
         this.transporterForm.patchValue({
           name: transporter.name,
-          drivers,
+          contactPerson: transporter.contactPerson,
+          contactNumber: transporter.contactNumber,
         });
+
+        // Populate drivers
+        if (transporter.drivers) {
+          transporter.drivers.forEach(driver => {
+            if (driver?.user && driver.licenseNumber) {
+              const driverForm = this.#fb.nonNullable.group({
+                id: [driver.id],
+                name: [`${driver.user.firstName} ${driver.user.lastName}`],
+                licenseNumber: [driver.licenseNumber],
+                contactNumber: [driver.user.phone || ''],
+                email: [driver.user.email],
+              });
+              this.driverInput.push(driverForm);
+              this.drivers.update(drivers => [
+                ...drivers,
+                driverForm.value as Required<typeof driverForm.value>,
+              ]);
+            }
+          });
+        }
+
+        // Populate vehicles
+        if (transporter.vehicles) {
+          transporter.vehicles.forEach(vehicle => {
+            if (vehicle) {
+              const vehicleForm = this.#fb.nonNullable.group({
+                id: [vehicle.id],
+                registrationNumber: [vehicle.registrationNumber],
+                capacity: [vehicle.capacity],
+                type: [vehicle.type],
+              });
+              this.vehicleInput.push(vehicleForm);
+              this.vehicles.update(vehicles => [
+                ...vehicles,
+                vehicleForm.value as Required<typeof vehicleForm.value>,
+              ]);
+            }
+          });
+        }
       }
     });
   });
@@ -243,7 +279,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
           capacity: vehicle?.capacity as number,
           type: vehicle?.type as string,
           registrationNumber: vehicle?.registrationNumber as string,
-        }))
+        })) ?? []
       };
 
       if (this.isEditing() && this.roleId()) {
@@ -286,7 +322,6 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
                 [SHOW_ERROR_MESSAGE]: true,
                 [SHOW_SUCCESS_MESSAGE]: true,
               },
-
               awaitRefetchQueries: true,
               refetchQueries: [
                 {
