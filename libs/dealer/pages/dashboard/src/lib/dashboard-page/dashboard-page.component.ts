@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -23,11 +23,10 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { BreadcrumbComponent, BreadcrumbStore } from '@lpg-manager/breadcrumb';
-import { TitleCasePipe } from '@angular/common';
+import { JsonPipe, TitleCasePipe } from '@angular/common';
 import { CartStore } from '@lpg-manager/cart-store';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { FormsModule } from '@angular/forms';
-import { NotificationStore } from '../../../../../../shared/data-access/notification/src/lib/notification.store';
 import { NotificationBellComponent } from '@lpg-manager/notification-component';
 
 @Component({
@@ -58,13 +57,13 @@ import { NotificationBellComponent } from '@lpg-manager/notification-component';
     IonSelectOption,
     FormsModule,
     NotificationBellComponent,
+    JsonPipe,
   ],
   templateUrl: './dashboard-page.component.html',
   styleUrl: './dashboard-page.component.scss',
 })
 export default class DashboardComponent {
   #authStore = inject(AuthStore);
-  #notificationStore = inject(NotificationStore);
   #themeService = inject(ThemeService);
   #router = inject(Router);
   #breadcrumbStore = inject(BreadcrumbStore);

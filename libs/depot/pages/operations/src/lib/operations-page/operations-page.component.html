@@ -26,7 +26,7 @@
       <ion-row class="data-row">
         <ion-col>{{ dispatch.id }}</ion-col>
         <ion-col>{{ dispatch.transporter.name }}</ion-col>
-        <ion-col>{{ dispatch.driver.name }}</ion-col>
+        <ion-col>{{ dispatch.driver.user.firstName }} {{ dispatch.driver.user.lastName }}</ion-col>
         <ion-col>{{ dispatch.vehicle.registrationNumber }}</ion-col>
         <ion-col>
           <ion-badge [color]="getStatusColor(dispatch.status)">

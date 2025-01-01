@@ -40,6 +40,19 @@ import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
 import { VehicleDialogComponent } from '../vehicle-dialog/vehicle-dialog.component';
 import { DriverDialogComponent } from '../driver-dialog/driver-dialog.component';
 
+const VEHICLE_TYPE_LABELS: Record<string, string> = {
+  'VAN': 'Van - 1.5T',
+  'PICKUP': 'Pickup Truck - 3.5T',
+  'BOX_TRUCK': 'Box/Cube Truck - 7.5T',
+  'REEFER': 'Refrigerated Truck - 7.5T',
+  'SEMI_TRAILER': 'Semi-Trailer - 40T',
+  'FLATBED': 'Flatbed Truck - 28T',
+  'TANKER': 'Tanker Truck - 25T',
+  'DUMP_TRUCK': 'Dump Truck - 30T',
+  'CAR_CARRIER': 'Car Carrier - 22T',
+  'ELECTRIC': 'Electric Truck - 4.5T'
+};
+
 @Component({
   selector: 'lpg-transporter-form',
   standalone: true,
@@ -94,6 +107,12 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
       type: string;
     }[]
   >([]);
+  vehiclesWithLabels = computed(() => 
+    this.vehicles().map(vehicle => ({
+      ...vehicle,
+      typeLabel: VEHICLE_TYPE_LABELS[vehicle.type] || vehicle.type
+    }))
+  );
   transporterChangeEffect = effect(() => {
     const transporter = this.transporter();
     untracked(() => {

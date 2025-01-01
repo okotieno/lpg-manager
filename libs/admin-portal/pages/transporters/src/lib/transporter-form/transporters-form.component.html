@@ -58,10 +58,10 @@
         </tr>
         </thead>
         <tbody>
-          @for (vehicle of vehicles(); track vehicle.id; let i = $index) {
+          @for (vehicle of vehiclesWithLabels(); track vehicle.id; let i = $index) {
             <tr>
               <td>{{ vehicle.registrationNumber }}</td>
-              <td>{{ vehicle.type }}</td>
+              <td>{{ vehicle.typeLabel }}</td>
               <td>{{ vehicle.capacity }}</td>
               <td>
                 <ion-button fill="clear" color="primary" (click)="addVehicle(vehicle)">

@@ -26,7 +26,34 @@
         errorText="Registration number is required"
       ></ion-input>
     </ion-item>
+    <ion-item>
+      <ion-select
+        label="Vehicle Type"
+        labelPlacement="stacked"
+        formControlName="type"
+        placeholder="--Select vehicle type--"
+      >
+        <!-- Light Commercial Vehicles -->
+        <ion-select-option value="VAN">Van - 1.5T</ion-select-option>
+        <ion-select-option value="PICKUP">Pickup Truck - 3.5T</ion-select-option>
 
+        <!-- Medium Duty Trucks -->
+        <ion-select-option value="BOX_TRUCK">Box/Cube Truck - 7.5T</ion-select-option>
+        <ion-select-option value="REEFER">Refrigerated Truck - 7.5T</ion-select-option>
+
+        <!-- Heavy Duty Trucks -->
+        <ion-select-option value="SEMI_TRAILER">Semi-Trailer - 40T</ion-select-option>
+        <ion-select-option value="FLATBED">Flatbed Truck - 28T</ion-select-option>
+        <ion-select-option value="TANKER">Tanker Truck - 25T</ion-select-option>
+
+        <!-- Specialized Trucks -->
+        <ion-select-option value="DUMP_TRUCK">Dump Truck - 30T</ion-select-option>
+        <ion-select-option value="CAR_CARRIER">Car Carrier - 22T</ion-select-option>
+
+        <!-- Modern Vehicles -->
+        <ion-select-option value="ELECTRIC">Electric Truck - 4.5T</ion-select-option>
+      </ion-select>
+    </ion-item>
     <ion-item lines="none">
       <ion-input
         type="number"
@@ -38,15 +65,7 @@
       ></ion-input>
     </ion-item>
 
-    <ion-item lines="none">
-      <ion-input
-        label="Vehicle Type"
-        labelPlacement="stacked"
-        formControlName="type"
-        placeholder="Enter vehicle type"
-        errorText="Vehicle type is required"
-      ></ion-input>
-    </ion-item>
+
   </form>
 </ion-content>
 

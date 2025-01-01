@@ -9,10 +9,10 @@ import {
   IonIcon,
   IonInput,
   IonItem,
-  IonRow,
+  IonRow, IonSelect, IonSelectOption,
   IonTitle,
   IonToolbar,
-  ModalController,
+  ModalController
 } from '@ionic/angular/standalone';
 
 interface IVehicleData {
@@ -38,6 +38,8 @@ interface IVehicleData {
     IonInput,
     IonFooter,
     IonRow,
+    IonSelect,
+    IonSelectOption,
   ],
   templateUrl: 'vehicle-dialog.component.html',
 })
@@ -46,7 +48,7 @@ export class VehicleDialogComponent {
   #fb = inject(FormBuilder);
 
   vehicle = input<IVehicleData>();
-  isEditing = computed(() => !!this.vehicle()?.id)
+  isEditing = computed(() => !!this.vehicle()?.id);
 
   vehicleForm = this.#fb.group({
     id: [crypto.randomUUID() as string],
