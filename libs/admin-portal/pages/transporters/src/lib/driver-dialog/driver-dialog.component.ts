@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, effect, inject, input, untracked } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   IonButton,
@@ -14,6 +14,14 @@ import {
   IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
+
+interface IDriverData {
+  id: string;
+  name: string;
+  licenseNumber: string;
+  contactNumber: string;
+  email: string;
+}
 
 @Component({
   selector: 'lpg-driver-dialog',
@@ -38,8 +46,11 @@ export class DriverDialogComponent {
   #modalCtrl = inject(ModalController);
   #fb = inject(FormBuilder);
 
+  driver = input<IDriverData>();
+  isEditing = computed(() => !!this.driver()?.id)
+
   driverForm = this.#fb.group({
-    id: [crypto.randomUUID()],
+    id: [crypto.randomUUID() as string,],
     name: [
       '',
       [
@@ -51,6 +62,21 @@ export class DriverDialogComponent {
     contactNumber: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
   });
+  driverChangedEffect = effect(() => {
+    const driver = this.driver();
+    untracked(() => {
+      if (driver) {
+        this.driverForm.patchValue({
+          id: driver.id,
+          name: driver.name,
+          licenseNumber: driver.licenseNumber,
+          contactNumber: driver.contactNumber,
+          email: driver.email,
+        });
+      }
+    });
+  });
+
 
   get nameErrorText() {
     if (this.driverForm.get('name')?.hasError('pattern'))

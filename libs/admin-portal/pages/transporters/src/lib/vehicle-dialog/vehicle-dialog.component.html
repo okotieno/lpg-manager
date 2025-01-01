@@ -1,6 +1,12 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title class="ion-text-center">Add Vehicle</ion-title>
+    <ion-title class="ion-text-center">
+      @if (isEditing()) {
+        Edit Vehicle
+      } @else {
+        Add Vehicle
+      }
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button color="danger" fill="clear" shape="round" (click)="dismiss()">
         <ion-icon slot="icon-only" name="circle-xmark"></ion-icon>
@@ -54,7 +60,11 @@
       class="ion-margin-top"
       [disabled]="!vehicleForm.valid"
     >
-      Add Driver
+      @if (isEditing()) {
+        Save
+      } @else {
+        Add Driver
+      }
     </ion-button>
   </ion-row>
 </ion-footer>

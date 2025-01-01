@@ -64,6 +64,9 @@
               <td>{{ vehicle.type }}</td>
               <td>{{ vehicle.capacity }}</td>
               <td>
+                <ion-button fill="clear" color="primary" (click)="addVehicle(vehicle)">
+                  <ion-icon slot="icon-only" name="pen-to-square"></ion-icon>
+                </ion-button>
                 <ion-button fill="clear" color="danger" (click)="removeVehicle(i)">
                   <ion-icon slot="icon-only" name="trash-can"></ion-icon>
                 </ion-button>
@@ -107,6 +110,9 @@
               <td>{{ driver.contactNumber }}</td>
               <td>{{ driver.email }}</td>
               <td>
+                <ion-button fill="clear" color="primary" (click)="addDriver(driver)">
+                  <ion-icon slot="icon-only" name="pen-to-square"></ion-icon>
+                </ion-button>
                 <ion-button fill="clear" color="danger" (click)="removeDriver(i)">
                   <ion-icon slot="icon-only" name="trash-can"></ion-icon>
                 </ion-button>

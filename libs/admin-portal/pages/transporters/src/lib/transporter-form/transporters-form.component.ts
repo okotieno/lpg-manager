@@ -157,28 +157,42 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
     return this.transporterForm.dirty;
   }
 
-  async addDriver() {
+  async addDriver(existingDriver?: any) {
     const modal = await this.#modalCtrl.create({
       component: DriverDialogComponent,
+      componentProps: { driver: existingDriver }
     });
 
     await modal.present();
 
     const { data, role } = await modal.onWillDismiss();
     if (role === 'confirm' && data) {
-      const driverForm = this.#fb.nonNullable.group({
-        id: [data.id],
-        name: [data.name],
-        licenseNumber: [data.licenseNumber],
-        contactNumber: [data.contactNumber],
-        email: [data.email],
-      });
+      if (existingDriver) {
+        // Update existing driver
+        const index = this.drivers().findIndex(d => d.id === existingDriver.id);
+        if (index !== -1) {
+          this.driverInput.at(index).patchValue(data);
+          this.drivers.update(drivers => {
+            drivers[index] = data;
+            return [...drivers];
+          });
+        }
+      } else {
+        // Add new driver
+        const driverForm = this.#fb.nonNullable.group({
+          id: [data.id],
+          name: [data.name],
+          licenseNumber: [data.licenseNumber],
+          contactNumber: [data.contactNumber],
+          email: [data.email],
+        });
 
-      this.driverInput.push(driverForm);
-      this.drivers.update((drivers) => [
-        ...drivers,
-        driverForm.value as Required<typeof driverForm.value>,
-      ]);
+        this.driverInput.push(driverForm);
+        this.drivers.update((drivers) => [
+          ...drivers,
+          driverForm.value as Required<typeof driverForm.value>,
+        ]);
+      }
     }
   }
 
@@ -208,27 +222,41 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
     await alert.present();
   }
 
-  async addVehicle() {
+  async addVehicle(existingVehicle?: any) {
     const modal = await this.#modalCtrl.create({
       component: VehicleDialogComponent,
+      componentProps: { vehicle: existingVehicle }
     });
 
     await modal.present();
 
     const { data, role } = await modal.onWillDismiss();
     if (role === 'confirm' && data) {
-      const vehicleForm = this.#fb.group({
-        id: [data.id],
-        registrationNumber: [data.registrationNumber],
-        capacity: [data.capacity],
-        type: [data.type],
-      });
+      if (existingVehicle) {
+        // Update existing vehicle
+        const index = this.vehicles().findIndex(v => v.id === existingVehicle.id);
+        if (index !== -1) {
+          this.vehicleInput.at(index).patchValue(data);
+          this.vehicles.update(vehicles => {
+            vehicles[index] = data;
+            return [...vehicles];
+          });
+        }
+      } else {
+        // Add new vehicle
+        const vehicleForm = this.#fb.group({
+          id: [data.id],
+          registrationNumber: [data.registrationNumber],
+          capacity: [data.capacity],
+          type: [data.type],
+        });
 
-      this.vehicleInput.push(vehicleForm);
-      this.vehicles.update((vehicles) => [
-        ...vehicles,
-        vehicleForm.value as Required<typeof vehicleForm.value>,
-      ]);
+        this.vehicleInput.push(vehicleForm);
+        this.vehicles.update((vehicles) => [
+          ...vehicles,
+          vehicleForm.value as Required<typeof vehicleForm.value>,
+        ]);
+      }
     }
   }
 

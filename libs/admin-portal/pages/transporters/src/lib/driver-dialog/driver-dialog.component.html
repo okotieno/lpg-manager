@@ -67,7 +67,11 @@
       class="ion-margin-top"
       [disabled]="!driverForm.valid"
     >
-      Add Driver
+      @if (isEditing()) {
+        Save
+      } @else {
+        Add Driver
+      }
     </ion-button>
   </ion-row>
 </ion-footer>
