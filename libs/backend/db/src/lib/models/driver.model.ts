@@ -48,6 +48,12 @@ export class DriverModel extends Model {
   })
   contactNumber!: string;
 
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  email!: string;
+
   @BelongsTo(() => TransporterModel)
   transporter!: TransporterModel;
 } 

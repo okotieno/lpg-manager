@@ -19,9 +19,9 @@ import {
 } from '@ionic/angular/standalone';
 import {
   FormArray,
-  FormBuilder,
+  FormBuilder, FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
@@ -68,8 +68,8 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
     name: ['', [Validators.required]],
     contactPerson: ['', [Validators.required]],
     contactNumber: ['', [Validators.required]],
-    drivers: this.#fb.array([]),
-    vehicles: this.#fb.array([]),
+    drivers: this.#fb.array([] as FormGroup[]),
+    vehicles: this.#fb.array([] as FormGroup[]),
   });
   #router = inject(Router);
   #route = inject(ActivatedRoute);
@@ -82,6 +82,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
       name: string;
       licenseNumber: string;
       contactNumber: string;
+      email: string;
     }[]
   >([]);
   vehicles = signal<
@@ -134,6 +135,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
         name: [data.name],
         licenseNumber: [data.licenseNumber],
         contactNumber: [data.contactNumber],
+        email: [data.email],
       });
 
       this.driverInput.push(driverForm);
@@ -223,13 +225,25 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
   async onSubmit() {
     this.transporterForm.updateValueAndValidity();
     if (this.transporterForm.valid) {
-      const { name, drivers, contactNumber, contactPerson } =
+      const { name, drivers, vehicles, contactNumber, contactPerson } =
         this.transporterForm.value;
       const params = {
         name: name as string,
         contactNumber: contactNumber as string,
         contactPerson: contactPerson as string,
-        // drivers: drivers?.map((brand) => ({ id: brand?.id as string })) ?? [],
+        drivers: drivers?.map((driver) => ({
+          id: driver?.id as string,
+          contactNumber: driver?.contactNumber as string,
+          email: driver?.email as string,
+          licenseNumber: driver?.licenseNumber as string,
+          name: driver?.name as string,
+        })) ?? [],
+        vehicles: vehicles?.map((vehicle) => ({
+          id: vehicle?.id as string,
+          capacity: vehicle?.capacity as number,
+          type: vehicle?.type as string,
+          registrationNumber: vehicle?.registrationNumber as string,
+        }))
       };
 
       if (this.isEditing() && this.roleId()) {

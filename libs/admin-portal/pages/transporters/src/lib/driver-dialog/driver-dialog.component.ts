@@ -49,6 +49,7 @@ export class DriverDialogComponent {
     ],
     licenseNumber: ['', Validators.required],
     contactNumber: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
   });
 
   get nameErrorText() {

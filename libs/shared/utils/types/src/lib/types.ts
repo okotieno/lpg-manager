@@ -285,7 +285,9 @@ export type ICreateSuccessStringIdResponse = {
 export type ICreateTransporterInput = {
   contactNumber: Scalars['String']['input'];
   contactPerson: Scalars['String']['input'];
+  drivers?: InputMaybe<Array<InputMaybe<ITransporterDriverInput>>>;
   name: Scalars['String']['input'];
+  vehicles?: InputMaybe<Array<InputMaybe<ITransporterVehicleInput>>>;
 };
 
 export type ICreateTransporterSuccessResponse = {
@@ -1407,6 +1409,14 @@ export type ISuccessResponse = {
   success: Scalars['Boolean']['output'];
 };
 
+export type ITransporterDriverInput = {
+  contactNumber: Scalars['String']['input'];
+  email: Scalars['EmailAddress']['input'];
+  id: Scalars['UUID']['input'];
+  licenseNumber: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+};
+
 export type ITransporterModel = {
   contactNumber: Scalars['String']['output'];
   contactPerson: Scalars['String']['output'];
@@ -1416,6 +1426,13 @@ export type ITransporterModel = {
   name: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
   vehicles?: Maybe<Array<Maybe<IVehicleModel>>>;
+};
+
+export type ITransporterVehicleInput = {
+  capacity: Scalars['PositiveFloat']['input'];
+  id: Scalars['UUID']['input'];
+  registrationNumber: Scalars['String']['input'];
+  type: Scalars['String']['input'];
 };
 
 export type IUpdateActivityLogInput = {

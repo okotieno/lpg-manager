@@ -9,10 +9,26 @@ type TransporterModel {
   updatedAt: DateTime!
 }
 
+input TransporterDriverInput {
+  id: UUID!
+  name: String!
+  licenseNumber: String!
+  contactNumber: String!
+  email: EmailAddress!
+}
+input TransporterVehicleInput {
+  id:  UUID!
+  registrationNumber: String!
+  capacity: PositiveFloat!
+  type: String!
+}
+
 input CreateTransporterInput {
   name: String!
   contactPerson: String!
   contactNumber: String!
+  drivers: [TransporterDriverInput]
+  vehicles: [TransporterVehicleInput]
 }
 
 input UpdateTransporterInput {

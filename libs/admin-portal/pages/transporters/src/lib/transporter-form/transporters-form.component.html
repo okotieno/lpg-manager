@@ -95,6 +95,7 @@
           <th>Name</th>
           <th>License Number</th>
           <th>Contact Number</th>
+          <th>Email</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -104,6 +105,7 @@
               <td>{{ driver.name }}</td>
               <td>{{ driver.licenseNumber }}</td>
               <td>{{ driver.contactNumber }}</td>
+              <td>{{ driver.email }}</td>
               <td>
                 <ion-button fill="clear" color="danger" (click)="removeDriver(i)">
                   <ion-icon slot="icon-only" name="trash-can"></ion-icon>
