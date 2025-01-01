@@ -97,6 +97,7 @@ export const withPaginatedItemsStore = <
     withComputed((store) => ({
       _getItemsKey: computed(() => {
         const key = store._getItemKey;
+        if (key.endsWith('h')) return key + 'es' as RootField;
         return (key.endsWith('y') ? key.slice(0, -1) + 'ies' : key + 's') as RootField;
       }),
       _deleteItemWithIdKey: computed(() => `delete${store._getItemKey}`),

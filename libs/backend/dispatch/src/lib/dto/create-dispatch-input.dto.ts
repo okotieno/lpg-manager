@@ -33,11 +33,11 @@ export class CreateDispatchInputDto {
   dispatchDate!: Date;
 
   @IsArray()
-  @IsUUID('4', { each: true })
-  @ValidateNested({ each: true })
-  @Exists(OrderModel, 'id', {
-    message: (validationArguments) =>
-      `Order with id ${validationArguments.value} not found`,
-  })
+  // @IsUUID('4', { each: true })
+  // @ValidateNested({ each: true })
+  // @Exists(OrderModel, 'id', {
+  //   message: (validationArguments) =>
+  //     `Order with id ${validationArguments.value} not found`,
+  // })
   orderIds!: string[];
-} 
+}

@@ -107,17 +107,8 @@ export class DispatchResolver {
 
   @ResolveField('orders')
   async getOrders(@Root() dispatch: DispatchModel) {
-    return this.orderService.findAll({
-      sortBy: 'createdAt',
-      sortByDirection: SortByDirectionEnum.DESC,
-      filters: [
-        {
-          field: 'dispatchId',
-          operator: QueryOperatorEnum.Equals,
-          value: dispatch.id,
-          values: [],
-        },
-      ],
+    return this.orderService.model.findAll({
+      where: { dispatchId: dispatch.id },
     });
   }
 }

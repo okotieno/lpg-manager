@@ -28,7 +28,7 @@ import {
 } from '@lpg-manager/transporter-store';
 import { DriverStore, IGetDriversQuery } from '@lpg-manager/driver-store';
 import { IGetVehiclesQuery, VehicleStore } from '@lpg-manager/vehicle-store';
-import { DispatchStore } from '@lpg-manager/dispatch-store';
+import { DispatchStore, ICreateDispatchGQL } from '@lpg-manager/dispatch-store';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { CurrencyPipe, JsonPipe } from '@angular/common';
 import { IQueryOperatorEnum, ISelectCategory } from '@lpg-manager/types';
@@ -110,7 +110,9 @@ export default class CreateDispatchComponent {
     this.#orderStore.items().filter((order) => order.status === 'CONFIRMED')
   );
 
-  constructor() {
+  constructor(
+    private createDispatchGQL: ICreateDispatchGQL
+  ) {
     this.dispatchForm
       .get('transporter')
       ?.valueChanges.pipe(takeUntilDestroyed())
@@ -175,13 +177,23 @@ export default class CreateDispatchComponent {
   async createDispatch() {
 
     const formValue = this.dispatchForm.value;
-    this.#dispatchStore.createNewItem({
-      transporterId: formValue.transporter?.id as string,
-      driverId: formValue.driver?.id as string,
-      vehicleId: formValue.vehicle?.id as string,
-      orderIds: this.selectedOrders,
-      dispatchDate: new Date(),
-    });
+    // this.#dispatchStore.createNewItem({
+    //   transporterId: formValue.transporter?.id as string,
+    //   driverId: formValue.driver?.id as string,
+    //   vehicleId: formValue.vehicle?.id as string,
+    //   orderIds: this.selectedOrders,
+    //   dispatchDate: new Date(),
+    // });
+
+    this.createDispatchGQL.mutate({
+      params: {
+        transporterId: formValue.transporter?.id as string,
+        driverId: formValue.driver?.id as string,
+        vehicleId: formValue.vehicle?.id as string,
+        orderIds: this.selectedOrders,
+        dispatchDate: new Date().toISOString()
+      }
+    }).subscribe()
 
   }
 }
