@@ -15,6 +15,7 @@ import {
   IonItem,
   IonRow,
   ModalController,
+  AlertController,
 } from '@ionic/angular/standalone';
 import {
   FormArray,
@@ -50,7 +51,7 @@ import { DriverDialogComponent } from '../driver-dialog/driver-dialog.component'
     IonRow,
     IonCol,
     IonIcon,
-    RouterLink,
+    RouterLink
   ],
   templateUrl: './transporters-form.component.html',
   styleUrl: './transporters-form.component.scss',
@@ -61,6 +62,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
   #createTransporterGQL = inject(ICreateTransporterGQL);
   #updateTransporterGQL = inject(IUpdateTransporterGQL);
   #modalCtrl = inject(ModalController);
+  #alertCtrl = inject(AlertController);
 
   transporterForm = this.#fb.group({
     name: ['', [Validators.required]],
@@ -142,12 +144,30 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
     }
   }
 
-  removeDriver(index: number) {
-    this.driverInput.removeAt(index);
-    this.drivers.update((drivers) => {
-      drivers.splice(index, 1);
-      return [...drivers];
+  async removeDriver(index: number) {
+    const alert = await this.#alertCtrl.create({
+      header: 'Confirm Removal',
+      message: 'Are you sure you want to remove this driver?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Remove',
+          role: 'confirm',
+          handler: () => {
+            this.driverInput.removeAt(index);
+            this.drivers.update((drivers) => {
+              drivers.splice(index, 1);
+              return [...drivers];
+            });
+          },
+        },
+      ],
     });
+
+    await alert.present();
   }
 
   async addVehicle() {
@@ -174,12 +194,30 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
     }
   }
 
-  removeVehicle(index: number) {
-    this.vehicleInput.removeAt(index);
-    this.vehicles.update((vehicles) => {
-      vehicles.splice(index, 1);
-      return [...vehicles];
+  async removeVehicle(index: number) {
+    const alert = await this.#alertCtrl.create({
+      header: 'Confirm Removal',
+      message: 'Are you sure you want to remove this vehicle?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Remove',
+          role: 'confirm',
+          handler: () => {
+            this.vehicleInput.removeAt(index);
+            this.vehicles.update((vehicles) => {
+              vehicles.splice(index, 1);
+              return [...vehicles];
+            });
+          },
+        },
+      ],
     });
+
+    await alert.present();
   }
 
   async onSubmit() {
