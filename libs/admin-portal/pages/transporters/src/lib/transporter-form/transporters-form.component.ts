@@ -13,7 +13,8 @@ import {
   IonCol, IonIcon,
   IonInput,
   IonItem, IonLabel,
-  IonRow, IonText
+  IonRow, IonText,
+  ModalController
 } from '@ionic/angular/standalone';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -32,6 +33,8 @@ import {
 } from '@lpg-manager/injection-token';
 import { defaultQueryParams } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
+import { VehicleDialogComponent } from '../vehicle-dialog/vehicle-dialog.component';
+import { DriverDialogComponent } from '../driver-dialog/driver-dialog.component';
 
 @Component({
   selector: 'lpg-transporter-form',
@@ -48,6 +51,7 @@ import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
     IonAccordion,
     IonLabel,
     IonText,
+    RouterLink,
   ],
   templateUrl: './transporters-form.component.html',
   styleUrl: './transporters-form.component.scss',
@@ -57,6 +61,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
   #fb = inject(FormBuilder);
   #createTransporterGQL = inject(ICreateTransporterGQL);
   #updateTransporterGQL = inject(IUpdateTransporterGQL);
+  #modalCtrl = inject(ModalController);
 
   transporterForm = this.#fb.group({
     name: ['', [Validators.required]],
@@ -98,30 +103,48 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
     return this.transporterForm.dirty;
   }
 
-  addDriver() {
-    const driverForm = this.#fb.group({
-      id: [crypto.randomUUID(), [Validators.required]],
-      name: ['', Validators.required],
-      licenseNumber: ['', Validators.required],
-      contactNumber: ['', Validators.required],
+  async addDriver() {
+    const modal = await this.#modalCtrl.create({
+      component: DriverDialogComponent,
     });
 
-    this.drivers.push(driverForm);
+    await modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm' && data) {
+      const driverForm = this.#fb.group({
+        id: [data.id],
+        name: [data.name],
+        licenseNumber: [data.licenseNumber],
+        contactNumber: [data.contactNumber],
+      });
+
+      this.drivers.push(driverForm);
+    }
   }
 
   removeDriver(index: number) {
     this.drivers.removeAt(index);
   }
 
-  addVehicle() {
-    const vehicleForm = this.#fb.group({
-      id: [crypto.randomUUID(), [Validators.required]],
-      registrationNumber: ['', Validators.required],
-      capacity: [null as null | number, [Validators.required, Validators.min(0)]],
-      type: ['', Validators.required],
+  async addVehicle() {
+    const modal = await this.#modalCtrl.create({
+      component: VehicleDialogComponent,
     });
 
-    this.vehicles.push(vehicleForm);
+    await modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm' && data) {
+      const vehicleForm = this.#fb.group({
+        id: [data.id],
+        registrationNumber: [data.registrationNumber],
+        capacity: [data.capacity],
+        type: [data.type],
+      });
+
+      this.vehicles.push(vehicleForm);
+    }
   }
 
   removeVehicle(index: number) {
