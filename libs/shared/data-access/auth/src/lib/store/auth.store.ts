@@ -30,10 +30,10 @@ import {
   EMPTY,
   filter,
   lastValueFrom,
-  map,
+  map, of, takeWhile,
   tap,
   throwError,
-  timer,
+  timer
 } from 'rxjs';
 import { Preferences } from '@capacitor/preferences';
 import { MutationResult } from '@apollo/client';
@@ -252,11 +252,17 @@ export const AuthStore = signalStore(
     };
     const isAuthenticatedGuard = () =>
       timer(100, 100).pipe(
+        // takeWhile(() => !store.initialLoadComplete()),
+        tap(() => {
+          console.log(store.initialLoadComplete())
+        }),
         filter(() => store.initialLoadComplete()),
         map(() => store.isLoggedIn())
       );
     const isGuestGuard = () =>
       isAuthenticatedGuard().pipe(map((isAuthenticated) => !isAuthenticated));
+
+    const isDealerGuard = () => of(true)
     return {
       login,
       removeErrorMessage,
@@ -265,6 +271,7 @@ export const AuthStore = signalStore(
       updateActiveRole,
       isAuthenticatedGuard,
       isGuestGuard,
+      isDealerGuard,
       changePasswordUsingResetToken
     };
   }),

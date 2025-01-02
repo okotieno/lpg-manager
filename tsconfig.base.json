@@ -117,6 +117,9 @@
       "@lpg-manager/injection-token": [
         "libs/shared/utils/injection-token/src/index.ts"
       ],
+      "@lpg-manager/sequential-guards": [
+        "libs/shared/utils/sequential-guards/src/index.ts"
+      ],
       "@lpg-manager/inventory": ["libs/backend/inventory/src/index.ts"],
       "@lpg-manager/inventory-service": [
         "libs/backend/services/inventory/src/index.ts"

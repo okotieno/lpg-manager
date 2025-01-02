@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthStore } from '@lpg-manager/auth-store';
+import { runGuardsInOrder } from '@lpg-manager/sequential-guards';
 
 export const appRoutes: Route[] = [
   {
@@ -33,6 +34,11 @@ export const appRoutes: Route[] = [
   {
     path: 'dashboard',
     loadChildren: () => import('@lpg-manager/dealer-dashboard-page'),
-    canMatch: [() => inject(AuthStore).isAuthenticatedGuard()],
+    canMatch: [
+      runGuardsInOrder(
+        // () => inject(AuthStore).isAuthenticatedGuard(),
+        () => inject(AuthStore).isDealerGuard()
+      ),
+    ],
   },
 ];
