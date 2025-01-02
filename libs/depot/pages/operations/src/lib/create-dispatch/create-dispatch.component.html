@@ -70,6 +70,10 @@
 
       <div class="ion-padding">
         <ion-button type="submit" expand="block" [disabled]="!dispatchForm.valid || !selectedOrders.length">
+          @if (isLoading()) {
+            <ion-spinner name="lines-sharp-small" slot="end"></ion-spinner>
+          }
+          <ion-spinner name="lines-sharp-small" slot="end"></ion-spinner>
           Create Dispatch
         </ion-button>
       </div>

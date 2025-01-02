@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ mode() === 'create' ? 'Add' : 'Edit' }} Inventory</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon color="danger" slot="icon-only" name="circle-xmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="inventoryForm" (ngSubmit)="save()">
+    <ion-item lines="none">
+      <lpg-searchable-select
+        [itemsStore]="cataloguesStore"
+        formControlName="catalogue"
+        label="Select Catalogue"
+        labelPlacement="floating"
+        placeholder="--Select catalogue--"
+        [defaultParams]="defaultFilters()"
+      ></lpg-searchable-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Quantity</ion-label>
+      <ion-input formControlName="quantity" type="number" min="0"></ion-input>
+    </ion-item>
+
+    <div class="ion-padding">
+      <ion-button type="submit" expand="block" [disabled]="!inventoryForm.valid">
+        {{ mode() === 'create' ? 'Add' : 'Save' }} Inventory
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

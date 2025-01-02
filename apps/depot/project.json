@@ -29,6 +29,10 @@
           }
         ],
         "styles": [
+          {
+            "input": "libs/shared/services/theme/src/lib/theme-service/variables.scss",
+            "inject": true
+          },
           "node_modules/@ionic/angular/css/ionic.bundle.css",
           "apps/depot/src/styles.scss"
         ],

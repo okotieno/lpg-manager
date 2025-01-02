@@ -18,7 +18,7 @@ import {
   IonRow,
   IonCol,
   IonPopover,
-  ViewDidEnter
+  ViewDidEnter, IonSpinner
 } from '@ionic/angular/standalone';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { IGetOrdersQuery, OrderStore } from '@lpg-manager/order-store';
@@ -70,7 +70,7 @@ type IOrderItem = NonNullable<
     IonRow,
     IonCol,
     IonPopover,
-    JsonPipe,
+    IonSpinner,
   ],
   providers: [
     TransporterStore,

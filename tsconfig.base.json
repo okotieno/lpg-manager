@@ -199,6 +199,16 @@
       ],
       "@lpg-manager/vehicle": ["libs/backend/vehicle/src/index.ts"],
       "@lpg-manager/vehicle-service": ["libs/backend/services/vehicle/src/index.ts"],
+
+      "@lpg-manager/driver-dashboard-page": [
+        "libs/driver/pages/dashboard/src/index.ts"
+      ],
+      "@lpg-manager/driver-inventories-page": [
+        "libs/driver/pages/dashboard/src/index.ts"
+      ],
+      "@lpg-manager/driver-orders-page": [
+        "libs/driver/pages/dashboard/src/index.ts"
+      ]
     }
   }
 }
