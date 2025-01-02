@@ -23,7 +23,7 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { BreadcrumbComponent, BreadcrumbStore } from '@lpg-manager/breadcrumb';
-import { JsonPipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { CartStore } from '@lpg-manager/cart-store';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { FormsModule } from '@angular/forms';
@@ -56,8 +56,7 @@ import { NotificationBellComponent } from '@lpg-manager/notification-component';
     IonSelect,
     IonSelectOption,
     FormsModule,
-    NotificationBellComponent,
-    JsonPipe,
+    NotificationBellComponent
   ],
   templateUrl: './dashboard-page.component.html',
   styleUrl: './dashboard-page.component.scss',

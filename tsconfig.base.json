@@ -204,10 +204,10 @@
         "libs/driver/pages/dashboard/src/index.ts"
       ],
       "@lpg-manager/driver-inventories-page": [
-        "libs/driver/pages/dashboard/src/index.ts"
+        "libs/driver/pages/inventories/src/index.ts"
       ],
       "@lpg-manager/driver-orders-page": [
-        "libs/driver/pages/dashboard/src/index.ts"
+        "libs/driver/pages/orders/src/index.ts"
       ]
     }
   }

@@ -1,5 +1,5 @@
 {
-  "name": "driver",
+  "name": "driver-app",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "lpg",
@@ -65,14 +65,14 @@
     "serve": {
       "executor": "@nx/angular:dev-server",
       "options": {
-        "port": 6002
+        "port": 6003
       },
       "configurations": {
         "production": {
-          "buildTarget": "driver:build:production"
+          "buildTarget": "driver-app:build:production"
         },
         "development": {
-          "buildTarget": "driver:build:development"
+          "buildTarget": "driver-app:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -80,7 +80,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "buildTarget": "driver:build"
+        "buildTarget": "driver-app:build"
       }
     },
     "lint": {
@@ -96,8 +96,8 @@
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "driver:build",
-        "port": 6002,
+        "buildTarget": "driver-app:build",
+        "port": 6003,
         "staticFilePath": "dist/apps/driver/browser",
         "spa": true
       }

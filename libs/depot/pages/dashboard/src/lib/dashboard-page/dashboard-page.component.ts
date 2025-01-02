@@ -20,7 +20,7 @@ import {
   IonSelectOption, IonBackButton, IonRouterOutlet
 } from '@ionic/angular/standalone';
 import { ThemeService } from '@lpg-manager/theme-service';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent, BreadcrumbStore } from '@lpg-manager/breadcrumb';
 import { TitleCasePipe } from '@angular/common';
 import { CartStore } from '@lpg-manager/cart-store';
@@ -45,7 +45,6 @@ import { NotificationBellComponent } from '@lpg-manager/notification-component';
     IonItem,
     IonLabel,
     IonPopover,
-    RouterOutlet,
     RouterLink,
     BreadcrumbComponent,
     IonRow,
