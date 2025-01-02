@@ -24,6 +24,13 @@ import {
   setEntities,
   withEntities,
 } from '@ngrx/signals/entities';
+import {
+  ICreateDispatchGQL,
+  ICreateDispatchMutation,
+  ICreateDispatchMutationVariables,
+} from '@lpg-manager/dispatch-store';
+import * as Apollo from 'apollo-angular';
+import { OperationVariables } from '@apollo/client';
 
 export const GET_ITEMS_INCLUDE_FIELDS = new InjectionToken<
   Record<string, boolean>
@@ -46,6 +53,13 @@ export type IDeleteItemMutation<D extends string> = {
   };
 };
 
+export type ICreateItemMutation<
+  CreateRootField extends string,
+  ICreateItemResponse extends { message: string; data: { id: string } }
+> = {
+  [K in CreateRootField]: ICreateItemResponse;
+};
+
 interface StoreState<T> {
   deleteItemId?: string;
   sortBy: keyof T;
@@ -60,6 +74,10 @@ interface StoreState<T> {
 }
 
 export const withPaginatedItemsStore = <
+  ICreateItemMutation,
+  ICreateItemMutationVariables extends OperationVariables,
+  ICreateItemGQL extends Mutation<ICreateItemMutation, ICreateItemMutationVariables>,
+
   IGetItemsQueryItem extends { id: string },
   IGetItemsQueryVariables extends Exact<{
     query?: InputMaybe<IQueryParams>;
@@ -70,6 +88,7 @@ export const withPaginatedItemsStore = <
   signalStoreFeature(
     {
       props: type<{
+        _createItemGQL: ICreateItemGQL;
         _getItemsGQL: Query<
           IGetItemsQuery<RootField, IGetItemsQueryItem>,
           IGetItemsQueryVariables
@@ -97,8 +116,10 @@ export const withPaginatedItemsStore = <
     withComputed((store) => ({
       _getItemsKey: computed(() => {
         const key = store._getItemKey;
-        if (key.endsWith('h')) return key + 'es' as RootField;
-        return (key.endsWith('y') ? key.slice(0, -1) + 'ies' : key + 's') as RootField;
+        if (key.endsWith('h')) return (key + 'es') as RootField;
+        return (
+          key.endsWith('y') ? key.slice(0, -1) + 'ies' : key + 's'
+        ) as RootField;
       }),
       _deleteItemWithIdKey: computed(() => `delete${store._getItemKey}`),
     })),
@@ -271,6 +292,6 @@ export const withPaginatedItemsStore = <
       },
       createNewItem(params: any) {
         console.log('Function not implemented!!!');
-      }
+      },
     }))
   );

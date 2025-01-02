@@ -1,6 +1,7 @@
 import { signalStore, withProps, withMethods } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
+  ICreateOrderGQL, ICreateOrderMutation, ICreateOrderMutationVariables,
   IDeleteOrderByIdGQL,
   IGetOrdersGQL,
   IGetOrdersQuery,
@@ -14,15 +15,17 @@ import { IOrderStatus } from '@lpg-manager/types';
 
 export const OrderStore = signalStore(
   withProps(() => ({
+    _createItemGQL: inject(ICreateOrderGQL),
     _getItemKey: 'order',
     _getItemsGQL: inject(IGetOrdersGQL),
     _deleteItemWithIdGQL: inject(IDeleteOrderByIdGQL),
     _updateOrderStatusGQL: inject(IUpdateOrderStatusGQL),
   })),
   withPaginatedItemsStore<
-    NonNullable<
-      NonNullable<IGetOrdersQuery['orders']['items']>[number]
-    >,
+    ICreateOrderMutation,
+    ICreateOrderMutationVariables,
+    ICreateOrderGQL,
+    NonNullable<NonNullable<IGetOrdersQuery['orders']['items']>[number]>,
     IGetOrdersQueryVariables,
     'orders',
     'deleteOrder'

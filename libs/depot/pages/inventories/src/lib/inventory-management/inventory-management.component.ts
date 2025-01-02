@@ -15,7 +15,7 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InventoryStore } from '@lpg-manager/inventory-store';
 import {
-  CataloguesStore,
+  CatalogueStore,
   IGetCataloguesQuery,
 } from '@lpg-manager/catalogue-store';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
@@ -42,7 +42,7 @@ import { PaginatedResource } from '@lpg-manager/data-table';
     SearchableSelectComponent,
   ],
   templateUrl: './inventory-management.component.html',
-  providers: [InventoryStore, CataloguesStore],
+  providers: [InventoryStore, CatalogueStore],
 })
 export default class InventoryManagementComponent {
   #fb = inject(FormBuilder);
@@ -50,7 +50,7 @@ export default class InventoryManagementComponent {
   #modalCtrl = inject(ModalController);
   #authStore = inject(AuthStore);
   #createInventoryGQL = inject(ICreateInventoryGQL);
-  cataloguesStore = inject(CataloguesStore) as PaginatedResource<
+  cataloguesStore = inject(CatalogueStore) as PaginatedResource<
     NonNullable<NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]>
   >;
 
