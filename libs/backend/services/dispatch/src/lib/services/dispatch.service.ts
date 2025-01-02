@@ -32,9 +32,12 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
           dispatchDate: data.dispatchDate,
         }, { transaction });
 
-        // Update orders with the dispatch ID
+        // Update orders with the dispatch ID and status
         await this.orderModel.update(
-          { dispatchId: dispatch.id },
+          { 
+            dispatchId: dispatch.id,
+            status: 'DISPATCH_INITIATED'
+          },
           {
             where: { id: data.orderIds },
             transaction

@@ -55,11 +55,11 @@ export class OrderModel extends Model {
   totalPrice!: number;
 
   @Column({
-    type: DataType.ENUM('PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELED', 'REJECTED'),
+    type: DataType.ENUM('PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELED', 'REJECTED', 'DISPATCH_INITIATED'),
     allowNull: false,
     defaultValue: 'PENDING'
   })
-  status!: 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELED' | 'REJECTED';
+  status!: 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELED' | 'REJECTED' | 'DISPATCH_INITIATED';
 
   @BelongsTo(() => StationModel, 'depotId')
   depot!: StationModel;

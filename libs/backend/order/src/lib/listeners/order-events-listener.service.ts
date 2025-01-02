@@ -163,4 +163,29 @@ export class OrderEventsListener {
       description: `Order #${order.id.slice(-8)} has been rejected`
     });
   }
+
+  @OnEvent('order.dispatch_initiated')
+  async handleOrderDispatchInitiated(event: OrderEvent) {
+    const order = event.order;
+
+    // Create activity log
+    const activity = await this.activityLogService.create({
+      action: 'order.dispatch_initiated',
+      description: `Order #${order.id.slice(-8)} has been added to dispatch`,
+      type: 'INFO',
+      userId: event.userId
+    });
+
+    // Notify dealer users
+    await this.notifyStationUsers(order.dealerId, {
+      title: 'Order Added to Dispatch',
+      description: `Order #${order.id.slice(-8)} has been added to a dispatch and will be delivered soon`
+    });
+
+    // Notify depot users
+    await this.notifyStationUsers(order.depotId, {
+      title: 'Order Added to Dispatch',
+      description: `Order #${order.id.slice(-8)} has been added to dispatch #${order.dispatchId}`
+    });
+  }
 }

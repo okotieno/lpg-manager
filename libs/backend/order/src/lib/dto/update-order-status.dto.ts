@@ -5,7 +5,8 @@ export enum OrderStatus {
   CONFIRMED = 'CONFIRMED',
   COMPLETED = 'COMPLETED',
   CANCELED = 'CANCELED',
-  REJECTED = 'REJECTED'
+  REJECTED = 'REJECTED',
+  DISPATCH_INITIATED = 'DISPATCH_INITIATED'
 }
 
 export class UpdateOrderStatusInput {
