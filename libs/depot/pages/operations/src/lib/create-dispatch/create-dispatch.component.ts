@@ -18,6 +18,7 @@ import {
   IonRow,
   IonCol,
   IonPopover,
+  ViewDidEnter
 } from '@ionic/angular/standalone';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { IGetOrdersQuery, OrderStore } from '@lpg-manager/order-store';
@@ -79,7 +80,7 @@ type IOrderItem = NonNullable<
     DispatchStore,
   ],
 })
-export default class CreateDispatchComponent {
+export default class CreateDispatchComponent implements ViewDidEnter {
   itemsPopoverOpen = signal(false);
   itemsPopover = viewChild.required(IonPopover);
   activeOrder = signal<IOrderItem | undefined>(undefined);
@@ -106,13 +107,24 @@ export default class CreateDispatchComponent {
     ],
   });
 
+  isLoading = this.#dispatchStore.isLoading;
+  formSubmitted = false;
+
+  isLoadingChangeEffect = effect(async () => {
+    if (this.isLoading()) {
+      this.dispatchForm.disable();
+    } else if (this.formSubmitted) {
+      await this.#router.navigate(['/dashboard', 'operations']);
+    } else {
+      this.dispatchForm.enable();
+    }
+  });
+
   confirmedOrders = computed(() =>
     this.#orderStore.items().filter((order) => order.status === 'CONFIRMED')
   );
 
-  constructor(
-    private createDispatchGQL: ICreateDispatchGQL
-  ) {
+  constructor(private createDispatchGQL: ICreateDispatchGQL) {
     this.dispatchForm
       .get('transporter')
       ?.valueChanges.pipe(takeUntilDestroyed())
@@ -152,6 +164,12 @@ export default class CreateDispatchComponent {
       });
   }
 
+  ionViewDidEnter(): void {
+    this.formSubmitted = false;
+    this.dispatchForm.enable();
+    this.dispatchForm.reset();
+  }
+
   presentPopover($event: Event, order: IOrderItem) {
     this.activeOrder.set(order);
     $event.preventDefault();
@@ -175,25 +193,16 @@ export default class CreateDispatchComponent {
     `${item.registrationNumber}`;
 
   async createDispatch() {
-
     const formValue = this.dispatchForm.value;
-    // this.#dispatchStore.createNewItem({
-    //   transporterId: formValue.transporter?.id as string,
-    //   driverId: formValue.driver?.id as string,
-    //   vehicleId: formValue.vehicle?.id as string,
-    //   orderIds: this.selectedOrders,
-    //   dispatchDate: new Date(),
-    // });
-
-    this.createDispatchGQL.mutate({
+    this.formSubmitted = true;
+    this.#dispatchStore.createNewItem({
       params: {
         transporterId: formValue.transporter?.id as string,
         driverId: formValue.driver?.id as string,
         vehicleId: formValue.vehicle?.id as string,
         orderIds: this.selectedOrders,
-        dispatchDate: new Date().toISOString()
-      }
-    }).subscribe()
-
+        dispatchDate: new Date().toISOString(),
+      },
+    });
   }
 }

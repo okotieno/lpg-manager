@@ -23,11 +23,10 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import {
   IGetPermissionsQuery,
-  PermissionsStore,
+  PermissionStore,
 } from '@lpg-manager/permission-store';
 import { ISelectCategory } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
-import { IGetUserByIdQuery } from '@lpg-manager/user-store';
 
 @Component({
   selector: 'lpg-role-form',
@@ -43,13 +42,13 @@ import { IGetUserByIdQuery } from '@lpg-manager/user-store';
     IonRow,
   ],
   templateUrl: './role-form.component.html',
-  providers: [PermissionsStore],
+  providers: [PermissionStore],
 })
 export default class RoleFormComponent {
   #fb = inject(FormBuilder);
   #createRoleGQL = inject(ICreateRoleGQL);
   #updateRoleGQL = inject(IUpdateRoleGQL);
-  permissionsStore = inject(PermissionsStore) as PaginatedResource<
+  permissionsStore = inject(PermissionStore) as PaginatedResource<
     NonNullable<
       NonNullable<IGetPermissionsQuery['permissions']['items']>[number]
     >

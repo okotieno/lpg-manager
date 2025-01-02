@@ -11,20 +11,17 @@ import {
   AlertController,
   IonButton,
   IonButtons,
-  IonCard,
-  IonCardContent, IonCol,
+  IonCol,
   IonIcon,
   IonInput,
   IonItem,
   IonLabel,
   IonList,
   IonListHeader, IonRow,
-  IonText
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
-import { PermissionsStore } from '@lpg-manager/permission-store';
 import { ICreateBrandGQL, IUpdateBrandGQL } from '@lpg-manager/brand-store';
 import {
   IBrandModel,
@@ -40,6 +37,7 @@ import {
   SHOW_SUCCESS_MESSAGE,
 } from '@lpg-manager/injection-token';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
+import { PermissionStore } from '@lpg-manager/permission-store';
 
 @Component({
   selector: 'lpg-brand-form',
@@ -62,7 +60,7 @@ import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
     IonCol
   ],
   templateUrl: './brand-form.component.html',
-  providers: [PermissionsStore],
+  providers: [PermissionStore],
 })
 export default class BrandFormComponent implements IHasUnsavedChanges {
   brandItems = signal<IUpdateBrandCatalogueInput[]>([]);

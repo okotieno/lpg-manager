@@ -17,20 +17,16 @@ import {
   IQueryParamsFilter,
   ISortByEnum,
 } from '@lpg-manager/types';
-import { lastValueFrom, Observable, tap } from 'rxjs';
+import { EMPTY, lastValueFrom, Observable, tap } from 'rxjs';
 import { defaultQueryParams } from './default-variables';
 import {
   setAllEntities,
   setEntities,
   withEntities,
 } from '@ngrx/signals/entities';
-import {
-  ICreateDispatchGQL,
-  ICreateDispatchMutation,
-  ICreateDispatchMutationVariables,
-} from '@lpg-manager/dispatch-store';
-import * as Apollo from 'apollo-angular';
+
 import { OperationVariables } from '@apollo/client';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 export const GET_ITEMS_INCLUDE_FIELDS = new InjectionToken<
   Record<string, boolean>
@@ -60,7 +56,8 @@ export type ICreateItemMutation<
   [K in CreateRootField]: ICreateItemResponse;
 };
 
-interface StoreState<T> {
+interface StoreState<T, ICreateItemMutationVariables> {
+  createItemMutationVariables: ICreateItemMutationVariables | undefined;
   deleteItemId?: string;
   sortBy: keyof T;
   sortByDirection: ISortByEnum;
@@ -76,8 +73,10 @@ interface StoreState<T> {
 export const withPaginatedItemsStore = <
   ICreateItemMutation,
   ICreateItemMutationVariables extends OperationVariables,
-  ICreateItemGQL extends Mutation<ICreateItemMutation, ICreateItemMutationVariables>,
-
+  ICreateItemGQL extends Mutation<
+    ICreateItemMutation,
+    ICreateItemMutationVariables
+  >,
   IGetItemsQueryItem extends { id: string },
   IGetItemsQueryVariables extends Exact<{
     query?: InputMaybe<IQueryParams>;
@@ -112,7 +111,8 @@ export const withPaginatedItemsStore = <
       items: [],
       deleteItemId: undefined,
       _selectedItems: [],
-    } as StoreState<IGetItemsQueryItem>),
+      createItemMutationVariables: undefined,
+    } as StoreState<IGetItemsQueryItem, ICreateItemMutationVariables>),
     withComputed((store) => ({
       _getItemsKey: computed(() => {
         const key = store._getItemKey;
@@ -127,6 +127,15 @@ export const withPaginatedItemsStore = <
       _getItemsIncludeFields: inject(GET_ITEMS_INCLUDE_FIELDS),
     })),
     withProps((store) => ({
+      _createItemResource: rxResource({
+        request: () => ({ params: store.createItemMutationVariables() }),
+        loader: ({ request }) => {
+          if (!request.params) {
+            return EMPTY;
+          }
+          return store._createItemGQL.mutate({ ...request.params });
+        },
+      }),
       _selectedItemResource: resource({
         request: () => ({ selectedItemIds: store._selectedItems() }),
         loader: ({ request }) => {
@@ -255,6 +264,7 @@ export const withPaginatedItemsStore = <
     withComputed((store) => ({
       isLoading: computed(
         () =>
+          store._createItemResource.isLoading() ||
           store._itemResource.isLoading() ||
           store._deleteItemWithIdResource.isLoading()
       ),
@@ -290,8 +300,8 @@ export const withPaginatedItemsStore = <
       deleteItemWithId(id: string) {
         patchState(store, { deleteItemId: id });
       },
-      createNewItem(params: any) {
-        console.log('Function not implemented!!!');
+      createNewItem(createItemMutationVariables: ICreateItemMutationVariables) {
+        patchState(store, { createItemMutationVariables });
       },
     }))
   );
