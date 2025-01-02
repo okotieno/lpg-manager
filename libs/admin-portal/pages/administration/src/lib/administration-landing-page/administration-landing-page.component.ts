@@ -30,12 +30,12 @@ import { IGetUserCountGQL } from '@lpg-manager/user-store';
   templateUrl: './administration-landing-page.component.html',
   styles: `
     ion-card {
-      --background: rgb(68,30,47);
-      background: linear-gradient(90deg, rgba(68,30,47,1) 14%, rgba(91,17,43,1) 77%);
       border-radius: 1rem;
+      background-image: url("/bg-pattern.svg"), linear-gradient(90deg, rgba(68,30,47,1) 17%, var(--ion-color-primary) 71%);
     }
 
     ion-icon {
+      opacity: .2;
       font-size: 100px;
     }
   `,
