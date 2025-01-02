@@ -37,7 +37,15 @@ module.exports = {
         }
       },
       status: {
-        type: Sequelize.ENUM('PENDING', 'IN_TRANSIT', 'DELIVERED', 'CANCELED'),
+        type: Sequelize.ENUM(
+          'PENDING',
+          'INITIATED',
+          'DEPOT_TO_DRIVER_CONFIRMED',
+          'DRIVER_FROM_DEPOT_CONFIRMED',
+          'IN_TRANSIT',
+          'DELIVERING',
+          'COMPLETED',
+        ),
         allowNull: false,
         defaultValue: 'PENDING'
       },
@@ -46,6 +54,31 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
+
+      initiatedAt: {
+        field: 'initiated_at',
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
+
+      depotToDriverConfirmedAt: {
+        field: 'depot_to_driver_confirmed_at',
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
+
+      completedAt: {
+        field: 'completed_at',
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
+
+      driverFromDealerConfirmedAt: {
+        field: 'driver_from_dealer_confirmed_at',
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
+
       createdAt: {
         field: 'created_at',
         type: Sequelize.DATE,
@@ -68,4 +101,4 @@ module.exports = {
     await queryInterface.dropTable('dispatches');
     await queryInterface.sequelize.query('DROP TYPE IF EXISTS enum_dispatches_status;');
   }
-}; 
+};
