@@ -33,7 +33,6 @@
             "input": "libs/shared/services/theme/src/lib/theme-service/variables.scss",
             "inject": true
           },
-          "apps/admin-portal/src/theme/variables.scss",
           "node_modules/@ionic/angular/css/ionic.bundle.css",
           {
             "input": "libs/shared/components/file-upload/src/lib/file-upload.scss",
