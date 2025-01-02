@@ -36,6 +36,15 @@ export type ISendPasswordResetEmailMutationVariables = Types.Exact<{
 
 export type ISendPasswordResetEmailMutation = { sendPasswordResetLinkEmail?: { message: string } | null };
 
+export type IChangePasswordUsingResetTokenMutationVariables = Types.Exact<{
+  token: Types.Scalars['String']['input'];
+  password: Types.Scalars['String']['input'];
+  passwordConfirmation: Types.Scalars['String']['input'];
+}>;
+
+
+export type IChangePasswordUsingResetTokenMutation = { changePasswordUsingResetToken?: { accessToken: string, refreshToken: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, permissions?: Array<{ id: string, name: string } | null> | null } | null } | null> | null } | null } | null };
+
 export const UserFieldsFragmentDoc = gql`
     fragment UserFields on UserModel {
   id
@@ -141,6 +150,32 @@ export const SendPasswordResetEmailDocument = gql`
   })
   export class ISendPasswordResetEmailGQL extends Apollo.Mutation<ISendPasswordResetEmailMutation, ISendPasswordResetEmailMutationVariables> {
     override document = SendPasswordResetEmailDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const ChangePasswordUsingResetTokenDocument = gql`
+    mutation ChangePasswordUsingResetToken($token: String!, $password: String!, $passwordConfirmation: String!) {
+  changePasswordUsingResetToken(
+    token: $token
+    password: $password
+    passwordConfirmation: $passwordConfirmation
+  ) {
+    accessToken
+    refreshToken
+    user {
+      ...UserFields
+    }
+  }
+}
+    ${UserFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class IChangePasswordUsingResetTokenGQL extends Apollo.Mutation<IChangePasswordUsingResetTokenMutation, IChangePasswordUsingResetTokenMutationVariables> {
+    override document = ChangePasswordUsingResetTokenDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

@@ -6,10 +6,11 @@
     "node": "22.4"
   },
   "scripts": {
-    "serve": "concurrently \"pnpm nx serve backend\" \"pnpm serve:admin-portal\" \"pnpm serve:depot\" \"pnpm serve:dealer\" \"pnpm nx serve transporter\"",
+    "serve": "concurrently \"pnpm nx serve backend\" \"pnpm serve:admin-portal\" \"pnpm serve:depot\" \"pnpm serve:dealer\" \"pnpm serve:driver-app\"",
     "serve:admin-portal": "pnpm nx copy:icons admin-portal && pnpm nx serve admin-portal",
     "serve:depot": "pnpm nx copy:icons depot && pnpm nx serve depot",
     "serve:dealer": "pnpm nx copy:icons dealer && pnpm nx serve dealer",
+    "serve:driver-app": "pnpm nx copy:icons driver-app && pnpm nx serve driver-app",
     "docker-compose:up": "pnpm nx docker-compose:up backend",
     "docker-compose:down": "pnpm nx docker-compose:down backend",
     "db:migrate": "nx db:migrate backend",

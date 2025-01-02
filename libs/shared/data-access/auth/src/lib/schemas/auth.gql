@@ -66,29 +66,23 @@ mutation SendPasswordResetEmail($email: String!) {
   }
 }
 
-#mutation ChangePasswordUsingResetToken(
-#  $token: String!
-#  $password: String!
-#  $passwordConfirmation: String!
-#) {
-#  changePasswordUsingResetToken(
-#    token: $token
-#    password: $password
-#    passwordConfirmation: $passwordConfirmation
-#  ) {
-#    accessToken
-#    refreshToken
-#    user {
-#      id
-#      firstName
-#      lastName
-#      email
-#      phone
-#      profilePhotoLink
-#      emailVerifiedAt
-#    }
-#  }
-#}
+mutation ChangePasswordUsingResetToken(
+  $token: String!
+  $password: String!
+  $passwordConfirmation: String!
+) {
+  changePasswordUsingResetToken(
+    token: $token
+    password: $password
+    passwordConfirmation: $passwordConfirmation
+  ) {
+    accessToken
+    refreshToken
+    user {
+      ...UserFields
+    }
+  }
+}
 #
 #mutation ValidatePasswordResetToken($token: String!) {
 #  validatePasswordResetToken(token: $token) {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   IonButton,
@@ -8,6 +8,7 @@ import {
   IonIcon,
   IonText
 } from '@ionic/angular/standalone';
+import { AuthStore } from '@lpg-manager/auth-store';
 
 @Component({
   selector: 'lpg-reset-password-page',
@@ -30,12 +31,14 @@ import {
   `]
 })
 export class ResetPasswordPageComponent {
+  passwordResetToken = input<string>();
   readonly #fb = inject(FormBuilder);
+  readonly #authStore = inject(AuthStore);
   showPassword = false;
-  
+
   resetPasswordForm = this.#fb.group({
     password: ['', [Validators.required, Validators.minLength(8)]],
-    confirmPassword: ['', [Validators.required]]
+    passwordConfirmation: ['', [Validators.required]]
   });
 
   togglePasswordVisibility() {
@@ -44,7 +47,13 @@ export class ResetPasswordPageComponent {
 
   onSubmit() {
     if (this.resetPasswordForm.valid) {
-      console.log(this.resetPasswordForm.value);
+      this.#authStore.changePasswordUsingResetToken(
+        {
+          token: this.passwordResetToken() as string,
+          password: this.resetPasswordForm.value.password as string,
+          passwordConfirmation: this.resetPasswordForm.value.passwordConfirmation as string,
+        }
+      );
     }
   }
 }

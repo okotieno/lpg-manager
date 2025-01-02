@@ -17,6 +17,8 @@ import {
   untracked,
 } from '@angular/core';
 import {
+  IChangePasswordUsingResetTokenGQL,
+  IChangePasswordUsingResetTokenMutationVariables,
   ILoginWithPasswordGQL,
   ILoginWithPasswordMutation,
   ILoginWithPasswordMutationVariables,
@@ -54,6 +56,7 @@ const initialState: AuthState = {
   },
   errorMessage: undefined,
   passwordResetLinkEmailInput: '',
+  passwordResetParams: undefined,
 };
 
 export const AuthStore = signalStore(
@@ -63,8 +66,45 @@ export const AuthStore = signalStore(
     _loginWithTokenGQL: inject(ILoginWithTokenGQL),
     _loginWithPasswordGQL: inject(ILoginWithPasswordGQL),
     _sendPasswordResetEmailGQL: inject(ISendPasswordResetEmailGQL),
+    _changePasswordUsingResetTokenGQL: inject(
+      IChangePasswordUsingResetTokenGQL
+    ),
   })),
   withProps((store) => ({
+    _changePasswordUsingResetToken: resource({
+      request: () => ({
+        params: store.passwordResetParams?.(),
+      }),
+      loader: ({ request, previous }) => {
+        if (previous.status === ResourceStatus.Idle) {
+          return Promise.resolve(undefined);
+        }
+        return lastValueFrom(
+          store._changePasswordUsingResetTokenGQL.mutate(request.params).pipe(
+            tap((res) => {
+              if (res.data?.changePasswordUsingResetToken) {
+                patchState(store, {
+                  loginResponse: {
+                    accessToken:
+                      res.data.changePasswordUsingResetToken.accessToken,
+                    refreshToken:
+                      res.data.changePasswordUsingResetToken.refreshToken,
+                    refreshTokenKey: '',
+                    user: res.data.changePasswordUsingResetToken.user,
+                  },
+                });
+              }
+            }),
+            catchError((err) => {
+              patchState(store, {
+                errorMessage: err.graphQLErrors[0].message,
+              });
+              return EMPTY;
+            })
+          )
+        );
+      },
+    }),
     _loginResource: resource<
       MutationResult<ILoginWithPasswordMutation> | undefined,
       ILoginWithPasswordMutationVariables
@@ -169,6 +209,11 @@ export const AuthStore = signalStore(
     };
   }),
   withMethods((store) => {
+    const changePasswordUsingResetToken = (
+      passwordResetParams: IChangePasswordUsingResetTokenMutationVariables
+    ) => {
+      patchState(store, { passwordResetParams });
+    };
     const removeErrorMessage = () => {
       patchState(store, { errorMessage: undefined });
     };
@@ -220,6 +265,7 @@ export const AuthStore = signalStore(
       updateActiveRole,
       isAuthenticatedGuard,
       isGuestGuard,
+      changePasswordUsingResetToken
     };
   }),
   withHooks((store, injector = inject(Injector)) => {

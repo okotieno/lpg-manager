@@ -25,6 +25,10 @@ export const AUTH_ROUTES: Routes = [
       {
         path: 'reset-password',
         component: ResetPasswordPageComponent
+      },
+      {
+        path: 'reset-password/:passwordResetToken',
+        component: ResetPasswordPageComponent
       }
     ]
   }

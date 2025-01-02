@@ -1,4 +1,7 @@
-import { ILoginWithPasswordMutation } from '../schemas/auth.generated';
+import {
+  IChangePasswordUsingResetTokenMutationVariables,
+  ILoginWithPasswordMutation,
+} from '../schemas/auth.generated';
 import { IMutationLoginWithPasswordArgs } from '@lpg-manager/types';
 
 export interface AuthState {
@@ -9,4 +12,5 @@ export interface AuthState {
   errorMessage?: string;
   passwordResetLinkEmailInput: string;
   initialLoadComplete: boolean;
+  passwordResetParams?: IChangePasswordUsingResetTokenMutationVariables;
 }
