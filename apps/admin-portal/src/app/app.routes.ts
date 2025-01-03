@@ -48,7 +48,7 @@ export const appRoutes: Route[] = [
         canMatch: [
           () => inject(AuthStore).isLoggedIn(),
           runGuardsInOrder(
-            () => !inject(AuthStore).hasPermissionTo('access depot app'),
+            () => !inject(AuthStore).hasPermissionTo('access admin portal'),
             () => showAccessDeniedAlert({ app: 'admin portal' })
           ),
         ],
