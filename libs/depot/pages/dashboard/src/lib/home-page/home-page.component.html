@@ -1,81 +1,64 @@
-<ion-grid>
-  <ion-row>
-    <ion-col size="12" size-sm="3">
-      <ion-card color="secondary" [routerLink]="['orders/pending']">
-        <ion-card-content>
-          <ion-row class="ion-justify-content-between ion-align-items-center">
-            <ion-icon color="warning" name="hourglass"></ion-icon>
-            <ion-text class="ion-margin-horizontal" color="lpg-title">{{ pendingOrders() }}</ion-text>
-          </ion-row>
-        </ion-card-content>
-        <ion-card-header>
-          <ion-card-title>
-            Pending Orders
-          </ion-card-title>
-        </ion-card-header>
-      </ion-card>
-    </ion-col>
+<ion-row class="ion-justify-content-start ion-padding">
+  <ion-col size="12" sizeMd="6" sizeXl="3">
+    <ion-card class="home-card" [routerLink]="['orders/pending']">
+      <ion-card-content>
+        <ion-row class="ion-justify-content-between ion-align-items-center">
+          <ion-icon color="warning" name="hourglass"></ion-icon>
+          <ion-text class="ion-margin-horizontal" color="lpg-title">{{ pendingOrders() }}</ion-text>
+        </ion-row>
+      </ion-card-content>
+      <ion-card-header>
+        <ion-card-title>
+          Pending Orders
+        </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ion-col>
 
-    <ion-col size="12" size-sm="3">
-      <ion-card color="secondary" [routerLink]="['orders/completed']">
-        <ion-card-content>
-          <ion-row class="ion-justify-content-between ion-align-items-center">
-            <ion-icon color="success" name="circle-check"></ion-icon>
-            <ion-text class="ion-margin-horizontal" color="lpg-title">{{ completedOrders() }}</ion-text>
-          </ion-row>
-        </ion-card-content>
-        <ion-card-header>
-          <ion-card-title>
-            Completed Orders
-          </ion-card-title>
-        </ion-card-header>
-      </ion-card>
-    </ion-col>
+  <ion-col size="12" sizeMd="6" sizeXl="3">
+    <ion-card class="home-card" [routerLink]="['orders/completed']">
+      <ion-card-content>
+        <ion-row class="ion-justify-content-between ion-align-items-center">
+          <ion-icon color="success" name="circle-check"></ion-icon>
+          <ion-text class="ion-margin-horizontal" color="lpg-title">{{ completedOrders() }}</ion-text>
+        </ion-row>
+      </ion-card-content>
+      <ion-card-header>
+        <ion-card-title>
+          Completed Orders
+        </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ion-col>
 
-    <ion-col size="12" size-sm="3">
-      <ion-card color="secondary" [routerLink]="['catalogues']">
-        <ion-card-content>
-          <ion-row class="ion-justify-content-between ion-align-items-center">
-            <ion-icon color="primary" name="circle-plus"></ion-icon>
-          </ion-row>
-        </ion-card-content>
-        <ion-card-header>
-          <ion-card-title>
-            Create New Order
-          </ion-card-title>
-        </ion-card-header>
-      </ion-card>
-    </ion-col>
+  <ion-col size="12" sizeMd="6" sizeXl="3">
+    <ion-card class="home-card" [routerLink]="['orders']">
+      <ion-card-content>
+        <ion-row class="ion-justify-content-between ion-align-items-center">
+          <ion-icon color="primary" name="timer"></ion-icon>
+        </ion-row>
+      </ion-card-content>
+      <ion-card-header>
+        <ion-card-title>
+          Order History
+        </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ion-col>
 
-    <ion-col size="12" size-sm="3">
-      <ion-card color="secondary" [routerLink]="['orders']">
-        <ion-card-content>
-          <ion-row class="ion-justify-content-between ion-align-items-center">
-            <ion-icon color="primary" name="timer"></ion-icon>
-          </ion-row>
-        </ion-card-content>
-        <ion-card-header>
-          <ion-card-title>
-            Order History
-          </ion-card-title>
-        </ion-card-header>
-      </ion-card>
-    </ion-col>
-
-    <ion-col size="12" size-sm="3">
-      <ion-card color="secondary" [routerLink]="['inventories']">
-        <ion-card-content>
-          <ion-row class="ion-justify-content-between ion-align-items-center">
-            <ion-icon color="primary" name="warehouse"></ion-icon>
-            <ion-text class="ion-margin-horizontal" color="lpg-title">Inventories</ion-text>
-          </ion-row>
-        </ion-card-content>
-        <ion-card-header>
-          <ion-card-title>
-            Inventories
-          </ion-card-title>
-        </ion-card-header>
-      </ion-card>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+  <ion-col size="12" sizeMd="6" sizeXl="3">
+    <ion-card class="home-card" [routerLink]="['inventories']">
+      <ion-card-content>
+        <ion-row class="ion-justify-content-between ion-align-items-center">
+          <ion-icon color="primary" name="warehouse"></ion-icon>
+          <ion-text class="ion-margin-horizontal" color="lpg-title">Inventories</ion-text>
+        </ion-row>
+      </ion-card-content>
+      <ion-card-header>
+        <ion-card-title>
+          Inventories
+        </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ion-col>
+</ion-row>

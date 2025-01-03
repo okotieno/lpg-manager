@@ -30,6 +30,9 @@
     <div class="ion-padding">
       <ion-button type="submit" expand="block" [disabled]="!inventoryForm.valid">
         {{ mode() === 'create' ? 'Add' : 'Save' }} Inventory
+        @if (isLoading()) {
+          <ion-spinner name="lines-sharp-small" slot="end"></ion-spinner>
+        }
       </ion-button>
     </div>
   </form>

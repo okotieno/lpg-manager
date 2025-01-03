@@ -28,6 +28,10 @@ import {
 import { ISelectCategory } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
 
+type PermissionItem =     NonNullable<
+  NonNullable<IGetPermissionsQuery['permissions']['items']>[number]
+>
+
 @Component({
   selector: 'lpg-role-form',
   standalone: true,
@@ -48,11 +52,7 @@ export default class RoleFormComponent {
   #fb = inject(FormBuilder);
   #createRoleGQL = inject(ICreateRoleGQL);
   #updateRoleGQL = inject(IUpdateRoleGQL);
-  permissionsStore = inject(PermissionStore) as PaginatedResource<
-    NonNullable<
-      NonNullable<IGetPermissionsQuery['permissions']['items']>[number]
-    >
-  >;
+  permissionsStore = inject(PermissionStore) as PaginatedResource<PermissionItem>;
   #router = inject(Router);
   #route = inject(ActivatedRoute);
 

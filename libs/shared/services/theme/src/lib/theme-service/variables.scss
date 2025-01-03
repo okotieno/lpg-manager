@@ -174,3 +174,20 @@ ion-breadcrumb {
 
   --color-hover: var(--ion-color-primary);
 }
+
+ion-card.home-card {
+  border-radius: 1rem;
+  background-image: url("/bg-pattern.svg"), linear-gradient(90deg, rgba(68,30,47,1) 17%, var(--ion-color-primary) 71%);
+  --ion-color-contrast: red !important;
+  color: red !important;
+  --ion-color: red !important;
+  ion-icon {
+    opacity: .2;
+    font-size: 100px;
+  }
+  &:hover {
+    ion-icon {
+      opacity: .9;
+    }
+  }
+}

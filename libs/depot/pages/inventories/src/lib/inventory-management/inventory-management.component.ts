@@ -1,4 +1,12 @@
-import { Component, inject, input } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  OnInit,
+  untracked,
+} from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -8,9 +16,11 @@ import {
   IonInput,
   IonItem,
   IonLabel,
+  IonSpinner,
   IonTitle,
   IonToolbar,
   ModalController,
+  ViewWillEnter,
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
@@ -46,16 +56,26 @@ import { PaginatedResource } from '@lpg-manager/data-table';
     IonIcon,
     ReactiveFormsModule,
     SearchableSelectComponent,
+    IonSpinner,
   ],
   templateUrl: './inventory-management.component.html',
   providers: [InventoryStore, CatalogueStore],
 })
-export default class InventoryManagementComponent {
+export default class InventoryManagementComponent implements ViewWillEnter {
+  formSubmitted = false;
   #fb = inject(FormBuilder);
   #inventoryStore = inject(InventoryStore);
+  isLoading = this.#inventoryStore.isLoading;
+  formSubmittedEffect = effect(async () => {
+    const isLoading = this.isLoading();
+    await untracked(async () => {
+      if (this.formSubmitted && !isLoading) {
+        await this.#modalCtrl.dismiss({}, 'confirm');
+      }
+    });
+  });
   #modalCtrl = inject(ModalController);
   #authStore = inject(AuthStore);
-  #createInventoryGQL = inject(ICreateInventoryGQL);
   cataloguesStore = inject(CatalogueStore) as PaginatedResource<
     NonNullable<NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]>
   >;
@@ -83,6 +103,10 @@ export default class InventoryManagementComponent {
     }
   }
 
+  ionViewWillEnter(): void {
+    this.formSubmitted = false;
+  }
+
   async dismiss() {
     await this.#modalCtrl.dismiss(null, 'cancel');
   }
@@ -90,21 +114,14 @@ export default class InventoryManagementComponent {
   async save() {
     if (this.inventoryForm.valid) {
       const formValue = this.inventoryForm.value;
-      this.#createInventoryGQL
-        .mutate({
-          params: {
-            catalogueId: formValue.catalogue?.id as string,
-            stationId: this.activeStation()?.id as string,
-            quantity: formValue.quantity as number,
-          },
-        })
-        .subscribe({
-          next: (result) => {
-            if (result?.data) {
-              this.#modalCtrl.dismiss(result.data, 'confirm');
-            }
-          },
-        });
+      this.formSubmitted = true;
+      this.#inventoryStore.createNewItem({
+        params: {
+          catalogueId: formValue.catalogue?.id as string,
+          stationId: this.activeStation()?.id as string,
+          quantity: formValue.quantity as number,
+        },
+      });
     }
   }
 }

@@ -29,17 +29,7 @@ import { IGetUserCountGQL } from '@lpg-manager/user-store';
     IonText,
   ],
   templateUrl: './administration-landing-page.component.html',
-  styles: `
-    ion-card {
-      border-radius: 1rem;
-      background-image: url("/bg-pattern.svg"), linear-gradient(90deg, rgba(68,30,47,1) 17%, var(--ion-color-primary) 71%);
-    }
-
-    ion-icon {
-      opacity: .2;
-      font-size: 100px;
-    }
-  `,
+  styles: ``,
 })
 export default class UserTableComponent {
   private getUserCountGQL = inject(IGetUserCountGQL);
