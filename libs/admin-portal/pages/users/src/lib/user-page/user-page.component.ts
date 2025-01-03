@@ -33,7 +33,7 @@ import { RouterLink } from '@angular/router';
     IonCardContent,
     IonChip,
     IonButton,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './user-page.component.html',
   styles: `

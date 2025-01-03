@@ -7,7 +7,7 @@ import { InjectModel } from '@nestjs/sequelize';
 export class NotificationUserBackendService extends CrudAbstractService<NotificationUserModel> {
   constructor(
     @InjectModel(NotificationUserModel)
-    private notificationUserModel: typeof NotificationUserModel,
+    private notificationUserModel: typeof NotificationUserModel
   ) {
     super(notificationUserModel);
   }

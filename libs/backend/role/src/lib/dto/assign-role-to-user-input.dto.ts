@@ -1,4 +1,10 @@
-import { IsArray, IsNotEmpty, IsOptional, IsUUID, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
 import { RoleModel, UserModel } from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
 import { Type } from 'class-transformer';
@@ -6,7 +12,7 @@ import { Type } from 'class-transformer';
 class RoleDto {
   @Exists(RoleModel, 'id', {
     message: (validationArguments) =>
-      `Role with id ${validationArguments.value}" not found`
+      `Role with id ${validationArguments.value}" not found`,
   })
   id!: string;
 

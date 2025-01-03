@@ -8,7 +8,7 @@ export class UpdateOrderInputDto {
   @IsNotEmpty()
   @Exists(RoleModel, 'id', {
     message: (validationArguments) =>
-      `Role with id ${validationArguments.value} not found`
+      `Role with id ${validationArguments.value} not found`,
   })
   id!: string;
 

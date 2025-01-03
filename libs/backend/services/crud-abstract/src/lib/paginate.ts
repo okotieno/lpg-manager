@@ -7,6 +7,6 @@ export const paginate = (query: FindOptions, { page = 0, pageSize = 25 }) => {
   return {
     ...query,
     offset,
-    limit
+    limit,
   } as FindOptions;
 };

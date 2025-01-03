@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppEventModule } from './app-event.module';
 
-
 describe('AppEventModule', () => {
   let app: TestingModule;
   beforeAll(async () => {

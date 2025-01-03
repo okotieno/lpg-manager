@@ -2,21 +2,20 @@ import {
   Args,
   Mutation,
   Query,
-  Resolver,
   ResolveField,
+  Resolver,
   Root,
 } from '@nestjs/graphql';
-import { Body, UseGuards } from '@nestjs/common';
-import { TransporterModel, IQueryParam } from '@lpg-manager/db';
+import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
+import { IQueryParam, TransporterModel } from '@lpg-manager/db';
 import { TransporterService } from '@lpg-manager/transporter-service';
 import { JwtAuthGuard } from '@lpg-manager/auth';
-import { ValidationPipe } from '@nestjs/common';
 import { CreateTransporterInputDto } from '../dto/create-transporter-input.dto';
 import { UpdateTransporterInputDto } from '../dto/update-transporter-input.dto';
 import {
   PermissionGuard,
-  PermissionsEnum,
   Permissions,
+  PermissionsEnum,
 } from '@lpg-manager/permission-service';
 import { DriverService } from '@lpg-manager/driver-service';
 import { VehicleService } from '@lpg-manager/vehicle-service';
@@ -74,7 +73,6 @@ export class TransporterResolver {
           });
 
           await driverCreated.$set('vehicles', driver.vehicles);
-
         })
       );
     }

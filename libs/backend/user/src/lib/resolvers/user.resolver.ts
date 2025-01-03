@@ -128,7 +128,6 @@ export class UserResolver {
 
   @ResolveField('roles')
   async getRoles(@Parent() user: UserModel) {
-
     const userWithRoles = await this.userService.findById(user.id, {
       include: [
         {

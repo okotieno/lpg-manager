@@ -1,10 +1,10 @@
 import {
-  Table,
-  Column,
-  Model,
-  ForeignKey,
-  DataType,
   BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  Model,
+  Table,
 } from 'sequelize-typescript';
 import { ActivityLogModel } from './activity-log.model';
 import { UserModel } from './user.model';

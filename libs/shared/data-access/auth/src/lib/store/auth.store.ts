@@ -4,8 +4,8 @@ import {
   withComputed,
   withHooks,
   withMethods,
-  withState,
   withProps,
+  withState,
 } from '@ngrx/signals';
 import {
   computed,
@@ -25,16 +25,7 @@ import {
   ILoginWithTokenGQL,
   ISendPasswordResetEmailGQL,
 } from '../schemas/auth.generated';
-import {
-  catchError,
-  EMPTY,
-  filter,
-  lastValueFrom,
-  map, of, takeWhile,
-  tap,
-  throwError,
-  timer
-} from 'rxjs';
+import { catchError, EMPTY, lastValueFrom, of, tap } from 'rxjs';
 import { Preferences } from '@capacitor/preferences';
 import { MutationResult } from '@apollo/client';
 import {
@@ -135,33 +126,6 @@ export const AuthStore = signalStore(
         ) as Promise<MutationResult<ILoginWithPasswordMutation> | undefined>;
       },
     }),
-    _loginWithTokenResource: resource({
-      request: () => ({
-        refreshToken: store.refreshTokenInput(),
-      }),
-      loader: (param) => {
-        if (!param.request.refreshToken) {
-          return Promise.resolve(undefined);
-        }
-        return lastValueFrom(
-          store._loginWithTokenGQL
-            .mutate({ token: param.request.refreshToken ?? '' })
-            .pipe(
-              catchError((err) => {
-                patchState(store, { initialLoadComplete: true });
-                return throwError(() => err);
-              }),
-              tap((res) => {
-                patchState(store, { initialLoadComplete: true });
-                if (res.data?.loginWithToken)
-                  patchState(store, {
-                    loginResponse: res.data.loginWithToken,
-                  });
-              })
-            )
-        );
-      },
-    }),
 
     _sendPasswordResetLinkEmailResource: resource({
       request: () => ({
@@ -250,39 +214,48 @@ export const AuthStore = signalStore(
     const updateActiveRole = (activeRoleId: string) => {
       patchState(store, { activeRoleId });
     };
-    const isAuthenticatedGuard = () =>
-      timer(100, 100).pipe(
-        // takeWhile(() => !store.initialLoadComplete()),
-        tap(() => {
-          console.log(store.initialLoadComplete())
-        }),
-        filter(() => store.initialLoadComplete()),
-        map(() => store.isLoggedIn())
-      );
-    const isGuestGuard = () =>
-      isAuthenticatedGuard().pipe(map((isAuthenticated) => !isAuthenticated));
 
-    const isDealerGuard = () => of(true)
+    const loadUserInfoGuard = async () => {
+      if (store.isLoggedIn())
+        return true;
+
+      const { value: token } = await Preferences.get({
+        key: 'refresh-token',
+      });
+      if (!token)
+        return true;
+      const res = await lastValueFrom(
+        store._loginWithTokenGQL.mutate({ token })
+      );
+      console.log('User loaded ...');
+      if (res.data?.loginWithToken)
+        patchState(store, {
+          loginResponse: res.data.loginWithToken,
+        });
+      return true;
+    };
+
+    const isDealer = () => of(true);
+    const isAdmin = () => of(true);
+    const isDepot = () => of(true);
+    const isDriver = () => of(true);
+
     return {
       login,
       removeErrorMessage,
       logout,
       sendResetLink,
       updateActiveRole,
-      isAuthenticatedGuard,
-      isGuestGuard,
-      isDealerGuard,
-      changePasswordUsingResetToken
+      isAdmin,
+      isDepot,
+      isDealer,
+      isDriver,
+      changePasswordUsingResetToken,
+      loadUserInfoGuard,
     };
   }),
   withHooks((store, injector = inject(Injector)) => {
     const onInit = async () => {
-      const { value: refreshTokenInput } = await Preferences.get({
-        key: 'refresh-token',
-      });
-      if (refreshTokenInput) patchState(store, { refreshTokenInput });
-      else patchState(store, { initialLoadComplete: true });
-
       const { value: activeRoleId } = await Preferences.get({
         key: 'active-role-id',
       });
@@ -318,14 +291,16 @@ export const AuthStore = signalStore(
           const refreshToken = store._refreshToken();
           const accessToken = store.accessToken();
           await untracked(async () => {
-            await Preferences.set({
-              key: 'refresh-token',
-              value: refreshToken ?? '',
-            });
-            await Preferences.set({
-              key: 'access-token',
-              value: accessToken ?? '',
-            });
+            if (refreshToken)
+              await Preferences.set({
+                key: 'refresh-token',
+                value: refreshToken,
+              });
+            if (accessToken)
+              await Preferences.set({
+                key: 'access-token',
+                value: accessToken,
+              });
           });
         },
         { injector }

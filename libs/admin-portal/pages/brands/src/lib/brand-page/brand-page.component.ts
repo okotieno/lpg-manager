@@ -6,9 +6,12 @@ import {
   IonCardTitle,
   IonCol,
   IonGrid,
-  IonIcon, IonItem, IonLabel, IonList,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
   IonRow,
-  IonText
+  IonText,
 } from '@ionic/angular/standalone';
 import { IBrandModel } from '@lpg-manager/types';
 import { TitleCasePipe } from '@angular/common';

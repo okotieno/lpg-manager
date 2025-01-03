@@ -1,6 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { PermissionModel, RoleModel, RoleUserModel, UserModel } from '@lpg-manager/db';
+import {
+  PermissionModel,
+  RoleModel,
+  RoleUserModel,
+  UserModel,
+} from '@lpg-manager/db';
 import { Op, WhereOptions } from 'sequelize';
 import { InjectModel } from '@nestjs/sequelize';
 import { hash } from 'bcrypt';
@@ -10,7 +15,7 @@ export class UserService extends CrudAbstractService<UserModel> {
   override globalSearchFields = ['firstName', 'lastName', 'email'];
   constructor(
     @InjectModel(UserModel) repository: typeof UserModel,
-    @InjectModel(RoleUserModel) private roleUserModel: typeof UserModel,
+    @InjectModel(RoleUserModel) private roleUserModel: typeof UserModel
   ) {
     super(repository);
   }
@@ -19,7 +24,7 @@ export class UserService extends CrudAbstractService<UserModel> {
 
   async findByEmail(
     email: string,
-    whereOptions?: WhereOptions<UserModel>,
+    whereOptions?: WhereOptions<UserModel>
   ): Promise<UserModel | null> {
     const where = { ...whereOptions, email };
     return this.repository.findOne({ where });
@@ -43,14 +48,14 @@ export class UserService extends CrudAbstractService<UserModel> {
     // Extract permissions from roles
     const permissions = user.roles?.reduce(
       (prev, { permissions }) => [...prev, ...permissions],
-      [] as PermissionModel[],
+      [] as PermissionModel[]
     );
 
     return Array.from(new Set(permissions)); // Remove duplicates
   }
 
   async findByUsernameEmailPhone(
-    usernameOrEmailOrPhone: string,
+    usernameOrEmailOrPhone: string
   ): Promise<UserModel | null> {
     const where = {
       [Op.or]: [
@@ -78,27 +83,31 @@ export class UserService extends CrudAbstractService<UserModel> {
 
   hashPassword = (password: string) => hash(password, this.saltOrRounds);
 
-  async assignRoleToUser(user: UserModel, roles: {id: string; roleId: string, stationId: string}[]) {
+  async assignRoleToUser(
+    user: UserModel,
+    roles: { id: string; roleId: string; stationId: string }[]
+  ) {
     // First remove all existing roles from the user
     await user.$set('roles', []);
 
     // Create role-user associations for each role
     for (const roleInput of roles) {
-
       await this.roleUserModel.create({
         id: roleInput.id,
         userId: user.id,
         roleId: roleInput.roleId,
-        stationId: roleInput.stationId
+        stationId: roleInput.stationId,
       });
     }
 
     // Refresh the user instance to include new roles
     await user.reload({
-      include: [{
-        model: RoleModel,
-        include: ['permissions']
-      }]
+      include: [
+        {
+          model: RoleModel,
+          include: ['permissions'],
+        },
+      ],
     });
 
     return user;

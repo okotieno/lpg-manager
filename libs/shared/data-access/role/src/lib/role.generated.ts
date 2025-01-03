@@ -1,8 +1,9 @@
 import * as Types from '@lpg-manager/types';
 
+import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
+
 export type ICreateRoleMutationVariables = Types.Exact<{
   params: Types.ICreateRoleInput;
 }>;
@@ -70,7 +71,7 @@ export const CreateRoleDocument = gql`
   })
   export class ICreateRoleGQL extends Apollo.Mutation<ICreateRoleMutation, ICreateRoleMutationVariables> {
     override document = CreateRoleDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -93,7 +94,7 @@ export const GetRoleByIdDocument = gql`
   })
   export class IGetRoleByIdGQL extends Apollo.Query<IGetRoleByIdQuery, IGetRoleByIdQueryVariables> {
     override document = GetRoleByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -116,7 +117,7 @@ export const GetRoleByIdWithPermissionDocument = gql`
   })
   export class IGetRoleByIdWithPermissionGQL extends Apollo.Query<IGetRoleByIdWithPermissionQuery, IGetRoleByIdWithPermissionQueryVariables> {
     override document = GetRoleByIdWithPermissionDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -140,7 +141,7 @@ export const GetRolesDocument = gql`
   })
   export class IGetRolesGQL extends Apollo.Query<IGetRolesQuery, IGetRolesQueryVariables> {
     override document = GetRolesDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -158,7 +159,7 @@ export const GivePermissionsToRoleDocument = gql`
   })
   export class IGivePermissionsToRoleGQL extends Apollo.Mutation<IGivePermissionsToRoleMutation, IGivePermissionsToRoleMutationVariables> {
     override document = GivePermissionsToRoleDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -176,7 +177,7 @@ export const DeleteRoleByIdDocument = gql`
   })
   export class IDeleteRoleByIdGQL extends Apollo.Mutation<IDeleteRoleByIdMutation, IDeleteRoleByIdMutationVariables> {
     override document = DeleteRoleByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -197,7 +198,7 @@ export const UpdateRoleDocument = gql`
   })
   export class IUpdateRoleGQL extends Apollo.Mutation<IUpdateRoleMutation, IUpdateRoleMutationVariables> {
     override document = UpdateRoleDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

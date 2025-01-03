@@ -1,9 +1,10 @@
 import {
-  Table,
+  BelongsToMany,
   Column,
-  Model,
   DataType,
-  BelongsToMany, HasMany
+  HasMany,
+  Model,
+  Table,
 } from 'sequelize-typescript';
 import { ActivityLogModel } from './activity-log.model';
 import { ActivityLogUserModel } from './activity-log-user.model';

@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/sequelize';
 
 export enum OtpUsageEnum {
   PasswordReset = 'password-reset',
-  confirmTransaction = 'confirm-transaction'
+  confirmTransaction = 'confirm-transaction',
 }
 
 @Injectable()

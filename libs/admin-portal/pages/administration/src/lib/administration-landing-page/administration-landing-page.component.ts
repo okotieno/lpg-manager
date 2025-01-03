@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -7,7 +7,8 @@ import {
   IonCol,
   IonGrid,
   IonIcon,
-  IonRow, IonText
+  IonRow,
+  IonText,
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { IGetUserCountGQL } from '@lpg-manager/user-store';

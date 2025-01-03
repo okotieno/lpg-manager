@@ -25,22 +25,25 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
     return this.dispatchModel.sequelize?.transaction(
       async (transaction: Transaction) => {
         // Create the dispatch record
-        const dispatch = await super.model.create({
-          transporterId: data.transporterId,
-          driverId: data.driverId,
-          vehicleId: data.vehicleId,
-          dispatchDate: data.dispatchDate,
-        }, { transaction });
+        const dispatch = await super.model.create(
+          {
+            transporterId: data.transporterId,
+            driverId: data.driverId,
+            vehicleId: data.vehicleId,
+            dispatchDate: data.dispatchDate,
+          },
+          { transaction }
+        );
 
         // Update orders with the dispatch ID and status
         await this.orderModel.update(
-          { 
+          {
             dispatchId: dispatch.id,
-            status: 'DISPATCH_INITIATED'
+            status: 'DISPATCH_INITIATED',
           },
           {
             where: { id: data.orderIds },
-            transaction
+            transaction,
           }
         );
 

@@ -12,24 +12,24 @@ export const AUTH_ROUTES: Routes = [
       {
         path: '',
         redirectTo: 'login',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'login',
-        component: LoginPageComponent
+        component: LoginPageComponent,
       },
       {
         path: 'forgot-password',
-        component: ForgotPasswordPageComponent
+        component: ForgotPasswordPageComponent,
       },
       {
         path: 'reset-password',
-        component: ResetPasswordPageComponent
+        component: ResetPasswordPageComponent,
       },
       {
         path: 'reset-password/:passwordResetToken',
-        component: ResetPasswordPageComponent
-      }
-    ]
-  }
+        component: ResetPasswordPageComponent,
+      },
+    ],
+  },
 ];

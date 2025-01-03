@@ -4,12 +4,7 @@ import { VehicleServiceModule } from '@lpg-manager/vehicle-service';
 import { TransporterServiceModule } from '@lpg-manager/transporter-service';
 
 @Module({
-  imports: [
-    VehicleServiceModule,
-    TransporterServiceModule
-  ],
-  providers: [
-    VehicleResolver
-  ],
+  imports: [VehicleServiceModule, TransporterServiceModule],
+  providers: [VehicleResolver],
 })
-export class VehicleModule {} 
+export class VehicleModule {}

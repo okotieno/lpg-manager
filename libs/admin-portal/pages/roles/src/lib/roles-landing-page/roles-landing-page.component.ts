@@ -1,8 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { CdkTableModule } from '@angular/cdk/table';
 import { IGetRolesQuery, RoleStore } from '@lpg-manager/role-store';
-import { DataTableComponent, ITableColumn } from '@lpg-manager/data-table';
-import { PaginatedResource } from '@lpg-manager/data-table';
+import {
+  DataTableComponent,
+  ITableColumn,
+  PaginatedResource,
+} from '@lpg-manager/data-table';
 
 @Component({
   selector: 'lpg-roles-page',
@@ -20,7 +23,9 @@ export default class RolesLandingPageComponent {
   rolesStore = inject(RoleStore) as PaginatedResource<
     NonNullable<NonNullable<IGetRolesQuery['roles']['items']>[number]>
   >;
-  protected readonly allColumns: ITableColumn<NonNullable<NonNullable<IGetRolesQuery['roles']['items']>[number]>>[] = [
+  protected readonly allColumns: ITableColumn<
+    NonNullable<NonNullable<IGetRolesQuery['roles']['items']>[number]>
+  >[] = [
     { label: 'ID', key: 'id', fieldType: 'uuid' },
     { label: 'Name', key: 'name', fieldType: 'string' },
   ];

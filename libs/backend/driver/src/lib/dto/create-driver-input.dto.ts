@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsString, IsUUID, IsEmail, IsArray, IsOptional } from 'class-validator';
+import {
+  IsArray,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 import { TransporterModel } from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
 

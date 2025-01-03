@@ -2,12 +2,12 @@ import { Component, effect, inject, untracked } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   IonButton,
+  IonIcon,
   IonInput,
   IonItem,
   IonList,
-  IonIcon,
-  IonText,
   IonSpinner,
+  IonText,
   IonToast,
 } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';

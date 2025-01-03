@@ -5,16 +5,17 @@ import { GraphQLFormattedError } from 'graphql/error';
 import { JwtService } from '@nestjs/jwt';
 import {
   DateTimeResolver,
-  EmailAddressResolver, PositiveFloatResolver,
+  EmailAddressResolver,
+  PositiveFloatResolver,
   PositiveIntResolver,
-  URLResolver, UUIDResolver
+  URLResolver,
+  UUIDResolver,
 } from 'graphql-scalars';
 
 @Module({
   providers: [JwtService],
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
-
       debug: process.env['LPG_ENVIRONMENT'] === 'development',
       driver: ApolloDriver,
       playground: process.env['LPG_ENVIRONMENT'] === 'development',
@@ -79,7 +80,7 @@ import {
         UUID: UUIDResolver,
         PositiveInt: PositiveIntResolver,
         PositiveFloat: PositiveFloatResolver,
-      }
+      },
     }),
   ],
 })

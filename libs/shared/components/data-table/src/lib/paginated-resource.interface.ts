@@ -20,7 +20,7 @@ export interface PaginatedResource<T> {
 
   setSearchTerm(value: string): void;
 
-  deleteItemWithId(id: string): void
+  deleteItemWithId(id: string): void;
 
   searchedItemsEntities: Signal<T[]>;
   selectedItemsEntities: Signal<T[]>;

@@ -1,11 +1,13 @@
 import { signalStore, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
-  ICreateCatalogueGQL, ICreateCatalogueMutation, ICreateCatalogueMutationVariables,
+  ICreateCatalogueGQL,
+  ICreateCatalogueMutation,
+  ICreateCatalogueMutationVariables,
   IDeleteCatalogueByIdGQL,
   IGetCataloguesGQL,
   IGetCataloguesQuery,
-  IGetCataloguesQueryVariables
+  IGetCataloguesQueryVariables,
 } from './catalogue.generated';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
@@ -20,7 +22,9 @@ export const CatalogueStore = signalStore(
     ICreateCatalogueMutation,
     ICreateCatalogueMutationVariables,
     ICreateCatalogueGQL,
-    NonNullable<NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]>,
+    NonNullable<
+      NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]
+    >,
     IGetCataloguesQueryVariables,
     'catalogues',
     'deleteCatalogue'

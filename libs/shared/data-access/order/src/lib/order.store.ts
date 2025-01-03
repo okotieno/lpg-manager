@@ -1,16 +1,21 @@
-import { signalStore, withProps, withMethods } from '@ngrx/signals';
+import { signalStore, withMethods, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
-  ICreateOrderGQL, ICreateOrderMutation, ICreateOrderMutationVariables,
+  ICreateOrderGQL,
+  ICreateOrderMutation,
+  ICreateOrderMutationVariables,
   IDeleteOrderByIdGQL,
   IGetOrdersGQL,
   IGetOrdersQuery,
   IGetOrdersQueryVariables,
-  IUpdateOrderStatusGQL
+  IUpdateOrderStatusGQL,
 } from './order.generated';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 import { lastValueFrom } from 'rxjs';
-import { SHOW_ERROR_MESSAGE, SHOW_SUCCESS_MESSAGE } from '@lpg-manager/injection-token';
+import {
+  SHOW_ERROR_MESSAGE,
+  SHOW_SUCCESS_MESSAGE,
+} from '@lpg-manager/injection-token';
 import { IOrderStatus } from '@lpg-manager/types';
 
 export const OrderStore = signalStore(
@@ -37,13 +42,13 @@ export const OrderStore = signalStore(
           store._updateOrderStatusGQL.mutate(
             {
               id: orderId,
-              params: { status }
+              params: { status },
             },
             {
               context: {
                 [SHOW_SUCCESS_MESSAGE]: true,
                 [SHOW_ERROR_MESSAGE]: true,
-              }
+              },
             }
           )
         );
@@ -58,6 +63,6 @@ export const OrderStore = signalStore(
         console.error('Error updating order status:', error);
         throw error;
       }
-    }
+    },
   }))
 );

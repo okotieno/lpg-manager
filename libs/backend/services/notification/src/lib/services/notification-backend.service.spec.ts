@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotificationService } from './notification.service';
 import {
-  QueryOperatorEnum,
   NotificationModel,
-  SortByDirectionEnum,
   NotificationUserModel,
+  QueryOperatorEnum,
+  SortByDirectionEnum,
 } from '@lpg-manager/db';
 import { Op } from 'sequelize';
 import { getModelToken } from '@nestjs/sequelize';

@@ -2,30 +2,24 @@ import {
   Args,
   Mutation,
   Query,
-  Resolver,
   ResolveField,
+  Resolver,
   Root,
 } from '@nestjs/graphql';
-import { Body, UseGuards } from '@nestjs/common';
-import {
-  DispatchModel,
-  IQueryParam,
-  QueryOperatorEnum,
-  SortByDirectionEnum,
-} from '@lpg-manager/db';
+import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
+import { DispatchModel, IQueryParam } from '@lpg-manager/db';
 import { DispatchService } from '@lpg-manager/dispatch-service';
 import { TransporterService } from '@lpg-manager/transporter-service';
 import { DriverService } from '@lpg-manager/driver-service';
 import { VehicleService } from '@lpg-manager/vehicle-service';
 import { OrderService } from '@lpg-manager/order-service';
 import { JwtAuthGuard } from '@lpg-manager/auth';
-import { ValidationPipe } from '@nestjs/common';
 import { CreateDispatchInputDto } from '../dto/create-dispatch-input.dto';
 import { UpdateDispatchInputDto } from '../dto/update-dispatch-input.dto';
 import {
   PermissionGuard,
-  PermissionsEnum,
   Permissions,
+  PermissionsEnum,
 } from '@lpg-manager/permission-service';
 
 @Resolver(() => DispatchModel)

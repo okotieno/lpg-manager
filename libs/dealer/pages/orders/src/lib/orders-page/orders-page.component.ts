@@ -1,17 +1,17 @@
 import { Component, computed, effect, inject, untracked } from '@angular/core';
 import { OrderStore } from '@lpg-manager/order-store';
 import {
-  IonList,
-  IonItem,
-  IonLabel,
+  IonAccordion,
+  IonAccordionGroup,
   IonBadge,
   IonContent,
-  IonAccordionGroup,
-  IonAccordion,
+  IonItem,
+  IonItemDivider,
+  IonLabel,
+  IonList,
   IonText,
-  IonItemDivider, ModalController
 } from '@ionic/angular/standalone';
-import { DatePipe, CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
 import { AuthStore } from '@lpg-manager/auth-store';
 
@@ -65,7 +65,6 @@ export default class OrdersPageComponent {
       }
     });
   });
-
 
   getStatusColor(status: string): string {
     switch (status) {

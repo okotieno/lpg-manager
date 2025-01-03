@@ -1,9 +1,28 @@
 import * as Types from '@lpg-manager/types';
 
+import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
-export type IUserFieldsFragment = { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, permissions?: Array<{ id: string, name: string } | null> | null } | null } | null> | null };
+
+export type IUserFieldsFragment = {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  profilePhotoLink?: string | null;
+  roles?: Array<{
+    id: string;
+    station?: { id: string; name: string; type: Types.IStationType } | null;
+    role?: {
+      id: string;
+      name: string;
+      permissions?: Array<{ id: string; name: string } | null> | null;
+    } | null;
+  } | null> | null;
+};
 
 export type IAuthDetailsFragment = { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, permissions?: Array<{ id: string, name: string } | null> | null } | null } | null> | null } | null };
 
@@ -96,7 +115,7 @@ export const LoginWithPasswordDocument = gql`
   })
   export class ILoginWithPasswordGQL extends Apollo.Mutation<ILoginWithPasswordMutation, ILoginWithPasswordMutationVariables> {
     override document = LoginWithPasswordDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -114,7 +133,7 @@ export const LoginWithTokenDocument = gql`
   })
   export class ILoginWithTokenGQL extends Apollo.Mutation<ILoginWithTokenMutation, ILoginWithTokenMutationVariables> {
     override document = LoginWithTokenDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -132,7 +151,7 @@ export const RequestAccessTokenDocument = gql`
   })
   export class IRequestAccessTokenGQL extends Apollo.Mutation<IRequestAccessTokenMutation, IRequestAccessTokenMutationVariables> {
     override document = RequestAccessTokenDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -150,7 +169,7 @@ export const SendPasswordResetEmailDocument = gql`
   })
   export class ISendPasswordResetEmailGQL extends Apollo.Mutation<ISendPasswordResetEmailMutation, ISendPasswordResetEmailMutationVariables> {
     override document = SendPasswordResetEmailDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -176,7 +195,7 @@ export const ChangePasswordUsingResetTokenDocument = gql`
   })
   export class IChangePasswordUsingResetTokenGQL extends Apollo.Mutation<IChangePasswordUsingResetTokenMutation, IChangePasswordUsingResetTokenMutationVariables> {
     override document = ChangePasswordUsingResetTokenDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

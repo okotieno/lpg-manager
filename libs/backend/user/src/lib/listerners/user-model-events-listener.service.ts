@@ -16,8 +16,8 @@ export class UserModelEventsListener {
         context: {
           firstName: event.user.firstName,
           email: event.user.email,
-          password: event.plainPassword // Include temporary password in email
-        }
+          password: event.plainPassword, // Include temporary password in email
+        },
       });
     }
   }

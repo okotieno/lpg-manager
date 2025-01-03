@@ -3,8 +3,8 @@ import {
   Mutation,
   Query,
   ResolveField,
-  Root,
   Resolver,
+  Root,
 } from '@nestjs/graphql';
 import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
 import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
@@ -15,11 +15,11 @@ import {
 } from '@lpg-manager/permission-service';
 import { OrderService } from '@lpg-manager/order-service';
 import {
-  IQueryParam,
-  OrderModel,
-  OrderItemModel,
   CatalogueModel,
   InventoryModel,
+  IQueryParam,
+  OrderItemModel,
+  OrderModel,
   StationModel,
   UserModel,
 } from '@lpg-manager/db';
@@ -29,7 +29,8 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import {
   OrderCanceledEvent,
   OrderCompletedEvent,
-  OrderConfirmedEvent, OrderRejectedEvent
+  OrderConfirmedEvent,
+  OrderRejectedEvent,
 } from '../events/order.event';
 
 @Resolver(() => OrderModel)
@@ -168,9 +169,10 @@ export class OrderResolver {
         );
         break;
       case 'REJECTED':
-        this.eventEmitter.emit('order.rejected',
+        this.eventEmitter.emit(
+          'order.rejected',
           new OrderRejectedEvent(order, currentUser.id)
-          );
+        );
         break;
     }
 

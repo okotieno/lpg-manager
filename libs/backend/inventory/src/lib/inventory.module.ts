@@ -8,11 +8,8 @@ import { StationServiceModule } from '@lpg-manager/station-service';
   imports: [
     InventoryServiceModule,
     StationServiceModule,
-    CatalogueServiceModule
+    CatalogueServiceModule,
   ],
-  providers: [
-    InventoryResolver
-  ],
+  providers: [InventoryResolver],
 })
-export class InventoryModule {
-}
+export class InventoryModule {}

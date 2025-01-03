@@ -3,7 +3,10 @@ import { inject } from '@angular/core';
 import { IGetRoleByIdGQL } from '@lpg-manager/role-store';
 import { map, tap } from 'rxjs';
 import { BreadcrumbStore } from '@lpg-manager/breadcrumb';
-import { FormExitGuardService, IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
+import {
+  FormExitGuardService,
+  IHasUnsavedChanges,
+} from '@lpg-manager/form-exit-guard';
 
 export const ROLES_ROUTES: Routes = [
   {

@@ -4,14 +4,8 @@ import { DispatchModel, OrderModel } from '@lpg-manager/db';
 import { DispatchService } from './services/dispatch.service';
 
 @Module({
-  imports: [
-    SequelizeModule.forFeature([DispatchModel, OrderModel])
-  ],
-  providers: [
-    DispatchService
-  ],
-  exports: [
-    DispatchService
-  ],
+  imports: [SequelizeModule.forFeature([DispatchModel, OrderModel])],
+  providers: [DispatchService],
+  exports: [DispatchService],
 })
 export class DispatchServiceModule {}

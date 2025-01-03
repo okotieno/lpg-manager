@@ -5,13 +5,9 @@ import { CartCatalogueModel, CartModel, InventoryModel } from '@lpg-manager/db';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([CartModel, CartCatalogueModel, InventoryModel])
+    SequelizeModule.forFeature([CartModel, CartCatalogueModel, InventoryModel]),
   ],
-  providers: [
-    CartService
-  ],
-  exports: [
-    CartService
-  ],
+  providers: [CartService],
+  exports: [CartService],
 })
 export class CartServiceModule {}

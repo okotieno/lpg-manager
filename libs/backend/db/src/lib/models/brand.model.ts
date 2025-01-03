@@ -1,10 +1,10 @@
 import {
+  BelongsToMany,
   Column,
+  DataType,
+  HasMany,
   Model,
   Table,
-  DataType,
-  BelongsToMany,
-  HasMany,
 } from 'sequelize-typescript';
 import { FileUploadModel } from './file-upload.model';
 import { CatalogueModel } from './catalogue.model';
@@ -58,7 +58,7 @@ export class BrandModel extends Model {
   @BelongsToMany(() => FileUploadModel, {
     through: 'brand_file_uploads',
     foreignKey: 'brand_id',
-    otherKey: 'file_upload_id'
+    otherKey: 'file_upload_id',
   })
   images!: FileUploadModel[];
 
@@ -68,7 +68,7 @@ export class BrandModel extends Model {
   @BelongsToMany(() => StationModel, {
     through: 'depot_brands',
     foreignKey: 'brand_id',
-    otherKey: 'depot_id'
+    otherKey: 'depot_id',
   })
   brands?: StationModel[];
 }

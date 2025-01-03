@@ -15,7 +15,7 @@ import {
   Permissions,
   PermissionsEnum,
 } from '@lpg-manager/permission-service';
-import { IQueryParam, ActivityLogModel } from '@lpg-manager/db';
+import { ActivityLogModel, IQueryParam } from '@lpg-manager/db';
 import { UpdateActivityLogInputDto } from '../dto/update-activity-log-input.dto';
 import { ActivityLogUpdatedEvent } from '../events/activity-log-updated.event';
 import { DeleteActivityLogInputDto } from '../dto/delete-activity-log-input.dto';
@@ -25,7 +25,7 @@ import { ActivityLogDeletedEvent } from '../events/activity-log-deleted.event';
 export class ActivityLogResolver {
   constructor(
     private activityLogService: ActivityLogBackendService,
-    private eventEmitter: EventEmitter2,
+    private eventEmitter: EventEmitter2
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -46,7 +46,7 @@ export class ActivityLogResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.CreateActivityLog)
   async createActivityLog(
-    @Body('params', new ValidationPipe()) params: CreateActivityLogInputDto,
+    @Body('params', new ValidationPipe()) params: CreateActivityLogInputDto
   ) {
     const activityLog = await this.activityLogService.create({
       ...params,
@@ -54,7 +54,7 @@ export class ActivityLogResolver {
 
     this.eventEmitter.emit(
       'activity-log.created',
-      new ActivityLogCreatedEvent(activityLog),
+      new ActivityLogCreatedEvent(activityLog)
     );
 
     return {
@@ -67,7 +67,7 @@ export class ActivityLogResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.UpdateActivityLog)
   async updateActivityLog(
-    @Body(new ValidationPipe()) params: UpdateActivityLogInputDto,
+    @Body(new ValidationPipe()) params: UpdateActivityLogInputDto
   ) {
     const activityLog = await this.activityLogService.findById(params.id);
     if (activityLog) {
@@ -76,7 +76,7 @@ export class ActivityLogResolver {
 
       this.eventEmitter.emit(
         'activityLog.updated',
-        new ActivityLogUpdatedEvent(activityLog),
+        new ActivityLogUpdatedEvent(activityLog)
       );
       return {
         message: 'Successfully created activityLog',
@@ -90,16 +90,16 @@ export class ActivityLogResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.DeleteActivityLog)
   async deleteActivityLog(
-    @Body(new ValidationPipe()) { id }: DeleteActivityLogInputDto,
+    @Body(new ValidationPipe()) { id }: DeleteActivityLogInputDto
   ) {
     const activityLog = (await this.activityLogService.findById(
-      id,
+      id
     )) as ActivityLogModel;
 
     await activityLog.destroy();
     this.eventEmitter.emit(
       'activity-log.deleted',
-      new ActivityLogDeletedEvent(activityLog),
+      new ActivityLogDeletedEvent(activityLog)
     );
 
     return {

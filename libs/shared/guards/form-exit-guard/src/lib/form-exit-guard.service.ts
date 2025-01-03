@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AlertController } from "@ionic/angular";
-import { IHasUnsavedChanges } from "./has-unsaved-changes.interface";
+import { AlertController } from '@ionic/angular';
+import { IHasUnsavedChanges } from './has-unsaved-changes.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FormExitGuardService {
-
-  constructor(private alertController: AlertController) {
-  }
+  constructor(private alertController: AlertController) {}
 
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -34,19 +32,17 @@ export class FormExitGuardService {
           },
           {
             text: 'Confirm',
-            role: 'destructive'
+            role: 'destructive',
           },
-        ]
+        ],
       });
 
       await alert.present();
 
-      const {role} = await alert.onWillDismiss();
+      const { role } = await alert.onWillDismiss();
 
       return role === 'destructive';
-
     }
     return true;
-  }
-
+  };
 }

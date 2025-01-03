@@ -1,8 +1,9 @@
 import * as Types from '@lpg-manager/types';
 
+import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
+
 export type IGetFileUploadsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
@@ -40,7 +41,7 @@ export const GetFileUploadsDocument = gql`
   })
   export class IGetFileUploadsGQL extends Apollo.Query<IGetFileUploadsQuery, IGetFileUploadsQueryVariables> {
     override document = GetFileUploadsDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -66,7 +67,7 @@ export const UploadFileDocument = gql`
   })
   export class IUploadFileGQL extends Apollo.Mutation<IUploadFileMutation, IUploadFileMutationVariables> {
     override document = UploadFileDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

@@ -8,7 +8,7 @@ export class UpdateStationInputDto {
   @IsNotEmpty()
   @Exists(StationModel, 'id', {
     message: (validationArguments) =>
-      `Station with id ${validationArguments.value} not found`
+      `Station with id ${validationArguments.value} not found`,
   })
   id!: string;
 

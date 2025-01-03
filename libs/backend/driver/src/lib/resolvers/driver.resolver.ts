@@ -2,8 +2,8 @@ import {
   Args,
   Mutation,
   Query,
-  Resolver,
   ResolveField,
+  Resolver,
   Root,
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
@@ -15,8 +15,8 @@ import { CreateDriverInputDto } from '../dto/create-driver-input.dto';
 import { UpdateDriverInputDto } from '../dto/update-driver-input.dto';
 import {
   PermissionGuard,
-  PermissionsEnum,
   Permissions,
+  PermissionsEnum,
 } from '@lpg-manager/permission-service';
 import { UserService } from '@lpg-manager/user-service';
 
@@ -99,7 +99,7 @@ export class DriverResolver {
   @ResolveField('vehicles')
   async getVehicles(@Root() driver: DriverModel) {
     const driverWithVehicles = await this.driverService.findById(driver.id, {
-      include: [VehicleModel]
+      include: [VehicleModel],
     });
     return driverWithVehicles?.vehicles || [];
   }

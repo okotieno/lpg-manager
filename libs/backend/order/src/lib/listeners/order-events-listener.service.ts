@@ -6,7 +6,7 @@ import { ActivityLogBackendService } from '@lpg-manager/activity-log-service';
 import { NotificationService } from '@lpg-manager/notification-service';
 import { UserService } from '@lpg-manager/user-service';
 import { RoleService } from '@lpg-manager/role-service';
-import { RoleModel, RoleUserModel } from '@lpg-manager/db';
+import { RoleUserModel } from '@lpg-manager/db';
 
 @Injectable()
 export class OrderEventsListener {
@@ -14,24 +14,33 @@ export class OrderEventsListener {
     private activityLogService: ActivityLogBackendService,
     private notificationService: NotificationService,
     private userService: UserService,
-    private roleService: RoleService,
+    private roleService: RoleService
   ) {}
 
-  private async notifyStationUsers(stationId: string, notification: { title: string; description: string }) {
+  private async notifyStationUsers(
+    stationId: string,
+    notification: { title: string; description: string }
+  ) {
     try {
       // Get users with roles for this station
       const stationUsers = await this.userService.model.findAll({
-        include: [{
-          model: RoleUserModel,
-          where: {
-            stationId: stationId
-          }
-        }]
+        include: [
+          {
+            model: RoleUserModel,
+            where: {
+              stationId: stationId,
+            },
+          },
+        ],
       });
 
       if (stationUsers.length) {
-        const userIds = stationUsers.map(user => user.id);
-        await this.notificationService.sendNotification(notification.title,  notification.description, userIds)
+        const userIds = stationUsers.map((user) => user.id);
+        await this.notificationService.sendNotification(
+          notification.title,
+          notification.description,
+          userIds
+        );
       }
     } catch (error) {
       Logger.error(`Failed to notify station users: ${error}`);
@@ -47,19 +56,23 @@ export class OrderEventsListener {
       action: 'order.created',
       description: `New order #${order.id.slice(-8)} created`,
       type: 'INFO',
-      userId: event.userId
+      userId: event.userId,
     });
 
     // Notify depot users
     await this.notifyStationUsers(order.depotId, {
       title: 'New Order Received',
-      description: `Order #${order.id.slice(-8)} has been created for ${order.totalPrice} LPG units`
+      description: `Order #${order.id.slice(-8)} has been created for ${
+        order.totalPrice
+      } LPG units`,
     });
 
     // Notify dealer users
     await this.notifyStationUsers(order.dealerId, {
       title: 'Order Placed Successfully',
-      description: `Your order #${order.id.slice(-8)} has been placed successfully`
+      description: `Your order #${order.id.slice(
+        -8
+      )} has been placed successfully`,
     });
   }
 
@@ -72,19 +85,21 @@ export class OrderEventsListener {
       action: 'order.confirmed',
       description: `Order #${order.id.slice(-8)} confirmed for dispatch`,
       type: 'INFO',
-      userId: event.userId
+      userId: event.userId,
     });
 
     // Notify dealer users
     await this.notifyStationUsers(order.dealerId, {
       title: 'Order Confirmed for Dispatch',
-      description: `Order #${order.id.slice(-8)} has been confirmed and will be dispatched soon`
+      description: `Order #${order.id.slice(
+        -8
+      )} has been confirmed and will be dispatched soon`,
     });
 
     // Notify depot users
     await this.notifyStationUsers(order.depotId, {
       title: 'Order Marked for Dispatch',
-      description: `Order #${order.id.slice(-8)} has been marked for dispatch`
+      description: `Order #${order.id.slice(-8)} has been marked for dispatch`,
     });
   }
 
@@ -97,19 +112,21 @@ export class OrderEventsListener {
       action: 'order.completed',
       description: `Order #${order.id.slice(-8)} completed`,
       type: 'INFO',
-      userId: event.userId
+      userId: event.userId,
     });
 
     // Notify dealer users
     await this.notifyStationUsers(order.dealerId, {
       title: 'Order Completed',
-      description: `Order #${order.id.slice(-8)} has been marked as completed`
+      description: `Order #${order.id.slice(-8)} has been marked as completed`,
     });
 
     // Notify depot users
     await this.notifyStationUsers(order.depotId, {
       title: 'Order Completed',
-      description: `Order #${order.id.slice(-8)} has been completed successfully`
+      description: `Order #${order.id.slice(
+        -8
+      )} has been completed successfully`,
     });
   }
 
@@ -122,19 +139,19 @@ export class OrderEventsListener {
       action: 'order.canceled',
       description: `Order #${order.id.slice(-8)} canceled`,
       type: 'WARNING',
-      userId: event.userId
+      userId: event.userId,
     });
 
     // Notify dealer users
     await this.notifyStationUsers(order.dealerId, {
       title: 'Order Canceled',
-      description: `Order #${order.id.slice(-8)} has been canceled`
+      description: `Order #${order.id.slice(-8)} has been canceled`,
     });
 
     // Notify depot users
     await this.notifyStationUsers(order.depotId, {
       title: 'Order Canceled',
-      description: `Order #${order.id.slice(-8)} has been canceled`
+      description: `Order #${order.id.slice(-8)} has been canceled`,
     });
   }
 
@@ -148,19 +165,19 @@ export class OrderEventsListener {
       action: 'order.rejected',
       description: `Order #${order.id.slice(-8)} rejected`,
       type: 'WARNING',
-      userId: event.userId
+      userId: event.userId,
     });
 
     // Notify dealer users
     await this.notifyStationUsers(order.dealerId, {
       title: 'Order Rejected',
-      description: `Order #${order.id.slice(-8)} has been rejected`
+      description: `Order #${order.id.slice(-8)} has been rejected`,
     });
 
     // Notify depot users
     await this.notifyStationUsers(order.depotId, {
       title: 'Order Rejected',
-      description: `Order #${order.id.slice(-8)} has been rejected`
+      description: `Order #${order.id.slice(-8)} has been rejected`,
     });
   }
 
@@ -173,19 +190,23 @@ export class OrderEventsListener {
       action: 'order.dispatch_initiated',
       description: `Order #${order.id.slice(-8)} has been added to dispatch`,
       type: 'INFO',
-      userId: event.userId
+      userId: event.userId,
     });
 
     // Notify dealer users
     await this.notifyStationUsers(order.dealerId, {
       title: 'Order Added to Dispatch',
-      description: `Order #${order.id.slice(-8)} has been added to a dispatch and will be delivered soon`
+      description: `Order #${order.id.slice(
+        -8
+      )} has been added to a dispatch and will be delivered soon`,
     });
 
     // Notify depot users
     await this.notifyStationUsers(order.depotId, {
       title: 'Order Added to Dispatch',
-      description: `Order #${order.id.slice(-8)} has been added to dispatch #${order.dispatchId}`
+      description: `Order #${order.id.slice(-8)} has been added to dispatch #${
+        order.dispatchId
+      }`,
     });
   }
 }

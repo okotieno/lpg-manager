@@ -7,21 +7,24 @@ import { OrderService } from '@lpg-manager/order-service';
 export class CartEventsListenerService {
   constructor(
     private orderService: OrderService,
-    private eventEmitter: EventEmitter2,
-    ) {}
+    private eventEmitter: EventEmitter2
+  ) {}
 
   @OnEvent('cart.completed')
   async createOrders($event: CartEvent) {
     // Group cart items by station
-    const stationOrders = new Map<string, {
-      totalPrice: number;
-      items: Array<{
-        catalogueId: string;
-        inventoryId: string;
-        quantity: number;
-        pricePerUnit: number;
-      }>;
-    }>();
+    const stationOrders = new Map<
+      string,
+      {
+        totalPrice: number;
+        items: Array<{
+          catalogueId: string;
+          inventoryId: string;
+          quantity: number;
+          pricePerUnit: number;
+        }>;
+      }
+    >();
 
     for (const item of $event.cart.items) {
       const stationId = item.inventory.station.id;
@@ -30,7 +33,7 @@ export class CartEventsListenerService {
       if (!stationOrders.has(stationId)) {
         stationOrders.set(stationId, {
           totalPrice: 0,
-          items: []
+          items: [],
         });
       }
 
@@ -58,7 +61,6 @@ export class CartEventsListenerService {
       if (order) {
         this.eventEmitter.emit('order.created', { order, userId });
       }
-
     }
   }
 }

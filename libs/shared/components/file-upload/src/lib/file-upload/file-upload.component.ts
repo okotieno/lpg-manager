@@ -8,7 +8,7 @@ import {
   Self,
   signal,
   untracked,
-  viewChild
+  viewChild,
 } from '@angular/core';
 import {
   IonAvatar,
@@ -24,7 +24,7 @@ import {
   IonProgressBar,
   IonRow,
   IonSpinner,
-  IonText
+  IonText,
 } from '@ionic/angular/standalone';
 import { DecimalPipe } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
@@ -32,11 +32,7 @@ import { AlertController } from '@ionic/angular';
 import { FileSizePipe } from './file-size.pipe';
 import FileUploadStore from './file-uploads.store';
 
-const ALLOWED_FILE_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/svg+xml'
-];
+const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/svg+xml'];
 
 @Component({
   selector: 'lpg-file-upload',

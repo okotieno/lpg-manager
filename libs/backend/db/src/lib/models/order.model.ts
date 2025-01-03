@@ -1,11 +1,11 @@
 import {
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
-  BelongsTo,
-  HasMany
 } from 'sequelize-typescript';
 import { CartModel } from './cart.model';
 import { StationModel } from './station.model';
@@ -55,11 +55,24 @@ export class OrderModel extends Model {
   totalPrice!: number;
 
   @Column({
-    type: DataType.ENUM('PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELED', 'REJECTED', 'DISPATCH_INITIATED'),
+    type: DataType.ENUM(
+      'PENDING',
+      'CONFIRMED',
+      'COMPLETED',
+      'CANCELED',
+      'REJECTED',
+      'DISPATCH_INITIATED'
+    ),
     allowNull: false,
-    defaultValue: 'PENDING'
+    defaultValue: 'PENDING',
   })
-  status!: 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELED' | 'REJECTED' | 'DISPATCH_INITIATED';
+  status!:
+    | 'PENDING'
+    | 'CONFIRMED'
+    | 'COMPLETED'
+    | 'CANCELED'
+    | 'REJECTED'
+    | 'DISPATCH_INITIATED';
 
   @BelongsTo(() => StationModel, 'depotId')
   depot!: StationModel;

@@ -1,16 +1,13 @@
 import { Routes } from '@angular/router';
-import { inject } from '@angular/core';
-import { AuthStore } from '@lpg-manager/auth-store';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () => import('./dashboard-page/dashboard-page.component'),
-    canMatch: [() => inject(AuthStore).isAuthenticatedGuard()],
     children: [
       {
         path: 'dashboard',
-        children: []
+        children: [],
       },
       {
         path: 'user-management',
@@ -37,5 +34,5 @@ export const DASHBOARD_ROUTES: Routes = [
         loadChildren: () => import('@lpg-manager/profile-page'),
       },
     ],
-  }
+  },
 ];

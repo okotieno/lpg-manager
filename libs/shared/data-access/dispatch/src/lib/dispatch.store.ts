@@ -1,11 +1,13 @@
 import { signalStore, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
-  ICreateDispatchGQL, ICreateDispatchMutation, ICreateDispatchMutationVariables,
+  ICreateDispatchGQL,
+  ICreateDispatchMutation,
+  ICreateDispatchMutationVariables,
   IDeleteDispatchByIdGQL,
   IGetDispatchesGQL,
   IGetDispatchesQuery,
-  IGetDispatchesQueryVariables
+  IGetDispatchesQueryVariables,
 } from './dispatch.generated';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
@@ -20,7 +22,9 @@ export const DispatchStore = signalStore(
     ICreateDispatchMutation,
     ICreateDispatchMutationVariables,
     ICreateDispatchGQL,
-    NonNullable<NonNullable<IGetDispatchesQuery['dispatches']['items']>[number]>,
+    NonNullable<
+      NonNullable<IGetDispatchesQuery['dispatches']['items']>[number]
+    >,
     IGetDispatchesQueryVariables,
     'dispatches',
     'deleteDispatch'

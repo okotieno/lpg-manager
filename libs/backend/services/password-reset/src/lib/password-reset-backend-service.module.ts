@@ -4,7 +4,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { PasswordResetModel, UserModel } from '@lpg-manager/db';
 
 @Module({
-  imports: [SequelizeModule.forFeature([PasswordResetModel, UserModel ])],
+  imports: [SequelizeModule.forFeature([PasswordResetModel, UserModel])],
   providers: [PasswordResetBackendService],
   exports: [PasswordResetBackendService],
 })

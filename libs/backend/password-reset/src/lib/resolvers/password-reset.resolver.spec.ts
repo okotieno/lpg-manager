@@ -8,7 +8,7 @@ import { PasswordResetResolver } from './password-reset.resolver';
 
 const passwordResetServiceMock = {
   create: jest.fn(),
-}
+};
 
 describe('PasswordResetResolver', () => {
   let resolver: PasswordResetResolver;

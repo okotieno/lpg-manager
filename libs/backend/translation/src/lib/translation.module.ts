@@ -4,7 +4,7 @@ import {
   GraphQLWebsocketResolver,
   HeaderResolver,
   I18nModule,
-  QueryResolver
+  QueryResolver,
 } from 'nestjs-i18n';
 import { join } from 'path';
 
@@ -23,6 +23,6 @@ import { join } from 'path';
         new HeaderResolver(['x-lang']),
       ],
     }),
-  ]
+  ],
 })
 export class TranslationModule {}

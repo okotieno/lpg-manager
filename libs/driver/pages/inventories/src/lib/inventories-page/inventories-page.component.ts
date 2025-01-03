@@ -7,19 +7,19 @@ import {
   viewChild,
 } from '@angular/core';
 import {
+  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardTitle,
   IonCardSubtitle,
+  IonCardTitle,
   IonCol,
-  IonRow,
-  IonText,
-  IonButton,
+  IonContent,
   IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
-  IonContent,
+  IonRow,
+  IonText,
   ModalController,
 } from '@ionic/angular/standalone';
 import { InventoryStore } from '@lpg-manager/inventory-store';
@@ -65,7 +65,10 @@ export default class InventoriesPageComponent {
       };
     return;
   });
-  driverFilter = computed(() => ({...this.stationFilter(), field: 'driverId'}));
+  driverFilter = computed(() => ({
+    ...this.stationFilter(),
+    field: 'driverId',
+  }));
   activeStationChangeEffect = effect(() => {
     const stationFilter = this.stationFilter();
     untracked(() => {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { RoleModel, RoleUserModel, PermissionModel } from '@lpg-manager/db';
+import { PermissionModel, RoleModel, RoleUserModel } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 
 interface CreateRoleInputDto {

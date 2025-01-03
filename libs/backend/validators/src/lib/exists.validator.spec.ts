@@ -3,7 +3,7 @@ import { ExistsConstraint } from './exists.validator';
 import { Model } from 'sequelize-typescript';
 
 class MockModel extends Model {
-   findOne() {
+  findOne() {
     // Mock implementation of findOne method
   }
 }

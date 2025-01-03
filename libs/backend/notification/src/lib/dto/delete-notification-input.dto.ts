@@ -2,7 +2,6 @@ import { IsInt } from 'class-validator';
 import { NotificationModel } from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
 
-
 export class DeleteNotificationInputDto {
   @IsInt()
   @Exists(NotificationModel, 'id', {

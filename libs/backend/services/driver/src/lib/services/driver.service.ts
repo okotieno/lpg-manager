@@ -6,9 +6,7 @@ import { InjectModel } from '@nestjs/sequelize';
 @Injectable()
 export class DriverService extends CrudAbstractService<DriverModel> {
   override globalSearchFields = [];
-  constructor(
-    @InjectModel(DriverModel) driverModel: typeof DriverModel
-  ) {
+  constructor(@InjectModel(DriverModel) driverModel: typeof DriverModel) {
     super(driverModel);
   }
 }

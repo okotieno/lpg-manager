@@ -1,9 +1,17 @@
 import * as Types from '@lpg-manager/types';
 
+import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
-export type ITransporterVehiclesFragment = { vehicles?: Array<{ id: string, registrationNumber: string, capacity: number, type: string } | null> | null };
+
+export type ITransporterVehiclesFragment = {
+  vehicles?: Array<{
+    id: string;
+    registrationNumber: string;
+    capacity: number;
+    type: string;
+  } | null> | null;
+};
 
 export type ITransporterDriversFragment = { drivers?: Array<{ id: string, licenseNumber: string, vehicles?: Array<{ id: string, registrationNumber: string }> | null, user: { id: string, firstName: string, lastName: string, phone?: string | null, email: string } } | null> | null };
 
@@ -93,7 +101,7 @@ export const CreateTransporterDocument = gql`
   })
   export class ICreateTransporterGQL extends Apollo.Mutation<ICreateTransporterMutation, ICreateTransporterMutationVariables> {
     override document = CreateTransporterDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -119,7 +127,7 @@ ${TransporterVehiclesFragmentDoc}`;
   })
   export class IGetTransporterByIdGQL extends Apollo.Query<IGetTransporterByIdQuery, IGetTransporterByIdQueryVariables> {
     override document = GetTransporterByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -147,7 +155,7 @@ export const GetTransportersDocument = gql`
   })
   export class IGetTransportersGQL extends Apollo.Query<IGetTransportersQuery, IGetTransportersQueryVariables> {
     override document = GetTransportersDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -165,7 +173,7 @@ export const DeleteTransporterByIdDocument = gql`
   })
   export class IDeleteTransporterByIdGQL extends Apollo.Mutation<IDeleteTransporterByIdMutation, IDeleteTransporterByIdMutationVariables> {
     override document = DeleteTransporterByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -191,7 +199,7 @@ export const UpdateTransporterDocument = gql`
   })
   export class IUpdateTransporterGQL extends Apollo.Mutation<IUpdateTransporterMutation, IUpdateTransporterMutationVariables> {
     override document = UpdateTransporterDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

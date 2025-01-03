@@ -132,10 +132,7 @@ export default class OrdersPageComponent {
 
     const { data, role } = await modal.onWillDismiss();
     if (role === 'confirm') {
-      await this.#orderStore.updateOrderStatus(
-        order.id,
-        IOrderStatus.Rejected
-      );
+      await this.#orderStore.updateOrderStatus(order.id, IOrderStatus.Rejected);
     }
   }
 }

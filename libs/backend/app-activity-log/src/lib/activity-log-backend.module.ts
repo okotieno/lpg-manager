@@ -6,10 +6,7 @@ import { ActivityLogUserResolver } from './resolvers/activity-log-user.resolver'
 import { ActivityLogBackendServiceModule } from '@lpg-manager/activity-log-service';
 
 @Module({
-  imports: [
-    ActivityLogBackendServiceModule,
-    AuthServiceBackendModule,
-  ],
+  imports: [ActivityLogBackendServiceModule, AuthServiceBackendModule],
   providers: [
     ActivityLogResolver,
     ActivityLogUserResolver,

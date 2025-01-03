@@ -28,7 +28,7 @@ import { TitleCasePipe } from '@angular/common';
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
-    IonChip
+    IonChip,
   ],
   templateUrl: './role-page.component.html',
   styles: `
@@ -63,6 +63,8 @@ export default class RolePageComponent {
   role = input<IRoleModel>();
 
   hasPermissions = computed(() => {
-    return this.role()?.permissions && Number(this.role()?.permissions?.length) > 0;
+    return (
+      this.role()?.permissions && Number(this.role()?.permissions?.length) > 0
+    );
   });
 }

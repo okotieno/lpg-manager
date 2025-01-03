@@ -23,7 +23,7 @@ const config: CodegenConfig = {
           PositiveFloat: 'number',
           EmailAddress: 'string',
           PhoneNumber: 'string',
-        }
+        },
       },
     },
   },

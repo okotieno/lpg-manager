@@ -37,7 +37,7 @@ export class NotificationUserResolver {
     private notificationUserService: NotificationUserBackendService,
     private notificationService: NotificationService,
     private eventEmitter: EventEmitter2,
-    @Inject(PUB_SUB) private pubSub: RedisPubSub,
+    @Inject(PUB_SUB) private pubSub: RedisPubSub
   ) {}
 
   @Query(() => NotificationModel)
@@ -50,7 +50,7 @@ export class NotificationUserResolver {
   @UseGuards(JwtAuthGuard)
   authenticatedUserNotifications(
     @Args('query') query: IQueryParam,
-    @CurrentUser() user: UserModel,
+    @CurrentUser() user: UserModel
   ) {
     return this.notificationUserService.findAll({
       ...query,
@@ -69,7 +69,7 @@ export class NotificationUserResolver {
   @ResolveField()
   async description(@Parent() notificationUserModel: NotificationUserModel) {
     const notification = await this.notificationService.findById(
-      notificationUserModel.notificationId,
+      notificationUserModel.notificationId
     );
     return notification?.description ?? '';
   }
@@ -77,7 +77,7 @@ export class NotificationUserResolver {
   @ResolveField()
   async title(@Parent() notificationUserModel: NotificationUserModel) {
     const notification = await this.notificationService.findById(
-      notificationUserModel.notificationId,
+      notificationUserModel.notificationId
     );
     return notification?.title ?? '';
   }
@@ -87,12 +87,12 @@ export class NotificationUserResolver {
   @Permissions(PermissionsEnum.MarkNotificationAsRead)
   async markNotificationAsRead(
     @Body(new ValidationPipe()) params: MarkAsReadNotificationInputDto,
-    @CurrentUser() currentUser: UserModel,
+    @CurrentUser() currentUser: UserModel
   ) {
     await Promise.all(
       params.notifications.map(async ({ id }) => {
         const notification = (await this.notificationUserService.findById(
-          id,
+          id
         )) as NotificationUserModel;
 
         notification.isRead = true;
@@ -100,9 +100,9 @@ export class NotificationUserResolver {
 
         this.eventEmitter.emit(
           'notification.updated',
-          new NotificationUSerUpdatedEvent(notification),
+          new NotificationUSerUpdatedEvent(notification)
         );
-      }),
+      })
     );
 
     return {

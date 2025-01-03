@@ -1,6 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RoleService } from './role.service';
-import { QueryOperatorEnum, RoleModel, RoleUserModel, SortByDirectionEnum } from '@lpg-manager/db';
+import {
+  QueryOperatorEnum,
+  RoleModel,
+  RoleUserModel,
+  SortByDirectionEnum,
+} from '@lpg-manager/db';
 import { Op } from 'sequelize';
 import { getModelToken } from '@nestjs/sequelize';
 
@@ -10,7 +15,7 @@ const modelRepositoryMock = {
   create: jest.fn(),
   update: jest.fn(),
   destroy: jest.fn(),
-  bulkCreate: jest.fn()
+  bulkCreate: jest.fn(),
 };
 
 describe('RoleService', () => {

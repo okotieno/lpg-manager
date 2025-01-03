@@ -1,10 +1,7 @@
 import { Component, computed, effect, inject, viewChild } from '@angular/core';
-import { IGetCataloguesQuery } from '@lpg-manager/catalogue-store';
+import { PaginatedResource } from '@lpg-manager/data-table';
 import {
-  GET_ITEMS_INCLUDE_FIELDS,
-  PaginatedResource,
-} from '@lpg-manager/data-table';
-import {
+  AlertController,
   IonButton,
   IonButtons,
   IonCard,
@@ -13,31 +10,27 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   IonCol,
+  IonContent,
+  IonHeader,
   IonIcon,
   IonImg,
-  IonRow,
-  IonSearchbar,
-  IonText,
-  ModalController,
-  AlertController,
-  IonItem,
-  IonMenu,
-  IonSplitPane,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
+  IonItem,
+  IonMenu,
+  IonRow,
+  IonSearchbar,
+  IonSplitPane,
+  IonText,
+  IonTitle,
+  IonToolbar,
+  ModalController,
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
-import {
-  CartStore,
-  IGetCartsQuery,
-} from '@lpg-manager/cart-store';
+import { CartStore, IGetCartsQuery } from '@lpg-manager/cart-store';
 import { IGetStationsQuery, StationStore } from '@lpg-manager/station-store';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
-import { ISelectCategory, IQueryOperatorEnum } from '@lpg-manager/types';
+import { IQueryOperatorEnum, ISelectCategory } from '@lpg-manager/types';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { tap } from 'rxjs';
 import {

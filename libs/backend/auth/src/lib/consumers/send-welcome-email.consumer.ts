@@ -9,7 +9,7 @@ export class SendWelcomeEmailConsumer {
 
   @Process()
   async sendWelcomeEmail(
-    job: Job<{ email: string; firstName: string }>,
+    job: Job<{ email: string; firstName: string }>
   ): Promise<void> {
     await this.emailService.send({
       to: job.data.email,

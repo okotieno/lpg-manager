@@ -10,12 +10,8 @@ import { RoleUserModel } from '@lpg-manager/db';
   imports: [
     RoleServiceBackendModule,
     PermissionServiceBackendModule,
-    SequelizeModule.forFeature([RoleUserModel])
+    SequelizeModule.forFeature([RoleUserModel]),
   ],
-  providers: [
-    RoleResolver,
-    RolePermissionAssignmentResolver
-  ],
+  providers: [RoleResolver, RolePermissionAssignmentResolver],
 })
-export class RoleModule {
-}
+export class RoleModule {}

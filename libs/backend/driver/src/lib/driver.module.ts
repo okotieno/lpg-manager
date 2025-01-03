@@ -4,12 +4,7 @@ import { DriverServiceModule } from '@lpg-manager/driver-service';
 import { TransporterServiceModule } from '@lpg-manager/transporter-service';
 
 @Module({
-  imports: [
-    DriverServiceModule,
-    TransporterServiceModule
-  ],
-  providers: [
-    DriverResolver
-  ],
+  imports: [DriverServiceModule, TransporterServiceModule],
+  providers: [DriverResolver],
 })
-export class DriverModule {} 
+export class DriverModule {}

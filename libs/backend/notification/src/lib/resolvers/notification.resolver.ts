@@ -31,7 +31,7 @@ export class NotificationResolver {
   constructor(
     private notificationService: NotificationService,
     private eventEmitter: EventEmitter2,
-    @Inject(PUB_SUB) private pubSub: RedisPubSub,
+    @Inject(PUB_SUB) private pubSub: RedisPubSub
   ) {}
 
   @Query(() => NotificationModel)
@@ -51,7 +51,7 @@ export class NotificationResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.CreateNotification)
   async createNotification(
-    @Body('params', new ValidationPipe()) params: CreateNotificationInputDto,
+    @Body('params', new ValidationPipe()) params: CreateNotificationInputDto
   ) {
     const notification = await this.notificationService.create({
       ...params,
@@ -59,7 +59,7 @@ export class NotificationResolver {
 
     this.eventEmitter.emit(
       'notification.created',
-      new NotificationCreatedEvent(notification),
+      new NotificationCreatedEvent(notification)
     );
 
     return {
@@ -72,7 +72,7 @@ export class NotificationResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.UpdateNotification)
   async updateNotification(
-    @Body(new ValidationPipe()) params: UpdateNotificationInputDto,
+    @Body(new ValidationPipe()) params: UpdateNotificationInputDto
   ) {
     const notification = await this.notificationService.findById(params.id);
     if (notification) {
@@ -81,7 +81,7 @@ export class NotificationResolver {
 
       this.eventEmitter.emit(
         'notification.updated',
-        new NotificationUpdatedEvent(notification),
+        new NotificationUpdatedEvent(notification)
       );
       return {
         message: 'Successfully created notification',
@@ -94,16 +94,16 @@ export class NotificationResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.DeleteNotification)
   async deleteNotification(
-    @Body(new ValidationPipe()) { id }: DeleteNotificationInputDto,
+    @Body(new ValidationPipe()) { id }: DeleteNotificationInputDto
   ) {
     const notification = (await this.notificationService.findById(
-      id,
+      id
     )) as NotificationModel;
 
     await notification.destroy();
     this.eventEmitter.emit(
       'notification.deleted',
-      new NotificationDeletedEvent(notification),
+      new NotificationDeletedEvent(notification)
     );
 
     return {
@@ -118,14 +118,13 @@ export class NotificationResolver {
     await this.notificationService.sendNotification(
       `Title ${Math.random()}`,
       `Description ${Math.random()}`,
-      [user.id],
+      [user.id]
     );
     return `Works ${Math.random()}`;
   }
 
   @Subscription('notificationCreated', {
     async resolve(this: NotificationResolver, value, args, context) {
-
       const userId = context.extra?.user?.id ?? context.user.id;
       const stats = await this.notificationService.userStats(userId);
 

@@ -1,11 +1,13 @@
 import { signalStore, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
-  ICreateDriverGQL, ICreateDriverMutation, ICreateDriverMutationVariables,
+  ICreateDriverGQL,
+  ICreateDriverMutation,
+  ICreateDriverMutationVariables,
   IDeleteDriverByIdGQL,
   IGetDriversGQL,
   IGetDriversQuery,
-  IGetDriversQueryVariables
+  IGetDriversQueryVariables,
 } from './driver.generated';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 

@@ -3,11 +3,12 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardTitle, IonChip,
+  IonCardTitle,
+  IonChip,
   IonCol,
   IonGrid,
   IonRow,
-  IonText
+  IonText,
 } from '@ionic/angular/standalone';
 import { ITransporterModel } from '@lpg-manager/types';
 import { TitleCasePipe } from '@angular/common';

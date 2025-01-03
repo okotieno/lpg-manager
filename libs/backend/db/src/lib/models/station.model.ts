@@ -1,9 +1,9 @@
 import {
+  BelongsToMany,
   Column,
+  DataType,
   Model,
   Table,
-  DataType,
-  BelongsToMany
 } from 'sequelize-typescript';
 import { BrandModel } from './brand.model';
 
@@ -37,7 +37,7 @@ export class StationModel extends Model {
   @BelongsToMany(() => BrandModel, {
     through: 'depot_brands',
     foreignKey: 'depot_id',
-    otherKey: 'brand_id'
+    otherKey: 'brand_id',
   })
   brands?: BrandModel[];
 }

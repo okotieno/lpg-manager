@@ -7,7 +7,7 @@ export class UpdatePermissionInputDto {
   @IsInt()
   @Exists(PermissionModel, 'name', {
     message: (validationArguments) =>
-      `User with id  ${validationArguments.value}" not found`
+      `User with id  ${validationArguments.value}" not found`,
   })
   id = 0;
 

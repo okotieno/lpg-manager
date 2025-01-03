@@ -15,18 +15,20 @@ export class SendEmailVerificationLinkConsumer {
     private userService: UserService,
     private translationService: TranslationService,
     @Inject('KEYV_REDIS') private readonly keyvRedis: Keyv,
-    private configService: ConfigService,
+    private configService: ConfigService
   ) {}
 
   @Process()
   async sendEmailVerificationLinkEmail(
-    job: Job<{ email: string }>,
+    job: Job<{ email: string }>
   ): Promise<void> {
     const user = await this.userService.findByEmail(job.data.email);
     if (user) {
       const verificationCode = Math.random().toString(36).slice(2, 10);
       await this.keyvRedis.set(verificationCode, job.data.email, 3600000);
-      const verifyEmailLink = `${this.configService.get<string>('LPG_APP_URL')}/auth/verify/${verificationCode}`;
+      const verifyEmailLink = `${this.configService.get<string>(
+        'LPG_APP_URL'
+      )}/auth/verify/${verificationCode}`;
 
       await this.emailService.send({
         from: this.configService.get<string>('LPG_MAIL_FROM'),
@@ -40,7 +42,7 @@ export class SendEmailVerificationLinkConsumer {
       });
     } else {
       throw new NotFoundException(
-        this.translationService.getTranslation('alert.emailNotFound'),
+        this.translationService.getTranslation('alert.emailNotFound')
       );
     }
   }

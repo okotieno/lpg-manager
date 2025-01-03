@@ -21,7 +21,7 @@ export class AuthEventsListenerService {
     private readonly sendWelcomeEmailQueue: Queue<{
       email: string;
       firstName: string;
-    }>,
+    }>
   ) {}
 
   @OnEvent('auth.registered')
@@ -59,7 +59,7 @@ export class AuthEventsListenerService {
       },
       {
         delay: 60000,
-      },
+      }
     );
   }
 

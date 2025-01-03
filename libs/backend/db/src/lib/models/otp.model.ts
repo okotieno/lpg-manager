@@ -12,22 +12,22 @@ export class OtpModel extends Model {
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
     allowNull: false,
-    primaryKey: true
+    primaryKey: true,
   })
   override id!: string;
 
   @Column
-  identifier?: string
+  identifier?: string;
 
   @Column
-  token?:string
+  token?: string;
 
   @Column
-  validity?: number
+  validity?: number;
 
   @Column
-  usage?: string
+  usage?: string;
 
   @Column
-  valid?: boolean
+  valid?: boolean;
 }

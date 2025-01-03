@@ -7,9 +7,9 @@ import { MutationResult } from 'apollo-angular';
 const uploadFileGQLGQLMock = {
   mutate: jest.fn(() =>
     of({
-      data: { createFileUpload: { id: 1, name: 'Test FileUpload' } }
+      data: { createFileUpload: { id: 1, name: 'Test FileUpload' } },
     } as MutationResult)
-  )
+  ),
 };
 
 

@@ -3,13 +3,13 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class PasswordChangeUsingTokenInputDto {
   @IsString()
   @IsNotEmpty()
-  token = ''
+  token = '';
 
   @IsString()
   @IsNotEmpty()
-  password = ''
+  password = '';
 
   @IsString()
   @IsNotEmpty()
-  passwordConfirmation = ''
+  passwordConfirmation = '';
 }

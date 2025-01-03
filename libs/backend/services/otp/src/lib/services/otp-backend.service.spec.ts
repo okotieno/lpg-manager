@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OtpBackendService } from './otp-backend.service';
 import {
-  QueryOperatorEnum,
   OtpModel,
+  QueryOperatorEnum,
   SortByDirectionEnum,
 } from '@lpg-manager/db';
 import { Op } from 'sequelize';

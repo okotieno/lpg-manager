@@ -5,14 +5,7 @@ import { OrderServiceModule } from '@lpg-manager/order-service';
 import { CartEventsListenerService } from './listeners/cart-events-listener.service';
 
 @Module({
-  imports: [
-    CartServiceModule,
-    OrderServiceModule,
-  ],
-  providers: [
-    CartResolver,
-    CartEventsListenerService
-  ],
+  imports: [CartServiceModule, OrderServiceModule],
+  providers: [CartResolver, CartEventsListenerService],
 })
-export class CartModule {
-}
+export class CartModule {}

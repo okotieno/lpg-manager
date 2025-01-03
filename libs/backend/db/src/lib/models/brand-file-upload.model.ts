@@ -8,20 +8,20 @@ import { FileUploadModel } from './file-upload.model';
   underscored: true,
   paranoid: false,
   timestamps: true,
-  deletedAt: false
+  deletedAt: false,
 })
 export class BrandFileUploadModel extends Model {
   @ForeignKey(() => BrandModel)
-  @Column({ 
+  @Column({
     type: DataTypes.UUID,
-    allowNull: false 
+    allowNull: false,
   })
   brandId!: string;
 
   @ForeignKey(() => FileUploadModel)
-  @Column({ 
+  @Column({
     type: DataTypes.UUID,
-    allowNull: false 
+    allowNull: false,
   })
   fileUploadId!: string;
 }

@@ -15,12 +15,12 @@ import {
 } from '@lpg-manager/permission-service';
 import { CartService } from '@lpg-manager/cart-service';
 import {
-  IQueryParam,
-  CartModel,
   CartCatalogueModel,
+  CartModel,
   CatalogueModel,
-  UserModel,
   InventoryModel,
+  IQueryParam,
+  UserModel,
 } from '@lpg-manager/db';
 import { CreateCartInputDto } from '../dto/create-cart-input.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -128,16 +128,11 @@ export class CartResolver {
   async completeCart(@Args('cartId') cartId: string) {
     const cart = await this.cartService.completeCart(cartId);
 
-    this.eventEmitter.emit(
-      'cart.completed',
-      new CartEvent(cart as CartModel),
-    );
-
-
+    this.eventEmitter.emit('cart.completed', new CartEvent(cart as CartModel));
 
     return {
       message: 'Cart completed successfully',
-      data: cart ,
+      data: cart,
     };
   }
 

@@ -7,9 +7,7 @@ export const PROFILE_ROUTES: Routes = [
     component: ProfilePageComponent,
     data: {
       routeLabel: 'Profile',
-      breadcrumbs: [
-        { label: 'Profile' }
-      ]
-    }
-  }
+      breadcrumbs: [{ label: 'Profile' }],
+    },
+  },
 ];

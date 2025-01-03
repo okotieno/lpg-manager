@@ -8,5 +8,5 @@ export const ORDERS_ROUTES: Routes = [
       routeLabel: 'Orders',
       breadcrumbs: [{ label: 'Orders' }],
     },
-  }
+  },
 ];

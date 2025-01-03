@@ -5,14 +5,7 @@ import { OrderEventsListener } from './listeners/order-events-listener.service';
 import { RoleServiceBackendModule } from '@lpg-manager/role-service';
 
 @Module({
-  imports: [
-    OrderServiceModule,
-    RoleServiceBackendModule
-  ],
-  providers: [
-    OrderResolver,
-    OrderEventsListener
-  ],
+  imports: [OrderServiceModule, RoleServiceBackendModule],
+  providers: [OrderResolver, OrderEventsListener],
 })
-export class OrderModule {
-}
+export class OrderModule {}

@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { I18nService } from 'nestjs-i18n';
 
 const i18nServiceMock = {
-  t: jest.fn()
+  t: jest.fn(),
 };
 
 describe('Translation Service', () => {

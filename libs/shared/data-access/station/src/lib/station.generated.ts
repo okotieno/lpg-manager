@@ -1,8 +1,9 @@
 import * as Types from '@lpg-manager/types';
 
+import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
+
 export type ICreateStationMutationVariables = Types.Exact<{
   params: Types.ICreateStationInput;
 }>;
@@ -55,7 +56,7 @@ export const CreateStationDocument = gql`
   })
   export class ICreateStationGQL extends Apollo.Mutation<ICreateStationMutation, ICreateStationMutationVariables> {
     override document = CreateStationDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -79,7 +80,7 @@ export const GetStationByIdDocument = gql`
   })
   export class IGetStationByIdGQL extends Apollo.Query<IGetStationByIdQuery, IGetStationByIdQueryVariables> {
     override document = GetStationByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -104,7 +105,7 @@ export const GetStationsDocument = gql`
   })
   export class IGetStationsGQL extends Apollo.Query<IGetStationsQuery, IGetStationsQueryVariables> {
     override document = GetStationsDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -122,7 +123,7 @@ export const DeleteStationByIdDocument = gql`
   })
   export class IDeleteStationByIdGQL extends Apollo.Mutation<IDeleteStationByIdMutation, IDeleteStationByIdMutationVariables> {
     override document = DeleteStationByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -143,7 +144,7 @@ export const UpdateStationDocument = gql`
   })
   export class IUpdateStationGQL extends Apollo.Mutation<IUpdateStationMutation, IUpdateStationMutationVariables> {
     override document = UpdateStationDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

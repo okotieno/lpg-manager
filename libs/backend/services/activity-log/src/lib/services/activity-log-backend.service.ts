@@ -7,7 +7,7 @@ import { InjectModel } from '@nestjs/sequelize';
 export class ActivityLogBackendService extends CrudAbstractService<ActivityLogModel> {
   constructor(
     @InjectModel(ActivityLogModel)
-    private activityLogModel: typeof ActivityLogModel,
+    private activityLogModel: typeof ActivityLogModel
   ) {
     super(activityLogModel);
   }

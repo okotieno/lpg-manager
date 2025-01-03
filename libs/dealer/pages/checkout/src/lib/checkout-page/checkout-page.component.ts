@@ -1,20 +1,20 @@
 import { Component, computed, inject } from '@angular/core';
 import { CartStore } from '@lpg-manager/cart-store';
 import {
-  IonTitle,
-  IonCard,
-  IonCardHeader,
-  IonCardContent,
+  AlertController,
   IonButton,
-  IonIcon,
-  IonText,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonRow,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
   IonCol,
   IonGrid,
-  AlertController,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonRow,
+  IonText,
+  IonTitle,
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -47,7 +47,7 @@ export default class CheckoutPageComponent {
   #alertController = inject(AlertController);
 
   cartItems = computed(() => {
-    const cartItems =  [...(this.#cartStore.cart?.()?.items ?? [])];
+    const cartItems = [...(this.#cartStore.cart?.()?.items ?? [])];
     return cartItems.sort((a, b) =>
       new Date(a?.createdAt as string) > new Date(b?.createdAt as string)
         ? 1

@@ -2,11 +2,11 @@ import { Component, inject, input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   IonButton,
+  IonIcon,
   IonInput,
   IonItem,
   IonList,
-  IonIcon,
-  IonText
+  IonText,
 } from '@ionic/angular/standalone';
 import { AuthStore } from '@lpg-manager/auth-store';
 
@@ -20,15 +20,17 @@ import { AuthStore } from '@lpg-manager/auth-store';
     IonItem,
     IonList,
     IonIcon,
-    IonText
+    IonText,
   ],
   templateUrl: './reset-password-page.component.html',
-  styles: [`
-    :host {
-      display: block;
-      height: 100%;
-    }
-  `]
+  styles: [
+    `
+      :host {
+        display: block;
+        height: 100%;
+      }
+    `,
+  ],
 })
 export class ResetPasswordPageComponent {
   passwordResetToken = input<string>();
@@ -38,7 +40,7 @@ export class ResetPasswordPageComponent {
 
   resetPasswordForm = this.#fb.group({
     password: ['', [Validators.required, Validators.minLength(8)]],
-    passwordConfirmation: ['', [Validators.required]]
+    passwordConfirmation: ['', [Validators.required]],
   });
 
   togglePasswordVisibility() {
@@ -47,13 +49,12 @@ export class ResetPasswordPageComponent {
 
   onSubmit() {
     if (this.resetPasswordForm.valid) {
-      this.#authStore.changePasswordUsingResetToken(
-        {
-          token: this.passwordResetToken() as string,
-          password: this.resetPasswordForm.value.password as string,
-          passwordConfirmation: this.resetPasswordForm.value.passwordConfirmation as string,
-        }
-      );
+      this.#authStore.changePasswordUsingResetToken({
+        token: this.passwordResetToken() as string,
+        password: this.resetPasswordForm.value.password as string,
+        passwordConfirmation: this.resetPasswordForm.value
+          .passwordConfirmation as string,
+      });
     }
   }
 }

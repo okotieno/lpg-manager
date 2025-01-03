@@ -5,34 +5,43 @@ import { AuthStore } from '@lpg-manager/auth-store';
 export const appRoutes: Route[] = [
   {
     path: '',
-    pathMatch: 'full',
-    canMatch: [() => inject(AuthStore).isGuestGuard()],
-    redirectTo: 'auth',
-  },
-  {
-    path: 'auth',
-    canMatch: [() => inject(AuthStore).isAuthenticatedGuard()],
-    redirectTo: 'dashboard',
-  },
-  {
-    path: 'dashboard',
-    canMatch: [() => inject(AuthStore).isGuestGuard()],
-    redirectTo: 'auth',
-  },
-  {
-    path: '',
-    pathMatch: 'full',
-    canMatch: [() => inject(AuthStore).isAuthenticatedGuard()],
-    redirectTo: 'dashboard',
-  },
-  {
-    path: 'auth',
-    loadChildren: () => import('@lpg-manager/auth-page'),
-    canMatch: [() => inject(AuthStore).isGuestGuard()],
-  },
-  {
-    path: 'dashboard',
-    loadChildren: () => import('@lpg-manager/driver-dashboard-page'),
-    canMatch: [() => inject(AuthStore).isAuthenticatedGuard()],
+    canMatch: [() => inject(AuthStore).loadUserInfoGuard()],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        canMatch: [() => !inject(AuthStore).isLoggedIn()],
+        redirectTo: 'auth',
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        canMatch: [() => inject(AuthStore).isLoggedIn()],
+        redirectTo: 'dashboard',
+      },
+      {
+        path: 'auth',
+        canMatch: [() => inject(AuthStore).isLoggedIn()],
+        redirectTo: 'dashboard',
+      },
+      {
+        path: 'dashboard',
+        canMatch: [() => !inject(AuthStore).isLoggedIn()],
+        redirectTo: 'auth',
+      },
+      {
+        path: 'auth',
+        loadChildren: () => import('@lpg-manager/auth-page'),
+        canMatch: [() => !inject(AuthStore).isLoggedIn()],
+      },
+      {
+        path: 'dashboard',
+        loadChildren: () => import('@lpg-manager/driver-dashboard-page'),
+        canMatch: [
+          () => inject(AuthStore).isLoggedIn(),
+          () => inject(AuthStore).isDriver(),
+        ],
+      },
+    ],
   },
 ];

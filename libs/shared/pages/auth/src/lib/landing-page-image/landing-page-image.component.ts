@@ -21,5 +21,4 @@ export class LandingPageImageComponent {
   get floating() {
     return !this.smallDevice() ? 'unset' : 'absolute';
   }
-
 }

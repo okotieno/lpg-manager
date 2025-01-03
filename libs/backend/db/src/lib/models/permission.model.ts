@@ -7,10 +7,9 @@ import { DataTypes } from 'sequelize';
   underscored: true,
   paranoid: true,
   timestamps: true,
-  deletedAt: true
+  deletedAt: true,
 })
 export class PermissionModel extends Model {
-
   @Column({ type: DataTypes.STRING, allowNull: false })
   name?: string;
 
@@ -18,8 +17,7 @@ export class PermissionModel extends Model {
     foreignKeyConstraint: true,
     through: 'permission_role',
     foreignKey: 'permission_id',
-    otherKey: 'role_id'
+    otherKey: 'role_id',
   })
   roles!: RoleModel[];
-
 }

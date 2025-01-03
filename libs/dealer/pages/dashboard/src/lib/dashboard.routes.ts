@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-import { inject } from '@angular/core';
-import { AuthStore } from '@lpg-manager/auth-store';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
@@ -10,9 +8,6 @@ export const DASHBOARD_ROUTES: Routes = [
       routeLabel: 'Dashboard',
       breadcrumbs: [{ label: 'Dashboard' }],
     },
-    canMatch: [
-      () => inject(AuthStore).isAuthenticatedGuard()
-    ],
     children: [
       {
         path: '',
@@ -21,7 +16,7 @@ export const DASHBOARD_ROUTES: Routes = [
         data: {
           routeLabel: 'Dashboard',
           breadcrumbs: [{ label: 'Dashboard' }],
-        }
+        },
       },
       {
         path: 'catalogues',
@@ -32,21 +27,17 @@ export const DASHBOARD_ROUTES: Routes = [
         loadChildren: () => import('@lpg-manager/checkout-page'),
         data: {
           routeLabel: 'Checkout',
-          breadcrumbs: [
-            { label: 'Checkout' },
-          ],
+          breadcrumbs: [{ label: 'Checkout' }],
         },
       },
       {
         path: 'profile',
-        loadChildren: () =>
-          import('@lpg-manager/profile-page'),
+        loadChildren: () => import('@lpg-manager/profile-page'),
       },
       {
         path: 'orders',
-        loadChildren: () =>
-          import('@lpg-manager/dealer-orders-page'),
+        loadChildren: () => import('@lpg-manager/dealer-orders-page'),
       },
     ],
-  }
+  },
 ];

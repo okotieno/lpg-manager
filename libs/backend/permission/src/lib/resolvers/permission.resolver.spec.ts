@@ -15,7 +15,7 @@ describe('PermissionResolver', () => {
         PermissionResolver,
         {
           provide: I18nService,
-          useValue: {}
+          useValue: {},
         },
         {
           provide: PermissionService,
@@ -36,9 +36,13 @@ describe('PermissionResolver', () => {
 
   describe('createPermission', () => {
     it('should create a permission', async () => {
-      const createPermissionInput: CreatePermissionInputDto = { name: 'New Permission' };
+      const createPermissionInput: CreatePermissionInputDto = {
+        name: 'New Permission',
+      };
       const createdPermission = { name: 'New Permission', id: 1 };
-      jest.spyOn(permissionService, 'create').mockResolvedValueOnce(createdPermission as PermissionModel);
+      jest
+        .spyOn(permissionService, 'create')
+        .mockResolvedValueOnce(createdPermission as PermissionModel);
 
       const result = await resolver.createPermission(createPermissionInput);
 
@@ -46,7 +50,9 @@ describe('PermissionResolver', () => {
         message: 'Successfully created permission',
         data: createdPermission,
       });
-      expect(permissionService.create).toHaveBeenCalledWith(createPermissionInput);
+      expect(permissionService.create).toHaveBeenCalledWith(
+        createPermissionInput
+      );
     });
   });
 });

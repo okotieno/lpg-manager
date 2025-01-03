@@ -1,9 +1,10 @@
 import {
+  BelongsTo,
   Column,
+  DataType,
   ForeignKey,
   Model,
   Table,
-  BelongsTo, DataType
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import { NotificationModel } from './notification.model';

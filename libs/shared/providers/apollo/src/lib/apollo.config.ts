@@ -13,20 +13,19 @@ import { ENV_VARIABLES } from '@lpg-manager/injection-token';
 
 import { createClient } from 'graphql-ws';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { AuthStore } from '@lpg-manager/auth-store';
 import { setContext } from '@apollo/client/link/context';
 import { Preferences } from '@capacitor/preferences';
 import { contextErrorAlert } from './error-alert.context';
 
-export const apolloConfig = ()=> {
+export const apolloConfig = () => {
   const httpLink = inject(HttpLink);
   const backendUrl = inject(ENV_VARIABLES).backendUrl;
-  const toastCtrl= inject(ToastController);
+  const toastCtrl = inject(ToastController);
   const alertCtrl = inject(AlertController);
 
   const http = httpLink.create({
     uri: `${backendUrl}/graphql`,
-    extractFiles: (body) => extractFiles(body, isExtractableFile) as any
+    extractFiles: (body) => extractFiles(body, isExtractableFile) as any,
   });
 
   const authLink = setContext(async (_, { headers }) => {
@@ -47,14 +46,16 @@ export const apolloConfig = ()=> {
 
         return {
           Authorization: token.value ? `Bearer ${token.value}` : '',
-        }
+        };
       },
-    }),
+    })
   );
 
   const link = split(
     ({ query }) => {
-      const { kind, operation } = getMainDefinition(query) as OperationDefinitionNode;
+      const { kind, operation } = getMainDefinition(
+        query
+      ) as OperationDefinitionNode;
       return kind === 'OperationDefinition' && operation === 'subscription';
     },
     wsLink,
@@ -71,6 +72,6 @@ export const apolloConfig = ()=> {
 
   return {
     cache: new InMemoryCache(),
-    link: combinedLink
+    link: combinedLink,
   };
-}
+};

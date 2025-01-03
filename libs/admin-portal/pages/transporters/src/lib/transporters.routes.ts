@@ -3,7 +3,10 @@ import { inject } from '@angular/core';
 import { map, tap } from 'rxjs';
 import { IGetTransporterByIdGQL } from '@lpg-manager/transporter-store';
 import { BreadcrumbStore } from '@lpg-manager/breadcrumb';
-import { FormExitGuardService, IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
+import {
+  FormExitGuardService,
+  IHasUnsavedChanges,
+} from '@lpg-manager/form-exit-guard';
 
 export const STATIONS_ROUTES: Routes = [
   {
@@ -21,7 +24,8 @@ export const STATIONS_ROUTES: Routes = [
   },
   {
     path: 'new',
-    loadComponent: () => import('./transporter-form/transporters-form.component'),
+    loadComponent: () =>
+      import('./transporter-form/transporters-form.component'),
     data: {
       routeLabel: 'Create Transporter',
       breadcrumbs: [
@@ -71,11 +75,13 @@ export const STATIONS_ROUTES: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        loadComponent: () => import('./transporter-page/transporter-page.component'),
+        loadComponent: () =>
+          import('./transporter-page/transporter-page.component'),
       },
       {
         path: 'edit',
-        loadComponent: () => import('./transporter-form/transporters-form.component'),
+        loadComponent: () =>
+          import('./transporter-form/transporters-form.component'),
         data: {
           routeLabel: 'Edit transporter | :transporterName',
           breadcrumbs: [
@@ -86,7 +92,12 @@ export const STATIONS_ROUTES: Routes = [
             },
             {
               label: ':transporterName',
-              path: ['/dashboard', 'administration', 'transporters', ':transporterId'],
+              path: [
+                '/dashboard',
+                'administration',
+                'transporters',
+                ':transporterId',
+              ],
             },
             { label: 'Edit' },
           ],

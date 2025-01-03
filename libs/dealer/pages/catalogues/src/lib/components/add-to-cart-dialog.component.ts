@@ -1,10 +1,11 @@
 import {
-  Component, computed,
+  Component,
+  computed,
   effect,
   inject,
   input,
   untracked,
-  viewChild
+  viewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -63,14 +64,17 @@ import { ICatalogueDisplay } from '../catalogues-page/catalogues-page.component'
             </div>
             }
             <p class="description">
-              {{  inventory().catalogue.description || 'No description available' }}
+              {{
+                inventory().catalogue.description || 'No description available'
+              }}
             </p>
 
             <div class="specs">
               <ion-text color="medium">
                 <p>
                   <ion-icon name="cube"></ion-icon>
-                  {{ inventory().catalogue.quantityPerUnit }} {{ inventory().catalogue.unit }}
+                  {{ inventory().catalogue.quantityPerUnit }}
+                  {{ inventory().catalogue.unit }}
                 </p>
               </ion-text>
             </div>
@@ -80,13 +84,17 @@ import { ICatalogueDisplay } from '../catalogues-page/catalogues-page.component'
           <ion-card-title class="ion-text-wrap"
             >{{ inventory().catalogue.name }}
           </ion-card-title>
-          <ion-card-subtitle>{{ inventory().catalogue.brand.name }}</ion-card-subtitle>
+          <ion-card-subtitle>{{
+            inventory().catalogue.brand.name
+          }}</ion-card-subtitle>
         </ion-card-header>
 
         <ion-card-content> </ion-card-content>
       </ion-card>
       <ion-item>
-        <ion-label position="stacked">Quantity ({{ maxQuantity() }} available)</ion-label>
+        <ion-label position="stacked"
+          >Quantity ({{ maxQuantity() }} available)</ion-label
+        >
         <ion-input
           type="number"
           [(ngModel)]="quantity"

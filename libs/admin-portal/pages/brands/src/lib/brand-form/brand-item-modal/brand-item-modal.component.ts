@@ -1,9 +1,12 @@
-import { Component, effect, inject, input, signal, untracked } from '@angular/core';
 import {
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+  Component,
+  effect,
+  inject,
+  input,
+  signal,
+  untracked,
+} from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   IonButton,
   IonContent,
@@ -12,11 +15,13 @@ import {
   IonIcon,
   IonInput,
   IonItem,
-  IonNote, IonSelect, IonSelectOption,
+  IonNote,
+  IonSelect,
+  IonSelectOption,
   IonTextarea,
   IonTitle,
   IonToolbar,
-  ModalController
+  ModalController,
 } from '@ionic/angular/standalone';
 
 export interface IBrandItem {

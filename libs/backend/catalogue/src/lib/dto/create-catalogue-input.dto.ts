@@ -4,5 +4,4 @@ export class CreateCatalogueInputDto {
   @IsString()
   @IsNotEmpty()
   name!: string;
-
 }

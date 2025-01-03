@@ -8,10 +8,10 @@ export class UpdateTransporterInputDto {
   @IsNotEmpty()
   @Exists(TransporterModel, 'id', {
     message: (validationArguments) =>
-      `Transporter with id ${validationArguments.value} not found`
+      `Transporter with id ${validationArguments.value} not found`,
   })
   id!: string;
 
   @ValidateNested()
   params!: CreateTransporterInputDto;
-} 
+}

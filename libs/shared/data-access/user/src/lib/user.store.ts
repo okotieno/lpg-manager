@@ -1,11 +1,13 @@
 import { signalStore, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
-  ICreateUserGQL, ICreateUserMutation, ICreateUserMutationVariables,
+  ICreateUserGQL,
+  ICreateUserMutation,
+  ICreateUserMutationVariables,
   IDeleteUserByIdGQL,
   IGetUsersGQL,
   IGetUsersQuery,
-  IGetUsersQueryVariables
+  IGetUsersQueryVariables,
 } from './schemas/user.generated';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 

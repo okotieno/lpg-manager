@@ -4,8 +4,11 @@ import {
   IGetTransportersQuery,
   TransporterStore,
 } from '@lpg-manager/transporter-store';
-import { DataTableComponent, ITableColumn } from '@lpg-manager/data-table';
-import { PaginatedResource } from '@lpg-manager/data-table';
+import {
+  DataTableComponent,
+  ITableColumn,
+  PaginatedResource,
+} from '@lpg-manager/data-table';
 
 @Component({
   selector: 'lpg-transporters-page',

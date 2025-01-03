@@ -3,18 +3,18 @@ import {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
-  ValidatorConstraintInterface
+  ValidatorConstraintInterface,
 } from 'class-validator';
 import { ModelType } from 'sequelize-typescript';
 
 @ValidatorConstraint({ name: 'DoesntExist', async: true })
 export class DoesntExistConstraint implements ValidatorConstraintInterface {
-
   async validate(value: number, args: ValidationArguments) {
-
     const [model, field, whereOptions] = args.constraints;
-    const where = {...whereOptions}
-    const existingRecord = await model.findOne({ where: {...where, [field]: value } });
+    const where = { ...whereOptions };
+    const existingRecord = await model.findOne({
+      where: { ...where, [field]: value },
+    });
     return !existingRecord;
   }
 

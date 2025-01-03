@@ -1,4 +1,10 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Exists } from '@lpg-manager/validators';
 import { FileUploadModel } from '@lpg-manager/db';
 import { Type } from 'class-transformer';
@@ -6,7 +12,7 @@ import { Type } from 'class-transformer';
 class FileUploadDto {
   @Exists(FileUploadModel, 'id', {
     message: (validationArguments) =>
-      `File with id ${validationArguments.value} not found`
+      `File with id ${validationArguments.value} not found`,
   })
   id!: string;
 }

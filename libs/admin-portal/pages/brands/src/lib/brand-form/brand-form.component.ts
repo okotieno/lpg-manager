@@ -17,7 +17,9 @@ import {
   IonItem,
   IonLabel,
   IonList,
-  IonListHeader, IonRow,
+  IonListHeader,
+  IonRow,
+  ModalController,
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -29,7 +31,6 @@ import {
   IUpdateBrandCatalogueInput,
 } from '@lpg-manager/types';
 import { FileUploadComponent } from '@lpg-manager/file-upload-component';
-import { ModalController } from '@ionic/angular/standalone';
 import { BrandItemModalComponent } from './brand-item-modal/brand-item-modal.component';
 import { NgTemplateOutlet } from '@angular/common';
 import {
@@ -57,7 +58,7 @@ import { PermissionStore } from '@lpg-manager/permission-store';
     NgTemplateOutlet,
     IonButtons,
     IonRow,
-    IonCol
+    IonCol,
   ],
   templateUrl: './brand-form.component.html',
   providers: [PermissionStore],

@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-export const CHECKOUT_ROUTES:Routes = [
+export const CHECKOUT_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () => import('./checkout-page/checkout-page.component'),
@@ -8,5 +8,5 @@ export const CHECKOUT_ROUTES:Routes = [
       routeLabel: 'Checkout',
       breadcrumbs: [{ label: 'Checkout' }],
     },
-  }
-]
+  },
+];

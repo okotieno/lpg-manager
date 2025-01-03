@@ -16,10 +16,10 @@ import {
 } from '@lpg-manager/permission-service';
 import { CatalogueService } from '@lpg-manager/catalogue-service';
 import {
-  IQueryParam,
-  CatalogueModel,
   BrandModel,
+  CatalogueModel,
   FileUploadModel,
+  IQueryParam,
 } from '@lpg-manager/db';
 import { BrandService } from '@lpg-manager/brand-service';
 
@@ -70,7 +70,9 @@ export class CatalogueResolver {
 
   @ResolveField('brand', () => BrandModel)
   async getBrand(@Root() catalogue: CatalogueModel) {
-    return this.brandService.findById(catalogue.brandId, {include: ['images']});
+    return this.brandService.findById(catalogue.brandId, {
+      include: ['images'],
+    });
   }
 
   @ResolveField('images', () => [FileUploadModel])

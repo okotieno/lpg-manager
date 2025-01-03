@@ -26,7 +26,10 @@ export class CatalogueService extends CrudAbstractService<CatalogueModel> {
 
     const include: Includeable | Includeable[] = [];
 
-    if (depotFilters && (depotFilters.value || depotFilters?.values.length > 0)) {
+    if (
+      depotFilters &&
+      (depotFilters.value || depotFilters?.values.length > 0)
+    ) {
       const brands = await this.brandModel.findAll({
         include: [
           {

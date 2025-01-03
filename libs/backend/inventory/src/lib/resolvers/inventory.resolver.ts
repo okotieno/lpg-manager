@@ -1,67 +1,76 @@
-import { Args, Mutation, Query, ResolveField, Resolver, Root } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Query,
+  ResolveField,
+  Resolver,
+  Root,
+} from '@nestjs/graphql';
 import { CreateInventoryInputDto } from '../dto/create-inventory-input.dto';
 import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from '@lpg-manager/auth';
-import { PermissionGuard, Permissions, PermissionsEnum } from '@lpg-manager/permission-service';
+import {
+  PermissionGuard,
+  Permissions,
+  PermissionsEnum,
+} from '@lpg-manager/permission-service';
 import { InventoryService } from '@lpg-manager/inventory-service';
-import { IQueryParam, InventoryModel, StationModel, CatalogueModel } from '@lpg-manager/db';
+import {
+  CatalogueModel,
+  InventoryModel,
+  IQueryParam,
+  StationModel,
+} from '@lpg-manager/db';
 import { CatalogueService } from '@lpg-manager/catalogue-service';
 import { StationService } from '@lpg-manager/station-service';
 
 @Resolver(() => InventoryModel)
 export class InventoryResolver {
-
   constructor(
     private inventoryService: InventoryService,
     private stationService: StationService,
     private catalogueService: CatalogueService
-    ) {
-  }
+  ) {}
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.CreateInventory)
-  async createInventory(@Body('params', new ValidationPipe()) params: CreateInventoryInputDto) {
+  async createInventory(
+    @Body('params', new ValidationPipe()) params: CreateInventoryInputDto
+  ) {
     const inventory = await this.inventoryService.create({
       catalogueId: params.catalogueId,
       stationId: params.stationId,
-      quantity: params.quantity
+      quantity: params.quantity,
     });
 
     return {
       message: 'Inventory created successfully',
-      data: inventory
+      data: inventory,
     };
   }
 
   @Query(() => InventoryModel)
-  inventories(
-    @Args('query') query: IQueryParam
-  ) {
+  inventories(@Args('query') query: IQueryParam) {
     return this.inventoryService.findAll({
       ...query,
-      filters: query?.filters ?? []
+      filters: query?.filters ?? [],
     });
   }
 
   @Query(() => InventoryModel)
-  async inventory(
-    @Args('id') id: string
-  ) {
+  async inventory(@Args('id') id: string) {
     return this.inventoryService.findById(id);
   }
 
   @Mutation(() => InventoryModel)
-  async deleteInventory(
-    @Args('id') id: string
-  ) {
+  async deleteInventory(@Args('id') id: string) {
     await this.inventoryService.deleteById(id);
 
     return {
-      message: 'Successfully deleted inventory'
+      message: 'Successfully deleted inventory',
     };
   }
-
 
   @ResolveField('station', () => StationModel)
   async getStation(@Root() inventory: InventoryModel) {

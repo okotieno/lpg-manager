@@ -1,7 +1,7 @@
-import { IsArray, IsDate, IsNotEmpty, IsUUID, ValidateNested } from 'class-validator';
+import { IsArray, IsDate, IsNotEmpty, IsUUID } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Exists } from '@lpg-manager/validators';
-import { TransporterModel, DriverModel, VehicleModel, OrderModel } from '@lpg-manager/db';
+import { DriverModel, TransporterModel, VehicleModel } from '@lpg-manager/db';
 
 export class CreateDispatchInputDto {
   @IsUUID()

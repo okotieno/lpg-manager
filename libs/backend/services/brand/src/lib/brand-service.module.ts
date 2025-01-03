@@ -4,14 +4,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { BrandModel } from '@lpg-manager/db';
 
 @Module({
-  imports: [
-    SequelizeModule.forFeature([BrandModel])
-  ],
-  providers: [
-    BrandService
-  ],
-  exports: [
-    BrandService
-  ],
+  imports: [SequelizeModule.forFeature([BrandModel])],
+  providers: [BrandService],
+  exports: [BrandService],
 })
 export class BrandServiceModule {}

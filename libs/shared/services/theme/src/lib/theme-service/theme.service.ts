@@ -1,4 +1,11 @@
-import { effect, inject, Injectable, RendererFactory2, signal, untracked } from '@angular/core';
+import {
+  effect,
+  inject,
+  Injectable,
+  RendererFactory2,
+  signal,
+  untracked,
+} from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 export type Theme = 'light' | 'dark' | 'system';

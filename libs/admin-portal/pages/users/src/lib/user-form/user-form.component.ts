@@ -8,8 +8,9 @@ import {
   signal,
   untracked,
 } from '@angular/core';
-import { trigger, transition, style, animate } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 import {
+  AlertController,
   IonButton,
   IonCol,
   IonIcon,
@@ -19,7 +20,6 @@ import {
   IonList,
   IonListHeader,
   IonRow,
-  AlertController,
   IonSelect,
   IonSelectOption,
 } from '@ionic/angular/standalone';
@@ -33,13 +33,11 @@ import {
   GetUserByIdDocument,
   ICreateUserGQL,
   IGetUserByIdQuery,
-  IUpdateUserGQL
+  IUpdateUserGQL,
 } from '@lpg-manager/user-store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IGetRolesQuery, RoleStore } from '@lpg-manager/role-store';
-import {
-  IQueryOperatorEnum,
-} from '@lpg-manager/types';
+import { IQueryOperatorEnum } from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
@@ -289,15 +287,15 @@ export default class UserFormComponent implements IHasUnsavedChanges {
                   query: GetUserByIdDocument,
                   variables: {
                     id: this.userId(),
-                  }
-                }
-              ]
-            },
+                  },
+                },
+              ],
+            }
           )
           .subscribe({
             next: async () => {
               this.userForm.reset();
-              await this.#router.navigate(['../'], {relativeTo: this.#route});
+              await this.#router.navigate(['../'], { relativeTo: this.#route });
             },
           });
       } else {

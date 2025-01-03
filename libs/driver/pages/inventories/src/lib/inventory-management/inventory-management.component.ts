@@ -1,27 +1,33 @@
 import { Component, inject, input } from '@angular/core';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
   IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
   IonInput,
   IonItem,
   IonLabel,
-  IonButtons,
-  IonIcon,
+  IonTitle,
+  IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InventoryStore } from '@lpg-manager/inventory-store';
+import {
+  ICreateInventoryGQL,
+  InventoryStore,
+} from '@lpg-manager/inventory-store';
 import {
   CatalogueStore,
   IGetCataloguesQuery,
 } from '@lpg-manager/catalogue-store';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { AuthStore } from '@lpg-manager/auth-store';
-import { IQueryOperatorEnum, IQueryParamsFilter, ISelectCategory } from '@lpg-manager/types';
-import { ICreateInventoryGQL } from '@lpg-manager/inventory-store';
+import {
+  IQueryOperatorEnum,
+  IQueryParamsFilter,
+  ISelectCategory,
+} from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
 
 @Component({

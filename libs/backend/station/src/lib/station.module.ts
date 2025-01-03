@@ -3,12 +3,7 @@ import { StationResolver } from './resolvers/station.resolver';
 import { StationServiceModule } from '@lpg-manager/station-service';
 
 @Module({
-  imports: [
-    StationServiceModule,
-  ],
-  providers: [
-    StationResolver
-  ],
+  imports: [StationServiceModule],
+  providers: [StationResolver],
 })
-export class StationModule {
-}
+export class StationModule {}

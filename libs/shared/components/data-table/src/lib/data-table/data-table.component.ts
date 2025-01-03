@@ -7,7 +7,7 @@ import {
   signal,
   untracked,
   viewChild,
-  WritableSignal
+  WritableSignal,
 } from '@angular/core';
 import { CdkTableModule } from '@angular/cdk/table';
 import {

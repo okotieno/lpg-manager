@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, ValidateNested, } from 'class-validator';
+import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { DispatchModel } from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
 import { CreateDispatchInputDto } from './create-dispatch-input.dto';
@@ -8,10 +8,10 @@ export class UpdateDispatchInputDto {
   @IsNotEmpty()
   @Exists(DispatchModel, 'id', {
     message: (validationArguments) =>
-      `Dispatch with id ${validationArguments.value} not found`
+      `Dispatch with id ${validationArguments.value} not found`,
   })
   id!: string;
 
   @ValidateNested()
-  params!: CreateDispatchInputDto
+  params!: CreateDispatchInputDto;
 }

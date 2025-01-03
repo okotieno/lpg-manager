@@ -11,7 +11,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
       maxListeners: 10,
       verboseMemoryLeak: false,
       ignoreErrors: false,
-    })
-  ]
+    }),
+  ],
 })
 export class AppEventModule {}

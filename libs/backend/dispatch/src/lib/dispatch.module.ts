@@ -12,10 +12,8 @@ import { OrderServiceModule } from '@lpg-manager/order-service';
     TransporterServiceModule,
     DriverServiceModule,
     VehicleServiceModule,
-    OrderServiceModule
+    OrderServiceModule,
   ],
-  providers: [
-    DispatchResolver
-  ],
+  providers: [DispatchResolver],
 })
 export class DispatchModule {}

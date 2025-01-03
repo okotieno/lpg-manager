@@ -18,7 +18,7 @@ export class ActivityLogUserResolver {
   @Query(() => ActivityLogUserModel)
   async authenticatedUserActivityLogs(
     @Args('query') query: IQueryParam,
-    @CurrentUser() currentUser: UserModel,
+    @CurrentUser() currentUser: UserModel
   ) {
     return await this.activityLogService.findAll(
       {
@@ -33,7 +33,7 @@ export class ActivityLogUserResolver {
           },
         ],
       },
-      [UserModel, ActivityLogModel],
+      [UserModel, ActivityLogModel]
     );
   }
 

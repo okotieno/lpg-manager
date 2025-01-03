@@ -3,13 +3,12 @@ import {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
-  ValidatorConstraintInterface
+  ValidatorConstraintInterface,
 } from 'class-validator';
 import { ModelType } from 'sequelize-typescript';
 
 @ValidatorConstraint({ name: 'Exists', async: true })
 export class ExistsConstraint implements ValidatorConstraintInterface {
-
   async validate(value: number | null, args: ValidationArguments) {
     const [model, field] = args.constraints;
 

@@ -8,10 +8,10 @@ export class UpdateVehicleInputDto {
   @IsNotEmpty()
   @Exists(VehicleModel, 'id', {
     message: (validationArguments) =>
-      `Vehicle with id ${validationArguments.value} not found`
+      `Vehicle with id ${validationArguments.value} not found`,
   })
   id!: string;
 
   @ValidateNested()
   params!: CreateVehicleInputDto;
-} 
+}

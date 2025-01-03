@@ -157,7 +157,10 @@ export class SearchableSelectComponent<T extends { id: string }>
       return this.placeholder();
     }
     return this.selectedItems()
-      .map((item) => this.valueLabelFormatter()(item) ?? this.selectLabelFormatter()(item))
+      .map(
+        (item) =>
+          this.valueLabelFormatter()(item) ?? this.selectLabelFormatter()(item)
+      )
       .join(', ');
   });
 

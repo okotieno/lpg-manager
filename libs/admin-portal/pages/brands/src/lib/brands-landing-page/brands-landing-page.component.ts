@@ -1,8 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { CdkTableModule } from '@angular/cdk/table';
 import { BrandStore } from '@lpg-manager/brand-store';
-import { DataTableComponent, ITableColumn } from '@lpg-manager/data-table';
-import { PaginatedResource } from '@lpg-manager/data-table';
+import {
+  DataTableComponent,
+  ITableColumn,
+  PaginatedResource,
+} from '@lpg-manager/data-table';
 import { IBrandModel } from '@lpg-manager/types';
 
 @Component({

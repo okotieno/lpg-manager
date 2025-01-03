@@ -1,26 +1,25 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
-  BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import {
-  OrderModel,
-  OrderItemModel,
   CartModel,
   CatalogueModel,
+  OrderItemModel,
+  OrderModel,
   StationModel,
 } from '@lpg-manager/db';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
 import { Transaction } from 'sequelize';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class OrderService extends CrudAbstractService<OrderModel> {
   constructor(
     @InjectModel(OrderModel) private orderModel: typeof OrderModel,
     @InjectModel(OrderItemModel) private orderItemModel: typeof OrderItemModel,
-    @InjectModel(CartModel) private cartModel: typeof CartModel,
+    @InjectModel(CartModel) private cartModel: typeof CartModel
   ) {
     super(orderModel);
   }

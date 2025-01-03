@@ -4,7 +4,7 @@ import {
   DataType,
   ForeignKey,
   Model,
-  Table
+  Table,
 } from 'sequelize-typescript';
 import { OrderModel } from './order.model';
 import { CatalogueModel } from './catalogue.model';
@@ -66,4 +66,4 @@ export class OrderItemModel extends Model {
 
   @BelongsTo(() => InventoryModel)
   inventory!: InventoryModel;
-} 
+}

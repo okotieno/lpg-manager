@@ -1,11 +1,11 @@
 import {
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
   HasMany,
   Model,
   Table,
-  BelongsTo
 } from 'sequelize-typescript';
 import { CartCatalogueModel } from './cart-catalogue.model';
 import { UserModel } from './user.model';
@@ -13,7 +13,7 @@ import { StationModel } from './station.model';
 
 export enum CartStatus {
   PENDING = 'PENDING',
-  COMPLETED = 'COMPLETED'
+  COMPLETED = 'COMPLETED',
 }
 
 @Table({

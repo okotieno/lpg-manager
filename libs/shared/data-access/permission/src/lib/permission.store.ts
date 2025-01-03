@@ -1,11 +1,13 @@
 import { signalStore, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
-  ICreatePermissionGQL, ICreatePermissionMutation, ICreatePermissionMutationVariables,
+  ICreatePermissionGQL,
+  ICreatePermissionMutation,
+  ICreatePermissionMutationVariables,
   IDeletePermissionByIdGQL,
   IGetPermissionsGQL,
   IGetPermissionsQuery,
-  IGetPermissionsQueryVariables
+  IGetPermissionsQueryVariables,
 } from './schemas/permission.generated';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
@@ -20,7 +22,9 @@ export const PermissionStore = signalStore(
     ICreatePermissionMutation,
     ICreatePermissionMutationVariables,
     ICreatePermissionGQL,
-    NonNullable<NonNullable<IGetPermissionsQuery['permissions']['items']>[number]>,
+    NonNullable<
+      NonNullable<IGetPermissionsQuery['permissions']['items']>[number]
+    >,
     IGetPermissionsQueryVariables,
     'permissions',
     'deletePermission'

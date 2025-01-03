@@ -1,11 +1,11 @@
-import { Column, Model, Table, DataType } from 'sequelize-typescript';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 @Table({
   tableName: 'file_uploads',
   underscored: true,
   paranoid: true,
   timestamps: true,
-  deletedAt: true
+  deletedAt: true,
 })
 export class FileUploadModel extends Model {
   @Column({
@@ -16,18 +16,18 @@ export class FileUploadModel extends Model {
   })
   override id!: string;
 
-  @Column({type: DataType.STRING})
+  @Column({ type: DataType.STRING })
   name?: string;
 
-  @Column({type: DataType.STRING})
+  @Column({ type: DataType.STRING })
   encoding?: string;
 
-  @Column({type: DataType.FLOAT})
+  @Column({ type: DataType.FLOAT })
   size?: number;
 
-  @Column({type: DataType.STRING})
+  @Column({ type: DataType.STRING })
   mimetype?: string;
 
-  @Column({type: DataType.STRING})
+  @Column({ type: DataType.STRING })
   originalName?: string;
 }

@@ -4,14 +4,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { InventoryModel } from '@lpg-manager/db';
 
 @Module({
-  imports: [
-    SequelizeModule.forFeature([InventoryModel])
-  ],
-  providers: [
-    InventoryService
-  ],
-  exports: [
-    InventoryService
-  ],
+  imports: [SequelizeModule.forFeature([InventoryModel])],
+  providers: [InventoryService],
+  exports: [InventoryService],
 })
 export class InventoryServiceModule {}

@@ -16,13 +16,13 @@ import {
 import { ICartCatalogueInput, IQueryOperatorEnum } from '@lpg-manager/types';
 import {
   IAddItemToCartGQL,
-  IRemoveItemFromCartGQL,
-  IUpdateItemQuantityGQL,
-  IGetCartGQL,
+  ICompleteCartGQL,
   ICreateCartGQL,
+  IGetCartGQL,
   IGetCartsGQL,
   IGetCartsQuery,
-  ICompleteCartGQL,
+  IRemoveItemFromCartGQL,
+  IUpdateItemQuantityGQL,
 } from './cart.generated';
 import { lastValueFrom, tap } from 'rxjs';
 import {

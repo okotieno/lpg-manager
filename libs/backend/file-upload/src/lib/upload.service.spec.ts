@@ -56,7 +56,7 @@ describe('FileUploadService', () => {
       };
 
       await expect(service.upload(file)).rejects.toThrow(
-        new HttpException('Error uploading file', HttpStatus.BAD_REQUEST),
+        new HttpException('Error uploading file', HttpStatus.BAD_REQUEST)
       );
     });
 
@@ -86,7 +86,7 @@ describe('FileUploadService', () => {
         expect.any(String),
         expect.any(String),
         expect.any(Object),
-        expect.any(Function),
+        expect.any(Function)
       );
       expect(result).toEqual(expectedFileName);
     });
@@ -106,7 +106,7 @@ describe('FileUploadService', () => {
       });
 
       await expect(service.upload(file)).rejects.toThrow(
-        new HttpException('Error uploading file', HttpStatus.BAD_REQUEST),
+        new HttpException('Error uploading file', HttpStatus.BAD_REQUEST)
       );
     });
   });
@@ -122,7 +122,7 @@ describe('FileUploadService', () => {
       expect(mockMinioClient.removeObjects).toHaveBeenCalledWith(
         expect.any(String),
         ['test-object'],
-        expect.any(Function),
+        expect.any(Function)
       );
     });
 
@@ -134,8 +134,8 @@ describe('FileUploadService', () => {
       await expect(service.delete('test-object')).rejects.toThrow(
         new HttpException(
           'Oops Something wrong happened',
-          HttpStatus.BAD_REQUEST,
-        ),
+          HttpStatus.BAD_REQUEST
+        )
       );
     });
   });
@@ -157,7 +157,7 @@ describe('FileUploadService', () => {
       expect(mockMinioClient.getObject).toHaveBeenCalledWith(
         expect.any(String),
         'test-object',
-        expect.any(Function),
+        expect.any(Function)
       );
       expect(result).toEqual(mockBuffer);
     });
@@ -168,7 +168,7 @@ describe('FileUploadService', () => {
       });
 
       await expect(service.getObject('test-object')).rejects.toThrow(
-        'GetObject failed',
+        'GetObject failed'
       );
     });
   });

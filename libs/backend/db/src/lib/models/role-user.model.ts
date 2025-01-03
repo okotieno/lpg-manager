@@ -1,4 +1,10 @@
-import { Column, ForeignKey, Model, Table, BelongsTo } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  Column,
+  ForeignKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import { UserModel } from './user.model';
 import { RoleModel } from './role.model';
 import { StationModel } from './station.model';
@@ -9,7 +15,7 @@ import { DataTypes } from 'sequelize';
   underscored: true,
   paranoid: false,
   timestamps: true,
-  deletedAt: false
+  deletedAt: false,
 })
 export class RoleUserModel extends Model {
   @ForeignKey(() => UserModel)

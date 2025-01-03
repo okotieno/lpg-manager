@@ -12,12 +12,12 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 export class SendNotificationConsumer {
   constructor(
     private notificationService: NotificationService,
-    @Inject(PUB_SUB) private pubSub: RedisPubSub,
+    @Inject(PUB_SUB) private pubSub: RedisPubSub
   ) {}
 
   @Process()
   async sendNotifications(
-    job: Job<{ title: string; description: string; userIds: string[] }>,
+    job: Job<{ title: string; description: string; userIds: string[] }>
   ): Promise<void> {
     const notification = await this.notificationService.create({
       title: job.data.title,
@@ -31,7 +31,6 @@ export class SendNotificationConsumer {
       description: notification.description,
       createdAt: notification.createdAt,
       userIds: job.data.userIds,
-    })
-
+    });
   }
 }

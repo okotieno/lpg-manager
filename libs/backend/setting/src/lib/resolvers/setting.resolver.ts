@@ -25,7 +25,7 @@ import { SettingDeletedEvent } from '../events/setting-deleted.event';
 export class SettingResolver {
   constructor(
     private settingService: SettingBackendService,
-    private eventEmitter: EventEmitter2,
+    private eventEmitter: EventEmitter2
   ) {}
 
   @Query(() => SettingModel)
@@ -45,7 +45,7 @@ export class SettingResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.CreateSetting)
   async createSetting(
-    @Body('params', new ValidationPipe()) params: CreateSettingInputDto,
+    @Body('params', new ValidationPipe()) params: CreateSettingInputDto
   ) {
     const setting = await this.settingService.create({
       ...params,
@@ -63,7 +63,7 @@ export class SettingResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.UpdateSetting)
   async updateSetting(
-    @Body(new ValidationPipe()) params: UpdateSettingInputDto,
+    @Body(new ValidationPipe()) params: UpdateSettingInputDto
   ) {
     const setting = await this.settingService.findById(params.id);
     if (setting) {
@@ -72,7 +72,7 @@ export class SettingResolver {
 
       this.eventEmitter.emit(
         'setting.updated',
-        new SettingUpdatedEvent(setting),
+        new SettingUpdatedEvent(setting)
       );
       return {
         message: 'Successfully created setting',
@@ -86,7 +86,7 @@ export class SettingResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.DeleteSetting)
   async deleteSetting(
-    @Body(new ValidationPipe()) { id }: DeleteSettingInputDto,
+    @Body(new ValidationPipe()) { id }: DeleteSettingInputDto
   ) {
     const setting = (await this.settingService.findById(id)) as SettingModel;
 

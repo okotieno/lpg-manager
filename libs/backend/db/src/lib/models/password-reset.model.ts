@@ -1,4 +1,10 @@
-import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  ForeignKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import { UserModel } from './user.model';
 import { DataTypes } from 'sequelize';
 
@@ -14,14 +20,14 @@ export class PasswordResetModel extends Model {
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
     allowNull: false,
-    primaryKey: true
+    primaryKey: true,
   })
   override id!: string;
 
   @ForeignKey(() => UserModel)
   @Column({
     type: DataTypes.UUID,
-    allowNull: false
+    allowNull: false,
   })
   userId?: string;
 

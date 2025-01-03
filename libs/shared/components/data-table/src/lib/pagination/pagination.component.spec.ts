@@ -12,9 +12,9 @@ describe('PaginationComponent', () => {
       'forward-step': '<svg></svg>',
       'backward-fast': '<svg></svg>',
       'backward-step': '<svg></svg>',
-    })
+    });
     await TestBed.configureTestingModule({
-      imports: [PaginationComponent]
+      imports: [PaginationComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PaginationComponent);

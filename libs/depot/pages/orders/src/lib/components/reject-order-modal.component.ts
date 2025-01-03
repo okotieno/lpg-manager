@@ -1,8 +1,17 @@
 import { Component, inject, input } from '@angular/core';
 import {
-  IonHeader, IonToolbar, IonTitle, IonContent, IonItem,
-  IonLabel, IonTextarea, IonButton, IonButtons, IonFooter,
-  ModalController, IonIcon
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonFooter,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonTextarea,
+  IonTitle,
+  IonToolbar,
+  ModalController,
 } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 
@@ -13,7 +22,12 @@ import { FormsModule } from '@angular/forms';
       <ion-toolbar>
         <ion-title>Reject Order</ion-title>
         <ion-buttons slot="end">
-          <ion-button shape="round" fill="clear" color="danger" (click)="dismiss()">
+          <ion-button
+            shape="round"
+            fill="clear"
+            color="danger"
+            (click)="dismiss()"
+          >
             <ion-icon name="circle-xmark" slot="icon-only"></ion-icon>
           </ion-button>
         </ion-buttons>

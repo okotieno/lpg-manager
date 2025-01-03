@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PasswordResetBackendService } from './password-reset-backend.service';
 import {
-  QueryOperatorEnum,
   PasswordResetModel,
-  SortByDirectionEnum, UserModel
+  QueryOperatorEnum,
+  SortByDirectionEnum,
+  UserModel,
 } from '@lpg-manager/db';
 import { Op } from 'sequelize';
 import { getModelToken } from '@nestjs/sequelize';

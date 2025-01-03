@@ -9,10 +9,8 @@ import { VehicleServiceModule } from '@lpg-manager/vehicle-service';
     TransporterServiceModule,
     DriverServiceModule,
     VehicleServiceModule,
-    VehicleServiceModule
+    VehicleServiceModule,
   ],
-  providers: [
-    TransporterResolver
-  ],
+  providers: [TransporterResolver],
 })
 export class TransporterModule {}

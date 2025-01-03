@@ -6,16 +6,8 @@ import { RoleServiceBackendModule } from '@lpg-manager/role-service';
 import { UserRolesResolver } from './resolvers/user-roles.resolver';
 
 @Module({
-  imports: [
-    RoleServiceBackendModule,
-    EmailModule
-  ],
-  providers: [
-    UserResolver,
-    UserRolesResolver,
-    UserModelEventsListener
-  ],
+  imports: [RoleServiceBackendModule, EmailModule],
+  providers: [UserResolver, UserRolesResolver, UserModelEventsListener],
   exports: [],
 })
-export class UserModule {
-}
+export class UserModule {}

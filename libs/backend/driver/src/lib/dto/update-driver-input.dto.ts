@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsString, ValidateNested, IsArray, IsOptional, IsUUID } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
 import { DriverModel } from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
 import { CreateDriverInputDto } from './create-driver-input.dto';
@@ -8,7 +15,7 @@ export class UpdateDriverInputDto {
   @IsNotEmpty()
   @Exists(DriverModel, 'id', {
     message: (validationArguments) =>
-      `Driver with id ${validationArguments.value} not found`
+      `Driver with id ${validationArguments.value} not found`,
   })
   id!: string;
 
@@ -19,4 +26,4 @@ export class UpdateDriverInputDto {
   @IsOptional()
   @IsUUID(undefined, { each: true })
   vehicles?: string[];
-} 
+}

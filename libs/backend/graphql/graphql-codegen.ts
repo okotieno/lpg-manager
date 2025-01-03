@@ -1,4 +1,4 @@
-import type { CodegenConfig } from '@graphql-codegen/cli'
+import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   schema: 'libs/backend/graphql/src/lib/schemas',
@@ -17,11 +17,11 @@ const config: CodegenConfig = {
           PositiveFloat: 'number',
           EmailAddress: 'string',
           PhoneNumber: 'string',
-        }
+        },
       },
     },
   },
-  overwrite: true
-}
+  overwrite: true,
+};
 
 export default config

@@ -6,13 +6,14 @@ import {
   IonFooter,
   IonHeader,
   IonIcon,
-  IonItem, IonItemDivider,
+  IonItem,
+  IonItemDivider,
   IonLabel,
   IonList,
   IonText,
   IonTitle,
   IonToolbar,
-  ModalController
+  ModalController,
 } from '@ionic/angular/standalone';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 

@@ -21,10 +21,7 @@ import {
   SEND_PASSWORD_RESET_OTP_QUEUE,
   SEND_VERIFICATION_LINK_QUEUE,
 } from '../constants/queue.constants';
-import {
-  OtpBackendService,
-  OtpUsageEnum,
-} from '@lpg-manager/otp-service';
+import { OtpBackendService, OtpUsageEnum } from '@lpg-manager/otp-service';
 import { TranslationService } from '@lpg-manager/translation';
 import { ValidateOtpInputDto } from './validate-otp-input.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -52,7 +49,7 @@ export class AuthResolver {
     @InjectQueue(SEND_VERIFICATION_LINK_QUEUE)
     private readonly sendVerificationLinkQueue: Queue,
     private eventEmitter: EventEmitter2,
-    private readonly passwordResetService: PasswordResetBackendService,
+    private readonly passwordResetService: PasswordResetBackendService
   ) {}
 
   @Mutation()
@@ -73,38 +70,39 @@ export class AuthResolver {
   @Mutation()
   async continueWithGoogle(
     @Args('token') token: string,
-    @CurrentDeviceType() deviceType: 'web' | 'mobile',
+    @CurrentDeviceType() deviceType: 'web' | 'mobile'
   ) {
-    const authenticatedUser =
-      await this.authService.signInOrSignUpGoogleUser(token);
+    const authenticatedUser = await this.authService.signInOrSignUpGoogleUser(
+      token
+    );
     if (!authenticatedUser?.user) {
       return null;
     }
     this.eventEmitter.emit(
       'auth.continue-with-google',
-      new AuthEvent(authenticatedUser?.user),
+      new AuthEvent(authenticatedUser?.user)
     );
     if (authenticatedUser?.created) {
       this.eventEmitter.emit(
         'auth.registered',
-        new AuthEvent(authenticatedUser?.user),
+        new AuthEvent(authenticatedUser?.user)
       );
       this.eventEmitter.emit(
         'auth.verified',
-        new AuthEvent(authenticatedUser?.user),
+        new AuthEvent(authenticatedUser?.user)
       );
     }
 
     return this.authService.login(
       authenticatedUser.user as UserModel,
-      deviceType,
+      deviceType
     );
   }
 
   @Mutation()
   async requestAccessToken(
     @Args('refreshToken') refreshToken: string,
-    @CurrentDeviceType() deviceType: 'web' | 'mobile',
+    @CurrentDeviceType() deviceType: 'web' | 'mobile'
   ) {
     const { email, userId, sessionId } =
       this.authService.validateToken(refreshToken);
@@ -132,7 +130,7 @@ export class AuthResolver {
   @Mutation()
   async register(
     @Body(new ValidationPipe()) registerInputDto: RegisterInputDto,
-    @CurrentDeviceType() deviceType: 'web' | 'mobile',
+    @CurrentDeviceType() deviceType: 'web' | 'mobile'
   ) {
     const registeredUser = await this.authService.register(registerInputDto);
 
@@ -145,7 +143,7 @@ export class AuthResolver {
   @UseGuards(LocalAuthGuard)
   async loginWithPassword(
     @Body(new ValidationPipe()) loginInputDto: LoginInputDto,
-    @CurrentDeviceType() deviceType: 'web' | 'mobile',
+    @CurrentDeviceType() deviceType: 'web' | 'mobile'
   ) {
     const user = await this.userService.findByEmail(loginInputDto.email);
     this.eventEmitter.emit('auth.login', new AuthEvent(user as UserModel));
@@ -176,7 +174,7 @@ export class AuthResolver {
       success: true,
       message: this.translationService.getTranslation(
         'alert.resetPasswordLinkSentSuccess',
-        { email },
+        { email }
       ),
     };
   }
@@ -193,7 +191,7 @@ export class AuthResolver {
       success: true,
       message: this.translationService.getTranslation(
         'alert.verificationLinkSentSuccess',
-        { email: dbUser.email ?? '' },
+        { email: dbUser.email ?? '' }
       ),
     };
   }
@@ -211,7 +209,7 @@ export class AuthResolver {
     return {
       success: true,
       message: this.translationService.getTranslation(
-        'alert.verifyEmailSuccess',
+        'alert.verifyEmailSuccess'
       ),
     };
   }
@@ -219,16 +217,16 @@ export class AuthResolver {
   @Mutation()
   async changePasswordUsingResetToken(
     @Body(new ValidationPipe()) input: PasswordChangeUsingTokenInputDto,
-    @CurrentDeviceType() deviceType: 'web' | 'mobile',
+    @CurrentDeviceType() deviceType: 'web' | 'mobile'
   ) {
     if (input.password !== input.passwordConfirmation) {
       throw new BadRequestException(
-        'Password confirmation must match password',
+        'Password confirmation must match password'
       );
     }
     const user = await this.passwordResetService.resetPassword(
       input.token,
-      input.password,
+      input.password
     );
     return this.authService.login(user, deviceType);
   }
@@ -252,12 +250,12 @@ export class AuthResolver {
       return {
         success: true,
         message: this.translationService.getTranslation(
-          'alert.resetPasswordOTPSentSuccess',
+          'alert.resetPasswordOTPSentSuccess'
         ),
       };
     } else {
       throw new NotFoundException(
-        this.translationService.getTranslation('alert.emailNotFound'),
+        this.translationService.getTranslation('alert.emailNotFound')
       );
     }
   }
@@ -265,14 +263,14 @@ export class AuthResolver {
   @Mutation()
   async validateOtp(
     @Body(new ValidationPipe()) validateOtpInput: ValidateOtpInputDto,
-    @CurrentDeviceType() deviceType: 'web' | 'mobile',
+    @CurrentDeviceType() deviceType: 'web' | 'mobile'
   ) {
     const { identifier, token } = validateOtpInput;
 
     const validateOtp = await this.otpService.validate(
       identifier,
       token,
-      OtpUsageEnum.PasswordReset,
+      OtpUsageEnum.PasswordReset
     );
 
     if (!validateOtp.status) {
@@ -283,5 +281,4 @@ export class AuthResolver {
 
     return this.authService.login(user as UserModel, deviceType);
   }
-
 }

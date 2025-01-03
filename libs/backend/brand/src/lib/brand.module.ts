@@ -4,13 +4,7 @@ import { BrandServiceModule } from '@lpg-manager/brand-service';
 import { CatalogueServiceModule } from '@lpg-manager/catalogue-service';
 
 @Module({
-  imports: [
-    BrandServiceModule,
-    CatalogueServiceModule
-  ],
-  providers: [
-    BrandResolver
-  ],
+  imports: [BrandServiceModule, CatalogueServiceModule],
+  providers: [BrandResolver],
 })
-export class BrandModule {
-}
+export class BrandModule {}

@@ -8,5 +8,5 @@ export const CurrentDeviceType = createParamDecorator(
     return isMobileEnvironmentUserAgentPresent(ctx.getContext().req)
       ? 'mobile'
       : 'web';
-  },
+  }
 );

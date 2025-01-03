@@ -1,11 +1,13 @@
 import { signalStore, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
-  ICreateRoleGQL, ICreateRoleMutation, ICreateRoleMutationVariables,
+  ICreateRoleGQL,
+  ICreateRoleMutation,
+  ICreateRoleMutationVariables,
   IDeleteRoleByIdGQL,
   IGetRolesGQL,
   IGetRolesQuery,
-  IGetRolesQueryVariables
+  IGetRolesQueryVariables,
 } from './role.generated';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 

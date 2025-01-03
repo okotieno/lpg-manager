@@ -8,7 +8,7 @@ export class PasswordResetModelEventsListener {
   async handlePasswordResetCreated($event: PasswordResetCreatedEvent) {
     Logger.log(
       'Password reset created event event => id',
-      $event.passwordReset.id,
+      $event.passwordReset.id
     );
   }
 }

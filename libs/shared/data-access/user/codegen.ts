@@ -9,7 +9,7 @@ const config: CodegenConfig = {
       preset: 'near-operation-file',
       presetConfig: {
         extension: '.generated.ts',
-        baseTypesPath: '~@lpg-manager/types'
+        baseTypesPath: '~@lpg-manager/types',
       },
       config: {
         addExplicitOverride: true,
@@ -23,10 +23,10 @@ const config: CodegenConfig = {
           PositiveFloat: 'number',
           EmailAddress: 'string',
           PhoneNumber: 'string',
-        }
-      }
-    }
+        },
+      },
+    },
   },
-  overwrite: true
+  overwrite: true,
 };
 export default config;

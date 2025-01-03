@@ -1,4 +1,11 @@
-import { Component, computed, effect, inject, input, untracked } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  untracked,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   IonButton,
@@ -9,10 +16,12 @@ import {
   IonIcon,
   IonInput,
   IonItem,
-  IonRow, IonSelect, IonSelectOption,
+  IonRow,
+  IonSelect,
+  IonSelectOption,
   IonTitle,
   IonToolbar,
-  ModalController
+  ModalController,
 } from '@ionic/angular/standalone';
 
 interface IDriverData {

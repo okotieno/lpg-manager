@@ -2,12 +2,13 @@ import { Component, signal } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
-  IonCardHeader, IonCardTitle,
+  IonCardHeader,
+  IonCardTitle,
   IonCol,
   IonGrid,
   IonIcon,
   IonRow,
-  IonText
+  IonText,
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 

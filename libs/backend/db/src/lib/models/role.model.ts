@@ -1,4 +1,10 @@
-import { BelongsToMany, Column, Model, Table, DataType } from 'sequelize-typescript';
+import {
+  BelongsToMany,
+  Column,
+  DataType,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import { PermissionModel } from './permission.model';
 import { UserModel } from './user.model';
 
@@ -13,25 +19,25 @@ import { UserModel } from './user.model';
       unique: true,
       fields: ['name'],
       where: {
-        deleted_at: null
+        deleted_at: null,
       },
-      name: 'roles_name_unique_not_deleted'
-    }
-  ]
+      name: 'roles_name_unique_not_deleted',
+    },
+  ],
 })
 export class RoleModel extends Model {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
     allowNull: false,
-    primaryKey: true
+    primaryKey: true,
   })
   override id!: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
-    unique: 'roles_name_unique_not_deleted'
+    unique: 'roles_name_unique_not_deleted',
   })
   name!: string;
 
@@ -39,7 +45,7 @@ export class RoleModel extends Model {
     foreignKeyConstraint: true,
     through: 'permission_role',
     foreignKey: 'role_id',
-    otherKey: 'permission_id'
+    otherKey: 'permission_id',
   })
   permissions!: PermissionModel[];
 
@@ -47,8 +53,7 @@ export class RoleModel extends Model {
     foreignKeyConstraint: true,
     through: 'role_user',
     foreignKey: 'role_id',
-    otherKey: 'user_id'
+    otherKey: 'user_id',
   })
   users!: UserModel[];
-
 }

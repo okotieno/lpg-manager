@@ -1,11 +1,13 @@
 import { signalStore, withProps } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
-  ICreateBrandGQL, ICreateBrandMutation, ICreateBrandMutationVariables,
+  ICreateBrandGQL,
+  ICreateBrandMutation,
+  ICreateBrandMutationVariables,
   IDeleteBrandByIdGQL,
   IGetBrandsGQL,
   IGetBrandsQuery,
-  IGetBrandsQueryVariables
+  IGetBrandsQueryVariables,
 } from './brand.generated';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 

@@ -1,8 +1,9 @@
 import * as Types from '@lpg-manager/types';
 
+import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
+
 export type ICreateInventoryMutationVariables = Types.Exact<{
   params: Types.ICreateInventoryInput;
 }>;
@@ -55,7 +56,7 @@ export const CreateInventoryDocument = gql`
   })
   export class ICreateInventoryGQL extends Apollo.Mutation<ICreateInventoryMutation, ICreateInventoryMutationVariables> {
     override document = CreateInventoryDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -73,7 +74,7 @@ export const GetInventoryByIdDocument = gql`
   })
   export class IGetInventoryByIdGQL extends Apollo.Query<IGetInventoryByIdQuery, IGetInventoryByIdQueryVariables> {
     override document = GetInventoryByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -117,7 +118,7 @@ export const GetInventoriesDocument = gql`
   })
   export class IGetInventoriesGQL extends Apollo.Query<IGetInventoriesQuery, IGetInventoriesQueryVariables> {
     override document = GetInventoriesDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -135,7 +136,7 @@ export const DeleteInventoryByIdDocument = gql`
   })
   export class IDeleteInventoryByIdGQL extends Apollo.Mutation<IDeleteInventoryByIdMutation, IDeleteInventoryByIdMutationVariables> {
     override document = DeleteInventoryByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -156,7 +157,7 @@ export const UpdateInventoryDocument = gql`
   })
   export class IUpdateInventoryGQL extends Apollo.Mutation<IUpdateInventoryMutation, IUpdateInventoryMutationVariables> {
     override document = UpdateInventoryDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

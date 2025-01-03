@@ -5,9 +5,7 @@ import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
 export class BrandService extends CrudAbstractService<BrandModel> {
-  constructor(
-    @InjectModel(BrandModel) brandModel: typeof BrandModel,
-  ) {
+  constructor(@InjectModel(BrandModel) brandModel: typeof BrandModel) {
     super(brandModel);
   }
 }

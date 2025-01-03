@@ -1,6 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StationService } from './station.service';
-import { QueryOperatorEnum, BrandModel, SortByDirectionEnum } from '@lpg-manager/db';
+import {
+  BrandModel,
+  QueryOperatorEnum,
+  SortByDirectionEnum,
+} from '@lpg-manager/db';
 import { Op } from 'sequelize';
 import { getModelToken } from '@nestjs/sequelize';
 
@@ -10,7 +14,7 @@ const modelRepositoryMock = {
   create: jest.fn(),
   update: jest.fn(),
   destroy: jest.fn(),
-  bulkCreate: jest.fn()
+  bulkCreate: jest.fn(),
 };
 
 describe('BrandService', () => {

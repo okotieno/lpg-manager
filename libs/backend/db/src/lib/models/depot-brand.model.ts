@@ -1,4 +1,10 @@
-import { Column, ForeignKey, Model, Table, DataType } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  ForeignKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import { StationModel } from './station.model';
 import { BrandModel } from './brand.model';
 
@@ -6,7 +12,7 @@ import { BrandModel } from './brand.model';
   tableName: 'depot_brands',
   underscored: true,
   paranoid: true,
-  timestamps: true
+  timestamps: true,
 })
 export class DepotBrandModel extends Model {
   @Column({
@@ -20,15 +26,14 @@ export class DepotBrandModel extends Model {
   @ForeignKey(() => StationModel)
   @Column({
     type: DataType.UUID,
-    allowNull: false
+    allowNull: false,
   })
   depotId!: string;
 
   @ForeignKey(() => BrandModel)
   @Column({
     type: DataType.UUID,
-    allowNull: false
+    allowNull: false,
   })
   brandId!: string;
-
 }

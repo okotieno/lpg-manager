@@ -8,7 +8,7 @@ describe('FormExitGuardService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FormExitGuardService, AlertController]
+      providers: [FormExitGuardService, AlertController],
     });
 
     service = TestBed.inject(FormExitGuardService);
@@ -22,7 +22,7 @@ describe('FormExitGuardService', () => {
   describe('presentAlert', () => {
     it('should create and present an alert', async () => {
       const alertSpy = jest.spyOn(alertController, 'create').mockResolvedValue({
-        present: jest.fn()
+        present: jest.fn(),
       } as any);
 
       await service.presentAlert();
@@ -45,7 +45,7 @@ describe('FormExitGuardService', () => {
 
       const alertSpy = jest.spyOn(alertController, 'create').mockResolvedValue({
         present: jest.fn(),
-        onWillDismiss: () => Promise.resolve({ role: 'destructive' })
+        onWillDismiss: () => Promise.resolve({ role: 'destructive' }),
       } as any);
 
       const result = await service.hasUnsavedChanges(component);
@@ -59,7 +59,7 @@ describe('FormExitGuardService', () => {
 
       const alertSpy = jest.spyOn(alertController, 'create').mockResolvedValue({
         present: jest.fn(),
-        onWillDismiss: () => Promise.resolve({ role: 'cancel' })
+        onWillDismiss: () => Promise.resolve({ role: 'cancel' }),
       } as any);
 
       const result = await service.hasUnsavedChanges(component);

@@ -1,8 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-  UserStore,
-} from '@lpg-manager/user-store';
+import { UserStore } from '@lpg-manager/user-store';
 import {
   DataTableComponent,
   ITableColumn,
@@ -12,13 +10,10 @@ import { IUserModel } from '@lpg-manager/types';
 
 @Component({
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    DataTableComponent,
-  ],
+  imports: [ReactiveFormsModule, DataTableComponent],
   templateUrl: './users-page.component.html',
   styleUrl: './users-page.component.css',
-  providers: [UserStore]
+  providers: [UserStore],
 })
 export default class UsersPageComponent {
   userStore: PaginatedResource<IUserModel> = inject(UserStore);

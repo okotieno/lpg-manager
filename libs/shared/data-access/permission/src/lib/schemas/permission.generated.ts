@@ -1,8 +1,9 @@
 import * as Types from '@lpg-manager/types';
 
+import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
+
 export type ICreatePermissionMutationVariables = Types.Exact<{
   name: Types.Scalars['String']['input'];
 }>;
@@ -47,7 +48,7 @@ export const CreatePermissionDocument = gql`
   })
   export class ICreatePermissionGQL extends Apollo.Mutation<ICreatePermissionMutation, ICreatePermissionMutationVariables> {
     override document = CreatePermissionDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -66,7 +67,7 @@ export const GetPermissionByIdDocument = gql`
   })
   export class IGetPermissionByIdGQL extends Apollo.Query<IGetPermissionByIdQuery, IGetPermissionByIdQueryVariables> {
     override document = GetPermissionByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -90,7 +91,7 @@ export const GetPermissionsDocument = gql`
   })
   export class IGetPermissionsGQL extends Apollo.Query<IGetPermissionsQuery, IGetPermissionsQueryVariables> {
     override document = GetPermissionsDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -108,7 +109,7 @@ export const DeletePermissionByIdDocument = gql`
   })
   export class IDeletePermissionByIdGQL extends Apollo.Mutation<IDeletePermissionByIdMutation, IDeletePermissionByIdMutationVariables> {
     override document = DeletePermissionByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

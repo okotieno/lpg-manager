@@ -1,9 +1,12 @@
 import * as Types from '@lpg-manager/types';
 
+import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
-export type IOrderDealerFragmentFragment = { dealer: { id: string, name: string } };
+
+export type IOrderDealerFragmentFragment = {
+  dealer: { id: string; name: string };
+};
 
 export type ICreateOrderMutationVariables = Types.Exact<{
   params: Types.ICreateOrderInput;
@@ -74,7 +77,7 @@ export const CreateOrderDocument = gql`
   })
   export class ICreateOrderGQL extends Apollo.Mutation<ICreateOrderMutation, ICreateOrderMutationVariables> {
     override document = CreateOrderDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -92,7 +95,7 @@ export const GetOrderByIdDocument = gql`
   })
   export class IGetOrderByIdGQL extends Apollo.Query<IGetOrderByIdQuery, IGetOrderByIdQueryVariables> {
     override document = GetOrderByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -133,7 +136,7 @@ export const GetOrdersDocument = gql`
   })
   export class IGetOrdersGQL extends Apollo.Query<IGetOrdersQuery, IGetOrdersQueryVariables> {
     override document = GetOrdersDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -151,7 +154,7 @@ export const DeleteOrderByIdDocument = gql`
   })
   export class IDeleteOrderByIdGQL extends Apollo.Mutation<IDeleteOrderByIdMutation, IDeleteOrderByIdMutationVariables> {
     override document = DeleteOrderByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -172,7 +175,7 @@ export const UpdateOrderDocument = gql`
   })
   export class IUpdateOrderGQL extends Apollo.Mutation<IUpdateOrderMutation, IUpdateOrderMutationVariables> {
     override document = UpdateOrderDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -194,7 +197,7 @@ export const UpdateOrderStatusDocument = gql`
   })
   export class IUpdateOrderStatusGQL extends Apollo.Mutation<IUpdateOrderStatusMutation, IUpdateOrderStatusMutationVariables> {
     override document = UpdateOrderStatusDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

@@ -1,8 +1,9 @@
 import * as Types from '@lpg-manager/types';
 
+import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
+
 export type ICreateUserMutationVariables = Types.Exact<{
   params: Types.ICreateUserInput;
 }>;
@@ -75,7 +76,7 @@ export const CreateUserDocument = gql`
   })
   export class ICreateUserGQL extends Apollo.Mutation<ICreateUserMutation, ICreateUserMutationVariables> {
     override document = CreateUserDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -96,7 +97,7 @@ export const UpdateUserDocument = gql`
   })
   export class IUpdateUserGQL extends Apollo.Mutation<IUpdateUserMutation, IUpdateUserMutationVariables> {
     override document = UpdateUserDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -132,7 +133,7 @@ export const GetUserByIdDocument = gql`
   })
   export class IGetUserByIdGQL extends Apollo.Query<IGetUserByIdQuery, IGetUserByIdQueryVariables> {
     override document = GetUserByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -159,7 +160,7 @@ export const GetUsersDocument = gql`
   })
   export class IGetUsersGQL extends Apollo.Query<IGetUsersQuery, IGetUsersQueryVariables> {
     override document = GetUsersDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -177,7 +178,7 @@ export const AssignRolesToUserDocument = gql`
   })
   export class IAssignRolesToUserGQL extends Apollo.Mutation<IAssignRolesToUserMutation, IAssignRolesToUserMutationVariables> {
     override document = AssignRolesToUserDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -195,7 +196,7 @@ export const DeleteUserByIdDocument = gql`
   })
   export class IDeleteUserByIdGQL extends Apollo.Mutation<IDeleteUserByIdMutation, IDeleteUserByIdMutationVariables> {
     override document = DeleteUserByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -232,7 +233,7 @@ export const UserWithRolesDocument = gql`
   })
   export class IUserWithRolesGQL extends Apollo.Query<IUserWithRolesQuery, IUserWithRolesQueryVariables> {
     override document = UserWithRolesDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -250,7 +251,7 @@ export const GetUserCountDocument = gql`
   })
   export class IGetUserCountGQL extends Apollo.Query<IGetUserCountQuery, IGetUserCountQueryVariables> {
     override document = GetUserCountDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

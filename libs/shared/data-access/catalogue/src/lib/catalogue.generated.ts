@@ -1,8 +1,9 @@
 import * as Types from '@lpg-manager/types';
 
+import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
+
 export type ICreateCatalogueMutationVariables = Types.Exact<{
   params: Types.ICreateCatalogueInput;
 }>;
@@ -70,7 +71,7 @@ export const CreateCatalogueDocument = gql`
   })
   export class ICreateCatalogueGQL extends Apollo.Mutation<ICreateCatalogueMutation, ICreateCatalogueMutationVariables> {
     override document = CreateCatalogueDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -89,7 +90,7 @@ export const GetCatalogueByIdDocument = gql`
   })
   export class IGetCatalogueByIdGQL extends Apollo.Query<IGetCatalogueByIdQuery, IGetCatalogueByIdQueryVariables> {
     override document = GetCatalogueByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -118,7 +119,7 @@ export const GetCataloguesDocument = gql`
   })
   export class IGetCataloguesGQL extends Apollo.Query<IGetCataloguesQuery, IGetCataloguesQueryVariables> {
     override document = GetCataloguesDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -136,7 +137,7 @@ export const DeleteCatalogueByIdDocument = gql`
   })
   export class IDeleteCatalogueByIdGQL extends Apollo.Mutation<IDeleteCatalogueByIdMutation, IDeleteCatalogueByIdMutationVariables> {
     override document = DeleteCatalogueByIdDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -157,7 +158,7 @@ export const UpdateCatalogueDocument = gql`
   })
   export class IUpdateCatalogueGQL extends Apollo.Mutation<IUpdateCatalogueMutation, IUpdateCatalogueMutationVariables> {
     override document = UpdateCatalogueDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

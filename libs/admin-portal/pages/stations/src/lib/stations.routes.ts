@@ -3,7 +3,10 @@ import { inject } from '@angular/core';
 import { map, tap } from 'rxjs';
 import { IGetStationByIdGQL } from '@lpg-manager/station-store';
 import { BreadcrumbStore } from '@lpg-manager/breadcrumb';
-import { FormExitGuardService, IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
+import {
+  FormExitGuardService,
+  IHasUnsavedChanges,
+} from '@lpg-manager/form-exit-guard';
 
 export const STATIONS_ROUTES: Routes = [
   {

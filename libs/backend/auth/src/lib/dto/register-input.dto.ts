@@ -5,22 +5,21 @@ import { UserModel } from '@lpg-manager/db';
 export class RegisterInputDto {
   @IsString()
   @IsNotEmpty()
-  firstName = ''
+  firstName = '';
 
   @IsString()
   @IsNotEmpty()
-  lastName = ''
+  lastName = '';
 
   @IsNotEmpty()
-  password = ''
+  password = '';
 
   @IsNotEmpty()
-  passwordConfirmation = ''
-
+  passwordConfirmation = '';
 
   @IsString()
   @IsNotEmpty()
   @IsEmail()
   @DoesntExist(UserModel, 'email')
-  email = ''
+  email = '';
 }

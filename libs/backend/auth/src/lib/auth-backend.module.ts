@@ -11,10 +11,10 @@ import { OtpBackendServiceModule } from '@lpg-manager/otp-service';
 import { TranslationServiceModule } from '@lpg-manager/translation';
 import { SendPasswordResetLinkConsumer } from './consumers/send-password-reset-link.consumer';
 import {
+  SEND_PASSWORD_RESET_LINK_QUEUE,
   SEND_PASSWORD_RESET_OTP_QUEUE,
   SEND_VERIFICATION_LINK_QUEUE,
   SEND_WELCOME_EMAIL_QUEUE,
-  SEND_PASSWORD_RESET_LINK_QUEUE,
 } from './constants/queue.constants';
 import { BullModule } from '@nestjs/bull';
 import { EmailModule } from '@lpg-manager/email-service';
@@ -34,7 +34,7 @@ import { ActivityLogBackendServiceModule } from '@lpg-manager/activity-log-servi
       { name: SEND_PASSWORD_RESET_OTP_QUEUE },
       { name: SEND_PASSWORD_RESET_LINK_QUEUE },
       { name: SEND_VERIFICATION_LINK_QUEUE },
-      { name: SEND_WELCOME_EMAIL_QUEUE },
+      { name: SEND_WELCOME_EMAIL_QUEUE }
     ),
     PermissionServiceBackendModule,
     OtpBackendServiceModule,
@@ -43,7 +43,7 @@ import { ActivityLogBackendServiceModule } from '@lpg-manager/activity-log-servi
     RoleServiceBackendModule,
     PasswordResetBackendServiceModule,
     SettingBackendServiceModule,
-    ActivityLogBackendServiceModule
+    ActivityLogBackendServiceModule,
   ],
   providers: [
     AuthResolver,

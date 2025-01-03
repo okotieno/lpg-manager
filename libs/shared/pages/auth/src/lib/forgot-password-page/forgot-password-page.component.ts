@@ -5,7 +5,7 @@ import {
   IonInput,
   IonItem,
   IonList,
-  IonText
+  IonText,
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { AuthStore } from '@lpg-manager/auth-store';
@@ -20,26 +20,30 @@ import { AuthStore } from '@lpg-manager/auth-store';
     IonItem,
     IonList,
     RouterLink,
-    IonText
+    IonText,
   ],
   templateUrl: './forgot-password-page.component.html',
-  styles: [`
-    :host {
-      display: block;
-      height: 100%;
-    }
-  `]
+  styles: [
+    `
+      :host {
+        display: block;
+        height: 100%;
+      }
+    `,
+  ],
 })
 export class ForgotPasswordPageComponent {
-  readonly #fb = inject(FormBuilder)
+  readonly #fb = inject(FormBuilder);
   readonly #authStore = inject(AuthStore);
   forgotPasswordForm = this.#fb.group({
-    email: ['', [Validators.required, Validators.email]]
+    email: ['', [Validators.required, Validators.email]],
   });
 
   onSubmit() {
     if (this.forgotPasswordForm.valid) {
-      this.#authStore.sendResetLink({ email: this.forgotPasswordForm.value.email as string });
+      this.#authStore.sendResetLink({
+        email: this.forgotPasswordForm.value.email as string,
+      });
     }
   }
 }

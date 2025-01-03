@@ -1,4 +1,12 @@
-import { IsNotEmpty, IsString, IsArray, ValidateNested, IsOptional, IsNumber, IsUUID } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 class DriverInput {

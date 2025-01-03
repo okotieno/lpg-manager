@@ -1,11 +1,11 @@
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   DataType,
   ForeignKey,
   Model,
   Table,
-  BelongsToMany,
 } from 'sequelize-typescript';
 import { TransporterModel } from './transporter.model';
 import { DriverModel } from './driver.model';
@@ -56,4 +56,4 @@ export class VehicleModel extends Model {
 
   @BelongsToMany(() => DriverModel, () => DriverVehicleModel)
   drivers!: DriverModel[];
-} 
+}

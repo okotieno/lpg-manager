@@ -1,9 +1,28 @@
 import * as Types from '@lpg-manager/types';
 
+import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
-export type ICartFragmentFragment = { id: string, totalQuantity?: number | null, totalPrice?: number | null, items: Array<{ id: string, createdAt: string, catalogueId: string, quantity: number, catalogue: { id: string, name: string, pricePerUnit?: number | null, unit: Types.ICatalogueUnit, quantityPerUnit: number }, inventory: { quantity: number, station: { name: string } } } | null> };
+
+export type ICartFragmentFragment = {
+  id: string;
+  totalQuantity?: number | null;
+  totalPrice?: number | null;
+  items: Array<{
+    id: string;
+    createdAt: string;
+    catalogueId: string;
+    quantity: number;
+    catalogue: {
+      id: string;
+      name: string;
+      pricePerUnit?: number | null;
+      unit: Types.ICatalogueUnit;
+      quantityPerUnit: number;
+    };
+    inventory: { quantity: number; station: { name: string } };
+  } | null>;
+};
 
 export type IGetCartsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
@@ -103,7 +122,7 @@ export const GetCartsDocument = gql`
   })
   export class IGetCartsGQL extends Apollo.Query<IGetCartsQuery, IGetCartsQueryVariables> {
     override document = GetCartsDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -121,7 +140,7 @@ export const GetCartDocument = gql`
   })
   export class IGetCartGQL extends Apollo.Query<IGetCartQuery, IGetCartQueryVariables> {
     override document = GetCartDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -142,7 +161,7 @@ export const CreateCartDocument = gql`
   })
   export class ICreateCartGQL extends Apollo.Mutation<ICreateCartMutation, ICreateCartMutationVariables> {
     override document = CreateCartDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -163,7 +182,7 @@ export const AddItemToCartDocument = gql`
   })
   export class IAddItemToCartGQL extends Apollo.Mutation<IAddItemToCartMutation, IAddItemToCartMutationVariables> {
     override document = AddItemToCartDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -184,7 +203,7 @@ export const RemoveItemFromCartDocument = gql`
   })
   export class IRemoveItemFromCartGQL extends Apollo.Mutation<IRemoveItemFromCartMutation, IRemoveItemFromCartMutationVariables> {
     override document = RemoveItemFromCartDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -209,7 +228,7 @@ export const UpdateItemQuantityDocument = gql`
   })
   export class IUpdateItemQuantityGQL extends Apollo.Mutation<IUpdateItemQuantityMutation, IUpdateItemQuantityMutationVariables> {
     override document = UpdateItemQuantityDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -230,7 +249,7 @@ export const CompleteCartDocument = gql`
   })
   export class ICompleteCartGQL extends Apollo.Mutation<ICompleteCartMutation, ICompleteCartMutationVariables> {
     override document = CompleteCartDocument;
-    
+
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

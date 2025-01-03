@@ -15,17 +15,15 @@ export class SendPasswordResetLinkConsumer {
     private userService: UserService,
     private passwordResetService: PasswordResetBackendService,
     private translationService: TranslationService,
-    private activityLogService: ActivityLogBackendService,
-  ) {
-  }
+    private activityLogService: ActivityLogBackendService
+  ) {}
 
   @Process()
   async sendPasswordResetLinkEmail(job: Job<{ email: string }>): Promise<void> {
-
     const user = await this.userService.findByEmail(job.data.email);
     if (user) {
       const token = await this.passwordResetService.generatePasswordResetToken(
-        job.data.email,
+        job.data.email
       );
       const resetLink = `${process.env['LPG_APP_URL']}/auth/reset-password/${token}`;
       await this.emailService.send({
@@ -48,7 +46,7 @@ export class SendPasswordResetLinkConsumer {
       await activity.$set('users', [user.id]);
     } else {
       throw new NotFoundException(
-        this.translationService.getTranslation('alert.emailNotFound'),
+        this.translationService.getTranslation('alert.emailNotFound')
       );
     }
   }
