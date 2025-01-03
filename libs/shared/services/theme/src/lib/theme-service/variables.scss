@@ -191,3 +191,14 @@ ion-card.home-card {
     }
   }
 }
+
+.badged-icon-container {
+  position: relative;
+  ion-badge {
+    position: absolute;
+    top: 5px;
+    right: -3px;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+  }
+}

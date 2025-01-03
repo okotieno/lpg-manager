@@ -84,17 +84,17 @@ import { ICatalogueDisplay } from '../catalogues-page/catalogues-page.component'
           <ion-card-title class="ion-text-wrap"
             >{{ inventory().catalogue.name }}
           </ion-card-title>
-          <ion-card-subtitle>{{
-            inventory().catalogue.brand.name
-          }}</ion-card-subtitle>
+          <ion-card-subtitle
+            >{{ inventory().catalogue.brand.name }}
+          </ion-card-subtitle>
         </ion-card-header>
 
-        <ion-card-content> </ion-card-content>
+        <ion-card-content></ion-card-content>
       </ion-card>
       <ion-item>
         <ion-label position="stacked"
-          >Quantity ({{ maxQuantity() }} available)</ion-label
-        >
+          >Quantity ({{ maxQuantity() }} available)
+        </ion-label>
         <ion-input
           type="number"
           [(ngModel)]="quantity"
@@ -156,7 +156,7 @@ export class AddToCartDialogComponent {
 
   inventory = input.required<ICatalogueDisplay>();
   quantity = 1;
-  maxQuantity = computed(() => Math.min(this.inventory()?.quantity || 0, 99));
+  maxQuantity = computed(() => this.inventory()?.quantity || 0);
 
   isValidQuantity(): boolean {
     return this.quantity >= 1 && this.quantity <= this.maxQuantity();
