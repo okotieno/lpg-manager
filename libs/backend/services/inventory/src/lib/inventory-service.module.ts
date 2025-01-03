@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { InventoryService } from './services/inventory.service';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { InventoryModel } from '@lpg-manager/db';
+import { InventoryModel, InventoryChangeModel } from '@lpg-manager/db';
 
 @Module({
-  imports: [SequelizeModule.forFeature([InventoryModel])],
+  imports: [SequelizeModule.forFeature([InventoryModel, InventoryChangeModel])],
   providers: [InventoryService],
   exports: [InventoryService],
 })

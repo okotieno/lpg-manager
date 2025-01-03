@@ -8,7 +8,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { computed, inject, InjectionToken, resource } from '@angular/core';
-import { Mutation, MutationResult, Query } from 'apollo-angular';
+import { Apollo, Mutation, MutationResult, Query } from 'apollo-angular';
 import {
   Exact,
   InputMaybe,
@@ -27,6 +27,10 @@ import {
 
 import { OperationVariables } from '@apollo/client';
 import { rxResource } from '@angular/core/rxjs-interop';
+import {
+  SHOW_ERROR_MESSAGE,
+  SHOW_SUCCESS_MESSAGE,
+} from '@lpg-manager/injection-token';
 
 export const GET_ITEMS_INCLUDE_FIELDS = new InjectionToken<
   Record<string, boolean>
@@ -58,6 +62,7 @@ export type ICreateItemMutation<
 
 interface StoreState<T, ICreateItemMutationVariables> {
   createItemMutationVariables: ICreateItemMutationVariables | undefined;
+  refetchQueriesVariables: any;
   deleteItemId?: string;
   sortBy: keyof T;
   sortByDirection: ISortByEnum;
@@ -112,6 +117,7 @@ export const withPaginatedItemsStore = <
       deleteItemId: undefined,
       _selectedItems: [],
       createItemMutationVariables: undefined,
+      refetchQueriesVariables: undefined,
     } as StoreState<IGetItemsQueryItem, ICreateItemMutationVariables>),
     withComputed((store) => ({
       _getItemsKey: computed(() => {
@@ -133,7 +139,33 @@ export const withPaginatedItemsStore = <
           if (!request.params) {
             return EMPTY;
           }
-          return store._createItemGQL.mutate({ ...request.params });
+          const refetchQueriesVariables = store.refetchQueriesVariables()
+            ? {
+                awaitRefetchQueries: true,
+                refetchQueries: [
+                  {
+                    query: store._getItemsGQL.document,
+                    variables: {
+                      ...defaultQueryParams,
+                      query: {
+                        ...defaultQueryParams.query,
+                        ...store.refetchQueriesVariables(),
+                      },
+                    },
+                  },
+                ],
+              }
+            : undefined;
+          return store._createItemGQL.mutate(
+            { ...request.params },
+            {
+              context: {
+                [SHOW_SUCCESS_MESSAGE]: true,
+                [SHOW_ERROR_MESSAGE]: true,
+              },
+              ...refetchQueriesVariables,
+            }
+          );
         },
       }),
       _selectedItemResource: resource({
@@ -231,9 +263,7 @@ export const withPaginatedItemsStore = <
                       );
                     }
 
-                    patchState(store, {
-                      items: [...newItems],
-                    });
+                    patchState(store, { items: [...newItems] });
 
                     if (result.data[getItemsKey].meta?.totalItems) {
                       patchState(store, {
@@ -250,9 +280,8 @@ export const withPaginatedItemsStore = <
         request: () => ({ id: store.deleteItemId?.() }),
         loader: ({ request }) => {
           const id = request.id;
-          if (!id) {
-            return Promise.resolve(undefined);
-          }
+          if (!id) return Promise.resolve(undefined);
+
           return lastValueFrom(
             store._deleteItemWithIdGQL?.mutate({ id }) as Observable<
               MutationResult<IDeleteItemMutation<RootField>>
@@ -300,8 +329,17 @@ export const withPaginatedItemsStore = <
       deleteItemWithId(id: string) {
         patchState(store, { deleteItemId: id });
       },
-      createNewItem(createItemMutationVariables: ICreateItemMutationVariables) {
-        patchState(store, { createItemMutationVariables });
+      createNewItem(
+        createItemMutationVariables: ICreateItemMutationVariables,
+        refetchQueriesVariables?: any
+      ) {
+        patchState(store, {
+          createItemMutationVariables,
+          refetchQueriesVariables,
+        });
       },
+      refetchItems() {
+        store._itemResource.reload();
+      }
     }))
   );

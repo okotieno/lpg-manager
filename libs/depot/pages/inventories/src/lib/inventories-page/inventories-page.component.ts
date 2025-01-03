@@ -110,7 +110,8 @@ export default class InventoriesPageComponent {
       component: InventoryManagementComponent,
       componentProps: {
         mode: 'create',
-        defaultFilters: [this.depotFilter()],
+        depotFilters: [this.depotFilter()],
+        stationFilters: [this.stationFilter()],
       },
     });
 
@@ -118,8 +119,7 @@ export default class InventoriesPageComponent {
 
     const { data, role } = await modal.onWillDismiss();
     if (role === 'confirm') {
-      // Refresh the inventory list
-      // this.inventoryStore.fetchFirstPage();
+      this.inventoryStore.refetchItems();
     }
   }
 }

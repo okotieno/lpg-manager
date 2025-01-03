@@ -38,10 +38,11 @@ export class InventoryResolver {
   async createInventory(
     @Body('params', new ValidationPipe()) params: CreateInventoryInputDto
   ) {
-    const inventory = await this.inventoryService.create({
+    const inventory = await this.inventoryService.createOrUpdateInventory({
       catalogueId: params.catalogueId,
       stationId: params.stationId,
       quantity: params.quantity,
+      reason: 'Initial inventory creation/update',
     });
 
     return {

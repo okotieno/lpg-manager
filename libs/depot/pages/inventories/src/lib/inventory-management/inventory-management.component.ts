@@ -81,7 +81,8 @@ export default class InventoryManagementComponent implements ViewWillEnter {
   >;
 
   mode = input<'create' | 'edit'>('create');
-  defaultFilters = input<IQueryParamsFilter[]>([]);
+  depotFilters = input<IQueryParamsFilter[]>([]);
+  stationFilters = input<IQueryParamsFilter[]>([]);
   activeStation = this.#authStore.activeStation;
 
   inventoryForm = this.#fb.group({
@@ -115,13 +116,16 @@ export default class InventoryManagementComponent implements ViewWillEnter {
     if (this.inventoryForm.valid) {
       const formValue = this.inventoryForm.value;
       this.formSubmitted = true;
-      this.#inventoryStore.createNewItem({
-        params: {
-          catalogueId: formValue.catalogue?.id as string,
-          stationId: this.activeStation()?.id as string,
-          quantity: formValue.quantity as number,
+      this.#inventoryStore.createNewItem(
+        {
+          params: {
+            catalogueId: formValue.catalogue?.id as string,
+            stationId: this.activeStation()?.id as string,
+            quantity: formValue.quantity as number,
+          },
         },
-      });
+        { filters: this.stationFilters() }
+      );
     }
   }
 }
