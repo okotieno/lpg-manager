@@ -5,7 +5,7 @@ const { v4: uuid } = require('uuid');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface) {
-    const hashedPassword = await bcrypt.hash('admin123', 10);
+    const hashedPassword = await bcrypt.hash('password123', 10);
     const adminUserId = uuid();
 
     // Get admin role ID
