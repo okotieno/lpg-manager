@@ -40,7 +40,7 @@ export const appRoutes: Route[] = [
         loadChildren: () => import('@lpg-manager/depot-dashboard-page'),
         canMatch: [
           () => inject(AuthStore).isLoggedIn(),
-          () => inject(AuthStore).hasPermissionTo('access depots app'),
+          () => inject(AuthStore).hasPermissionTo('access depot app'),
         ],
       },
       {
@@ -48,7 +48,7 @@ export const appRoutes: Route[] = [
         canMatch: [
           () => inject(AuthStore).isLoggedIn(),
           runGuardsInOrder(
-            () => !inject(AuthStore).hasPermissionTo('access depots app'),
+            () => !inject(AuthStore).hasPermissionTo('access depot app'),
             () => showAccessDeniedAlert({ app: 'depot app '})
           ),
         ],

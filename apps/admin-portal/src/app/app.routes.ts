@@ -39,11 +39,20 @@ export const appRoutes: Route[] = [
         path: 'dashboard',
         loadChildren: () => import('@lpg-manager/dashboard-page'),
         canMatch: [
+          () => inject(AuthStore).isLoggedIn(),
+          () => inject(AuthStore).hasPermissionTo('access admin portal'),
+        ],
+      },
+      {
+        path: 'dashboard',
+        canMatch: [
+          () => inject(AuthStore).isLoggedIn(),
           runGuardsInOrder(
-            () => !inject(AuthStore).hasPermissionTo('access admin portal'),
-            () => showAccessDeniedAlert({ app: 'admin portal'})
+            () => !inject(AuthStore).hasPermissionTo('access depot app'),
+            () => showAccessDeniedAlert({ app: 'admin portal' })
           ),
         ],
+        children: [],
       },
     ],
   },

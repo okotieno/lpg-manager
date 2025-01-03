@@ -40,7 +40,7 @@ export const appRoutes: Route[] = [
         loadChildren: () => import('@lpg-manager/dealer-dashboard-page'),
         canMatch: [
           () => inject(AuthStore).isLoggedIn(),
-          () => inject(AuthStore).hasPermissionTo('access dealers app'),
+          () => inject(AuthStore).hasPermissionTo('access dealer app'),
         ],
       },
       {
@@ -48,7 +48,7 @@ export const appRoutes: Route[] = [
         canMatch: [
           () => inject(AuthStore).isLoggedIn(),
           runGuardsInOrder(
-            () => !inject(AuthStore).hasPermissionTo('access dealers app'),
+            () => !inject(AuthStore).hasPermissionTo('access dealer app'),
             () => showAccessDeniedAlert({ app: 'dealer app '})
           ),
         ],

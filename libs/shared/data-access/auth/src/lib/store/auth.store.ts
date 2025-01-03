@@ -242,7 +242,6 @@ export const AuthStore = signalStore(
       const res = await lastValueFrom(
         store._loginWithTokenGQL.mutate({ token })
       );
-      console.log('User loaded ...');
       if (res.data?.loginWithToken)
         patchState(store, {
           loginResponse: res.data.loginWithToken,
@@ -251,15 +250,13 @@ export const AuthStore = signalStore(
     };
 
     const hasPermissionTo = (permissionName: string) => {
-      const permissions = store.activeRole?.()?.role?.permissions ?? [];
-      console.log(
-        permissions.find((permission) => permission?.name === permissionName)
-      );
+      const permissions = store.userRoles().flatMap(
+        (res) => res?.role?.permissions
+      )
       return !!permissions.find(
         (permission) => permission?.name === permissionName
       );
     };
-
 
     const isDriver = () => {
       const activeRole = store.activeRole();

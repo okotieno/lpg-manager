@@ -7,15 +7,19 @@ module.exports = {
   async up(queryInterface) {
     const hashedPassword = await bcrypt.hash('password123', 10);
 
-    // Get admin role ID - we'll use this as a base role for our users
+    // Get role IDs for our test users
     const [roles] = await queryInterface.sequelize.query(
-      `SELECT id FROM roles WHERE name = 'admin' LIMIT 1;`
+      `SELECT id, name FROM roles WHERE name IN ('admin depot', 'admin dealer', 'driver');`
     );
-    const roleId = roles[0]?.id;
 
-    if (!roleId) {
-      throw new Error('Admin role not found. Please ensure roles are seeded first.');
+    if (roles.length < 3) {
+      throw new Error('Required roles not found. Please ensure roles are seeded first.');
     }
+
+    const roleMap = roles.reduce((acc, role) => {
+      acc[role.name] = role.id;
+      return acc;
+    }, {});
 
     // Get a sample transporter
     const [transporters] = await queryInterface.sequelize.query(
@@ -87,14 +91,14 @@ module.exports = {
       {
         id: uuid(),
         user_id: driverUserId,
-        role_id: roleId,
+        role_id: roleMap['driver'],
         created_at: new Date(),
         updated_at: new Date()
       },
       {
         id: uuid(),
         user_id: dealerUserId,
-        role_id: roleId,
+        role_id: roleMap['admin dealer'],
         station_id: dealerId,
         created_at: new Date(),
         updated_at: new Date()
@@ -102,7 +106,7 @@ module.exports = {
       {
         id: uuid(),
         user_id: depotUserId,
-        role_id: roleId,
+        role_id: roleMap['admin depot'],
         station_id: depotId,
         created_at: new Date(),
         updated_at: new Date()

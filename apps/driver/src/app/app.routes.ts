@@ -40,7 +40,7 @@ export const appRoutes: Route[] = [
         loadChildren: () => import('@lpg-manager/driver-dashboard-page'),
         canMatch: [
           () => inject(AuthStore).isLoggedIn(),
-          () => inject(AuthStore).hasPermissionTo('access drivers app'),
+          () => inject(AuthStore).hasPermissionTo('access driver app'),
         ],
       },
       {
@@ -48,7 +48,7 @@ export const appRoutes: Route[] = [
         canMatch: [
           () => inject(AuthStore).isLoggedIn(),
           runGuardsInOrder(
-            () => !inject(AuthStore).hasPermissionTo('access drivers app'),
+            () => !inject(AuthStore).hasPermissionTo('access driver app'),
             () => showAccessDeniedAlert({ app: 'driver app '})
           ),
         ],
