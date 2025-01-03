@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthStore } from '@lpg-manager/auth-store';
+import { AuthStore, showAccessDeniedAlert } from '@lpg-manager/auth-store';
+import { runGuardsInOrder } from '@lpg-manager/sequential-guards';
 
 export const appRoutes: Route[] = [
   {
@@ -39,9 +40,19 @@ export const appRoutes: Route[] = [
         loadChildren: () => import('@lpg-manager/dealer-dashboard-page'),
         canMatch: [
           () => inject(AuthStore).isLoggedIn(),
-          () => inject(AuthStore).isDealer(),
-
+          () => inject(AuthStore).hasPermissionTo('access dealers app'),
         ],
+      },
+      {
+        path: 'dashboard',
+        canMatch: [
+          () => inject(AuthStore).isLoggedIn(),
+          runGuardsInOrder(
+            () => !inject(AuthStore).hasPermissionTo('access dealers app'),
+            () => showAccessDeniedAlert({ app: 'dealer app '})
+          ),
+        ],
+        children: [],
       },
     ],
   },

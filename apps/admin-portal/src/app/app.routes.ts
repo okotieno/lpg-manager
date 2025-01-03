@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthStore } from '@lpg-manager/auth-store';
+import { AuthStore, showAccessDeniedAlert } from '@lpg-manager/auth-store';
+import { runGuardsInOrder } from '@lpg-manager/sequential-guards';
 
 export const appRoutes: Route[] = [
   {
@@ -38,9 +39,10 @@ export const appRoutes: Route[] = [
         path: 'dashboard',
         loadChildren: () => import('@lpg-manager/dashboard-page'),
         canMatch: [
-          () => inject(AuthStore).isLoggedIn(),
-          () => inject(AuthStore).isAdmin(),
-
+          runGuardsInOrder(
+            () => !inject(AuthStore).hasPermissionTo('access admin portal'),
+            () => showAccessDeniedAlert({ app: 'admin portal'})
+          ),
         ],
       },
     ],

@@ -33,6 +33,8 @@ import {
   SHOW_SUCCESS_MESSAGE,
 } from '@lpg-manager/injection-token';
 import { AuthState } from './auth.state';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 const initialState: AuthState = {
   initialLoadComplete: false,
@@ -54,6 +56,8 @@ export const AuthStore = signalStore(
   { providedIn: 'root' },
   withState(() => initialState),
   withProps(() => ({
+    _alertCtrl: inject(AlertController),
+    _router: inject(Router),
     _loginWithTokenGQL: inject(ILoginWithTokenGQL),
     _loginWithPasswordGQL: inject(ILoginWithPasswordGQL),
     _sendPasswordResetEmailGQL: inject(ISendPasswordResetEmailGQL),
@@ -159,6 +163,17 @@ export const AuthStore = signalStore(
     const activeRole = computed(() =>
       userRoles().find((userRole) => userRole?.id === store.activeRoleId())
     );
+    const isDealer = computed(() => {
+      const _activeRole = activeRole();
+      console.log(
+        _activeRole?.role?.permissions?.find(
+          (permission) => permission?.name === 'access dealer app'
+        )
+      );
+      if (!activeRole) return of(false);
+      return;
+      // return of(activeRole.role?.name.toLowerCase() === 'dealer');
+    });
     const activeStation = computed(() => activeRole()?.station);
 
     return {
@@ -170,6 +185,7 @@ export const AuthStore = signalStore(
       userRoles,
       activeRole,
       activeStation,
+      isDealer,
     };
   }),
   withMethods((store) => {
@@ -209,6 +225,7 @@ export const AuthStore = signalStore(
           user: null,
         },
       });
+      store._router.navigate(['/']);
     };
 
     const updateActiveRole = (activeRoleId: string) => {
@@ -216,14 +233,12 @@ export const AuthStore = signalStore(
     };
 
     const loadUserInfoGuard = async () => {
-      if (store.isLoggedIn())
-        return true;
+      if (store.isLoggedIn()) return true;
 
       const { value: token } = await Preferences.get({
         key: 'refresh-token',
       });
-      if (!token)
-        return true;
+      if (!token) return true;
       const res = await lastValueFrom(
         store._loginWithTokenGQL.mutate({ token })
       );
@@ -235,10 +250,22 @@ export const AuthStore = signalStore(
       return true;
     };
 
-    const isDealer = () => of(true);
-    const isAdmin = () => of(true);
-    const isDepot = () => of(true);
-    const isDriver = () => of(true);
+    const hasPermissionTo = (permissionName: string) => {
+      const permissions = store.activeRole?.()?.role?.permissions ?? [];
+      console.log(
+        permissions.find((permission) => permission?.name === permissionName)
+      );
+      return !!permissions.find(
+        (permission) => permission?.name === permissionName
+      );
+    };
+
+
+    const isDriver = () => {
+      const activeRole = store.activeRole();
+      if (!activeRole) return of(false);
+      return of(activeRole.role?.name.toLowerCase() === 'driver');
+    };
 
     return {
       login,
@@ -246,9 +273,7 @@ export const AuthStore = signalStore(
       logout,
       sendResetLink,
       updateActiveRole,
-      isAdmin,
-      isDepot,
-      isDealer,
+      hasPermissionTo,
       isDriver,
       changePasswordUsingResetToken,
       loadUserInfoGuard,

@@ -4,9 +4,9 @@ const { v4: uuidv4 } = require('uuid');
 const rolePermissions = {
   ['super admin']: '*', // Special case - gets all permissions
 
-  admin: [
+  ['admin admin-portal']: [
     // Access Apps
-    'access dealer app', 'access depot app', 'access admin app', 'access transporter app',
+    'access admin portal',
     // User Management
     'create user', 'delete user', 'update user',
     // Role Management
@@ -17,8 +17,6 @@ const rolePermissions = {
     'assign role to user',
     // Settings Management
     'create setting', 'delete setting', 'update setting',
-    // Activity Log
-    'create activity log', 'delete activity log', 'update activity log',
     // Brand Management
     'create brand', 'delete brand', 'update brand',
     // Station Management
@@ -41,97 +39,39 @@ const rolePermissions = {
     'create transporter', 'delete transporter', 'update transporter', 'view transporter'
   ],
 
-  manager: [
-    // User Management
-    'create user', 'update user',
-    // Role Assignment
-    'assign role to user',
-    // Station Management
-    'create station', 'update station',
-    // Brand Management
-    'create brand', 'update brand',
-    // Catalogue Management
-    'create brand catalogue', 'update brand catalogue',
-    // Inventory Management
-    'create inventory', 'update inventory',
+  ['admin dealer']: [
+    // Access Apps
+    'access dealer app',
     // Activity Log
-    'create activity log', 'update activity log',
+    'create activity log', 'delete activity log', 'update activity log',
+    'create inventory', 'delete inventory', 'update inventory',
+    // Cart
+    'create cart', 'update cart', 'delete cart',
+    // Order
+    'create order', 'update order', 'delete order',
     // Notification
-    'mark notification as read'
+    'mark notification as read',
   ],
 
-  supervisor: [
-    // User Management
-    'update user',
-    // Station Management
-    'update station',
-    // Inventory Management
-    'create inventory', 'update inventory',
+  ['admin depot']: [
+    // Access Apps
+    'access depot app',
     // Activity Log
-    'create activity log',
+    'create inventory', 'delete inventory', 'update inventory',
+    // Order
+    'create order', 'update order', 'delete order',
     // Notification
-    'mark notification as read'
+    'mark notification as read',
+    // Dispatch Management
+    'create dispatch', 'delete dispatch', 'update dispatch', 'view dispatch',
   ],
 
-  operator: [
-    // Inventory Management
-    'create inventory', 'update inventory',
-    // Activity Log
-    'create activity log',
+  driver: [
+    // Access Apps
+    'access driver app',
     // Notification
-    'mark notification as read'
+    'mark notification as read',
   ],
-
-  viewer: [
-    // No write permissions - read-only access is handled at the query level
-    // Notification
-    'mark notification as read'
-  ],
-
-  ['station manager']: [
-    // Station-specific permissions
-    'update station',
-    // Inventory Management
-    'create inventory', 'update inventory',
-    // Activity Log
-    'create activity log',
-    // Notification
-    'mark notification as read'
-  ],
-
-  ['station operator']: [
-    // Inventory Management
-    'create inventory', 'update inventory',
-    // Activity Log
-    'create activity log',
-    // Notification
-    'mark notification as read'
-  ],
-
-  ['inventory manager']: [
-    // Inventory Management
-    'create inventory', 'update inventory', 'delete inventory',
-    // Activity Log
-    'create activity log',
-    // Notification
-    'mark notification as read'
-  ],
-
-  ['sales agent']: [
-    // Cart Management
-    'create cart',
-    // Activity Log
-    'create activity log',
-    // Notification
-    'mark notification as read'
-  ],
-
-  auditor: [
-    // Activity Log
-    'create activity log',
-    // Notification
-    'mark notification as read'
-  ]
 };
 
 /** @type {import('sequelize-cli').Migration} */

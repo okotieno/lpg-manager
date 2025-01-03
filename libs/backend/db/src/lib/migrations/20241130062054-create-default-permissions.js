@@ -4,8 +4,8 @@ const { v4: uuidv4 } = require('uuid');
 const permissions = [
   'access dealer app',
   'access depot app',
-  'access admin app',
-  'access transporter app',
+  'access admin portal',
+  'access driver app',
 
   // User Management
   'create user',
