@@ -127,12 +127,6 @@ export class NotificationResolver {
     async resolve(this: NotificationResolver, value, args, context) {
       const userId = context.extra?.user?.id ?? context.user.id;
       const stats = await this.notificationService.userStats(userId);
-
-      console.log({
-        stats,
-        notification: { ...value, isRead: false },
-      });
-
       return {
         stats,
         notification: { ...value, title: '100 yesa', isRead: false },
@@ -144,7 +138,6 @@ export class NotificationResolver {
     },
   })
   async notificationCreated() {
-    console.log('Notification created...');
     return this.pubSub.asyncIterableIterator('notificationCreated');
   }
 }

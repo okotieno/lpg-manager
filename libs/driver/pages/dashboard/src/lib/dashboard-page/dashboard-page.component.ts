@@ -25,7 +25,6 @@ import { ThemeService } from '@lpg-manager/theme-service';
 import { Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent, BreadcrumbStore } from '@lpg-manager/breadcrumb';
 import { TitleCasePipe } from '@angular/common';
-import { CartStore } from '@lpg-manager/cart-store';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { FormsModule } from '@angular/forms';
 import { NotificationBellComponent } from '@lpg-manager/notification-component';
@@ -68,8 +67,6 @@ export default class DashboardComponent {
   #themeService = inject(ThemeService);
   #router = inject(Router);
   #breadcrumbStore = inject(BreadcrumbStore);
-  #cartStore = inject(CartStore);
-  cartItemsCount = this.#cartStore.cartItemsCount;
 
   pageTitle = this.#breadcrumbStore.pageTitle;
   userRoleStation = this.#authStore.userRoles;

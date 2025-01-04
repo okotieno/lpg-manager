@@ -44,14 +44,6 @@
     </ion-select>
 
     <ion-buttons slot="end">
-      @if (cartItemsCount() > 0) {
-        <div class="badged-icon-container">
-          <ion-badge color="danger">{{ cartItemsCount() }}</ion-badge>
-          <ion-button [routerLink]="['/dashboard', 'checkout']">
-            <ion-icon name="cart-shopping" slot="icon-only"></ion-icon>
-          </ion-button>
-        </div>
-      }
       <lpg-notification-bell />
       <ion-button (click)="toggleTheme()">
         <ion-icon [name]="currentThemeIcon()" slot="icon-only"></ion-icon>

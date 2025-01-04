@@ -3,22 +3,21 @@ import { SearchableSelectComponent } from './searchable-select.component';
 import { provideIonicAngular } from '@ionic/angular/standalone';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Component, inject } from '@angular/core';
-import { of } from 'rxjs';
+import { IGetStationsQuery, StationStore } from '@lpg-manager/station-store';
+import { PaginatedResource } from '@lpg-manager/data-table';
 
 @Component({
   standalone: true,
   imports: [ReactiveFormsModule, SearchableSelectComponent],
   template: ` <form [formGroup]="form">
-    <lpg-searchable-select [service]="service" formControlName="input">
+    <lpg-searchable-select [itemsStore]="depotStore" formControlName="input">
     </lpg-searchable-select>
   </form>`,
 })
 class TestingInputComponent {
-  service = {
-    getSearchItems: () => of({ items: [], meta: { totalItems: 0 } }),
-    getById: () => of({}),
-    getItems: () => of({ items: [], meta: { totalItems: 0 } }),
-  };
+  depotStore = inject(StationStore) as PaginatedResource<
+    NonNullable<NonNullable<IGetStationsQuery['stations']['items']>[number]>
+  >;
   form = inject(FormBuilder).group({
     params: new FormControl('Test Value'),
   });
