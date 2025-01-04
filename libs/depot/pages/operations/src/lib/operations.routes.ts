@@ -10,14 +10,12 @@ export const OPERATIONS_ROUTES: Routes = [
     },
   },
   {
-    path: 'create',
-    loadComponent: () => import('./create-dispatch/create-dispatch.component'),
+    path: 'dispatches',
+    loadChildren: () => import('@lpg-manager/depot-dispatches-page'),
     data: {
-      routeLabel: 'Create Dispatch',
-      breadcrumbs: [
-        { label: 'Operations', path: ['/dashboard', 'operations'] },
-        { label: 'Create Dispatch' },
-      ],
+      routeLabel: 'Operations',
+      breadcrumbs: [{ label: 'Operations' }],
     },
   },
 ];
+

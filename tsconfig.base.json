@@ -22,6 +22,9 @@
       "@lpg-manager/apollo-config": [
         "libs/shared/providers/apollo/src/index.ts"
       ],
+      "@lpg-manager/uuid-pipe": [
+        "libs/shared/pipes/uuid/src/index.ts"
+      ],
       "@lpg-manager/app-activity-log": [
         "libs/backend/app-activity-log/src/index.ts"
       ],
@@ -83,6 +86,9 @@
       ],
       "@lpg-manager/depot-operations-page": [
         "libs/depot/pages/operations/src/index.ts"
+      ],
+      "@lpg-manager/depot-dispatches-page": [
+        "libs/depot/pages/dispatches/src/index.ts"
       ],
       "@lpg-manager/depot-orders-page": [
         "libs/depot/pages/orders/src/index.ts"

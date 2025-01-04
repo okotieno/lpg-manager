@@ -32,3 +32,4 @@ plus
 minus
 circle-info
 bell-slash
+copy

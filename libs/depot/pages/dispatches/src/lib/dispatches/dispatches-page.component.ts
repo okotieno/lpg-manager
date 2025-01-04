@@ -4,7 +4,7 @@ import {
   IonBadge,
   IonButton,
   IonCard,
-  IonCardContent, IonCardHeader, IonCardTitle,
+  IonCardContent,
   IonCol,
   IonContent,
   IonGrid,
@@ -16,9 +16,9 @@ import { DispatchStore } from '@lpg-manager/dispatch-store';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
 
 @Component({
-  selector: 'lpg-operations',
-  templateUrl: './operations-page.component.html',
-  styleUrls: ['./operations-page.component.scss'],
+  selector: 'lpg-dispatches-page',
+  templateUrl: './dispatches-page.component.html',
+  styleUrls: ['./dispatches-page.component.scss'],
   standalone: true,
   imports: [
     RouterLink,
@@ -34,12 +34,10 @@ import { UUIDDirective } from '@lpg-manager/uuid-pipe';
     IonCardContent,
     IonText,
     UUIDDirective,
-    IonCardHeader,
-    IonCardTitle,
   ],
   providers: [DispatchStore],
 })
-export default class OperationsPageComponent {
+export default class DispatchesPageComponent {
   #dispatchStore = inject(DispatchStore);
   dispatches = this.#dispatchStore.items;
 
