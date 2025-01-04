@@ -77,7 +77,7 @@ export class OrderService extends CrudAbstractService<OrderModel> {
         throw new NotFoundException(`Order with ID "${orderId}" not found`);
       }
 
-      if (order.status === 'COMPLETED' || order.status === 'CANCELED') {
+      if (order.status === 'COMPLETED' || order.status === 'CANCELLED') {
         throw new BadRequestException(
           'Cannot update status of a completed or canceled order'
         );

@@ -1,16 +1,9 @@
 import * as Types from '@lpg-manager/types';
 
-import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-
-export type INotificationItemFragment = {
-  id: string;
-  description: string;
-  createdAt: string;
-  title: string;
-  isRead: boolean;
-};
+import * as Apollo from 'apollo-angular';
+export type INotificationItemFragment = { id: string, description: string, createdAt: string, title: string, isRead: boolean };
 
 export type IGetAuthenticatedUserNotificationsQueryVariables = Types.Exact<{
   pageSize: Types.Scalars['Int']['input'];
@@ -67,7 +60,7 @@ export const GetAuthenticatedUserNotificationsDocument = gql`
   })
   export class IGetAuthenticatedUserNotificationsGQL extends Apollo.Query<IGetAuthenticatedUserNotificationsQuery, IGetAuthenticatedUserNotificationsQueryVariables> {
     override document = GetAuthenticatedUserNotificationsDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -87,7 +80,7 @@ export const GetAuthenticatedUserNotificationStatsDocument = gql`
   })
   export class IGetAuthenticatedUserNotificationStatsGQL extends Apollo.Query<IGetAuthenticatedUserNotificationStatsQuery, IGetAuthenticatedUserNotificationStatsQueryVariables> {
     override document = GetAuthenticatedUserNotificationStatsDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -110,7 +103,7 @@ export const MarkNotificationAsReadDocument = gql`
   })
   export class IMarkNotificationAsReadGQL extends Apollo.Mutation<IMarkNotificationAsReadMutation, IMarkNotificationAsReadMutationVariables> {
     override document = MarkNotificationAsReadDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -135,7 +128,7 @@ export const NotificationCreatedTrackDocument = gql`
   })
   export class INotificationCreatedTrackGQL extends Apollo.Subscription<INotificationCreatedTrackSubscription, INotificationCreatedTrackSubscriptionVariables> {
     override document = NotificationCreatedTrackDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

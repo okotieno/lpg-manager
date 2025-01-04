@@ -72,7 +72,7 @@ export default class OrdersPageComponent {
         return 'warning';
       case 'COMPLETED':
         return 'success';
-      case 'CANCELED':
+      case 'CANCELLED':
         return 'danger';
       default:
         return 'medium';

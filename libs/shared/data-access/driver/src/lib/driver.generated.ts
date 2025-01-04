@@ -1,9 +1,8 @@
 import * as Types from '@lpg-manager/types';
 
-import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-
+import * as Apollo from 'apollo-angular';
 export type ICreateDriverMutationVariables = Types.Exact<{
   params: Types.ICreateDriverInput;
 }>;
@@ -70,7 +69,7 @@ export const CreateDriverDocument = gql`
   })
   export class ICreateDriverGQL extends Apollo.Mutation<ICreateDriverMutation, ICreateDriverMutationVariables> {
     override document = CreateDriverDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -101,7 +100,7 @@ export const GetDriverByIdDocument = gql`
   })
   export class IGetDriverByIdGQL extends Apollo.Query<IGetDriverByIdQuery, IGetDriverByIdQueryVariables> {
     override document = GetDriverByIdDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -137,7 +136,7 @@ export const GetDriversDocument = gql`
   })
   export class IGetDriversGQL extends Apollo.Query<IGetDriversQuery, IGetDriversQueryVariables> {
     override document = GetDriversDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -155,7 +154,7 @@ export const DeleteDriverByIdDocument = gql`
   })
   export class IDeleteDriverByIdGQL extends Apollo.Mutation<IDeleteDriverByIdMutation, IDeleteDriverByIdMutationVariables> {
     override document = DeleteDriverByIdDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -190,7 +189,7 @@ export const UpdateDriverDocument = gql`
   })
   export class IUpdateDriverGQL extends Apollo.Mutation<IUpdateDriverMutation, IUpdateDriverMutationVariables> {
     override document = UpdateDriverDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

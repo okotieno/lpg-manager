@@ -162,7 +162,7 @@ export class OrderResolver {
           new OrderCompletedEvent(order, currentUser.id)
         );
         break;
-      case 'CANCELED':
+      case 'CANCELLED':
         this.eventEmitter.emit(
           'order.canceled',
           new OrderCanceledEvent(order, currentUser.id)

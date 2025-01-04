@@ -1,9 +1,8 @@
 import * as Types from '@lpg-manager/types';
 
-import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-
+import * as Apollo from 'apollo-angular';
 export type ICreateVehicleMutationVariables = Types.Exact<{
   params: Types.ICreateVehicleInput;
 }>;
@@ -66,7 +65,7 @@ export const CreateVehicleDocument = gql`
   })
   export class ICreateVehicleGQL extends Apollo.Mutation<ICreateVehicleMutation, ICreateVehicleMutationVariables> {
     override document = CreateVehicleDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -94,7 +93,7 @@ export const GetVehicleByIdDocument = gql`
   })
   export class IGetVehicleByIdGQL extends Apollo.Query<IGetVehicleByIdQuery, IGetVehicleByIdQueryVariables> {
     override document = GetVehicleByIdDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -127,7 +126,7 @@ export const GetVehiclesDocument = gql`
   })
   export class IGetVehiclesGQL extends Apollo.Query<IGetVehiclesQuery, IGetVehiclesQueryVariables> {
     override document = GetVehiclesDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -145,7 +144,7 @@ export const DeleteVehicleByIdDocument = gql`
   })
   export class IDeleteVehicleByIdGQL extends Apollo.Mutation<IDeleteVehicleByIdMutation, IDeleteVehicleByIdMutationVariables> {
     override document = DeleteVehicleByIdDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -176,7 +175,7 @@ export const UpdateVehicleDocument = gql`
   })
   export class IUpdateVehicleGQL extends Apollo.Mutation<IUpdateVehicleMutation, IUpdateVehicleMutationVariables> {
     override document = UpdateVehicleDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

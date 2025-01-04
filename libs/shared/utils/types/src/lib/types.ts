@@ -341,7 +341,7 @@ export type IDispatchModel = {
 };
 
 export enum IDispatchStatus {
-  Canceled = 'CANCELED',
+  Canceled = 'CANCELLED',
   Delivered = 'DELIVERED',
   InTransit = 'IN_TRANSIT',
   Pending = 'PENDING'
@@ -943,11 +943,13 @@ export type IOrderModel = {
 };
 
 export enum IOrderStatus {
-  Canceled = 'CANCELED',
+  Cancelled = 'CANCELLED',
   Completed = 'COMPLETED',
   Confirmed = 'CONFIRMED',
+  Delivering = 'DELIVERING',
   Pending = 'PENDING',
-  Rejected = 'REJECTED'
+  Rejected = 'REJECTED',
+  Returned = 'RETURNED'
 }
 
 export type IOtpModel = {

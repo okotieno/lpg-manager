@@ -2,8 +2,10 @@ enum OrderStatus {
   PENDING
   CONFIRMED
   COMPLETED
-  CANCELED
+  CANCELLED
   REJECTED
+  DELIVERING
+  RETURNED
 }
 
 type OrderItem {

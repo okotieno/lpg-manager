@@ -1,9 +1,8 @@
 import * as Types from '@lpg-manager/types';
 
-import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-
+import * as Apollo from 'apollo-angular';
 export type ICreateDispatchMutationVariables = Types.Exact<{
   params: Types.ICreateDispatchInput;
 }>;
@@ -83,7 +82,7 @@ export const CreateDispatchDocument = gql`
   })
   export class ICreateDispatchGQL extends Apollo.Mutation<ICreateDispatchMutation, ICreateDispatchMutationVariables> {
     override document = CreateDispatchDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -128,7 +127,7 @@ export const GetDispatchByIdDocument = gql`
   })
   export class IGetDispatchByIdGQL extends Apollo.Query<IGetDispatchByIdQuery, IGetDispatchByIdQueryVariables> {
     override document = GetDispatchByIdDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -178,7 +177,7 @@ export const GetDispatchesDocument = gql`
   })
   export class IGetDispatchesGQL extends Apollo.Query<IGetDispatchesQuery, IGetDispatchesQueryVariables> {
     override document = GetDispatchesDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -196,7 +195,7 @@ export const DeleteDispatchByIdDocument = gql`
   })
   export class IDeleteDispatchByIdGQL extends Apollo.Mutation<IDeleteDispatchByIdMutation, IDeleteDispatchByIdMutationVariables> {
     override document = DeleteDispatchByIdDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -244,7 +243,7 @@ export const UpdateDispatchDocument = gql`
   })
   export class IUpdateDispatchGQL extends Apollo.Mutation<IUpdateDispatchMutation, IUpdateDispatchMutationVariables> {
     override document = UpdateDispatchDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

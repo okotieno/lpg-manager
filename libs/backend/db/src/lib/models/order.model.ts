@@ -58,10 +58,11 @@ export class OrderModel extends Model {
     type: DataType.ENUM(
       'PENDING',
       'CONFIRMED',
+      'DELIVERING',
       'COMPLETED',
-      'CANCELED',
       'REJECTED',
-      'DISPATCH_INITIATED'
+      'CANCELLED',
+      'RETURNED'
     ),
     allowNull: false,
     defaultValue: 'PENDING',
@@ -69,10 +70,11 @@ export class OrderModel extends Model {
   status!:
     | 'PENDING'
     | 'CONFIRMED'
+    | 'DELIVERING'
     | 'COMPLETED'
-    | 'CANCELED'
     | 'REJECTED'
-    | 'DISPATCH_INITIATED';
+    | 'CANCELLED'
+    | 'RETURNED';
 
   @BelongsTo(() => StationModel, 'depotId')
   depot!: StationModel;

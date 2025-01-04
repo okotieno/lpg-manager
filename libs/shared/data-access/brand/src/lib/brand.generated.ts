@@ -1,9 +1,8 @@
 import * as Types from '@lpg-manager/types';
 
-import * as Apollo from 'apollo-angular';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-
+import * as Apollo from 'apollo-angular';
 export type ICreateBrandMutationVariables = Types.Exact<{
   params: Types.ICreateBrandInput;
 }>;
@@ -56,7 +55,7 @@ export const CreateBrandDocument = gql`
   })
   export class ICreateBrandGQL extends Apollo.Mutation<ICreateBrandMutation, ICreateBrandMutationVariables> {
     override document = CreateBrandDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -84,7 +83,7 @@ export const GetBrandByIdDocument = gql`
   })
   export class IGetBrandByIdGQL extends Apollo.Query<IGetBrandByIdQuery, IGetBrandByIdQueryVariables> {
     override document = GetBrandByIdDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -109,7 +108,7 @@ export const GetBrandsDocument = gql`
   })
   export class IGetBrandsGQL extends Apollo.Query<IGetBrandsQuery, IGetBrandsQueryVariables> {
     override document = GetBrandsDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -127,7 +126,7 @@ export const DeleteBrandByIdDocument = gql`
   })
   export class IDeleteBrandByIdGQL extends Apollo.Mutation<IDeleteBrandByIdMutation, IDeleteBrandByIdMutationVariables> {
     override document = DeleteBrandByIdDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -148,7 +147,7 @@ export const UpdateBrandDocument = gql`
   })
   export class IUpdateBrandGQL extends Apollo.Mutation<IUpdateBrandMutation, IUpdateBrandMutationVariables> {
     override document = UpdateBrandDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

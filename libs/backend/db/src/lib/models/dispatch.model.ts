@@ -16,7 +16,7 @@ export enum DispatchStatus {
   PENDING = 'PENDING',
   IN_TRANSIT = 'IN_TRANSIT',
   DELIVERED = 'DELIVERED',
-  CANCELED = 'CANCELED',
+  CANCELLED = 'CANCELLED',
 }
 
 @Table({
@@ -79,4 +79,4 @@ export class DispatchModel extends Model {
 
   @HasMany(() => OrderModel)
   orders!: OrderModel[];
-} 
+}

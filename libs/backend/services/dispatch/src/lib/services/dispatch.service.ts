@@ -39,7 +39,7 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
         await this.orderModel.update(
           {
             dispatchId: dispatch.id,
-            status: 'DISPATCH_INITIATED',
+            status: 'DELIVERING',
           },
           {
             where: { id: data.orderIds },

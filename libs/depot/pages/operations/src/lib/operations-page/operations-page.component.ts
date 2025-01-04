@@ -46,7 +46,7 @@ export default class OperationsPageComponent {
         return 'primary';
       case 'DELIVERED':
         return 'success';
-      case 'CANCELED':
+      case 'CANCELLED':
         return 'danger';
       default:
         return 'medium';
