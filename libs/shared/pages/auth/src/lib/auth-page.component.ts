@@ -5,9 +5,9 @@ import {
   IonCol,
   IonContent,
   IonHeader,
-  IonIcon,
+  IonIcon, IonRouterOutlet,
   IonRow,
-  IonToolbar,
+  IonToolbar
 } from '@ionic/angular/standalone';
 import { LandingPageImageComponent } from './landing-page-image/landing-page-image.component';
 import { Theme, ThemeService } from '@lpg-manager/theme-service';
@@ -26,6 +26,7 @@ import { RouterOutlet } from '@angular/router';
     IonIcon,
     IonButtons,
     RouterOutlet,
+    IonRouterOutlet,
   ],
   templateUrl: './auth-page.component.html',
   styleUrl: './auth-page.component.css',

@@ -64,6 +64,10 @@ const rolePermissions = {
     'mark notification as read',
     // Dispatch Management
     'create dispatch', 'delete dispatch', 'update dispatch', 'view dispatch',
+    // Transporter
+    'view transporter',
+    // Driver
+    'view driver'
   ],
 
   driver: [

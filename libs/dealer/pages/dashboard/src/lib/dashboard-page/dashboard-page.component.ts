@@ -11,13 +11,13 @@ import {
   IonList,
   IonMenu,
   IonMenuButton,
-  IonPopover,
+  IonPopover, IonRouterOutlet,
   IonRow,
   IonSelect,
   IonSelectOption,
   IonText,
   IonTitle,
-  IonToolbar,
+  IonToolbar
 } from '@ionic/angular/standalone';
 import { ThemeService } from '@lpg-manager/theme-service';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -56,6 +56,7 @@ import { NotificationBellComponent } from '@lpg-manager/notification-component';
     IonSelectOption,
     FormsModule,
     NotificationBellComponent,
+    IonRouterOutlet,
   ],
   templateUrl: './dashboard-page.component.html',
   styleUrl: './dashboard-page.component.scss',
