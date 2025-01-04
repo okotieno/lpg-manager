@@ -27,6 +27,16 @@
       <ion-input formControlName="quantity" type="number" min="0"></ion-input>
     </ion-item>
 
+    <ion-item>
+      <ion-label position="stacked">Reason</ion-label>
+      <ion-input formControlName="reason" type="text" placeholder="Enter reason for update"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Batch Number</ion-label>
+      <ion-input formControlName="batchNumber" type="text" placeholder="Enter batch number"></ion-input>
+    </ion-item>
+
     <div class="ion-padding">
       <ion-button type="submit" expand="block" [disabled]="!inventoryForm.valid">
         {{ mode() === 'create' ? 'Add' : 'Save' }} Inventory

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/graphql';
 import { CreateInventoryInputDto } from '../dto/create-inventory-input.dto';
 import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
-import { JwtAuthGuard } from '@lpg-manager/auth';
+import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
@@ -18,8 +18,12 @@ import { InventoryService } from '@lpg-manager/inventory-service';
 import {
   CatalogueModel,
   InventoryModel,
+  InventoryItemModel,
   IQueryParam,
   StationModel,
+  UserModel,
+  InventoryItemStatus,
+  ReferenceType,
 } from '@lpg-manager/db';
 import { CatalogueService } from '@lpg-manager/catalogue-service';
 import { StationService } from '@lpg-manager/station-service';
@@ -36,13 +40,23 @@ export class InventoryResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.CreateInventory)
   async createInventory(
-    @Body('params', new ValidationPipe()) params: CreateInventoryInputDto
+    @Body('params', new ValidationPipe()) params: CreateInventoryInputDto,
+    @CurrentUser() user: UserModel
   ) {
     const inventory = await this.inventoryService.createOrUpdateInventory({
       catalogueId: params.catalogueId,
       stationId: params.stationId,
       quantity: params.quantity,
-      reason: 'Initial inventory creation/update',
+      reason: params.reason,
+      userId: user.id,
+      batchNumber: params.batchNumber,
+      serialNumbers: params.serialNumbers,
+      ...(params.manufactureDate
+        ? { manufactureDate: new Date(params.manufactureDate) }
+        : undefined),
+      ...(params.expiryDate
+        ? { expiryDate: new Date(params.expiryDate) }
+        : undefined),
     });
 
     return {
@@ -51,7 +65,44 @@ export class InventoryResolver {
     };
   }
 
+  @Query(() => [InventoryItemModel])
+  @UseGuards(JwtAuthGuard)
+  async inventoryItems(
+    @Args('inventoryId') inventoryId: string,
+    @Args('status', { nullable: true }) status?: InventoryItemStatus,
+    @Args('batchNumber', { nullable: true }) batchNumber?: string
+  ) {
+    return this.inventoryService.getInventoryItems(
+      inventoryId,
+      status,
+      batchNumber
+    );
+  }
+
+  @Mutation(() => InventoryItemModel)
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @Permissions(PermissionsEnum.UpdateInventory)
+  async updateInventoryItemStatus(
+    @Body('params', new ValidationPipe())
+    params: {
+      itemId: string;
+      status: InventoryItemStatus;
+      reason?: string;
+    },
+    @CurrentUser() user: UserModel
+  ) {
+    return this.inventoryService.updateItemStatus(
+      params.itemId,
+      params.status,
+      user.id,
+      ReferenceType.MANUAL,
+      undefined,
+      params.reason
+    );
+  }
+
   @Query(() => InventoryModel)
+  @UseGuards(JwtAuthGuard)
   inventories(@Args('query') query: IQueryParam) {
     return this.inventoryService.findAll({
       ...query,
@@ -60,14 +111,16 @@ export class InventoryResolver {
   }
 
   @Query(() => InventoryModel)
+  @UseGuards(JwtAuthGuard)
   async inventory(@Args('id') id: string) {
     return this.inventoryService.findById(id);
   }
 
   @Mutation(() => InventoryModel)
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @Permissions(PermissionsEnum.DeleteInventory)
   async deleteInventory(@Args('id') id: string) {
     await this.inventoryService.deleteById(id);
-
     return {
       message: 'Successfully deleted inventory',
     };

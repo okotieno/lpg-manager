@@ -88,6 +88,8 @@ export default class InventoryManagementComponent implements ViewWillEnter {
   inventoryForm = this.#fb.group({
     catalogue: [null as null | ISelectCategory, Validators.required],
     quantity: [0, [Validators.required, Validators.min(0)]],
+    reason: ['', Validators.required],
+    batchNumber: ['', Validators.required],
   });
 
   constructor() {
@@ -122,6 +124,8 @@ export default class InventoryManagementComponent implements ViewWillEnter {
             catalogueId: formValue.catalogue?.id as string,
             stationId: this.activeStation()?.id as string,
             quantity: formValue.quantity as number,
+            reason: formValue.reason,
+            batchNumber: formValue.batchNumber as string,
           },
         },
         { filters: this.stationFilters() }

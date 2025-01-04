@@ -13,6 +13,15 @@ export enum InventoryChangeType {
   DECREASE = 'DECREASE',
 }
 
+export enum ReferenceType {
+  MANUAL = 'MANUAL',      // Manual inventory adjustments
+  ORDER = 'ORDER',        // Changes due to customer orders
+  RETURN = 'RETURN',      // Changes due to returns/refunds
+  DISPATCH = 'DISPATCH',  // Changes due to dispatch operations
+  TRANSFER = 'TRANSFER',  // Inter-station transfers
+  ADJUSTMENT = 'ADJUSTMENT' // System or audit adjustments
+}
+
 @Table({
   tableName: 'inventory_changes',
   underscored: true,
@@ -51,6 +60,19 @@ export class InventoryChangeModel extends Model {
     allowNull: true,
   })
   reason?: string;
+
+  @Column({
+    type: DataType.ENUM(...Object.values(ReferenceType)),
+    allowNull: false,
+    defaultValue: ReferenceType.MANUAL,
+  })
+  referenceType!: ReferenceType;
+
+  @Column({
+    type: DataType.UUID,
+    allowNull: true,
+  })
+  referenceId?: string;
 
   @BelongsTo(() => InventoryModel)
   inventory!: InventoryModel;

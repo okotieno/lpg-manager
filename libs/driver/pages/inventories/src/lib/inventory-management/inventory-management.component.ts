@@ -67,6 +67,8 @@ export default class InventoryManagementComponent {
   inventoryForm = this.#fb.group({
     catalogue: [null as null | ISelectCategory, Validators.required],
     quantity: [0, [Validators.required, Validators.min(0)]],
+    reason: ['', Validators.required],
+    batchNumber: ['', Validators.required],
   });
 
   constructor() {
@@ -96,6 +98,7 @@ export default class InventoryManagementComponent {
             catalogueId: formValue.catalogue?.id as string,
             stationId: this.activeStation()?.id as string,
             quantity: formValue.quantity as number,
+            batchNumber: formValue.batchNumber as string,
           },
         })
         .subscribe({

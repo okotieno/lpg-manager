@@ -28,7 +28,8 @@ import {
   TransporterModel,
   UserModel,
   VehicleModel,
-  InventoryChangeModel
+  InventoryChangeModel,
+  InventoryItemModel,
 } from './models';
 import { SequelizeOptions } from 'sequelize-typescript';
 
@@ -73,7 +74,8 @@ import { SequelizeOptions } from 'sequelize-typescript';
           DispatchModel,
           TransporterModel,
           DriverVehicleModel,
-          InventoryChangeModel
+          InventoryChangeModel,
+          InventoryItemModel
         ],
       }),
     }),

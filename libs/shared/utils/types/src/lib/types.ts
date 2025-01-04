@@ -191,9 +191,25 @@ export type ICreateDriverSuccessResponse = {
 };
 
 export type ICreateInventoryInput = {
+  batchNumber: Scalars['String']['input'];
   catalogueId: Scalars['String']['input'];
+  expiryDate?: InputMaybe<Scalars['DateTime']['input']>;
+  manufactureDate?: InputMaybe<Scalars['DateTime']['input']>;
   quantity: Scalars['Float']['input'];
+  reason?: InputMaybe<Scalars['String']['input']>;
+  serialNumbers?: InputMaybe<Array<Scalars['String']['input']>>;
   stationId: Scalars['String']['input'];
+};
+
+export type ICreateInventoryInputDto = {
+  batchNumber?: InputMaybe<Scalars['String']['input']>;
+  catalogueId: Scalars['ID']['input'];
+  expiryDate?: InputMaybe<Scalars['String']['input']>;
+  manufactureDate?: InputMaybe<Scalars['String']['input']>;
+  quantity: Scalars['Int']['input'];
+  reason: Scalars['String']['input'];
+  serialNumbers?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  stationId: Scalars['ID']['input'];
 };
 
 export type ICreateInventorySuccessResponse = {
@@ -341,7 +357,7 @@ export type IDispatchModel = {
 };
 
 export enum IDispatchStatus {
-  Canceled = 'CANCELLED',
+  Cancelled = 'CANCELLED',
   Delivered = 'DELIVERED',
   InTransit = 'IN_TRANSIT',
   Pending = 'PENDING'
@@ -365,6 +381,19 @@ export type IFileUploadModel = {
   originalName?: Maybe<Scalars['String']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
   url?: Maybe<Scalars['URL']['output']>;
+};
+
+export type IInventoryItemModel = {
+  batchNumber: Scalars['String']['output'];
+  createdBy: Scalars['UUID']['output'];
+  creator: IUserModel;
+  expiryDate?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['UUID']['output'];
+  inventory: IInventoryModel;
+  inventoryId: Scalars['UUID']['output'];
+  manufactureDate?: Maybe<Scalars['DateTime']['output']>;
+  serialNumber?: Maybe<Scalars['String']['output']>;
+  status: Scalars['String']['output'];
 };
 
 export type IInventoryModel = {
@@ -446,6 +475,7 @@ export type IMutation = {
   updateDispatch: ICreateDispatchSuccessResponse;
   updateDriver: ICreateDriverSuccessResponse;
   updateInventory?: Maybe<ICreateInventorySuccessResponse>;
+  updateInventoryItemStatus: IInventoryItemModel;
   updateItemQuantity: ICreateCartResponse;
   updateNotification?: Maybe<ICreateNotificationSuccessResponse>;
   updateOrder: IUpdateOrderResponse;
@@ -782,6 +812,11 @@ export type IMutationUpdateInventoryArgs = {
 };
 
 
+export type IMutationUpdateInventoryItemStatusArgs = {
+  params: IUpdateInventoryItemStatusInput;
+};
+
+
 export type IMutationUpdateItemQuantityArgs = {
   cartCatalogueId: Scalars['UUID']['input'];
   cartId: Scalars['UUID']['input'];
@@ -1101,6 +1136,7 @@ export type IQuery = {
   healthCheck?: Maybe<Scalars['String']['output']>;
   inventories: IPaginatedInventory;
   inventory?: Maybe<IInventoryModel>;
+  inventoryItems: Array<IInventoryItemModel>;
   notification?: Maybe<INotificationModel>;
   notifications: IPaginatedNotification;
   order?: Maybe<IOrderModel>;
@@ -1210,6 +1246,13 @@ export type IQueryInventoriesArgs = {
 
 export type IQueryInventoryArgs = {
   id: Scalars['UUID']['input'];
+};
+
+
+export type IQueryInventoryItemsArgs = {
+  batchNumber?: InputMaybe<Scalars['String']['input']>;
+  inventoryId: Scalars['UUID']['input'];
+  status?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -1486,7 +1529,14 @@ export type IUpdateDriverInput = {
 export type IUpdateInventoryInput = {
   catalogueId: Scalars['String']['input'];
   quantity: Scalars['Float']['input'];
+  reason?: InputMaybe<Scalars['String']['input']>;
   stationId: Scalars['String']['input'];
+};
+
+export type IUpdateInventoryItemStatusInput = {
+  itemId: Scalars['UUID']['input'];
+  reason?: InputMaybe<Scalars['String']['input']>;
+  status: Scalars['String']['input'];
 };
 
 export type IUpdateNotificationInput = {

@@ -11,12 +11,18 @@ input CreateInventoryInput {
   quantity: Float!
   stationId: String!
   catalogueId: String!
+  batchNumber: String!
+  manufactureDate: DateTime
+  expiryDate: DateTime
+  serialNumbers: [String!]
+  reason: String
 }
 
 input UpdateInventoryInput {
   quantity: Float!
   stationId: String!
   catalogueId: String!
+  reason: String
 }
 
 type PaginatedInventory {
@@ -29,9 +35,29 @@ type CreateInventorySuccessResponse {
   data: InventoryModel!
 }
 
+type InventoryItemModel {
+  id: UUID!
+  inventoryId: UUID!
+  serialNumber: String
+  batchNumber: String!
+  status: String!
+  manufactureDate: DateTime
+  expiryDate: DateTime
+  createdBy: UUID!
+  inventory: InventoryModel!
+  creator: UserModel!
+}
+
+input UpdateInventoryItemStatusInput {
+  itemId: UUID!
+  status: String!
+  reason: String
+}
+
 extend type Query {
   inventories(query: QueryParams): PaginatedInventory!
   inventory(id: UUID!): InventoryModel
+  inventoryItems(inventoryId: UUID!, status: String, batchNumber: String): [InventoryItemModel!]!
 }
 
 extend type Mutation {
@@ -40,4 +66,17 @@ extend type Mutation {
   createInventory(params: CreateInventoryInput): CreateInventorySuccessResponse
 
   deleteInventory(id: UUID!): DeleteSuccessResponse!
+
+  updateInventoryItemStatus(params: UpdateInventoryItemStatusInput!): InventoryItemModel!
+}
+
+input CreateInventoryInputDto {
+  catalogueId: ID!
+  stationId: ID!
+  quantity: Int!
+  reason: String!
+  batchNumber: String
+  serialNumbers: [String]
+  manufactureDate: String
+  expiryDate: String
 }

@@ -1,6 +1,7 @@
-import { IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsUUID, IsString, IsOptional, IsArray, IsDateString, ValidateIf } from 'class-validator';
 import { Exists } from '@lpg-manager/validators';
 import { CatalogueModel, StationModel } from '@lpg-manager/db';
+import { Type } from 'class-transformer';
 
 export class CreateInventoryInputDto {
   @IsUUID()
@@ -21,5 +22,28 @@ export class CreateInventoryInputDto {
 
   @IsNumber()
   @IsNotEmpty()
+  @Type(() => Number)
   quantity!: number;
+
+  @IsString()
+  @IsNotEmpty()
+  batchNumber!: string;
+
+  @IsString()
+  @IsOptional()
+  reason!: string;
+
+  @IsDateString()
+  @IsOptional()
+  manufactureDate?: string;
+
+  @IsDateString()
+  @IsOptional()
+  expiryDate?: string;
+
+  @IsArray()
+  @IsString({ each: true })
+  @ValidateIf((o) => o.serialNumbers !== undefined)
+  @IsOptional()
+  serialNumbers?: string[];
 }
