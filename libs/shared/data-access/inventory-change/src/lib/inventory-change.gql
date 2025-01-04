@@ -14,6 +14,16 @@ mutation CreateInventoryChange(
 query GetInventoryChangeById($id: UUID!) {
   inventoryChange(id: $id) {
     id
+    inventory {
+      quantity
+      catalogue {
+        id
+        name
+      }
+    }
+    items {
+      id
+    }
   }
 }
 

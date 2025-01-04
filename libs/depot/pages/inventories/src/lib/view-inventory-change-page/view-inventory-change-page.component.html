@@ -1,26 +1,22 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>View Inventory Items</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
-  <ion-list>
-<!--    <ion-item *ngFor="let item of inventoryItems()">-->
-<!--      <ion-label>-->
-<!--        <h2>Item ID: {{ item.id }}</h2>-->
-<!--        <p>Batch Number: {{ item.batchNumber }}</p>-->
-<!--        <p>Serial Number: {{ item.serialNumber || 'N/A' }}</p>-->
-<!--        <p>Status: {{ item.status }}</p>-->
-<!--        <div id="qrcode-{{ item.id }}">-->
-<!--          <qrcode-->
-<!--            [qrdata]="item.id"-->
-<!--            [width]="256"-->
-<!--            [errorCorrectionLevel]="'M'">-->
-<!--          </qrcode>-->
-<!--        </div>-->
-<!--        <ion-button (click)="printQRCode(item.id)">Print QR Code</ion-button>-->
-<!--      </ion-label>-->
-<!--    </ion-item>-->
-  </ion-list>
+  <!--  <h2>Item ID: {{ item.id }}</h2>-->
+
+
+  <ion-grid class="ion-no-margin ion-padding">
+    <ion-row class="ion-justify-content-between">
+      <p>Catalogue: {{ inventoryChange()?.inventory?.catalogue?.name }}</p>
+      <ion-button fill="outline" (click)="printQRCode()">Print QR Codes</ion-button>
+    </ion-row>
+    <ion-row class="ion-justify-content-between" style="gap: 8px">
+      @for (item of inventoryChange()?.items; track item.id) {
+          <qrcode
+            [margin]="2"
+            [elementType]="'svg'"
+            [qrdata]="item.id"
+            [width]="110"
+            [errorCorrectionLevel]="'M'">
+          </qrcode>
+      }
+    </ion-row>
+  </ion-grid>
 </ion-content>

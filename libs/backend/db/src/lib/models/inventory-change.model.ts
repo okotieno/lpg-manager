@@ -3,10 +3,12 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { InventoryModel } from './inventory.model';
+import { InventoryItemModel } from './inventory-item.model';
 
 export enum InventoryChangeType {
   INCREASE = 'INCREASE',
@@ -73,6 +75,9 @@ export class InventoryChangeModel extends Model {
     allowNull: true,
   })
   referenceId?: string;
+
+  @HasMany(() => InventoryItemModel)
+  items!: InventoryItemModel[];
 
   @BelongsTo(() => InventoryModel)
   inventory!: InventoryModel;

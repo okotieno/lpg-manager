@@ -50,7 +50,7 @@ type CreateInventoryChangeSuccessResponse {
 
 extend type Query {
   inventoryChanges(query: QueryParams): PaginatedInventoryChange!
-  inventoryChange(id: UUID!): InventoryModel
+  inventoryChange(id: UUID!): InventoryChangeModel
 }
 
 extend type Mutation {

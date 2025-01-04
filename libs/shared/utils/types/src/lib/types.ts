@@ -1189,7 +1189,7 @@ export type IQuery = {
   healthCheck?: Maybe<Scalars['String']['output']>;
   inventories: IPaginatedInventory;
   inventory?: Maybe<IInventoryModel>;
-  inventoryChange?: Maybe<IInventoryModel>;
+  inventoryChange?: Maybe<IInventoryChangeModel>;
   inventoryChanges: IPaginatedInventoryChange;
   inventoryItems: Array<IInventoryItemModel>;
   notification?: Maybe<INotificationModel>;

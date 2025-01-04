@@ -15,7 +15,7 @@ export type IGetInventoryChangeByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetInventoryChangeByIdQuery = { inventoryChange?: { id: string } | null };
+export type IGetInventoryChangeByIdQuery = { inventoryChange?: { id: string, inventory: { quantity: number, catalogue: { id: string, name: string } }, items: Array<{ id: string }> } | null };
 
 export type IGetInventoryChangesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
@@ -64,6 +64,16 @@ export const GetInventoryChangeByIdDocument = gql`
     query GetInventoryChangeById($id: UUID!) {
   inventoryChange(id: $id) {
     id
+    inventory {
+      quantity
+      catalogue {
+        id
+        name
+      }
+    }
+    items {
+      id
+    }
   }
 }
     `;

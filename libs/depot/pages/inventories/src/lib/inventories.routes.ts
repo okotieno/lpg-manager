@@ -3,7 +3,10 @@ import { inject } from '@angular/core';
 import { BreadcrumbStore } from '@lpg-manager/breadcrumb';
 import { IGetDispatchByIdGQL } from '@lpg-manager/dispatch-store';
 import { map, tap } from 'rxjs';
-import { IGetInventoryChangeByIdGQL, InventoryChangeStore } from '@lpg-manager/inventory-change-store';
+import {
+  IGetInventoryChangeByIdGQL,
+  InventoryChangeStore,
+} from '@lpg-manager/inventory-change-store';
 
 export const INVENTORIES_ROUTES: Routes = [
   {
@@ -21,9 +24,7 @@ export const INVENTORIES_ROUTES: Routes = [
       import('./inventory-management/inventory-management.component'),
     data: {
       routeLabel: 'Inventories',
-      breadcrumbs: [
-        { label: 'Inventories' }
-      ],
+      breadcrumbs: [{ label: 'Inventories' }],
     },
   },
   // {
@@ -39,16 +40,18 @@ export const INVENTORIES_ROUTES: Routes = [
   {
     path: 'changes/:inventoryChangeId',
     loadComponent: () =>
-      import('./view-inventory-change-page/view-inventory-change-page.component'),
+      import(
+        './view-inventory-change-page/view-inventory-change-page.component'
+      ),
     data: {
       routeLabel: 'Inventories Change | :inventoryChangeName ',
       breadcrumbs: [
         { label: 'View Inventory', path: ['/dashboard', 'inventories'] },
-        { label: 'Inventory movement' }
+        { label: 'Inventory movement' },
       ],
     },
     resolve: {
-      dispatch: (route: ActivatedRouteSnapshot) => {
+      inventoryChange: (route: ActivatedRouteSnapshot) => {
         const breadcrumbStore = inject(BreadcrumbStore);
         return inject(IGetInventoryChangeByIdGQL)
           .fetch({ id: route.params['inventoryChangeId'] })

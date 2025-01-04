@@ -1,10 +1,34 @@
-import { Component, inject } from '@angular/core';
-import { InventoryStore } from '@lpg-manager/inventory-store';
+import {
+  Component,
+  ElementRef,
+  inject,
+  input,
+  viewChild,
+  viewChildren,
+} from '@angular/core';
 import { QRCodeComponent } from 'angularx-qrcode';
-import { IonButton, IonContent, IonHeader, IonItem, IonLabel, IonList, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import {
+  IonButton,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonHeader,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonRow,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { computed } from '@angular/core';
+import {
+  IGetInventoryChangeByIdGQL,
+  IGetInventoryChangeByIdQuery,
+  InventoryChangeStore,
+} from '@lpg-manager/inventory-change-store';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-view-inventory-change-page',
@@ -18,38 +42,35 @@ import { computed } from '@angular/core';
     IonButton,
     IonHeader,
     IonToolbar,
-    IonTitle
+    IonTitle,
+    JsonPipe,
+    IonGrid,
+    IonRow,
+    IonCol,
   ],
   templateUrl: './view-inventory-change-page.component.html',
-  providers: [InventoryStore]
+  providers: [InventoryChangeStore],
 })
 export default class ViewInventoryChangePageComponent {
-  inventoryStore = inject(InventoryStore);
+  inventoryStore = inject(InventoryChangeStore);
+  qrCodesWrappers = viewChildren(QRCodeComponent, { read: ElementRef });
   route = inject(ActivatedRoute);
 
-  inventoryId = computed(() => this.route.snapshot.params['id']);
-  // inventoryItems = computed(() => this.inventoryStore.inventoryItems());
-
-  constructor() {
-    // Load inventory items when component initializes
-    if (this.inventoryId()) {
-      this.loadInventoryItems(this.inventoryId());
-    }
-  }
+  inventoryChange =
+    input.required<IGetInventoryChangeByIdQuery['inventoryChange']>();
 
   async loadInventoryItems(inventoryId: string) {
     // await this.inventoryStore.loadInventoryItems(inventoryId);
   }
 
-  printQRCode(itemId: string) {
-    const qrCodeElement = document.getElementById(`qrcode-${itemId}`);
-    if (qrCodeElement) {
-      const printWindow = window.open('', '_blank');
-      printWindow?.document.write(
-        `<html><body>${qrCodeElement.innerHTML}</body></html>`
-      );
-      printWindow?.document.close();
-      printWindow?.print();
-    }
+  printQRCode() {
+    const printWindow = window.open('', '_blank');
+    printWindow?.document.write(
+      `<html lang="en"><body style="display: flex; flex-wrap: wrap">${this.qrCodesWrappers()
+        .map((e) => e.nativeElement.innerHTML)
+        .join('')}</body></html>`
+    );
+    printWindow?.document.close();
+    printWindow?.print();
   }
 }
