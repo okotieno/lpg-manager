@@ -12,10 +12,14 @@ import {
   IonList,
   IonRow,
   IonText,
+  IonButton,
+  IonIcon,
+  IonButtons,
 } from '@ionic/angular/standalone';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 import { DispatchStore, IGetDispatchByIdQuery } from '@lpg-manager/dispatch-store';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'lpg-view-dispatch',
@@ -36,6 +40,10 @@ import { UUIDDirective } from '@lpg-manager/uuid-pipe';
     IonLabel,
     IonItemDivider,
     CurrencyPipe,
+    IonButton,
+    IonIcon,
+    IonButtons,
+    RouterLink,
   ],
   template: `
     <ion-content class="ion-padding">
@@ -107,6 +115,18 @@ import { UUIDDirective } from '@lpg-manager/uuid-pipe';
               }
             </ion-list>
           </ion-grid>
+          <ion-buttons class="ion-margin-start">
+            @if (dispatch()?.status === 'PENDING') {
+              <ion-button
+                color="primary"
+                shape="round"
+                [routerLink]="['assign-load']"
+                fill="outline">
+                <ion-icon name="scan-circle" slot="start"></ion-icon>
+                Assign Load to Driver
+              </ion-button>
+            }
+          </ion-buttons>
         </ion-card-content>
       </ion-card>
     </ion-content>

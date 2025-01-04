@@ -37,7 +37,6 @@ export const DISPATCHES_ROUTES: Routes = [
   },
   {
     path: ':dispatchId',
-    loadComponent: () => import('./view-dispatch/view-dispatch.component'),
     data: {
       routeLabel: 'View Dispatch | :dispatchName',
       breadcrumbs: [
@@ -65,5 +64,16 @@ export const DISPATCHES_ROUTES: Routes = [
           );
       },
     },
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./view-dispatch/view-dispatch.component'),
+      },
+      {
+        path: 'assign-load',
+        loadComponent: () => import('./assign-load/assign-load.component'),
+      },
+    ],
   },
 ];
