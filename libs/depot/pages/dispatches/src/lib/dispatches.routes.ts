@@ -1,4 +1,12 @@
-import { Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { BreadcrumbStore } from '@lpg-manager/breadcrumb';
+import { IGetBrandByIdGQL } from '@lpg-manager/brand-store';
+import { map, tap } from 'rxjs';
+import {
+  DispatchStore,
+  IGetDispatchByIdGQL,
+} from '@lpg-manager/dispatch-store';
 
 export const DISPATCHES_ROUTES: Routes = [
   {
@@ -19,9 +27,43 @@ export const DISPATCHES_ROUTES: Routes = [
       routeLabel: 'Create Dispatch',
       breadcrumbs: [
         { label: 'Operations', path: ['/dashboard', 'operations'] },
-        { label: 'Dispatches', path: ['/dashboard', 'operations', 'dispatches'] },
+        {
+          label: 'Dispatches',
+          path: ['/dashboard', 'operations', 'dispatches'],
+        },
         { label: 'Create Dispatch' },
       ],
+    },
+  },
+  {
+    path: ':dispatchId',
+    loadComponent: () => import('./view-dispatch/view-dispatch.component'),
+    data: {
+      routeLabel: 'View Dispatch | :dispatchName',
+      breadcrumbs: [
+        { label: 'Operations', path: ['/dashboard', 'operations'] },
+        {
+          label: 'Dispatches',
+          path: ['/dashboard', 'operations', 'dispatches'],
+        },
+        { label: 'View Dispatch' },
+      ],
+    },
+    resolve: {
+      dispatch: (route: ActivatedRouteSnapshot) => {
+        const breadcrumbStore = inject(BreadcrumbStore);
+        return inject(IGetDispatchByIdGQL)
+          .fetch({ id: route.params['dispatchId'] })
+          .pipe(
+            map((res) => res.data.dispatch),
+            tap((res) => {
+              breadcrumbStore.updatePageTitleParams({
+                dispatchId: res?.id ?? '',
+                dispatchName: '#' + (res?.id ?? '').slice(0, 8),
+              });
+            })
+          );
+      },
     },
   },
 ];

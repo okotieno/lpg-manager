@@ -1,19 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
-  IonBadge,
-  IonButton,
   IonCard,
   IonCardContent, IonCardHeader, IonCardTitle,
   IonCol,
-  IonContent,
   IonGrid,
   IonIcon,
-  IonRow, IonText
+  IonRow,
 } from '@ionic/angular/standalone';
-import { DatePipe } from '@angular/common';
 import { DispatchStore } from '@lpg-manager/dispatch-store';
-import { UUIDDirective } from '@lpg-manager/uuid-pipe';
 
 @Component({
   selector: 'lpg-operations',
@@ -22,18 +17,12 @@ import { UUIDDirective } from '@lpg-manager/uuid-pipe';
   standalone: true,
   imports: [
     RouterLink,
-    IonContent,
     IonGrid,
     IonRow,
     IonCol,
-    IonButton,
     IonIcon,
-    IonBadge,
-    DatePipe,
     IonCard,
     IonCardContent,
-    IonText,
-    UUIDDirective,
     IonCardHeader,
     IonCardTitle,
   ],

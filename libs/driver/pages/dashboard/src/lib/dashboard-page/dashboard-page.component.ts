@@ -1,7 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import {
   IonBackButton,
-  IonBadge,
   IonButton,
   IonButtons,
   IonContent,
@@ -51,7 +50,6 @@ import { NotificationBellComponent } from '@lpg-manager/notification-component';
     IonRow,
     IonText,
     TitleCasePipe,
-    IonBadge,
     IonSelect,
     IonSelectOption,
     FormsModule,
