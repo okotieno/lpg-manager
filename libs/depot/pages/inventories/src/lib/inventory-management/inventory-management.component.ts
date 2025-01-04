@@ -4,27 +4,23 @@ import {
   effect,
   inject,
   input,
-  OnInit,
+  ResourceRef,
   untracked,
 } from '@angular/core';
 import {
   IonButton,
-  IonButtons,
+  IonCol,
   IonContent,
-  IonHeader,
-  IonIcon,
+  IonGrid,
   IonInput,
   IonItem,
-  IonLabel,
+  IonRow,
   IonSpinner,
-  IonTitle,
-  IonToolbar,
-  ModalController,
   ViewWillEnter,
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-  ICreateInventoryGQL,
+  ICreateInventoryMutation,
   InventoryStore,
 } from '@lpg-manager/inventory-store';
 import {
@@ -33,30 +29,25 @@ import {
 } from '@lpg-manager/catalogue-store';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { AuthStore } from '@lpg-manager/auth-store';
-import {
-  IQueryOperatorEnum,
-  IQueryParamsFilter,
-  ISelectCategory,
-} from '@lpg-manager/types';
+import { IQueryOperatorEnum, ISelectCategory } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
+import { MutationResult } from 'apollo-angular';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'lpg-inventory-management',
   standalone: true,
   imports: [
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
     IonButton,
     IonInput,
     IonItem,
-    IonLabel,
-    IonButtons,
-    IonIcon,
     ReactiveFormsModule,
     SearchableSelectComponent,
     IonSpinner,
+    IonGrid,
+    IonCol,
+    IonRow,
   ],
   templateUrl: './inventory-management.component.html',
   providers: [InventoryStore, CatalogueStore],
@@ -65,32 +56,53 @@ export default class InventoryManagementComponent implements ViewWillEnter {
   formSubmitted = false;
   #fb = inject(FormBuilder);
   #inventoryStore = inject(InventoryStore);
+  #authStore = inject(AuthStore);
+  activeStation = this.#authStore.activeStation;
+  #router = inject(Router);
+  #route = inject(ActivatedRoute);
+  stationFilter = computed(() => {
+    if (this.activeStation()?.id)
+      return {
+        operator: IQueryOperatorEnum.Equals,
+        value: this.activeStation()?.id,
+        field: 'stationId',
+        values: [],
+      };
+    return;
+  });
+  depotFilters = computed(() => [
+    { ...this.stationFilter(), field: 'depotId' },
+  ]);
   isLoading = this.#inventoryStore.isLoading;
   formSubmittedEffect = effect(async () => {
     const isLoading = this.isLoading();
     await untracked(async () => {
-      if (this.formSubmitted && !isLoading) {
-        await this.#modalCtrl.dismiss({}, 'confirm');
-      }
+      if (this.formSubmitted && !isLoading)
+        await this.#router.navigate(
+          [
+            '../changes',
+            this.createdItemResource.value()?.data?.createInventory?.data.id,
+          ],
+          { relativeTo: this.#route }
+        );
     });
   });
-  #modalCtrl = inject(ModalController);
-  #authStore = inject(AuthStore);
   cataloguesStore = inject(CatalogueStore) as PaginatedResource<
     NonNullable<NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]>
   >;
 
   mode = input<'create' | 'edit'>('create');
-  depotFilters = input<IQueryParamsFilter[]>([]);
-  stationFilters = input<IQueryParamsFilter[]>([]);
-  activeStation = this.#authStore.activeStation;
+  // depotFilters = input<IQueryParamsFilter[]>([]);
 
   inventoryForm = this.#fb.group({
     catalogue: [null as null | ISelectCategory, Validators.required],
-    quantity: [0, [Validators.required, Validators.min(0)]],
+    quantity: [null as null | number, [Validators.required, Validators.min(0)]],
     reason: ['', Validators.required],
     batchNumber: ['', Validators.required],
   });
+  private createdItemResource!: ResourceRef<
+    MutationResult<ICreateInventoryMutation>
+  >;
 
   constructor() {
     const activeStationId = this.activeStation()?.id;
@@ -110,15 +122,11 @@ export default class InventoryManagementComponent implements ViewWillEnter {
     this.formSubmitted = false;
   }
 
-  async dismiss() {
-    await this.#modalCtrl.dismiss(null, 'cancel');
-  }
-
   async save() {
     if (this.inventoryForm.valid) {
       const formValue = this.inventoryForm.value;
       this.formSubmitted = true;
-      this.#inventoryStore.createNewItem(
+      this.createdItemResource = this.#inventoryStore.createNewItem(
         {
           params: {
             catalogueId: formValue.catalogue?.id as string,
@@ -128,7 +136,7 @@ export default class InventoryManagementComponent implements ViewWillEnter {
             batchNumber: formValue.batchNumber as string,
           },
         },
-        { filters: this.stationFilters() }
+        { filters: [this.stationFilter()] }
       );
     }
   }

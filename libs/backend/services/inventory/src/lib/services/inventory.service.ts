@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { 
-  CatalogueModel, 
-  InventoryModel, 
+import {
+  CatalogueModel,
+  InventoryModel,
   InventoryChangeModel,
   InventoryChangeType,
   IQueryParam,
@@ -51,7 +51,7 @@ export class InventoryService extends CrudAbstractService<InventoryModel> {
         // Update existing inventory
         const oldQuantity = Number(inventory.quantity);
         const newQuantity = oldQuantity + Number(data.quantity);
-        
+
         await inventory.update(
           { quantity: newQuantity },
           { transaction }
@@ -69,7 +69,7 @@ export class InventoryService extends CrudAbstractService<InventoryModel> {
       }
 
       // Track inventory change
-      await this.inventoryChangeModel.create(
+      const inventoryChange = await this.inventoryChangeModel.create(
         {
           inventoryId: inventory.id,
           userId: data.userId,
@@ -84,6 +84,7 @@ export class InventoryService extends CrudAbstractService<InventoryModel> {
       // Create individual inventory items
       const items = Array.from({ length: data.quantity }).map((_, index) => ({
         inventoryId: inventory.id,
+        inventoryChangeId: inventoryChange.id,
         serialNumber: data.serialNumbers?.[index],
         batchNumber: data.batchNumber,
         status: InventoryItemStatus.AVAILABLE,
@@ -95,7 +96,7 @@ export class InventoryService extends CrudAbstractService<InventoryModel> {
       await this.inventoryItemModel.bulkCreate(items, { transaction });
 
       await transaction?.commit();
-      return inventory;
+      return inventoryChange;
     } catch (error) {
       await transaction?.rollback();
       throw error;

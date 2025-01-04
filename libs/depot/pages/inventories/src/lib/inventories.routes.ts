@@ -11,9 +11,30 @@ export const INVENTORIES_ROUTES: Routes = [
     },
   },
   {
-    path: 'view',
+    path: 'create',
     loadComponent: () =>
-      import('./view-inventory-page/view-inventory-page.component'),
+      import('./inventory-management/inventory-management.component'),
+    data: {
+      routeLabel: 'Inventories',
+      breadcrumbs: [
+        { label: 'Inventories' }
+      ],
+    },
+  },
+  // {
+  //   path: 'view',
+  //   loadComponent: () =>
+  //     import('./view-inventory-page/view-inventory-page.component'),
+  //   data: {
+  //     routeLabel: 'View Inventory',
+  //     breadcrumbs: [{ label: 'View Inventory' }],
+  //   },
+  // },
+
+  {
+    path: 'changes/:inventoryChangeId',
+    loadComponent: () =>
+      import('./view-inventory-change-page/view-inventory-change-page.component'),
     data: {
       routeLabel: 'View Inventory',
       breadcrumbs: [{ label: 'View Inventory' }],

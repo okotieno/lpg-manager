@@ -76,4 +76,4 @@ export class InventoryChangeModel extends Model {
 
   @BelongsTo(() => InventoryModel)
   inventory!: InventoryModel;
-} 
+}

@@ -27,6 +27,7 @@ import { CurrencyPipe } from '@angular/common';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
 import InventoryManagementComponent from '../inventory-management/inventory-management.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'lpg-inventories',
@@ -46,6 +47,7 @@ import InventoryManagementComponent from '../inventory-management/inventory-mana
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonContent,
+    RouterLink,
   ],
   templateUrl: './inventories-page.component.html',
   providers: [InventoryStore],
@@ -98,7 +100,6 @@ export default class InventoriesPageComponent {
     () => this.totalItems() > this.inventories().length
   );
 
-  #modalCtrl = inject(ModalController);
 
   async handleInfiniteScroll() {
     this.inventoryStore.fetchNextPage();
@@ -108,21 +109,4 @@ export default class InventoriesPageComponent {
     // Implement inventory management logic
   }
 
-  async addInventory() {
-    const modal = await this.#modalCtrl.create({
-      component: InventoryManagementComponent,
-      componentProps: {
-        mode: 'create',
-        defaultFilters: [this.driverFilter()],
-      },
-    });
-
-    await modal.present();
-
-    const { data, role } = await modal.onWillDismiss();
-    if (role === 'confirm') {
-      // Refresh the inventory list
-      // this.inventoryStore.fetchFirstPage();
-    }
-  }
 }

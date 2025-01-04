@@ -7,6 +7,11 @@ type InventoryModel {
   catalogue: CatalogueModel!
 }
 
+type InventoryChangeModel {
+  id: UUID!
+  items: [InventoryItemModel!]!
+}
+
 input CreateInventoryInput {
   quantity: Float!
   stationId: String!
@@ -32,7 +37,7 @@ type PaginatedInventory {
 
 type CreateInventorySuccessResponse {
   message: String!
-  data: InventoryModel!
+  data: InventoryChangeModel!
 }
 
 type InventoryItemModel {

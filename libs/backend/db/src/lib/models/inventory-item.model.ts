@@ -8,6 +8,7 @@ import {
 } from 'sequelize-typescript';
 import { InventoryModel } from './inventory.model';
 import { UserModel } from './user.model';
+import { InventoryChangeModel } from './inventory-change.model';
 
 export enum InventoryItemStatus {
   AVAILABLE = 'AVAILABLE',
@@ -38,6 +39,14 @@ export class InventoryItemModel extends Model {
     allowNull: false,
   })
   inventoryId!: string;
+
+
+  @ForeignKey(() => InventoryChangeModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  inventoryChangeId!: string;
 
   @Column({
     type: DataType.STRING,

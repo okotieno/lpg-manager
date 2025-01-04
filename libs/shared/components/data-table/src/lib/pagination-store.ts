@@ -337,6 +337,8 @@ export const withPaginatedItemsStore = <
           createItemMutationVariables,
           refetchQueriesVariables,
         });
+
+        return store._createItemResource
       },
       refetchItems() {
         store._itemResource.reload();

@@ -27,7 +27,7 @@ import { CurrencyPipe } from '@angular/common';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
 import InventoryManagementComponent from '../inventory-management/inventory-management.component';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'lpg-inventories',
@@ -47,6 +47,7 @@ import { Router } from '@angular/router';
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonContent,
+    RouterLink,
   ],
   templateUrl: './inventories-page.component.html',
   providers: [InventoryStore],
@@ -107,22 +108,22 @@ export default class InventoriesPageComponent {
     // Implement inventory management logic
   }
 
-  async addInventory() {
-    const modal = await this.#modalCtrl.create({
-      component: InventoryManagementComponent,
-      componentProps: {
-        mode: 'create',
-        depotFilters: [this.depotFilter()],
-        stationFilters: [this.stationFilter()],
-      },
-    });
-
-    await modal.present();
-
-    const { data, role } = await modal.onWillDismiss();
-    if (role === 'confirm') {
-      this.inventoryStore.refetchItems();
-      this.router.navigate(['/inventories/view']);
-    }
-  }
+  // async addInventory() {
+  //   const modal = await this.#modalCtrl.create({
+  //     component: InventoryManagementComponent,
+  //     componentProps: {
+  //       mode: 'create',
+  //       depotFilters: [this.depotFilter()],
+  //       stationFilters: [this.stationFilter()],
+  //     },
+  //   });
+  //
+  //   await modal.present();
+  //
+  //   const { data, role } = await modal.onWillDismiss();
+  //   if (role === 'confirm') {
+  //     this.inventoryStore.refetchItems();
+  //     this.router.navigate(['/inventories/view']);
+  //   }
+  // }
 }

@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { computed } from '@angular/core';
 
 @Component({
-  selector: 'lpg-view-inventory-page',
+  selector: 'lpg-view-inventory-change-page',
   standalone: true,
   imports: [
     QRCodeComponent,
@@ -20,10 +20,10 @@ import { computed } from '@angular/core';
     IonToolbar,
     IonTitle
   ],
-  templateUrl: './view-inventory-page.component.html',
+  templateUrl: './view-inventory-change-page.component.html',
   providers: [InventoryStore]
 })
-export default class ViewInventoryPageComponent {
+export default class ViewInventoryChangePageComponent {
   inventoryStore = inject(InventoryStore);
   route = inject(ActivatedRoute);
 

@@ -1,49 +1,66 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>{{ mode() === 'create' ? 'Add' : 'Edit' }} Inventory</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">
-        <ion-icon color="danger" slot="icon-only" name="circle-xmark"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
   <form [formGroup]="inventoryForm" (ngSubmit)="save()">
-    <ion-item lines="none">
-      <lpg-searchable-select
-        [itemsStore]="cataloguesStore"
-        formControlName="catalogue"
-        label="Select Catalogue"
-        labelPlacement="floating"
-        placeholder="--Select catalogue--"
-        [defaultParams]="depotFilters()"
-      ></lpg-searchable-select>
-    </ion-item>
+    <ion-grid class="ion-no-margin ion-no-padding">
+      <ion-row class="ion-padding">
+        <ion-col size="12" sizeMd="6" sizeXl="4">
+          <ion-item lines="none">
+            <lpg-searchable-select
+              [itemsStore]="cataloguesStore"
+              formControlName="catalogue"
+              label="Select Catalogue"
+              labelPlacement="floating"
+              placeholder="--Select catalogue--"
+              [defaultParams]="depotFilters()"
+            ></lpg-searchable-select>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" sizeMd="6" sizeXl="4">
+          <ion-item lines="none">
+            <ion-input
+              label="Quantity"
+              placeholder="Enter quantity"
+              labelPlacement="stacked"
+              formControlName="quantity"
+              type="number"
+              helperText="&nbsp;"
+              min="0" />
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" sizeMd="6" sizeXl="4">
+          <ion-item lines="none">
+            <ion-input
+              label="Batch Number"
+              labelPlacement="stacked"
+              formControlName="batchNumber"
+              type="text"
+              placeholder="Enter batch number"
+              helperText="&nbsp;"
+            />
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" sizeMd="6" sizeXl="8">
+          <ion-item lines="none">
+            <ion-input
+              labelPlacement="stacked"
+              label="Reason"
+              formControlName="reason"
+              type="text" placeholder="Enter reason for update"
+              helperText="&nbsp;"
+            />
+          </ion-item>
+        </ion-col>
 
-    <ion-item>
-      <ion-label position="stacked">Quantity</ion-label>
-      <ion-input formControlName="quantity" type="number" min="0"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="stacked">Reason</ion-label>
-      <ion-input formControlName="reason" type="text" placeholder="Enter reason for update"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="stacked">Batch Number</ion-label>
-      <ion-input formControlName="batchNumber" type="text" placeholder="Enter batch number"></ion-input>
-    </ion-item>
-
-    <div class="ion-padding">
-      <ion-button type="submit" expand="block" [disabled]="!inventoryForm.valid">
-        {{ mode() === 'create' ? 'Add' : 'Save' }} Inventory
-        @if (isLoading()) {
-          <ion-spinner name="lines-sharp-small" slot="end"></ion-spinner>
-        }
-      </ion-button>
-    </div>
+        <ion-col size="12">
+          <div class="ion-padding">
+            <ion-button type="submit" [disabled]="!inventoryForm.valid">
+              {{ mode() === 'create' ? 'Add' : 'Save' }} Inventory
+              @if (isLoading()) {
+                <ion-spinner name="lines-sharp-small" slot="end"></ion-spinner>
+              }
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </form>
 </ion-content>

@@ -5,12 +5,6 @@
         Showing {{ startRange() }} - {{ endRange() }} of {{ totalItems() }} items
       </h2>
     </ion-col>
-    <ion-col size="4" class="ion-text-end">
-      <ion-button (click)="addInventory()">
-        <ion-icon slot="start" name="circle-plus"></ion-icon>
-        Add Inventory
-      </ion-button>
-    </ion-col>
   </ion-row>
   <ion-row>
     @for (inventory of inventories(); track inventory?.id) {
