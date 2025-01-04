@@ -3,7 +3,6 @@ import {
   computed,
   effect,
   inject,
-  input,
   ResourceRef,
   untracked,
 } from '@angular/core';
@@ -90,9 +89,6 @@ export default class InventoryManagementComponent implements ViewWillEnter {
   cataloguesStore = inject(CatalogueStore) as PaginatedResource<
     NonNullable<NonNullable<IGetCataloguesQuery['catalogues']['items']>[number]>
   >;
-
-  mode = input<'create' | 'edit'>('create');
-  // depotFilters = input<IQueryParamsFilter[]>([]);
 
   inventoryForm = this.#fb.group({
     catalogue: [null as null | ISelectCategory, Validators.required],

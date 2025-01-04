@@ -1,0 +1,63 @@
+enum InventoryChangeType {
+  INCREASE
+  DECREASE
+}
+enum ReferenceType {
+  MANUAL
+  ORDER
+  RETURN
+  DISPATCH
+  TRANSFER
+  ADJUSTMENT
+}
+type InventoryChangeModel {
+  id: UUID!
+  inventoryId: UUID!
+  quantity: PositiveFloat!
+  type: InventoryChangeType
+  reason: String
+  referenceType: ReferenceType
+  inventory: InventoryModel!
+  items: [InventoryItemModel!]!
+}
+
+input CreateInventoryChangeInput {
+  inventoryId: UUID!
+  quantity: PositiveFloat!
+  type: InventoryChangeType
+  reason: String
+  referenceType: ReferenceType
+}
+
+input UpdateInventoryChangeInput {
+  inventoryId: UUID!
+  quantity: PositiveFloat!
+  type: InventoryChangeType
+  reason: String
+  referenceType: ReferenceType
+}
+
+type PaginatedInventoryChange {
+  items: [InventoryChangeModel]
+  meta: Pagination
+}
+
+type CreateInventoryChangeSuccessResponse {
+  message: String!
+  data: InventoryChangeModel!
+}
+
+
+extend type Query {
+  inventoryChanges(query: QueryParams): PaginatedInventoryChange!
+  inventoryChange(id: UUID!): InventoryModel
+}
+
+extend type Mutation {
+  updateInventoryChange(id: UUID!, params: UpdateInventoryChangeInput): CreateInventoryChangeSuccessResponse
+
+  createInventoryChange(params: CreateInventoryChangeInput): CreateInventoryChangeSuccessResponse
+
+  deleteInventoryChange(id: UUID!): DeleteSuccessResponse!
+
+}

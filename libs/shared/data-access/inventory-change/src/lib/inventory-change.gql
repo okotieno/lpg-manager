@@ -1,0 +1,48 @@
+mutation CreateInventoryChange(
+  $params: CreateInventoryChangeInput!
+) {
+  createInventoryChange(
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetInventoryChangeById($id: UUID!) {
+  inventoryChange(id: $id) {
+    id
+  }
+}
+
+query GetInventoryChanges($query: QueryParams) {
+  inventoryChanges(query: $query) {
+    items {
+      id
+      quantity
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+mutation DeleteInventoryChangeById($id: UUID!) {
+  deleteInventoryChange(id: $id) {
+    message
+  }
+}
+
+mutation UpdateInventoryChange($id: UUID!, $params: UpdateInventoryChangeInput!) {
+  updateInventoryChange(
+    id: $id
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
