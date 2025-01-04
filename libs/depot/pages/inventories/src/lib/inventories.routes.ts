@@ -10,4 +10,13 @@ export const INVENTORIES_ROUTES: Routes = [
       breadcrumbs: [{ label: 'Inventories' }],
     },
   },
+  {
+    path: 'view',
+    loadComponent: () =>
+      import('./view-inventory-page/view-inventory-page.component'),
+    data: {
+      routeLabel: 'View Inventory',
+      breadcrumbs: [{ label: 'View Inventory' }],
+    },
+  },
 ];

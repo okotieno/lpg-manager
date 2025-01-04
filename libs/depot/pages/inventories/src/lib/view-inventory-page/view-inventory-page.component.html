@@ -1,0 +1,32 @@
+<ion-content class="ion-padding">
+  <ion-list>
+    @for ( inventory of inventories(); track inventory.id) {
+      <ion-item>
+        <ion-label>
+          <h2>Inventory ID: {{ inventory.id }}</h2>
+          <p>Quantity: {{ inventory.quantity }}</p>
+          <div id="qrcode-{{ inventory.id }}">
+            <qrcode
+              [qrdata]="inventory.id"
+              [allowEmptyString]="true"
+              [ariaLabel]="'QR Code image with the following content...'"
+              [cssClass]="'center'"
+              [colorDark]="'#000000ff'"
+              [colorLight]="'#ffffffff'"
+              [elementType]="'svg'"
+              [errorCorrectionLevel]="'M'"
+              [margin]="2"
+              [scale]="1"
+              [title]="'A custom title attribute'"
+              [width]="100"
+              (qrCodeURL)="onChangeURL($event)"
+
+            ></qrcode>
+          </div>
+          <ion-button (click)="printQRCode(inventory.id)">Print QR Code</ion-button>
+        </ion-label>
+      </ion-item>
+    }
+
+  </ion-list>
+</ion-content>

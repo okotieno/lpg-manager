@@ -44,6 +44,9 @@ importers:
       '@as-integrations/fastify':
         specifier: ^2.1.1
         version: 2.1.1(@apollo/server@4.11.2(encoding@0.1.13)(graphql@16.10.0))(fastify@5.2.0)
+      '@capacitor/barcode-scanner':
+        specifier: ^1.0.4
+        version: 1.0.4(@capacitor/core@6.2.0)
       '@capacitor/preferences':
         specifier: ^6.0.3
         version: 6.0.3(@capacitor/core@6.2.0)
@@ -107,6 +110,9 @@ importers:
       '@types/passport-jwt':
         specifier: ^4.0.1
         version: 4.0.1
+      angularx-qrcode:
+        specifier: ^19.0.0
+        version: 19.0.0(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))
       apollo-angular:
         specifier: ^8.0.0
         version: 8.0.0(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(@apollo/client@3.12.4(graphql-ws@5.16.0(graphql@16.10.0))(graphql@16.10.0)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)(subscriptions-transport-ws@0.11.0(graphql@16.10.0)))(graphql@16.10.0)(rxjs@7.8.1)
@@ -1392,6 +1398,11 @@ packages:
 
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
+
+  '@capacitor/barcode-scanner@1.0.4':
+    resolution: {integrity: sha512-EG85/w92D8fkniHzbBTGykpbBnSp/0SC4fqA7UkTwJlrmKyrWX8eLO76rT5b70F0IgkSDR384cJfSy7wZ38XGg==}
+    peerDependencies:
+      '@capacitor/core': ^6.0.0
 
   '@capacitor/core@6.2.0':
     resolution: {integrity: sha512-B9IlJtDpUqhhYb+T8+cp2Db/3RETX36STgjeU2kQZBs/SLAcFiMama227o+msRjLeo3DO+7HJjWVA1+XlyyPEg==}
@@ -4394,6 +4405,11 @@ packages:
       typescript: '*'
       typescript-eslint: ^8.0.0
 
+  angularx-qrcode@19.0.0:
+    resolution: {integrity: sha512-uH1gO/X1hgSojZwgO3EmaXP+MvWCgZm5WGh3y1ZL2+VMstEGEMtJGZTyR645fB7ABF2ZIBUMB9h/SKvGJQX/zQ==}
+    peerDependencies:
+      '@angular/core': ^19.0.0
+
   ansi-colors@4.1.3:
     resolution: {integrity: sha512-/6w/C21Pm1A7aZitlI5Ni/2J6FFQN8i1Cvz3kHABAAbw93v/NlvKdVOqz7CCWz/3iv/JplRSEEZ83XION15ovw==}
     engines: {node: '>=6'}
@@ -5409,6 +5425,9 @@ packages:
     resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
     engines: {node: '>=0.3.1'}
 
+  dijkstrajs@1.0.3:
+    resolution: {integrity: sha512-qiSlmBq9+BCdCA/L46dw8Uy93mloxsPSbwnm5yrKn2vMPiy8KyAskTF6zuV/j5BMsmOGZDPs7KjU+mjb670kfA==}
+
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
     engines: {node: '>=8'}
@@ -6333,6 +6352,9 @@ packages:
   html-to-text@9.0.5:
     resolution: {integrity: sha512-qY60FjREgVZL03vJU6IfMV4GDjGBIoOyvuFdpBDIX9yTlDw0TjxVBQp+P8NvpdIXNJvfWBTNul7fsAQJq2FNpg==}
     engines: {node: '>=14'}
+
+  html5-qrcode@2.3.8:
+    resolution: {integrity: sha512-jsr4vafJhwoLVEDW3n1KvPnCCXWaQfRng0/EEYk1vNcQGcG/htAdhJX0be8YyqMoSz7+hZvOZSTAepsabiuhiQ==}
 
   htmlparser2@5.0.1:
     resolution: {integrity: sha512-vKZZra6CSe9qsJzh0BjBGXo8dvzNsq/oGvsjfRdOrrryfeD9UOBEEQdeoqCRmKZchF5h2zOBMQ6YuQ0uRUmdbQ==}
@@ -8271,6 +8293,10 @@ packages:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
     engines: {node: '>=4'}
 
+  pngjs@5.0.0:
+    resolution: {integrity: sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==}
+    engines: {node: '>=10.13.0'}
+
   portfinder@1.0.32:
     resolution: {integrity: sha512-on2ZJVVDXRADWE6jnQaX0ioEylzgBpQk8r55NE4wjXW1ZxO+BgDlY6DXwj20i0V8eB4SenDQ00WEaxfiIQPcxg==}
     engines: {node: '>= 0.12.0'}
@@ -8643,6 +8669,11 @@ packages:
 
   pure-rand@6.1.0:
     resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
+
+  qrcode@1.5.4:
+    resolution: {integrity: sha512-1ca71Zgiu6ORjHqFBDpnSMTR2ReToX4l1Au1VFLyVeBTFavzQnv5JxMFr3ukHVKpSrSA2MCk0lNJSykjUfz7Zg==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
 
   qs@6.13.0:
     resolution: {integrity: sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==}
@@ -11678,6 +11709,11 @@ snapshots:
       '@babel/helper-validator-identifier': 7.25.9
 
   '@bcoe/v8-coverage@0.2.3': {}
+
+  '@capacitor/barcode-scanner@1.0.4(@capacitor/core@6.2.0)':
+    dependencies:
+      '@capacitor/core': 6.2.0
+      html5-qrcode: 2.3.8
 
   '@capacitor/core@6.2.0':
     dependencies:
@@ -15494,6 +15530,12 @@ snapshots:
       - chokidar
       - supports-color
 
+  angularx-qrcode@19.0.0(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0)):
+    dependencies:
+      '@angular/core': 19.0.5(rxjs@7.8.1)(zone.js@0.15.0)
+      qrcode: 1.5.4
+      tslib: 2.8.1
+
   ansi-colors@4.1.3: {}
 
   ansi-escapes@4.3.2:
@@ -16652,6 +16694,8 @@ snapshots:
   diff-sequences@29.6.3: {}
 
   diff@4.0.2: {}
+
+  dijkstrajs@1.0.3: {}
 
   dir-glob@3.0.1:
     dependencies:
@@ -17843,6 +17887,8 @@ snapshots:
       htmlparser2: 8.0.2
       selderee: 0.11.0
     optional: true
+
+  html5-qrcode@2.3.8: {}
 
   htmlparser2@5.0.1:
     dependencies:
@@ -20509,6 +20555,8 @@ snapshots:
 
   pluralize@8.0.0: {}
 
+  pngjs@5.0.0: {}
+
   portfinder@1.0.32:
     dependencies:
       async: 2.6.4
@@ -20902,6 +20950,12 @@ snapshots:
   punycode@2.3.1: {}
 
   pure-rand@6.1.0: {}
+
+  qrcode@1.5.4:
+    dependencies:
+      dijkstrajs: 1.0.3
+      pngjs: 5.0.0
+      yargs: 15.4.1
 
   qs@6.13.0:
     dependencies:

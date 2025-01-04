@@ -27,6 +27,7 @@ import { CurrencyPipe } from '@angular/common';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
 import InventoryManagementComponent from '../inventory-management/inventory-management.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'lpg-inventories',
@@ -96,6 +97,7 @@ export default class InventoriesPageComponent {
   );
 
   #modalCtrl = inject(ModalController);
+  router = inject(Router);
 
   async handleInfiniteScroll() {
     this.inventoryStore.fetchNextPage();
@@ -120,6 +122,7 @@ export default class InventoriesPageComponent {
     const { data, role } = await modal.onWillDismiss();
     if (role === 'confirm') {
       this.inventoryStore.refetchItems();
+      this.router.navigate(['/inventories/view']);
     }
   }
 }
