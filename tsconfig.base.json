@@ -140,6 +140,9 @@
       "@lpg-manager/notification-component": [
         "libs/shared/components/notification/src/index.ts"
       ],
+      "@lpg-manager/scanner-input": [
+        "libs/shared/components/scanner-input/src/index.ts"
+      ],
       "@lpg-manager/notification-service": [
         "libs/backend/services/notification/src/index.ts"
       ],

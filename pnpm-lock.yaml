@@ -44,12 +44,18 @@ importers:
       '@as-integrations/fastify':
         specifier: ^2.1.1
         version: 2.1.1(@apollo/server@4.11.2(encoding@0.1.13)(graphql@16.10.0))(fastify@5.2.0)
+      '@capacitor-mlkit/barcode-scanning':
+        specifier: ^6.2.0
+        version: 6.2.0(@capacitor/core@6.2.0)
       '@capacitor/barcode-scanner':
         specifier: ^1.0.4
         version: 1.0.4(@capacitor/core@6.2.0)
       '@capacitor/preferences':
         specifier: ^6.0.3
         version: 6.0.3(@capacitor/core@6.2.0)
+      '@capawesome/capacitor-file-picker':
+        specifier: ^6.2.0
+        version: 6.2.0(@capacitor/core@6.2.0)
       '@ionic/angular':
         specifier: ^8.4.1
         version: 8.4.1(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(@angular/forms@19.0.5(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.5(@angular/animations@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1))(@angular/router@19.0.5(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.5(@angular/animations@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1))(rxjs@7.8.1)(zone.js@0.15.0)
@@ -158,6 +164,9 @@ importers:
       handlebars:
         specifier: ^4.7.8
         version: 4.7.8
+      html5-qrcode:
+        specifier: ^2.3.8
+        version: 2.3.8
       ionicons:
         specifier: ^7.4.0
         version: 7.4.0
@@ -1399,6 +1408,11 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
+  '@capacitor-mlkit/barcode-scanning@6.2.0':
+    resolution: {integrity: sha512-XnnErDabpCUty9flugqB646ERejCxrtKcKOJrdoh9ZVLTQXUnyjxUDWOlqHVxrBHy+e86ZgpZX7D5zcaNvS0lQ==}
+    peerDependencies:
+      '@capacitor/core': ^6.0.0
+
   '@capacitor/barcode-scanner@1.0.4':
     resolution: {integrity: sha512-EG85/w92D8fkniHzbBTGykpbBnSp/0SC4fqA7UkTwJlrmKyrWX8eLO76rT5b70F0IgkSDR384cJfSy7wZ38XGg==}
     peerDependencies:
@@ -1409,6 +1423,11 @@ packages:
 
   '@capacitor/preferences@6.0.3':
     resolution: {integrity: sha512-3I1BbhhCBTMBziVvr0fU7RCRXqGvhUW/apHLRJSaJAWonASya5rp6AWsHv1lW1tkF0avUOMwp6e7iNA4UUGu8g==}
+    peerDependencies:
+      '@capacitor/core': ^6.0.0
+
+  '@capawesome/capacitor-file-picker@6.2.0':
+    resolution: {integrity: sha512-ZgXbC3qOyKJrQh2bQIOLcjAYOdS8+ii1V0zaV56pMAw2i/pitdayvdBs7Da3tTw/eMdUNZ0lBYZcLN6NPQMIvA==}
     peerDependencies:
       '@capacitor/core': ^6.0.0
 
@@ -11710,6 +11729,10 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
+  '@capacitor-mlkit/barcode-scanning@6.2.0(@capacitor/core@6.2.0)':
+    dependencies:
+      '@capacitor/core': 6.2.0
+
   '@capacitor/barcode-scanner@1.0.4(@capacitor/core@6.2.0)':
     dependencies:
       '@capacitor/core': 6.2.0
@@ -11720,6 +11743,10 @@ snapshots:
       tslib: 2.8.1
 
   '@capacitor/preferences@6.0.3(@capacitor/core@6.2.0)':
+    dependencies:
+      '@capacitor/core': 6.2.0
+
+  '@capawesome/capacitor-file-picker@6.2.0(@capacitor/core@6.2.0)':
     dependencies:
       '@capacitor/core': 6.2.0
 

@@ -35,3 +35,4 @@ bell-slash
 copy
 truck-container,
 copy
+scanner-gun

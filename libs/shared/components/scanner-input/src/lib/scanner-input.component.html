@@ -1,0 +1,13 @@
+<ion-item class="ion-no-padding">
+  <ion-buttons>
+    <ion-button color="primary" (click)="scan()">Scan</ion-button>
+    <ion-button color="primary" (click)="readFromImage()">Read from image</ion-button>
+  </ion-buttons>
+
+</ion-item>
+<ion-item>
+  {{ canistersControl.value.length }} cylinders scanned
+  <ion-buttons slot="end">
+    <ion-button (click)="clearScannedItems()">Clear</ion-button>
+  </ion-buttons>
+</ion-item>

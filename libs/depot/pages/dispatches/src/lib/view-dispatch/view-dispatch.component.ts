@@ -122,7 +122,7 @@ import { RouterLink } from '@angular/router';
                 shape="round"
                 [routerLink]="['assign-load']"
                 fill="outline">
-                <ion-icon name="scan-circle" slot="start"></ion-icon>
+                <ion-icon name="scanner-gun" slot="start"></ion-icon>
                 Assign Load to Driver
               </ion-button>
             }
