@@ -1,4 +1,37 @@
-Test
-<ion-button (click)="scanBarCode()">
-  Scan
+<ion-button
+  fill="outline"
+  shape="round"
+  color="primary"
+  (click)="scanModalOpen.set(true)">
+  Start Scanning
 </ion-button>
+
+<ion-modal [isOpen]="scanModalOpen()" (didPresent)="startScanning()" (didDismiss)="stopScanning()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title class="ion-text-center">Scanner</ion-title>
+        <ion-button fill="clear" shape="round" slot="end" (click)="scanModalOpen.set(false)">
+          <ion-icon name="circle-xmark" slot="icon-only" />
+        </ion-button>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-row class=" ion-justify-content-center">
+        <ion-col size="12" class="ion-text-center">
+          <ion-text>
+            {{ scanCount() }} of {{ totalCount() }} items scanned
+          </ion-text>
+        </ion-col>
+        <div
+          [id]="scannerId"
+          style="width: 400px; height: 400px"
+        ></div>
+        <ion-col size="12" class="ion-text-center">
+          {{ scanMessage() }}
+        </ion-col>
+      </ion-row>
+    </ion-content>
+    `,
+  </ng-template>
+</ion-modal>

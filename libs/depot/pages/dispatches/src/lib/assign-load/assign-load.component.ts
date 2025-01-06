@@ -11,8 +11,11 @@ import {
   IonBadge,
   IonItemDivider,
 } from '@ionic/angular/standalone';
-import { DispatchStore, IGetDispatchByIdQuery } from '@lpg-manager/dispatch-store';
-import { ScannerInput1Component, ScannerInputComponent } from '@lpg-manager/scanner-input';
+import {
+  DispatchStore,
+  IGetDispatchByIdQuery,
+} from '@lpg-manager/dispatch-store';
+import { ScannerInputComponent } from '@lpg-manager/scanner-input';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
@@ -21,7 +24,6 @@ import { JsonPipe } from '@angular/common';
   standalone: true,
   imports: [
     IonButtons,
-    IonButton,
     IonContent,
     IonList,
     IonItem,
@@ -29,10 +31,10 @@ import { JsonPipe } from '@angular/common';
     IonFooter,
     IonItemDivider,
     IonBadge,
-    ScannerInputComponent,
     ReactiveFormsModule,
     JsonPipe,
-    ScannerInput1Component,
+    ScannerInputComponent,
+    IonButton,
   ],
   template: `
     <ion-content class="ion-padding">
@@ -72,22 +74,20 @@ import { JsonPipe } from '@angular/common';
       </ion-list>
       }
       {{ scannerForm.value | json }}
-      <form [formGroup]="scannerForm">
-<!--        <lpg-scanner-input-->
-<!--          formControlName="canisters"-->
-<!--          (scanning)="onScanningStatusChange($event)"-->
-<!--          [order]="dispatch()"-->
-<!--        ></lpg-scanner-input>-->
 
-        <lpg-scanner-input-1></lpg-scanner-input-1>
-      </form>
+      <!--        <lpg-scanner-input-->
+      <!--          formControlName="canisters"-->
+      <!--          (scanning)="onScanningStatusChange($event)"-->
+      <!--          [order]="dispatch()"-->
+      <!--        ></lpg-scanner-input>-->
     </ion-content>
 
     <ion-footer class="ion-padding">
       <ion-buttons class="ion-justify-content-end">
-        <ion-button color="primary" (click)="confirmAssignment()">
-          Start scanning
-        </ion-button>
+        <ion-button shape="round" fill="outline" color="primary" (click)="validateScans()">Validate scan </ion-button>
+        <form [formGroup]="scannerForm">
+          <lpg-scanner-input formControlName="canisters" />
+        </form>
       </ion-buttons>
     </ion-footer>
   `,
@@ -99,7 +99,13 @@ export default class AssignLoadComponent {
   #fb = inject(FormBuilder);
   #dispatchStore = inject(DispatchStore);
   scannerForm = this.#fb.group({
-    canisters: [[] as any[]],
+    canisters: [
+      [
+        'cd14e9e1-220a-41eb-ba3b-915d062e7aec',
+        '656429d9-06b9-4adb-aef3-b69ec3e1308c',
+        '03880912-2071-4953-8440-7e3f00fbd19a',
+      ] as string[],
+    ],
   });
 
   dispatch = input.required<IGetDispatchByIdQuery['dispatch']>();
@@ -112,5 +118,5 @@ export default class AssignLoadComponent {
     }
   }
 
-  onScanningStatusChange($event: any) {}
+  validateScans() {}
 }
