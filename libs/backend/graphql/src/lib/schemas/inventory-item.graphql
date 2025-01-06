@@ -1,0 +1,71 @@
+enum InventoryItemStatus {
+  AVAILABLE
+  SOLD
+  RESERVED
+  DAMAGED
+  RETURNED
+}
+
+type InventoryItemModel {
+  id: UUID!
+  inventoryId: UUID!
+  serialNumber: String
+  batchNumber: String!
+  status: InventoryItemStatus!
+  manufactureDate: DateTime
+  expiryDate: DateTime
+  createdBy: UUID!
+  inventory: InventoryModel!
+  creator: UserModel!
+  inventoryChange: InventoryChangeModel!
+}
+
+input UpdateInventoryItemStatusInput {
+  itemId: UUID!
+  status: InventoryItemStatus!
+  reason: String
+}
+
+input CreateInventoryItemInput {
+  inventoryId: UUID!
+  serialNumber: String
+  batchNumber: String!
+  status: InventoryItemStatus
+  manufactureDate: DateTime
+  expiryDate: DateTime
+}
+
+input UpdateInventoryItemInput {
+  inventoryId: UUID!
+  serialNumber: String
+  batchNumber: String!
+  status: InventoryItemStatus
+  manufactureDate: DateTime
+  expiryDate: DateTime
+}
+
+type PaginatedInventoryItem {
+  items: [InventoryItemModel]
+  meta: Pagination
+}
+
+type CreateInventoryItemSuccessResponse {
+  message: String!
+  data: InventoryItemModel!
+}
+
+extend type Query {
+  inventoryItems(query: QueryParams): PaginatedInventoryItem!
+
+  inventoryItem(id: UUID!): InventoryItemModel
+}
+
+extend type Mutation {
+  createInventoryItem(params: CreateInventoryItemInput!): CreateInventoryItemSuccessResponse!
+
+  updateInventoryItem(id: UUID!, params: UpdateInventoryItemInput!): CreateInventoryItemSuccessResponse!
+
+  updateInventoryItemStatus(params: UpdateInventoryItemStatusInput!): InventoryItemModel!
+
+  deleteInventoryItem(id: UUID!): DeleteSuccessResponse!
+}

@@ -35,29 +35,9 @@ type CreateInventorySuccessResponse {
   data: InventoryChangeModel!
 }
 
-type InventoryItemModel {
-  id: UUID!
-  inventoryId: UUID!
-  serialNumber: String
-  batchNumber: String!
-  status: String!
-  manufactureDate: DateTime
-  expiryDate: DateTime
-  createdBy: UUID!
-  inventory: InventoryModel!
-  creator: UserModel!
-}
-
-input UpdateInventoryItemStatusInput {
-  itemId: UUID!
-  status: String!
-  reason: String
-}
-
 extend type Query {
   inventories(query: QueryParams): PaginatedInventory!
   inventory(id: UUID!): InventoryModel
-  inventoryItems(inventoryId: UUID!, status: String, batchNumber: String): [InventoryItemModel!]!
 }
 
 extend type Mutation {
@@ -67,7 +47,6 @@ extend type Mutation {
 
   deleteInventory(id: UUID!): DeleteSuccessResponse!
 
-  updateInventoryItemStatus(params: UpdateInventoryItemStatusInput!): InventoryItemModel!
 }
 
 input CreateInventoryInputDto {

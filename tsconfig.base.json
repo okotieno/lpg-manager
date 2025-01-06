@@ -133,6 +133,9 @@
       "@lpg-manager/inventory-store": [
         "libs/shared/data-access/inventory/src/index.ts"
       ],
+      "@lpg-manager/inventory-item-store": [
+        "libs/shared/data-access/inventory-item/src/index.ts"
+      ],
       "@lpg-manager/inventory-change-store": [
         "libs/shared/data-access/inventory-change/src/index.ts"
       ],
