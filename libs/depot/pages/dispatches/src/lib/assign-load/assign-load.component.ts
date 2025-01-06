@@ -9,7 +9,7 @@ import {
   IonLabel,
   IonFooter,
   IonBadge,
-  IonItemDivider, IonIcon
+  IonItemDivider, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol
 } from '@ionic/angular/standalone';
 import {
   DispatchStore,
@@ -21,6 +21,14 @@ import { JsonPipe } from '@angular/common';
 import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
+
+interface ScanSummaryItem {
+  catalogueId: string;
+  catalogueName: string;
+  orderQuantity: number;
+  scannedQuantity: number;
+  status: 'OK' | 'Less' | 'More';
+}
 
 @Component({
   selector: 'lpg-assign-load',
@@ -40,74 +48,16 @@ import { UUIDDirective } from '@lpg-manager/uuid-pipe';
     IonButton,
     UUIDDirective,
     IonIcon,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonGrid,
+    IonRow,
+    IonCol,
   ],
-  template: `
-    <ion-content class="ion-padding">
-      @if (dispatch(); as dispatch) {
-        <ion-list>
-          <ion-item>
-            <ion-label>
-              <h2>Driver</h2>
-              <p>
-                {{ dispatch.driver.user.firstName }}
-                {{ dispatch.driver.user.lastName }}
-              </p>
-            </ion-label>
-          </ion-item>
-
-          <ion-item>
-            <ion-label>
-              <h2>Vehicle</h2>
-              <p>{{ dispatch.vehicle.registrationNumber }}</p>
-            </ion-label>
-          </ion-item>
-
-          <ion-item-divider>
-            <ion-label>Orders to Transfer</ion-label>
-          </ion-item-divider>
-
-          @for (order of dispatch.orders; track order.id) {
-            <ion-item>
-              <ion-label>
-                <h3>Order #{{ order.id }}</h3>
-                <!--                <p>{{ order.dealer.name }}</p>-->
-                <!--                <p>Total Items: {{ order.items.length }}</p>-->
-              </ion-label>
-              <ion-badge slot="end" color="success">Ready</ion-badge>
-            </ion-item>
-          }
-          <ion-item-divider>
-            <ion-label>Scans</ion-label>
-          </ion-item-divider>
-          @for (validatedScan of validatedScannedCanisters(); track
-            validatedScan.scannedId) {
-            <ion-item>
-              <span slot="start" [lpgUUID]="validatedScan.scannedId"></span>
-              <ion-label>
-                {{ validatedScan.inventory?.catalogue?.name }}
-              </ion-label>
-              <ion-icon slot="end" name="check" color="success" />
-            </ion-item>
-          }
-        </ion-list>
-      }
-    </ion-content>
-
-    <ion-footer class="ion-padding">
-      <ion-buttons class="ion-justify-content-end">
-        <ion-button
-          shape="round"
-          fill="outline"
-          color="primary"
-          (click)="validateScans()"
-        >Validate scan
-        </ion-button>
-        <form [formGroup]="scannerForm">
-          <lpg-scanner-input formControlName="canisters" />
-        </form>
-      </ion-buttons>
-    </ion-footer>
-  `,
+  templateUrl: './assign-load.component.html',
+  styleUrl: './assign-load.component.scss',
   providers: [DispatchStore, InventoryItemStore],
 })
 export default class AssignLoadComponent {
@@ -144,6 +94,60 @@ export default class AssignLoadComponent {
       // await this.#router.navigate(['../'], { relativeTo: this.#route });
     }
   }
+
+  scanSummary = computed(() => {
+    const dispatch = this.dispatch();
+    if (!dispatch) return [];
+
+    // Create a map to count ordered quantities by catalogue
+    const orderQuantities = new Map<string, number>();
+    dispatch.orders.forEach((order) => {
+      order.items.forEach((item) => {
+        if (item?.catalogue) {
+          const current = orderQuantities.get(item.catalogue.id as string) || 0;
+          orderQuantities.set(
+            item.catalogue.id as string,
+            current + (item.quantity ?? 0)
+          );
+        }
+      });
+    });
+
+    // Create a map to count scanned quantities by catalogue
+    const scannedQuantities = new Map<string, number>();
+    this.validatedScannedCanisters().forEach((scan) => {
+      if (scan.inventory?.catalogue) {
+        const current = scannedQuantities.get(scan.inventory.catalogue.id) || 0;
+        scannedQuantities.set(scan.inventory.catalogue.id, current + 1);
+      }
+    });
+
+    // Create summary items
+    const summary: ScanSummaryItem[] = [];
+    orderQuantities.forEach((orderQty, catalogueId) => {
+      const scannedQty = scannedQuantities.get(catalogueId) || 0;
+      const catalogue = dispatch.orders
+        .flatMap((o) => o.items)
+        .find((i) => i?.catalogue?.id === catalogueId)?.catalogue;
+
+      if (catalogue) {
+        summary.push({
+          catalogueId: catalogueId,
+          catalogueName: catalogue.name,
+          orderQuantity: orderQty,
+          scannedQuantity: scannedQty,
+          status:
+            orderQty === scannedQty
+              ? 'OK'
+              : orderQty > scannedQty
+              ? 'Less'
+              : 'More',
+        });
+      }
+    });
+
+    return summary;
+  });
 
   validateScans() {
     this.#inventoryItemStore.setFilters([
