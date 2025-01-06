@@ -16,6 +16,7 @@ import {
 import { Html5QrcodeResult, Html5QrcodeScanner } from 'html5-qrcode';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Html5QrcodeError } from 'html5-qrcode/core';
+import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
 
 @Component({
   selector: 'lpg-scanner-input',
@@ -37,7 +38,7 @@ import { Html5QrcodeError } from 'html5-qrcode/core';
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => ScannerInputComponent),
       multi: true,
-    },
+    }
   ],
 })
 export class ScannerInputComponent implements ControlValueAccessor {
@@ -107,9 +108,5 @@ export class ScannerInputComponent implements ControlValueAccessor {
   async stopScanning() {
     this.scanModalOpen.set(false);
     this.html5QrcodeScanner?.clear();
-  }
-
-  validateScans() {
-
   }
 }

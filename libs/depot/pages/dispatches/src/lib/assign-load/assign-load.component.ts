@@ -18,6 +18,8 @@ import {
 import { ScannerInputComponent } from '@lpg-manager/scanner-input';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
+import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
+import { IQueryOperatorEnum } from '@lpg-manager/types';
 
 @Component({
   selector: 'lpg-assign-load',
@@ -73,28 +75,24 @@ import { JsonPipe } from '@angular/common';
         }
       </ion-list>
       }
-      {{ scannerForm.value | json }}
-
-      <!--        <lpg-scanner-input-->
-      <!--          formControlName="canisters"-->
-      <!--          (scanning)="onScanningStatusChange($event)"-->
-      <!--          [order]="dispatch()"-->
-      <!--        ></lpg-scanner-input>-->
     </ion-content>
 
     <ion-footer class="ion-padding">
       <ion-buttons class="ion-justify-content-end">
         <ion-button shape="round" fill="outline" color="primary" (click)="validateScans()">Validate scan </ion-button>
         <form [formGroup]="scannerForm">
+          {{ searchedInventoryItem() | json}}
           <lpg-scanner-input formControlName="canisters" />
         </form>
       </ion-buttons>
     </ion-footer>
   `,
-  providers: [DispatchStore],
+  providers: [DispatchStore, InventoryItemStore],
 })
 export default class AssignLoadComponent {
   #route = inject(ActivatedRoute);
+  #inventoryItemStore = inject(InventoryItemStore);
+  searchedInventoryItem = this.#inventoryItemStore.searchedItemsEntities
   #router = inject(Router);
   #fb = inject(FormBuilder);
   #dispatchStore = inject(DispatchStore);
@@ -113,10 +111,20 @@ export default class AssignLoadComponent {
   async confirmAssignment() {
     const dispatchId = this.dispatch()?.id;
     if (dispatchId) {
+
       // await this.#dispatchStore.updateDispatchStatus(dispatchId, 'IN_TRANSIT');
       // await this.#router.navigate(['../'], { relativeTo: this.#route });
     }
   }
 
-  validateScans() {}
+  validateScans() {
+    this.#inventoryItemStore.setFilters([
+      {
+        field: 'id',
+        value: '',
+        values: this.scannerForm.get('canisters')?.value,
+        operator: IQueryOperatorEnum.In,
+      },
+    ])
+  }
 }
