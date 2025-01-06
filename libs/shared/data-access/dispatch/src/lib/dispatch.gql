@@ -61,6 +61,16 @@ query GetDispatchById($id: UUID!) {
       id
       status
       totalPrice
+      items {
+        id
+        quantity
+        catalogue {
+          id
+          name
+          unit
+          quantityPerUnit
+        }
+      }
     }
     createdAt
     updatedAt

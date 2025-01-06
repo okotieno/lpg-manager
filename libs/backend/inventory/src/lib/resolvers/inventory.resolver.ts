@@ -65,20 +65,6 @@ export class InventoryResolver {
     };
   }
 
-  @Query(() => [InventoryItemModel])
-  @UseGuards(JwtAuthGuard)
-  async inventoryItems(
-    @Args('inventoryId') inventoryId: string,
-    @Args('status', { nullable: true }) status?: InventoryItemStatus,
-    @Args('batchNumber', { nullable: true }) batchNumber?: string
-  ) {
-    return this.inventoryService.getInventoryItems(
-      inventoryId,
-      status,
-      batchNumber
-    );
-  }
-
   @Mutation(() => InventoryItemModel)
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.UpdateInventory)

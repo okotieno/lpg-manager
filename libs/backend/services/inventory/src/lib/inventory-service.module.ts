@@ -3,6 +3,7 @@ import { InventoryService } from './services/inventory.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { InventoryModel, InventoryChangeModel, InventoryItemModel } from '@lpg-manager/db';
 import { InventoryChangeService } from './services/inventory-change.service';
+import { InventoryItemService } from './services/inventory-item.service';
 
 @Module({
   imports: [SequelizeModule.forFeature([
@@ -10,7 +11,7 @@ import { InventoryChangeService } from './services/inventory-change.service';
     InventoryChangeModel,
     InventoryItemModel
   ])],
-  providers: [InventoryService, InventoryChangeService],
-  exports: [InventoryService, InventoryChangeService],
+  providers: [InventoryService, InventoryChangeService, InventoryItemService],
+  exports: [InventoryService, InventoryChangeService, InventoryItemService],
 })
 export class InventoryServiceModule {}

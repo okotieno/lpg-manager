@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonButtons,
@@ -9,7 +9,7 @@ import {
   IonLabel,
   IonFooter,
   IonBadge,
-  IonItemDivider,
+  IonItemDivider, IonIcon
 } from '@ionic/angular/standalone';
 import {
   DispatchStore,
@@ -20,6 +20,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
+import { UUIDDirective } from '@lpg-manager/uuid-pipe';
 
 @Component({
   selector: 'lpg-assign-load',
@@ -37,51 +38,71 @@ import { IQueryOperatorEnum } from '@lpg-manager/types';
     JsonPipe,
     ScannerInputComponent,
     IonButton,
+    UUIDDirective,
+    IonIcon,
   ],
   template: `
     <ion-content class="ion-padding">
       @if (dispatch(); as dispatch) {
-      <ion-list>
-        <ion-item>
-          <ion-label>
-            <h2>Driver</h2>
-            <p>
-              {{ dispatch.driver.user.firstName }}
-              {{ dispatch.driver.user.lastName }}
-            </p>
-          </ion-label>
-        </ion-item>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h2>Driver</h2>
+              <p>
+                {{ dispatch.driver.user.firstName }}
+                {{ dispatch.driver.user.lastName }}
+              </p>
+            </ion-label>
+          </ion-item>
 
-        <ion-item>
-          <ion-label>
-            <h2>Vehicle</h2>
-            <p>{{ dispatch.vehicle.registrationNumber }}</p>
-          </ion-label>
-        </ion-item>
+          <ion-item>
+            <ion-label>
+              <h2>Vehicle</h2>
+              <p>{{ dispatch.vehicle.registrationNumber }}</p>
+            </ion-label>
+          </ion-item>
 
-        <ion-item-divider>
-          <ion-label>Orders to Transfer</ion-label>
-        </ion-item-divider>
+          <ion-item-divider>
+            <ion-label>Orders to Transfer</ion-label>
+          </ion-item-divider>
 
-        @for (order of dispatch.orders; track order.id) {
-        <ion-item>
-          <ion-label>
-            <h3>Order #{{ order.id }}</h3>
-            <!--                <p>{{ order.dealer.name }}</p>-->
-            <!--                <p>Total Items: {{ order.items.length }}</p>-->
-          </ion-label>
-          <ion-badge slot="end" color="success">Ready</ion-badge>
-        </ion-item>
-        }
-      </ion-list>
+          @for (order of dispatch.orders; track order.id) {
+            <ion-item>
+              <ion-label>
+                <h3>Order #{{ order.id }}</h3>
+                <!--                <p>{{ order.dealer.name }}</p>-->
+                <!--                <p>Total Items: {{ order.items.length }}</p>-->
+              </ion-label>
+              <ion-badge slot="end" color="success">Ready</ion-badge>
+            </ion-item>
+          }
+          <ion-item-divider>
+            <ion-label>Scans</ion-label>
+          </ion-item-divider>
+          @for (validatedScan of validatedScannedCanisters(); track
+            validatedScan.scannedId) {
+            <ion-item>
+              <span slot="start" [lpgUUID]="validatedScan.scannedId"></span>
+              <ion-label>
+                {{ validatedScan.inventory?.catalogue?.name }}
+              </ion-label>
+              <ion-icon slot="end" name="check" color="success" />
+            </ion-item>
+          }
+        </ion-list>
       }
     </ion-content>
 
     <ion-footer class="ion-padding">
       <ion-buttons class="ion-justify-content-end">
-        <ion-button shape="round" fill="outline" color="primary" (click)="validateScans()">Validate scan </ion-button>
+        <ion-button
+          shape="round"
+          fill="outline"
+          color="primary"
+          (click)="validateScans()"
+        >Validate scan
+        </ion-button>
         <form [formGroup]="scannerForm">
-          {{ searchedInventoryItem() | json}}
           <lpg-scanner-input formControlName="canisters" />
         </form>
       </ion-buttons>
@@ -92,7 +113,7 @@ import { IQueryOperatorEnum } from '@lpg-manager/types';
 export default class AssignLoadComponent {
   #route = inject(ActivatedRoute);
   #inventoryItemStore = inject(InventoryItemStore);
-  searchedInventoryItem = this.#inventoryItemStore.searchedItemsEntities
+  searchedInventoryItem = this.#inventoryItemStore.searchedItemsEntities;
   #router = inject(Router);
   #fb = inject(FormBuilder);
   #dispatchStore = inject(DispatchStore);
@@ -106,12 +127,19 @@ export default class AssignLoadComponent {
     ],
   });
 
+  scannedCanisters = signal([] as string[]);
+  validatedScannedCanisters = computed(() => {
+    return this.scannedCanisters().map((canisterId) => ({
+      scannedId: canisterId,
+      ...this.searchedInventoryItem().find((item) => item.id === canisterId),
+    }));
+  });
+
   dispatch = input.required<IGetDispatchByIdQuery['dispatch']>();
 
   async confirmAssignment() {
     const dispatchId = this.dispatch()?.id;
     if (dispatchId) {
-
       // await this.#dispatchStore.updateDispatchStatus(dispatchId, 'IN_TRANSIT');
       // await this.#router.navigate(['../'], { relativeTo: this.#route });
     }
@@ -125,6 +153,7 @@ export default class AssignLoadComponent {
         values: this.scannerForm.get('canisters')?.value,
         operator: IQueryOperatorEnum.In,
       },
-    ])
+    ]);
+    this.scannedCanisters.set(this.scannerForm.get('canisters')?.value ?? []);
   }
 }
