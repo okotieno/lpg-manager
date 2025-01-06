@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   IonButtons,
   IonButton,
@@ -9,7 +9,15 @@ import {
   IonLabel,
   IonFooter,
   IonBadge,
-  IonItemDivider, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol
+  IonItemDivider,
+  IonIcon,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonGrid,
+  IonRow,
+  IonCol,
 } from '@ionic/angular/standalone';
 import {
   DispatchStore,
@@ -55,6 +63,7 @@ interface ScanSummaryItem {
     IonGrid,
     IonRow,
     IonCol,
+    RouterLink,
   ],
   templateUrl: './assign-load.component.html',
   styleUrl: './assign-load.component.scss',
@@ -149,6 +158,11 @@ export default class AssignLoadComponent {
     return summary;
   });
 
+  isAllQuantitiesMatched = computed(() => {
+    const summary = this.scanSummary();
+    return summary.length > 0 && summary.every((item) => item.status === 'OK');
+  });
+
   validateScans() {
     this.#inventoryItemStore.setFilters([
       {
@@ -160,4 +174,6 @@ export default class AssignLoadComponent {
     ]);
     this.scannedCanisters.set(this.scannerForm.get('canisters')?.value ?? []);
   }
+
+  completeDispatch() {}
 }

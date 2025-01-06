@@ -1,6 +1,6 @@
 <ion-content class="ion-padding">
   @if (dispatch(); as dispatch) {
-    <ion-list>
+    <ion-list class="ion-justify-content-between">
       <ion-item>
         <ion-label>
           <h2>Driver</h2>
@@ -79,16 +79,37 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
-  <ion-buttons class="ion-justify-content-end">
+  <ion-row class="ion-justify-content-between">
+    <ion-buttons class="ion-justify-content-end">
+      @if (isAllQuantitiesMatched()) {
+        <ion-button
+          shape="round"
+          fill="solid"
+          color="primary"
+          (click)="completeDispatch()"
+        >Complete Dispatch
+        </ion-button>
+      } @else {
+
+        <ion-button
+          shape="round"
+          fill="outline"
+          color="primary"
+          (click)="validateScans()"
+        >Validate scan
+        </ion-button>
+        <form [formGroup]="scannerForm">
+          <lpg-scanner-input formControlName="canisters" />
+        </form>
+
+      }
+    </ion-buttons>
     <ion-button
       shape="round"
       fill="outline"
-      color="primary"
-      (click)="validateScans()"
-    >Validate scan
+      color="danger"
+      [routerLink]="['/dashboard','operations','dispatches', dispatch()?.id]"
+    >Cancel
     </ion-button>
-    <form [formGroup]="scannerForm">
-      <lpg-scanner-input formControlName="canisters" />
-    </form>
-  </ion-buttons>
+  </ion-row>
 </ion-footer>
