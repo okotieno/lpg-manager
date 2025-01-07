@@ -20,14 +20,11 @@ import {
   IonInfiniteScrollContent,
   IonRow,
   IonText,
-  ModalController,
 } from '@ionic/angular/standalone';
 import { InventoryStore } from '@lpg-manager/inventory-store';
 import { CurrencyPipe } from '@angular/common';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
-import InventoryManagementComponent from '../inventory-management/inventory-management.component';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'lpg-inventories',
@@ -47,7 +44,6 @@ import { RouterLink } from '@angular/router';
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonContent,
-    RouterLink,
   ],
   templateUrl: './inventories-page.component.html',
   providers: [InventoryStore],

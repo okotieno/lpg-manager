@@ -9,26 +9,15 @@ import {
 import { QRCodeComponent } from 'angularx-qrcode';
 import {
   IonButton,
-  IonCol,
   IonContent,
   IonGrid,
-  IonHeader,
-  IonItem,
-  IonLabel,
-  IonList,
   IonRow,
-  IonTitle,
-  IonToolbar,
 } from '@ionic/angular/standalone';
-import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { computed } from '@angular/core';
 import {
-  IGetInventoryChangeByIdGQL,
   IGetInventoryChangeByIdQuery,
   InventoryChangeStore,
 } from '@lpg-manager/inventory-change-store';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'lpg-view-inventory-change-page',
@@ -36,17 +25,9 @@ import { JsonPipe } from '@angular/common';
   imports: [
     QRCodeComponent,
     IonContent,
-    IonList,
-    IonItem,
-    IonLabel,
     IonButton,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    JsonPipe,
     IonGrid,
     IonRow,
-    IonCol,
   ],
   templateUrl: './view-inventory-change-page.component.html',
   providers: [InventoryChangeStore],

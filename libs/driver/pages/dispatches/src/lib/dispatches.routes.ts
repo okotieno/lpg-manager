@@ -1,10 +1,8 @@
 import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { inject } from '@angular/core';
 import { BreadcrumbStore } from '@lpg-manager/breadcrumb';
-import { IGetBrandByIdGQL } from '@lpg-manager/brand-store';
 import { map, tap } from 'rxjs';
 import {
-  DispatchStore,
   IGetDispatchByIdGQL,
 } from '@lpg-manager/dispatch-store';
 
@@ -17,21 +15,6 @@ export const DISPATCHES_ROUTES: Routes = [
       breadcrumbs: [
         { label: 'Operations', path: ['/dashboard', 'operations'] },
         { label: 'Dispatches' },
-      ],
-    },
-  },
-  {
-    path: 'create',
-    loadComponent: () => import('./create-dispatch/create-dispatch.component'),
-    data: {
-      routeLabel: 'Create Dispatch',
-      breadcrumbs: [
-        { label: 'Operations', path: ['/dashboard', 'operations'] },
-        {
-          label: 'Dispatches',
-          path: ['/dashboard', 'operations', 'dispatches'],
-        },
-        { label: 'Create Dispatch' },
       ],
     },
   },
@@ -71,8 +54,8 @@ export const DISPATCHES_ROUTES: Routes = [
         loadComponent: () => import('./view-dispatch/view-dispatch.component'),
       },
       {
-        path: 'assign-load',
-        loadComponent: () => import('./assign-load/assign-load.component'),
+        path: 'confirm-load',
+        loadComponent: () => import('./confirm-load/confirm-load.component'),
       },
     ],
   },

@@ -4,7 +4,6 @@ import {
   effect,
   inject,
   untracked,
-  viewChild,
 } from '@angular/core';
 import {
   IonButton,
@@ -19,14 +18,12 @@ import {
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonRow,
-  IonText,
-  ModalController,
+  IonText
 } from '@ionic/angular/standalone';
 import { InventoryStore } from '@lpg-manager/inventory-store';
 import { CurrencyPipe } from '@angular/common';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
-import InventoryManagementComponent from '../inventory-management/inventory-management.component';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -55,7 +52,6 @@ import { Router, RouterLink } from '@angular/router';
 export default class InventoriesPageComponent {
   inventoryStore = inject(InventoryStore);
   readonly #authStore = inject(AuthStore);
-  activeRole = this.#authStore.activeRole;
   activeStation = this.#authStore.activeStation;
   stationFilter = computed(() => {
     if (this.activeStation()?.id)
@@ -67,7 +63,6 @@ export default class InventoriesPageComponent {
       };
     return;
   });
-  depotFilter = computed(() => ({ ...this.stationFilter(), field: 'depotId' }));
   activeStationChangeEffect = effect(() => {
     const stationFilter = this.stationFilter();
     untracked(() => {
@@ -91,13 +86,9 @@ export default class InventoriesPageComponent {
     return this.inventoryStore.totalItems();
   });
 
-  ionInfiniteScroll = viewChild(IonInfiniteScroll);
-
   showInfiniteScroll = computed(
     () => this.totalItems() > this.inventories().length
   );
-
-  #modalCtrl = inject(ModalController);
   router = inject(Router);
 
   async handleInfiniteScroll() {

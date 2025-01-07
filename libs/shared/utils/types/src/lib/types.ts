@@ -364,13 +364,13 @@ export type ICreateVehicleSuccessResponse = {
   message: Scalars['String']['output'];
 };
 
-export type IDealerToDriverConfirmInput = {
-  dispatchId: Scalars['UUID']['input'];
-  scannedCanisters: Array<Scalars['UUID']['input']>;
-};
-
 export type IDeleteSuccessResponse = {
   message: Scalars['String']['output'];
+};
+
+export type IDepotToDriverConfirmInput = {
+  dispatchId: Scalars['UUID']['input'];
+  scannedCanisters: Array<Scalars['UUID']['input']>;
 };
 
 export type IDispatchModel = {
@@ -500,7 +500,6 @@ export type IMutation = {
   createTransporter: ICreateTransporterSuccessResponse;
   createUser?: Maybe<ICreateUserSuccessResponse>;
   createVehicle: ICreateVehicleSuccessResponse;
-  dealerToDriverConfirm: ICreateDispatchSuccessResponse;
   deleteActivityLog: IDeleteSuccessResponse;
   deleteBrand: IDeleteSuccessResponse;
   deleteCatalogue: IDeleteSuccessResponse;
@@ -520,6 +519,7 @@ export type IMutation = {
   deleteTransporter: IDeleteSuccessResponse;
   deleteUser: IDeleteSuccessResponse;
   deleteVehicle: IDeleteSuccessResponse;
+  depotToDriverConfirm: ICreateDispatchSuccessResponse;
   givePermissionsToRole?: Maybe<ISuccessResponse>;
   healthCheck?: Maybe<Scalars['String']['output']>;
   loginWithPassword?: Maybe<ILoginResponse>;
@@ -701,11 +701,6 @@ export type IMutationCreateVehicleArgs = {
 };
 
 
-export type IMutationDealerToDriverConfirmArgs = {
-  params: IDealerToDriverConfirmInput;
-};
-
-
 export type IMutationDeleteActivityLogArgs = {
   id: Scalars['UUID']['input'];
 };
@@ -798,6 +793,11 @@ export type IMutationDeleteUserArgs = {
 
 export type IMutationDeleteVehicleArgs = {
   id: Scalars['UUID']['input'];
+};
+
+
+export type IMutationDepotToDriverConfirmArgs = {
+  params: IDepotToDriverConfirmInput;
 };
 
 

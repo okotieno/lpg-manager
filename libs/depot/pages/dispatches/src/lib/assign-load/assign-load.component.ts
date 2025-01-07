@@ -25,7 +25,6 @@ import {
 } from '@lpg-manager/dispatch-store';
 import { ScannerInputComponent } from '@lpg-manager/scanner-input';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
 import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
@@ -51,7 +50,6 @@ interface ScanSummaryItem {
     IonItemDivider,
     IonBadge,
     ReactiveFormsModule,
-    JsonPipe,
     ScannerInputComponent,
     IonButton,
     UUIDDirective,
@@ -175,10 +173,10 @@ export default class AssignLoadComponent {
     this.scannedCanisters.set(this.scannerForm.get('canisters')?.value ?? []);
   }
 
-  dealerToDriverConfirm() {
+  depotToDriverConfirm() {
     if (!this.dispatch()) return;
 
-    this.#dispatchStore.dealerToDriverConfirm({
+    this.#dispatchStore.depotToDriverConfirm({
       dispatchId: this.dispatch()!.id,
       scannedCanisters: this.scannedCanisters()
     });

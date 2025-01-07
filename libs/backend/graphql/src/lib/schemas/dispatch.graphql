@@ -47,7 +47,7 @@ type CreateDispatchSuccessResponse {
   data: DispatchModel!
 }
 
-input DealerToDriverConfirmInput {
+input DepotToDriverConfirmInput {
   dispatchId: UUID!
   scannedCanisters: [UUID!]!
 }
@@ -61,5 +61,5 @@ extend type Mutation {
   createDispatch(params: CreateDispatchInput!): CreateDispatchSuccessResponse!
   updateDispatch(id: UUID!, params: UpdateDispatchInput!): CreateDispatchSuccessResponse!
   deleteDispatch(id: UUID!): DeleteSuccessResponse!
-  dealerToDriverConfirm(params: DealerToDriverConfirmInput!): CreateDispatchSuccessResponse!
+  depotToDriverConfirm(params: DepotToDriverConfirmInput!): CreateDispatchSuccessResponse!
 }

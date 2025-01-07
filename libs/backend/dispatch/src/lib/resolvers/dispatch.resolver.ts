@@ -112,7 +112,7 @@ export class DispatchResolver {
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.UpdateDispatch)
-  async dealerToDriverConfirm(
+  async depotToDriverConfirm(
     @Args('params') params: DealerToDriverConfirmDto,
     @CurrentUser() currentUser: UserModel
   ) {

@@ -157,8 +157,8 @@ mutation UpdateDispatch($id: UUID!, $params: UpdateDispatchInput!) {
   }
 }
 
-mutation DealerToDriverConfirm($params: DealerToDriverConfirmInput!) {
-  dealerToDriverConfirm(params: $params) {
+mutation DepotToDriverConfirm($params: DepotToDriverConfirmInput!) {
+  depotToDriverConfirm(params: $params) {
     message
     data {
       id

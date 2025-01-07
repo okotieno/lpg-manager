@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import {
-  IonBadge, IonButton, IonButtons,
+  IonButton, IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -13,7 +13,6 @@ import {
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { DispatchStore } from '@lpg-manager/dispatch-store';
-import { JsonPipe } from '@angular/common';
 import { IDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
 
 @Component({
@@ -30,12 +29,10 @@ import { IDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
     IonText,
     IonCardHeader,
     IonCardTitle,
-    JsonPipe,
     IonList,
     IonListHeader,
     IonLabel,
     IonItem,
-    IonBadge,
     IonButton,
     IonButtons,
   ],

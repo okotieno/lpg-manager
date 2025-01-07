@@ -17,7 +17,7 @@ import {
   IonCardContent,
   IonGrid,
   IonRow,
-  IonCol,
+  IonCol, IonText
 } from '@ionic/angular/standalone';
 import {
   DispatchStore,
@@ -25,7 +25,6 @@ import {
 } from '@lpg-manager/dispatch-store';
 import { ScannerInputComponent } from '@lpg-manager/scanner-input';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
 import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
@@ -51,7 +50,6 @@ interface ScanSummaryItem {
     IonItemDivider,
     IonBadge,
     ReactiveFormsModule,
-    JsonPipe,
     ScannerInputComponent,
     IonButton,
     UUIDDirective,
@@ -64,12 +62,13 @@ interface ScanSummaryItem {
     IonRow,
     IonCol,
     RouterLink,
+    IonText,
   ],
-  templateUrl: './assign-load.component.html',
-  styleUrl: './assign-load.component.scss',
+  templateUrl: './confirm-load.component.html',
+  styleUrl: './confirm-load.component.scss',
   providers: [DispatchStore, InventoryItemStore],
 })
-export default class AssignLoadComponent {
+export default class ConfirmLoadComponent {
   #route = inject(ActivatedRoute);
   #inventoryItemStore = inject(InventoryItemStore);
   searchedInventoryItem = this.#inventoryItemStore.searchedItemsEntities;
@@ -175,12 +174,12 @@ export default class AssignLoadComponent {
     this.scannedCanisters.set(this.scannerForm.get('canisters')?.value ?? []);
   }
 
-  dealerToDriverConfirm() {
+  driverFromDepotConfirm() {
     if (!this.dispatch()) return;
 
-    this.#dispatchStore.dealerToDriverConfirm({
-      dispatchId: this.dispatch()!.id,
-      scannedCanisters: this.scannedCanisters()
+    this.#dispatchStore.driverFromDepotConfirm({
+      dispatchId: this.dispatch()?.id as string,
+      scannedCanisters: this.scannedCanisters(),
     });
   }
 }
