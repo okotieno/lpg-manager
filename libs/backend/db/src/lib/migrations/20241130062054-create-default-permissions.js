@@ -87,6 +87,7 @@ const permissions = [
   'delete dispatch',
   'update dispatch',
   'view dispatch',
+  'confirm via scanning',
 
   // Driver Management
   'create driver',

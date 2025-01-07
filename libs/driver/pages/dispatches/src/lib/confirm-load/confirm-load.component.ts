@@ -1,23 +1,24 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
-  IonButtons,
-  IonButton,
-  IonContent,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonFooter,
   IonBadge,
-  IonItemDivider,
-  IonIcon,
+  IonButton,
+  IonButtons,
   IonCard,
+  IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonCardContent,
+  IonCol,
+  IonContent,
+  IonFooter,
   IonGrid,
+  IonIcon,
+  IonItem,
+  IonItemDivider,
+  IonLabel,
+  IonList,
   IonRow,
-  IonCol, IonText
+  IonText,
 } from '@ionic/angular/standalone';
 import {
   DispatchStore,
@@ -26,7 +27,7 @@ import {
 import { ScannerInputComponent } from '@lpg-manager/scanner-input';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
-import { IQueryOperatorEnum } from '@lpg-manager/types';
+import { IDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
 
 interface ScanSummaryItem {
@@ -174,12 +175,13 @@ export default class ConfirmLoadComponent {
     this.scannedCanisters.set(this.scannerForm.get('canisters')?.value ?? []);
   }
 
-  driverFromDepotConfirm() {
+  async driverFromDepotConfirm() {
     if (!this.dispatch()) return;
 
-    this.#dispatchStore.driverFromDepotConfirm({
+    await this.#dispatchStore.scanConfirm({
       dispatchId: this.dispatch()?.id as string,
       scannedCanisters: this.scannedCanisters(),
+      dispatchStatus: IDispatchStatus.DriverFromDepotConfirmed
     });
   }
 }

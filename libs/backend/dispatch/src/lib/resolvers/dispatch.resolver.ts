@@ -111,14 +111,15 @@ export class DispatchResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateDispatch)
-  async depotToDriverConfirm(
+  @Permissions(PermissionsEnum.ConfirmViaScanning)
+  async scanConfirm(
     @Args('params') params: DealerToDriverConfirmDto,
     @CurrentUser() currentUser: UserModel
   ) {
-    const dispatch = await this.dispatchService.dealerToDriverConfirm(
+    const dispatch = await this.dispatchService.scanConfirm(
       params.dispatchId,
-      params.scannedCanisters
+      params.scannedCanisters,
+      params.dispatchStatus
     );
 
     this.eventEmitter.emit('dispatch.completed', {

@@ -23,10 +23,9 @@ export const DISPATCHES_ROUTES: Routes = [
     data: {
       routeLabel: 'View Dispatch | :dispatchName',
       breadcrumbs: [
-        { label: 'Operations', path: ['/dashboard', 'operations'] },
         {
           label: 'Dispatches',
-          path: ['/dashboard', 'operations', 'dispatches'],
+          path: ['/dashboard', 'dispatches'],
         },
         { label: 'View Dispatch' },
       ],

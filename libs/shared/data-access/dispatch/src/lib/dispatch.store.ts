@@ -1,7 +1,7 @@
 import { signalStore, withProps, withMethods } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import {
-  IDepotToDriverConfirmGQL,
+  IScanConfirmGQL,
   ICreateDispatchGQL,
   ICreateDispatchMutation,
   ICreateDispatchMutationVariables,
@@ -13,6 +13,7 @@ import {
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 import { lastValueFrom, tap } from 'rxjs';
 import { SHOW_SUCCESS_MESSAGE, SHOW_ERROR_MESSAGE } from '@lpg-manager/injection-token';
+import { IDispatchStatus } from '@lpg-manager/types';
 
 export const DispatchStore = signalStore(
   withProps(() => ({
@@ -20,7 +21,7 @@ export const DispatchStore = signalStore(
     _getItemKey: 'dispatch',
     _getItemsGQL: inject(IGetDispatchesGQL),
     _deleteItemWithIdGQL: inject(IDeleteDispatchByIdGQL),
-    _depotToDriverConfirmGQL: inject(IDepotToDriverConfirmGQL),
+    _scanConfirmGQL: inject(IScanConfirmGQL),
   })),
   withPaginatedItemsStore<
     ICreateDispatchMutation,
@@ -34,9 +35,13 @@ export const DispatchStore = signalStore(
     'deleteDispatch'
   >(),
   withMethods((store) => ({
-    depotToDriverConfirm(params: { dispatchId: string; scannedCanisters: string[] }) {
+    scanConfirm(params: {
+      dispatchId: string;
+      scannedCanisters: string[],
+      dispatchStatus: IDispatchStatus
+    }) {
       return lastValueFrom(
-        store._depotToDriverConfirmGQL
+        store._scanConfirmGQL
           .mutate(
             { params },
             {
@@ -48,36 +53,8 @@ export const DispatchStore = signalStore(
           )
           .pipe(
             tap((res) => {
-              if (res.data?.depotToDriverConfirm.data) {
-                console.log('res.data.dealerToDriverConfirm.data', res.data?.depotToDriverConfirm.data);
-                // patchState(store, {
-                //   items: store.items().map((item) =>
-                //     item.id === params.dispatchId
-                //       ? res.data!.dealerToDriverConfirm.data
-                //       : item
-                //   ),
-                // });
-              }
-            })
-          )
-      );
-    },
-    driverFromDepotConfirm(params: { dispatchId: string; scannedCanisters: string[] }) {
-      return lastValueFrom(
-        store._depotToDriverConfirmGQL
-          .mutate(
-            { params },
-            {
-              context: {
-                [SHOW_SUCCESS_MESSAGE]: true,
-                [SHOW_ERROR_MESSAGE]: true,
-              },
-            }
-          )
-          .pipe(
-            tap((res) => {
-              if (res.data?.depotToDriverConfirm.data) {
-                console.log('res.data.dealerToDriverConfirm.data', res.data?.depotToDriverConfirm.data);
+              if (res.data?.scanConfirm.data) {
+                console.log('res.data.dealerToDriverConfirm.data', res.data?.scanConfirm.data);
                 // patchState(store, {
                 //   items: store.items().map((item) =>
                 //     item.id === params.dispatchId

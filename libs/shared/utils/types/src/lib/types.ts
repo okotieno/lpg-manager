@@ -370,6 +370,7 @@ export type IDeleteSuccessResponse = {
 
 export type IDepotToDriverConfirmInput = {
   dispatchId: Scalars['UUID']['input'];
+  dispatchStatus: IDispatchStatus;
   scannedCanisters: Array<Scalars['UUID']['input']>;
 };
 
@@ -519,7 +520,6 @@ export type IMutation = {
   deleteTransporter: IDeleteSuccessResponse;
   deleteUser: IDeleteSuccessResponse;
   deleteVehicle: IDeleteSuccessResponse;
-  depotToDriverConfirm: ICreateDispatchSuccessResponse;
   givePermissionsToRole?: Maybe<ISuccessResponse>;
   healthCheck?: Maybe<Scalars['String']['output']>;
   loginWithPassword?: Maybe<ILoginResponse>;
@@ -529,6 +529,7 @@ export type IMutation = {
   register?: Maybe<ILoginResponse>;
   removeItemFromCart: ICreateCartResponse;
   requestAccessToken?: Maybe<IAccessToken>;
+  scanConfirm: ICreateDispatchSuccessResponse;
   sendPasswordResetLinkEmail?: Maybe<ISuccessResponse>;
   sendPasswordResetOtpEmail?: Maybe<ISuccessResponse>;
   sendVerificationLinkEmail?: Maybe<ISuccessResponse>;
@@ -796,11 +797,6 @@ export type IMutationDeleteVehicleArgs = {
 };
 
 
-export type IMutationDepotToDriverConfirmArgs = {
-  params: IDepotToDriverConfirmInput;
-};
-
-
 export type IMutationGivePermissionsToRoleArgs = {
   permissions?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
   roleId?: InputMaybe<Scalars['String']['input']>;
@@ -846,6 +842,11 @@ export type IMutationRemoveItemFromCartArgs = {
 
 export type IMutationRequestAccessTokenArgs = {
   refreshToken: Scalars['String']['input'];
+};
+
+
+export type IMutationScanConfirmArgs = {
+  params: IDepotToDriverConfirmInput;
 };
 
 

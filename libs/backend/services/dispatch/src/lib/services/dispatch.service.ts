@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
 import {
   DispatchModel,
@@ -6,7 +10,7 @@ import {
   OrderItemModel,
   CatalogueModel,
   InventoryItemModel,
-  InventoryModel
+  InventoryModel,
 } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
@@ -19,7 +23,8 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
     @InjectModel(DispatchModel) private dispatchModel: typeof DispatchModel,
     @InjectModel(OrderModel) private orderModel: typeof OrderModel,
     @InjectModel(OrderItemModel) private orderItemModel: typeof OrderItemModel,
-    @InjectModel(InventoryItemModel) private inventoryItemModel: typeof InventoryItemModel,
+    @InjectModel(InventoryItemModel)
+    private inventoryItemModel: typeof InventoryItemModel,
     @InjectModel(CatalogueModel) private catalogueModel: typeof CatalogueModel,
     private eventEmitter: EventEmitter2
   ) {
@@ -71,7 +76,11 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
     ) as Promise<DispatchModel>;
   }
 
-  async dealerToDriverConfirm(dispatchId: string, scannedCanisters: string[]) {
+  async scanConfirm(
+    dispatchId: string,
+    scannedCanisters: string[],
+    dispatchStatus: DispatchStatus
+  ) {
     const transaction = await this.dispatchModel.sequelize?.transaction();
 
     try {
@@ -86,7 +95,9 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
       });
 
       if (!dispatch) {
-        throw new NotFoundException(`Dispatch with ID "${dispatchId}" not found`);
+        throw new NotFoundException(
+          `Dispatch with ID "${dispatchId}" not found`
+        );
       }
 
       // Group scanned canisters by catalogue
@@ -103,7 +114,7 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
 
       const scannedQuantities = new Map<string, number>();
       scannedInventoryItems.forEach((inventoryItem) => {
-        console.log(inventoryItem)
+        console.log(inventoryItem);
         const current = scannedQuantities.get(inventoryItem.inventory.id) || 0;
         scannedQuantities.set(inventoryItem.inventory.id, current + 1);
       });
@@ -121,13 +132,27 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
       }
 
       // Update dispatch status and timestamp
-      await dispatch.update(
-        {
-          depotToDriverConfirmedAt: new Date(),
-          status: DispatchStatus.DEPOT_TO_DRIVER_CONFIRMED,
-        },
-        { transaction }
-      );
+
+      switch (dispatchStatus) {
+        case DispatchStatus.DEPOT_TO_DRIVER_CONFIRMED:
+          await dispatch.update(
+            {
+              depotToDriverConfirmedAt: new Date(),
+              status: DispatchStatus.DEPOT_TO_DRIVER_CONFIRMED,
+            },
+            { transaction }
+          );
+          break;
+        case DispatchStatus.DRIVER_FROM_DEPOT_CONFIRMED:
+          await dispatch.update(
+            {
+              driverFromDepotConfirmedAt: new Date(),
+              status: DispatchStatus.DRIVER_FROM_DEPOT_CONFIRMED,
+            },
+            { transaction }
+          );
+          break;
+      }
 
       await transaction?.commit();
 

@@ -50,6 +50,7 @@ type CreateDispatchSuccessResponse {
 input DepotToDriverConfirmInput {
   dispatchId: UUID!
   scannedCanisters: [UUID!]!
+  dispatchStatus: DispatchStatus!
 }
 
 extend type Query {
@@ -61,5 +62,5 @@ extend type Mutation {
   createDispatch(params: CreateDispatchInput!): CreateDispatchSuccessResponse!
   updateDispatch(id: UUID!, params: UpdateDispatchInput!): CreateDispatchSuccessResponse!
   deleteDispatch(id: UUID!): DeleteSuccessResponse!
-  depotToDriverConfirm(params: DepotToDriverConfirmInput!): CreateDispatchSuccessResponse!
+  scanConfirm(params: DepotToDriverConfirmInput!): CreateDispatchSuccessResponse!
 }

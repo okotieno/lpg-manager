@@ -62,6 +62,7 @@ export enum PermissionsEnum {
   CreateDispatch = 'create dispatch',
   DeleteDispatch = 'delete dispatch',
   UpdateDispatch = 'update dispatch',
+  ConfirmViaScanning = 'confirm via scanning',
 
   ViewDriver = 'view driver',
   CreateDriver = 'create driver',

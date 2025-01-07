@@ -39,12 +39,12 @@ export type IUpdateDispatchMutationVariables = Types.Exact<{
 
 export type IUpdateDispatchMutation = { updateDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
 
-export type IDepotToDriverConfirmMutationVariables = Types.Exact<{
+export type IScanConfirmMutationVariables = Types.Exact<{
   params: Types.IDepotToDriverConfirmInput;
 }>;
 
 
-export type IDepotToDriverConfirmMutation = { depotToDriverConfirm: { message: string, data: { id: string, status: Types.IDispatchStatus, depotToDriverConfirmedAt?: string | null, dispatchDate: string, transporter: { id: string, name: string }, driver: { id: string, user: { firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
+export type IScanConfirmMutation = { scanConfirm: { message: string, data: { id: string, status: Types.IDispatchStatus, depotToDriverConfirmedAt?: string | null, dispatchDate: string, transporter: { id: string, name: string }, driver: { id: string, user: { firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
 
 export const CreateDispatchDocument = gql`
     mutation CreateDispatch($params: CreateDispatchInput!) {
@@ -265,9 +265,9 @@ export const UpdateDispatchDocument = gql`
       super(apollo);
     }
   }
-export const DepotToDriverConfirmDocument = gql`
-    mutation DepotToDriverConfirm($params: DepotToDriverConfirmInput!) {
-  depotToDriverConfirm(params: $params) {
+export const ScanConfirmDocument = gql`
+    mutation ScanConfirm($params: DepotToDriverConfirmInput!) {
+  scanConfirm(params: $params) {
     message
     data {
       id
@@ -302,8 +302,8 @@ export const DepotToDriverConfirmDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class IDepotToDriverConfirmGQL extends Apollo.Mutation<IDepotToDriverConfirmMutation, IDepotToDriverConfirmMutationVariables> {
-    override document = DepotToDriverConfirmDocument;
+  export class IScanConfirmGQL extends Apollo.Mutation<IScanConfirmMutation, IScanConfirmMutationVariables> {
+    override document = ScanConfirmDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
