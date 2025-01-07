@@ -1,15 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { DispatchModel, OrderModel } from '@lpg-manager/db';
+import {
+  DispatchModel,
+  OrderModel,
+  OrderItemModel,
+  CatalogueModel,
+  InventoryItemModel,
+  InventoryModel
+} from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { DispatchStatus } from '@lpg-manager/db';
 
 @Injectable()
 export class DispatchService extends CrudAbstractService<DispatchModel> {
   constructor(
     @InjectModel(DispatchModel) private dispatchModel: typeof DispatchModel,
     @InjectModel(OrderModel) private orderModel: typeof OrderModel,
+    @InjectModel(OrderItemModel) private orderItemModel: typeof OrderItemModel,
+    @InjectModel(InventoryItemModel) private inventoryItemModel: typeof InventoryItemModel,
+    @InjectModel(CatalogueModel) private catalogueModel: typeof CatalogueModel,
     private eventEmitter: EventEmitter2
   ) {
     super(dispatchModel);
@@ -58,5 +69,72 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
         return dispatch;
       }
     ) as Promise<DispatchModel>;
+  }
+
+  async dealerToDriverConfirm(dispatchId: string, scannedCanisters: string[]) {
+    const transaction = await this.dispatchModel.sequelize?.transaction();
+
+    try {
+      const dispatch = await this.dispatchModel.findByPk(dispatchId, {
+        include: [
+          {
+            model: OrderModel,
+            include: [OrderItemModel],
+          },
+        ],
+        transaction,
+      });
+
+      if (!dispatch) {
+        throw new NotFoundException(`Dispatch with ID "${dispatchId}" not found`);
+      }
+
+      // Group scanned canisters by catalogue
+      const scannedInventoryItems = await this.inventoryItemModel.findAll({
+        where: { id: scannedCanisters },
+        include: [
+          {
+            model: InventoryModel,
+            include: [CatalogueModel],
+          },
+        ],
+        transaction,
+      });
+
+      const scannedQuantities = new Map<string, number>();
+      scannedInventoryItems.forEach((inventoryItem) => {
+        console.log(inventoryItem)
+        const current = scannedQuantities.get(inventoryItem.inventory.id) || 0;
+        scannedQuantities.set(inventoryItem.inventory.id, current + 1);
+      });
+
+      // Validate quantities match order items
+      for (const order of dispatch.orders) {
+        for (const item of order.items) {
+          const scannedQty = scannedQuantities.get(item.inventoryId) || 0;
+          if (Number(scannedQty) !== Number(item.quantity)) {
+            throw new BadRequestException(
+              `Scanned quantity (${scannedQty}) does not match order quantity (${item.quantity}) for catalogue ${item.inventoryId}`
+            );
+          }
+        }
+      }
+
+      // Update dispatch status and timestamp
+      await dispatch.update(
+        {
+          depotToDriverConfirmedAt: new Date(),
+          status: DispatchStatus.DEPOT_TO_DRIVER_CONFIRMED,
+        },
+        { transaction }
+      );
+
+      await transaction?.commit();
+
+      return dispatch;
+    } catch (error) {
+      await transaction?.rollback();
+      throw error;
+    }
   }
 }

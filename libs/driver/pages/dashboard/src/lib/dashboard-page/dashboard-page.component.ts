@@ -50,8 +50,6 @@ import { NotificationBellComponent } from '@lpg-manager/notification-component';
     IonRow,
     IonText,
     TitleCasePipe,
-    IonSelect,
-    IonSelectOption,
     FormsModule,
     NotificationBellComponent,
     IonBackButton,
@@ -67,8 +65,6 @@ export default class DashboardComponent {
   #breadcrumbStore = inject(BreadcrumbStore);
 
   pageTitle = this.#breadcrumbStore.pageTitle;
-  userRoleStation = this.#authStore.userRoles;
-  activeRole = this.#authStore.activeRole;
 
   currentThemeIcon = computed(() => {
     switch (this.#themeService.theme()) {

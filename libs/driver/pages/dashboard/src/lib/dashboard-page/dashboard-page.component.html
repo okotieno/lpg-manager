@@ -27,21 +27,6 @@
         LPG
       </ion-text>
     </ion-row>
-    <ion-select
-      [ngModel]="activeRole()?.id"
-      (ionChange)="updateActiveRole($event)"
-      label=""
-      style="max-width: fit-content;"
-
-    >
-      <ion-icon slot="start" name="warehouse"></ion-icon>
-      @for (station of userRoleStation(); track station?.id; ) {
-        <ion-select-option class="ion-margin-end" [value]="station?.id">
-          {{ station?.role?.name | titlecase }} | {{ station?.station?.name | titlecase }}
-        </ion-select-option>
-      }
-
-    </ion-select>
 
     <ion-buttons slot="end">
       <lpg-notification-bell />

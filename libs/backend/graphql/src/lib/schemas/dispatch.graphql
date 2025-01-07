@@ -1,8 +1,11 @@
 enum DispatchStatus {
   PENDING
+  INITIATED
+  DEPOT_TO_DRIVER_CONFIRMED
+  DRIVER_FROM_DEPOT_CONFIRMED
   IN_TRANSIT
-  DELIVERED
-  CANCELLED
+  DELIVERING
+  COMPLETED
 }
 
 type DispatchModel {
@@ -12,6 +15,7 @@ type DispatchModel {
   vehicleId: UUID!
   status: DispatchStatus!
   dispatchDate: DateTime!
+  depotToDriverConfirmedAt: DateTime
   transporter: TransporterModel!
   driver: DriverModel!
   vehicle: VehicleModel!
@@ -43,6 +47,10 @@ type CreateDispatchSuccessResponse {
   data: DispatchModel!
 }
 
+input DealerToDriverConfirmInput {
+  dispatchId: UUID!
+  scannedCanisters: [UUID!]!
+}
 
 extend type Query {
   dispatches(query: QueryParams): PaginatedDispatch!
@@ -53,4 +61,5 @@ extend type Mutation {
   createDispatch(params: CreateDispatchInput!): CreateDispatchSuccessResponse!
   updateDispatch(id: UUID!, params: UpdateDispatchInput!): CreateDispatchSuccessResponse!
   deleteDispatch(id: UUID!): DeleteSuccessResponse!
+  dealerToDriverConfirm(params: DealerToDriverConfirmInput!): CreateDispatchSuccessResponse!
 }

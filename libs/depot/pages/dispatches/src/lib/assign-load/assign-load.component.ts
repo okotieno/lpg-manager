@@ -175,5 +175,12 @@ export default class AssignLoadComponent {
     this.scannedCanisters.set(this.scannerForm.get('canisters')?.value ?? []);
   }
 
-  completeDispatch() {}
+  dealerToDriverConfirm() {
+    if (!this.dispatch()) return;
+
+    this.#dispatchStore.dealerToDriverConfirm({
+      dispatchId: this.dispatch()!.id,
+      scannedCanisters: this.scannedCanisters()
+    });
+  }
 }

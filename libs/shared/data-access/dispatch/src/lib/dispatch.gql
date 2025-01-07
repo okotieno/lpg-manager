@@ -156,3 +156,35 @@ mutation UpdateDispatch($id: UUID!, $params: UpdateDispatchInput!) {
     }
   }
 }
+
+mutation DealerToDriverConfirm($params: DealerToDriverConfirmInput!) {
+  dealerToDriverConfirm(params: $params) {
+    message
+    data {
+      id
+      status
+      depotToDriverConfirmedAt
+      dispatchDate
+      transporter {
+        id
+        name
+      }
+      driver {
+        id
+        user {
+          firstName
+          lastName
+        }
+      }
+      vehicle {
+        id
+        registrationNumber
+      }
+      orders {
+        id
+        status
+        totalPrice
+      }
+    }
+  }
+}

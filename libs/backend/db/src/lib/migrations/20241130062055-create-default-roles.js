@@ -75,6 +75,9 @@ const rolePermissions = {
     'access driver app',
     // Notification
     'mark notification as read',
+
+    // Dispatch
+    'view dispatch',
   ],
 };
 

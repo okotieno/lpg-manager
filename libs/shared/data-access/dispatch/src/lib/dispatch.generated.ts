@@ -39,6 +39,13 @@ export type IUpdateDispatchMutationVariables = Types.Exact<{
 
 export type IUpdateDispatchMutation = { updateDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
 
+export type IDealerToDriverConfirmMutationVariables = Types.Exact<{
+  params: Types.IDealerToDriverConfirmInput;
+}>;
+
+
+export type IDealerToDriverConfirmMutation = { dealerToDriverConfirm: { message: string, data: { id: string, status: Types.IDispatchStatus, depotToDriverConfirmedAt?: string | null, dispatchDate: string, transporter: { id: string, name: string }, driver: { id: string, user: { firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
+
 export const CreateDispatchDocument = gql`
     mutation CreateDispatch($params: CreateDispatchInput!) {
   createDispatch(params: $params) {
@@ -253,6 +260,50 @@ export const UpdateDispatchDocument = gql`
   })
   export class IUpdateDispatchGQL extends Apollo.Mutation<IUpdateDispatchMutation, IUpdateDispatchMutationVariables> {
     override document = UpdateDispatchDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DealerToDriverConfirmDocument = gql`
+    mutation DealerToDriverConfirm($params: DealerToDriverConfirmInput!) {
+  dealerToDriverConfirm(params: $params) {
+    message
+    data {
+      id
+      status
+      depotToDriverConfirmedAt
+      dispatchDate
+      transporter {
+        id
+        name
+      }
+      driver {
+        id
+        user {
+          firstName
+          lastName
+        }
+      }
+      vehicle {
+        id
+        registrationNumber
+      }
+      orders {
+        id
+        status
+        totalPrice
+      }
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class IDealerToDriverConfirmGQL extends Apollo.Mutation<IDealerToDriverConfirmMutation, IDealerToDriverConfirmMutationVariables> {
+    override document = DealerToDriverConfirmDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

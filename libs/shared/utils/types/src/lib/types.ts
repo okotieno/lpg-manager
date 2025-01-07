@@ -364,12 +364,18 @@ export type ICreateVehicleSuccessResponse = {
   message: Scalars['String']['output'];
 };
 
+export type IDealerToDriverConfirmInput = {
+  dispatchId: Scalars['UUID']['input'];
+  scannedCanisters: Array<Scalars['UUID']['input']>;
+};
+
 export type IDeleteSuccessResponse = {
   message: Scalars['String']['output'];
 };
 
 export type IDispatchModel = {
   createdAt: Scalars['DateTime']['output'];
+  depotToDriverConfirmedAt?: Maybe<Scalars['DateTime']['output']>;
   dispatchDate: Scalars['DateTime']['output'];
   driver: IDriverModel;
   driverId: Scalars['UUID']['output'];
@@ -384,8 +390,11 @@ export type IDispatchModel = {
 };
 
 export enum IDispatchStatus {
-  Cancelled = 'CANCELLED',
-  Delivered = 'DELIVERED',
+  Completed = 'COMPLETED',
+  Delivering = 'DELIVERING',
+  DepotToDriverConfirmed = 'DEPOT_TO_DRIVER_CONFIRMED',
+  DriverFromDepotConfirmed = 'DRIVER_FROM_DEPOT_CONFIRMED',
+  Initiated = 'INITIATED',
   InTransit = 'IN_TRANSIT',
   Pending = 'PENDING'
 }
@@ -491,6 +500,7 @@ export type IMutation = {
   createTransporter: ICreateTransporterSuccessResponse;
   createUser?: Maybe<ICreateUserSuccessResponse>;
   createVehicle: ICreateVehicleSuccessResponse;
+  dealerToDriverConfirm: ICreateDispatchSuccessResponse;
   deleteActivityLog: IDeleteSuccessResponse;
   deleteBrand: IDeleteSuccessResponse;
   deleteCatalogue: IDeleteSuccessResponse;
@@ -688,6 +698,11 @@ export type IMutationCreateUserArgs = {
 
 export type IMutationCreateVehicleArgs = {
   params: ICreateVehicleInput;
+};
+
+
+export type IMutationDealerToDriverConfirmArgs = {
+  params: IDealerToDriverConfirmInput;
 };
 
 

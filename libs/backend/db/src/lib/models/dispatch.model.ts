@@ -17,6 +17,7 @@ export enum DispatchStatus {
   IN_TRANSIT = 'IN_TRANSIT',
   DELIVERED = 'DELIVERED',
   CANCELLED = 'CANCELLED',
+  DEPOT_TO_DRIVER_CONFIRMED = 'DEPOT_TO_DRIVER_CONFIRMED',
 }
 
 @Table({
@@ -67,6 +68,12 @@ export class DispatchModel extends Model {
     allowNull: false,
   })
   dispatchDate!: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  depotToDriverConfirmedAt: Date | null = null;
 
   @BelongsTo(() => TransporterModel)
   transporter!: TransporterModel;

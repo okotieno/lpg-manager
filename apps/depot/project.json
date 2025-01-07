@@ -44,7 +44,7 @@
             {
               "type": "initial",
               "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumError": "2mb"
             },
             {
               "type": "anyComponentStyle",
@@ -112,6 +112,12 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": ["cd apps/depot && ionic cap copy android --prod"]
+      }
+    },
+    "ionic:cap:build:android": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["pnpm nx build depot && npx cap sync android"]
       }
     }
   }

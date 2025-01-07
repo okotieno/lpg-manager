@@ -7,13 +7,13 @@ import {
   Root,
 } from '@nestjs/graphql';
 import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
-import { DispatchModel, IQueryParam } from '@lpg-manager/db';
+import { DispatchModel, IQueryParam, UserModel } from '@lpg-manager/db';
 import { DispatchService } from '@lpg-manager/dispatch-service';
 import { TransporterService } from '@lpg-manager/transporter-service';
 import { DriverService } from '@lpg-manager/driver-service';
 import { VehicleService } from '@lpg-manager/vehicle-service';
 import { OrderService } from '@lpg-manager/order-service';
-import { JwtAuthGuard } from '@lpg-manager/auth';
+import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
 import { CreateDispatchInputDto } from '../dto/create-dispatch-input.dto';
 import { UpdateDispatchInputDto } from '../dto/update-dispatch-input.dto';
 import {
@@ -21,6 +21,8 @@ import {
   Permissions,
   PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { DealerToDriverConfirmDto } from '../dto/complete-dispatch.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Resolver(() => DispatchModel)
 export class DispatchResolver {
@@ -29,7 +31,8 @@ export class DispatchResolver {
     private transporterService: TransporterService,
     private driverService: DriverService,
     private vehicleService: VehicleService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private eventEmitter: EventEmitter2
   ) {}
 
   @Mutation()
@@ -104,5 +107,28 @@ export class DispatchResolver {
     return this.orderService.model.findAll({
       where: { dispatchId: dispatch.id },
     });
+  }
+
+  @Mutation()
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @Permissions(PermissionsEnum.UpdateDispatch)
+  async dealerToDriverConfirm(
+    @Args('params') params: DealerToDriverConfirmDto,
+    @CurrentUser() currentUser: UserModel
+  ) {
+    const dispatch = await this.dispatchService.dealerToDriverConfirm(
+      params.dispatchId,
+      params.scannedCanisters
+    );
+
+    this.eventEmitter.emit('dispatch.completed', {
+      dispatch,
+      userId: currentUser.id,
+    });
+
+    return {
+      message: 'Dispatch completed successfully',
+      data: dispatch,
+    };
   }
 }
