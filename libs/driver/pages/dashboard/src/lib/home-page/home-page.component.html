@@ -1,7 +1,44 @@
 <ion-grid class="ion-no-margin">
   <ion-row class="ion-justify-content-start ion-padding-horizontal">
     <ion-col size="12">
-      {{ dispatchesFromDealer() | json }}
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Dispatches From Depot</ion-label>
+        </ion-list-header>
+
+        @for (dispatch of dispatchesFromDealer(); track dispatch.id) {
+          <ion-item>
+            <ion-label>
+              <h2>Dispatch #{{ dispatch.id.slice(-8) }}</h2>
+              <p>Orders: {{ dispatch.orders?.length || 0 }}</p>
+              @if (dispatch.status === 'DEPOT_TO_DRIVER_CONFIRMED') {
+                <p>Dispatch from driver</p>
+              }
+
+            </ion-label>
+
+            @if (dispatch.status === 'DEPOT_TO_DRIVER_CONFIRMED') {
+              <ion-buttons>
+                <ion-button
+                  slot="end"
+                  fill="outline"
+                  color="primary"
+                  shape="round"
+                  [routerLink]="['/dashboard', 'dispatches', dispatch.id, 'confirm-load']">
+                  <ion-icon name="check" slot="start"></ion-icon>
+                  Confirm Load
+                </ion-button>
+              </ion-buttons>
+            }
+          </ion-item>
+        } @empty {
+          <ion-item>
+            <ion-label class="ion-text-center">
+              <ion-text color="medium">No dispatches available</ion-text>
+            </ion-label>
+          </ion-item>
+        }
+      </ion-list>
     </ion-col>
     <ion-col size="12" sizeMd="6" sizeXl="3">
       <ion-card class="home-card" [routerLink]="['orders/pending']">

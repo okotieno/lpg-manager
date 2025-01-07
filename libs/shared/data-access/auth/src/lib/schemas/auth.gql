@@ -23,6 +23,13 @@ fragment UserFields on UserModel {
         name
       }
     }
+    driver {
+      id
+      transporter {
+        id
+        name
+      }
+    }
   }
 }
 

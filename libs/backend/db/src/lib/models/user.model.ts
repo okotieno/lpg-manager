@@ -2,14 +2,15 @@ import {
   BelongsToMany,
   Column,
   DataType,
-  HasMany,
+  HasMany, HasOne,
   Model,
-  Table,
+  Table
 } from 'sequelize-typescript';
 import { ActivityLogModel } from './activity-log.model';
 import { ActivityLogUserModel } from './activity-log-user.model';
 import { RoleModel } from './role.model';
 import { RoleUserModel } from './role-user.model';
+import { DriverModel } from './driver.model';
 
 @Table({
   tableName: 'users',
@@ -131,4 +132,7 @@ export class UserModel extends Model {
 
   @HasMany(() => RoleUserModel)
   roleUsers!: RoleUserModel[];
+
+  @HasOne(() => DriverModel)
+  driver!: DriverModel;
 }

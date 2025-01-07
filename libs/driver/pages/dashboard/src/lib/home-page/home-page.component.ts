@@ -1,14 +1,15 @@
 import { Component, inject, signal } from '@angular/core';
 import {
+  IonBadge, IonButton, IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
   IonCol,
   IonGrid,
-  IonIcon,
+  IonIcon, IonItem, IonLabel, IonList, IonListHeader,
   IonRow,
-  IonText,
+  IonText
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { DispatchStore } from '@lpg-manager/dispatch-store';
@@ -30,6 +31,13 @@ import { IDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
     IonCardHeader,
     IonCardTitle,
     JsonPipe,
+    IonList,
+    IonListHeader,
+    IonLabel,
+    IonItem,
+    IonBadge,
+    IonButton,
+    IonButtons,
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
@@ -45,10 +53,10 @@ export default class DashboardComponent {
     this.#dispatchStore.setFilters([
       {
         field: 'status',
-        operator: IQueryOperatorEnum.Equals,
-        value: IDispatchStatus.DepotToDriverConfirmed,
-        values: []
+        operator: IQueryOperatorEnum.In,
+        value: '',
+        values: [IDispatchStatus.DepotToDriverConfirmed],
       },
-    ])
+    ]);
   }
 }

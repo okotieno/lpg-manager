@@ -1788,6 +1788,7 @@ export type IUserModel = {
 };
 
 export type IUserRole = {
+  driver?: Maybe<IDriverModel>;
   id: Scalars['UUID']['output'];
   role?: Maybe<IRoleModel>;
   roleId: Scalars['UUID']['output'];

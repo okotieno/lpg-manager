@@ -226,6 +226,9 @@
       ],
       "@lpg-manager/driver-orders-page": [
         "libs/driver/pages/orders/src/index.ts"
+      ],
+      "@lpg-manager/driver-dispatches-page": [
+        "libs/driver/pages/dispatches/src/index.ts"
       ]
     }
   }

@@ -5,6 +5,7 @@ type UserRole {
   stationId: UUID!
   role: RoleModel
   station: StationModel
+  driver: DriverModel
 }
 type UserModel {
   id: UUID!

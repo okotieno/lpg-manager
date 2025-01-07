@@ -30,6 +30,10 @@ export const DASHBOARD_ROUTES: Routes = [
         path: 'inventories',
         loadChildren: () => import('@lpg-manager/driver-inventories-page'),
       },
+      {
+        path: 'dispatches',
+        loadChildren: () => import('@lpg-manager/driver-dispatches-page'),
+      },
     ],
   },
 ];

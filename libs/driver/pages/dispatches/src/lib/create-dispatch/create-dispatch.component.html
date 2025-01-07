@@ -1,0 +1,101 @@
+<ion-content class="ion-padding">
+  <form [formGroup]="dispatchForm" (ngSubmit)="createDispatch()">
+    <ion-row class="ion-padding">
+      <ion-col size="12" sizeMd="6" sizeXl="4">
+        <ion-item lines="none">
+          <lpg-searchable-select
+            [itemsStore]="transporterStore"
+            formControlName="transporter"
+            label="Select Transporter"
+            labelPlacement="floating"
+            placeholder="--Select transporter--"
+          ></lpg-searchable-select>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" sizeMd="6" sizeXl="4">
+        <ion-item lines="none">
+          <lpg-searchable-select
+            [itemsStore]="driverStore"
+            formControlName="driver"
+            label="Select Driver"
+            labelPlacement="floating"
+            placeholder="--Select driver--"
+            [valueLabelFormatter]="driverValueLabelFormatter"
+          >
+            <ng-template let-driver>
+              {{ driver.user.firstName }} {{ driver.user.lastName }}
+            </ng-template>
+          </lpg-searchable-select>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="12" sizeMd="6" sizeXl="4">
+        <ion-item lines="none">
+          <lpg-searchable-select
+            [itemsStore]="vehicleStore"
+            formControlName="vehicle"
+            label="Select Vehicle"
+            labelPlacement="floating"
+            placeholder="--Select vehicle--"
+            [valueLabelFormatter]="vehicleValueLabelFormatter"
+          >
+            <ng-template let-vehicle>
+              {{ vehicle.registrationNumber }}
+            </ng-template>
+          </lpg-searchable-select>
+        </ion-item>
+      </ion-col>
+
+      <ion-item-divider>
+        <ion-label>Select Orders</ion-label>
+      </ion-item-divider>
+
+      <ion-col size="12">
+        <ion-list>
+          @for (order of confirmedOrders(); track order.id) {
+            <ion-item (contextmenu)="presentPopover($event, order)">
+              <ion-checkbox [value]="order.id" (ionChange)="onOrderSelect($event, order)">
+                <ion-label>
+                  <h2>Order #{{ order.id }}</h2>
+                  <p>{{ order.dealer.name }}</p>
+                  <p>{{ order.totalPrice | currency }}</p>
+                </ion-label>
+
+              </ion-checkbox>
+
+            </ion-item>
+          }
+        </ion-list>
+      </ion-col>
+
+      <div class="ion-padding">
+        <ion-button type="submit" expand="block" [disabled]="!dispatchForm.valid || !selectedOrders.length">
+          @if (isLoading()) {
+            <ion-spinner name="lines-sharp-small" slot="end"></ion-spinner>
+          }
+          Create Dispatch
+        </ion-button>
+      </div>
+    </ion-row>
+  </form>
+</ion-content>
+
+<ion-popover triggerAction="context-menu" (didDismiss)="itemsPopoverOpen.set(false)" [isOpen]="itemsPopoverOpen()">
+  <ng-template>
+    <ion-content class="ion-padding">
+
+      <ion-list>
+        @for (item of activeOrder()?.items; track item?.id) {
+          <ion-item>
+            <ion-label>
+              <h2>{{ item?.catalogue?.name }}</h2>
+              <p>Quantity: {{ item?.quantity }} {{ item?.catalogue?.unit }}</p>
+              <p>Price per Unit: {{ item?.catalogue?.pricePerUnit | currency }}</p>
+              <p>Total Price: {{ ($any(item?.quantity) * $any(item?.catalogue?.pricePerUnit)) | currency }}</p>
+            </ion-label>
+          </ion-item>
+        }
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-popover>

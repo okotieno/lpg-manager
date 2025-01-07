@@ -23,11 +23,12 @@ import {
   PermissionsEnum,
 } from '@lpg-manager/permission-service';
 import {
+  DriverModel,
   IQueryParam,
   RoleModel,
   RoleUserModel,
   StationModel,
-  UserModel,
+  UserModel
 } from '@lpg-manager/db';
 import { UpdateUserInputDto } from '../dto/update-user-input.dto';
 import { UserUpdatedEvent } from '../events/user-updated.event';
@@ -132,6 +133,9 @@ export class UserResolver {
       where: { id: user.id },
       include: [
         {
+          model: DriverModel
+        },
+        {
           model: RoleUserModel,
           include: [
             {
@@ -151,6 +155,9 @@ export class UserResolver {
         id: roleUser.id,
         role: roleUser.role,
         station: roleUser.station,
+        ...(userWithRoles?.driver?.id && roleUser.role.name === 'driver' ? {
+          driver: userWithRoles.driver
+        }: undefined)
       })) || []
     );
   }
