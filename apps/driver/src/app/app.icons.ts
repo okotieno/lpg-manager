@@ -33,5 +33,6 @@ export const APP_ICONS = [
   'minus',
   'circle-info',
   'bell-slash',
-  'copy'
+  'copy',
+  'handshake'
 ];
