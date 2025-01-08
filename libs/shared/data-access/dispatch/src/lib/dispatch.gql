@@ -6,6 +6,13 @@ fragment dispatchDriverFragment on DriverModel {
     lastName
   }
 }
+fragment dealerDispatchFragment on OrderModel {
+  dealer {
+    id
+    name
+  }
+
+}
 mutation CreateDispatch($params: CreateDispatchInput!) {
   createDispatch(params: $params) {
     message
@@ -38,7 +45,7 @@ mutation CreateDispatch($params: CreateDispatchInput!) {
   }
 }
 
-query GetDispatchById($id: UUID!) {
+query GetDispatchById($id: UUID! $includeDealer: Boolean = false) {
   dispatch(id: $id) {
     id
     status
@@ -61,6 +68,7 @@ query GetDispatchById($id: UUID!) {
       id
       status
       totalPrice
+      ...dealerDispatchFragment @include(if: $includeDealer)
       items {
         id
         quantity

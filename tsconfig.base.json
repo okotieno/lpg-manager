@@ -221,6 +221,9 @@
       "@lpg-manager/driver-dashboard-page": [
         "libs/driver/pages/dashboard/src/index.ts"
       ],
+      "@lpg-manager/driver-deliveries-page": [
+        "libs/driver/pages/deliveries/src/index.ts"
+      ],
       "@lpg-manager/driver-inventories-page": [
         "libs/driver/pages/inventories/src/index.ts"
       ],

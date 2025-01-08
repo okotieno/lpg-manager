@@ -34,7 +34,7 @@ export const DISPATCHES_ROUTES: Routes = [
       dispatch: (route: ActivatedRouteSnapshot) => {
         const breadcrumbStore = inject(BreadcrumbStore);
         return inject(IGetDispatchByIdGQL)
-          .fetch({ id: route.params['dispatchId'] })
+          .fetch({ id: route.params['dispatchId'], includeDealer:true })
           .pipe(
             map((res) => res.data.dispatch),
             tap((res) => {
@@ -57,8 +57,8 @@ export const DISPATCHES_ROUTES: Routes = [
         loadComponent: () => import('./confirm-load/confirm-load.component'),
       },
       {
-        path: 'deliver',
-        loadComponent: () => import('./deliver/deliver.component'),
+        path: 'deliveries',
+        loadChildren: () => import('@lpg-manager/driver-deliveries-page'),
         data: {
           routeLabel: 'Deliver Orders',
           breadcrumbs: [

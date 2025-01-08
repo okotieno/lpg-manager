@@ -1,0 +1,26 @@
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Dispatch Orders</ion-label>
+    </ion-list-header>
+
+    @for (dealer of summarizedOrders(); track dealer.id) {
+      <ion-item>
+        <ion-label>
+          <h2>{{ dealer.name}} (<span [lpgUUID]="dealer.id"></span>)</h2>
+          <p>Items: {{ dealer.catalogues.length }}</p>
+
+        </ion-label>
+        <ion-button
+          [routerLink]="[dealer.id]"
+          slot="end">Deliver</ion-button>
+      </ion-item>
+    } @empty {
+      <ion-item>
+        <ion-label class="ion-text-center">
+          <ion-text color="medium">No orders available</ion-text>
+        </ion-label>
+      </ion-item>
+    }
+  </ion-list>
+</ion-content>

@@ -1,0 +1,53 @@
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Ordered Items</ion-label>
+    </ion-list-header>
+    @for (order of dealerOrders(); track order.id) {
+      <ion-item>
+        <ion-label>
+          {{ order | json }}
+        </ion-label>
+      </ion-item>
+    }
+
+  </ion-list>
+
+</ion-content>
+<ion-footer>
+  <ion-row class="ion-justify-content-between">
+    <ion-buttons class="ion-justify-content-end">
+      @if (isAllQuantitiesMatched()) {
+        <ion-button
+          shape="round"
+          fill="solid"
+          color="primary"
+          (click)="driverToDealerConfirm()"
+        >Complete
+        </ion-button>
+      } @else {
+
+        <ion-button
+          shape="round"
+          fill="outline"
+          color="primary"
+          (click)="validateScans()"
+        >Validate scan
+        </ion-button>
+        <form [formGroup]="scannerForm">
+          <lpg-scanner-input formControlName="canisters" />
+        </form>
+
+      }
+    </ion-buttons>
+    <ion-button
+      shape="round"
+      fill="outline"
+      color="danger"
+      [routerLink]="['/dashboard','dispatches', dispatch()?.id, 'deliveries']"
+    >Cancel
+    </ion-button>
+  </ion-row>
+
+
+</ion-footer>

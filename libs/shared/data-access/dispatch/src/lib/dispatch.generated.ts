@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
 export type IDispatchDriverFragmentFragment = { id: string, user: { id: string, firstName: string, lastName: string } };
 
+export type IDealerDispatchFragmentFragment = { dealer: { id: string, name: string } };
+
 export type ICreateDispatchMutationVariables = Types.Exact<{
   params: Types.ICreateDispatchInput;
 }>;
@@ -14,10 +16,11 @@ export type ICreateDispatchMutation = { createDispatch: { message: string, data:
 
 export type IGetDispatchByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
+  includeDealer?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
 }>;
 
 
-export type IGetDispatchByIdQuery = { dispatch?: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number, items: Array<{ id: string, quantity: number, catalogue: { id: string, name: string, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> }> } | null };
+export type IGetDispatchByIdQuery = { dispatch?: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number, items: Array<{ id: string, quantity: number, catalogue: { id: string, name: string, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null>, dealer: { id: string, name: string } }> } | null };
 
 export type IGetDispatchesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
@@ -55,6 +58,14 @@ export const DispatchDriverFragmentFragmentDoc = gql`
     id
     firstName
     lastName
+  }
+}
+    `;
+export const DealerDispatchFragmentFragmentDoc = gql`
+    fragment dealerDispatchFragment on OrderModel {
+  dealer {
+    id
+    name
   }
 }
     `;
@@ -103,7 +114,7 @@ export const CreateDispatchDocument = gql`
     }
   }
 export const GetDispatchByIdDocument = gql`
-    query GetDispatchById($id: UUID!) {
+    query GetDispatchById($id: UUID!, $includeDealer: Boolean = false) {
   dispatch(id: $id) {
     id
     status
@@ -126,6 +137,7 @@ export const GetDispatchByIdDocument = gql`
       id
       status
       totalPrice
+      ...dealerDispatchFragment @include(if: $includeDealer)
       items {
         id
         quantity
@@ -141,7 +153,8 @@ export const GetDispatchByIdDocument = gql`
     updatedAt
   }
 }
-    ${DispatchDriverFragmentFragmentDoc}`;
+    ${DispatchDriverFragmentFragmentDoc}
+${DealerDispatchFragmentFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
