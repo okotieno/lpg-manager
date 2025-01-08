@@ -33,6 +33,6 @@ minus
 circle-info
 bell-slash
 copy
-truck-container,
+truck-container
 copy
 scanner-gun

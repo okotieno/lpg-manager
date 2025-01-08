@@ -72,7 +72,7 @@ export class DispatchModel extends Model {
 
   @Column({
     type: DataType.DATE,
-    allowNull: false,
+    allowNull: true,
   })
   depotToDriverConfirmedAt: Date | null = null;
 

@@ -1,3 +1,11 @@
+fragment dispatchDriverFragment on DriverModel {
+  id
+  user {
+    id
+    firstName
+    lastName
+  }
+}
 mutation CreateDispatch($params: CreateDispatchInput!) {
   createDispatch(params: $params) {
     message
@@ -13,11 +21,7 @@ mutation CreateDispatch($params: CreateDispatchInput!) {
         name
       }
       driver {
-        id
-        user {
-          firstName
-          lastName
-        }
+        ...dispatchDriverFragment
       }
       vehicle {
         id
@@ -47,11 +51,7 @@ query GetDispatchById($id: UUID!) {
       name
     }
     driver {
-      id
-      user {
-        firstName
-        lastName
-      }
+      ...dispatchDriverFragment
     }
     vehicle {
       id
@@ -91,11 +91,7 @@ query GetDispatches($query: QueryParams) {
         name
       }
       driver {
-        id
-        user {
-          firstName
-          lastName
-        }
+        ...dispatchDriverFragment
       }
       vehicle {
         id
@@ -136,11 +132,7 @@ mutation UpdateDispatch($id: UUID!, $params: UpdateDispatchInput!) {
         name
       }
       driver {
-        id
-        user {
-          firstName
-          lastName
-        }
+        ...dispatchDriverFragment
       }
       vehicle {
         id
@@ -170,11 +162,7 @@ mutation ScanConfirm($params: DepotToDriverConfirmInput!) {
         name
       }
       driver {
-        id
-        user {
-          firstName
-          lastName
-        }
+        ...dispatchDriverFragment
       }
       vehicle {
         id

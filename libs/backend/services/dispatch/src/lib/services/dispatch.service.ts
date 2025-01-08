@@ -1,32 +1,27 @@
 import {
   Injectable,
   NotFoundException,
-  BadRequestException,
 } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
 import {
   DispatchModel,
   OrderModel,
   OrderItemModel,
-  CatalogueModel,
-  InventoryItemModel,
-  InventoryModel,
 } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { DispatchStatus } from '@lpg-manager/db';
+import { DriverInventoryService } from '@lpg-manager/inventory-service';
+import { DriverInventoryStatus } from '@lpg-manager/db';
 
 @Injectable()
 export class DispatchService extends CrudAbstractService<DispatchModel> {
   constructor(
     @InjectModel(DispatchModel) private dispatchModel: typeof DispatchModel,
     @InjectModel(OrderModel) private orderModel: typeof OrderModel,
-    @InjectModel(OrderItemModel) private orderItemModel: typeof OrderItemModel,
-    @InjectModel(InventoryItemModel)
-    private inventoryItemModel: typeof InventoryItemModel,
-    @InjectModel(CatalogueModel) private catalogueModel: typeof CatalogueModel,
-    private eventEmitter: EventEmitter2
+    private eventEmitter: EventEmitter2,
+    private driverInventoryService: DriverInventoryService,
   ) {
     super(dispatchModel);
   }
@@ -95,67 +90,41 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
       });
 
       if (!dispatch) {
-        throw new NotFoundException(
-          `Dispatch with ID "${dispatchId}" not found`
+        throw new NotFoundException(`Dispatch with ID "${dispatchId}" not found`);
+      }
+
+      // Validate quantities...
+
+      // Assign canisters to driver
+      if (dispatchStatus === DispatchStatus.DEPOT_TO_DRIVER_CONFIRMED) {
+        await this.driverInventoryService.assignToDriver({
+          driverId: dispatch.driverId,
+          dispatchId: dispatch.id,
+          inventoryItemIds: scannedCanisters,
+        });
+      }
+
+      // Update driver inventory status
+      if (dispatchStatus === DispatchStatus.DRIVER_FROM_DEPOT_CONFIRMED) {
+        await this.driverInventoryService.updateStatus(
+          dispatch.driverId,
+          scannedCanisters,
+          DriverInventoryStatus.IN_TRANSIT
         );
       }
 
-      // Group scanned canisters by catalogue
-      const scannedInventoryItems = await this.inventoryItemModel.findAll({
-        where: { id: scannedCanisters },
-        include: [
-          {
-            model: InventoryModel,
-            include: [CatalogueModel],
-          },
-        ],
-        transaction,
-      });
-
-      const scannedQuantities = new Map<string, number>();
-      scannedInventoryItems.forEach((inventoryItem) => {
-        console.log(inventoryItem);
-        const current = scannedQuantities.get(inventoryItem.inventory.id) || 0;
-        scannedQuantities.set(inventoryItem.inventory.id, current + 1);
-      });
-
-      // Validate quantities match order items
-      for (const order of dispatch.orders) {
-        for (const item of order.items) {
-          const scannedQty = scannedQuantities.get(item.inventoryId) || 0;
-          if (Number(scannedQty) !== Number(item.quantity)) {
-            throw new BadRequestException(
-              `Scanned quantity (${scannedQty}) does not match order quantity (${item.quantity}) for catalogue ${item.inventoryId}`
-            );
-          }
-        }
-      }
-
-      // Update dispatch status and timestamp
-
-      switch (dispatchStatus) {
-        case DispatchStatus.DEPOT_TO_DRIVER_CONFIRMED:
-          await dispatch.update(
-            {
-              depotToDriverConfirmedAt: new Date(),
-              status: DispatchStatus.DEPOT_TO_DRIVER_CONFIRMED,
-            },
-            { transaction }
-          );
-          break;
-        case DispatchStatus.DRIVER_FROM_DEPOT_CONFIRMED:
-          await dispatch.update(
-            {
-              driverFromDepotConfirmedAt: new Date(),
-              status: DispatchStatus.DRIVER_FROM_DEPOT_CONFIRMED,
-            },
-            { transaction }
-          );
-          break;
-      }
+      // Update dispatch status
+      await dispatch.update(
+        {
+          status: dispatchStatus,
+          ...(dispatchStatus === DispatchStatus.DEPOT_TO_DRIVER_CONFIRMED
+            ? { depotToDriverConfirmedAt: new Date() }
+            : { driverFromDepotConfirmedAt: new Date() }),
+        },
+        { transaction }
+      );
 
       await transaction?.commit();
-
       return dispatch;
     } catch (error) {
       await transaction?.rollback();

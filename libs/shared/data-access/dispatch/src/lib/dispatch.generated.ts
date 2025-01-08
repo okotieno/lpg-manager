@@ -3,26 +3,28 @@ import * as Types from '@lpg-manager/types';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
+export type IDispatchDriverFragmentFragment = { id: string, user: { id: string, firstName: string, lastName: string } };
+
 export type ICreateDispatchMutationVariables = Types.Exact<{
   params: Types.ICreateDispatchInput;
 }>;
 
 
-export type ICreateDispatchMutation = { createDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
+export type ICreateDispatchMutation = { createDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
 
 export type IGetDispatchByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetDispatchByIdQuery = { dispatch?: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number, items: Array<{ id: string, quantity: number, catalogue: { id: string, name: string, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> }> } | null };
+export type IGetDispatchByIdQuery = { dispatch?: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number, items: Array<{ id: string, quantity: number, catalogue: { id: string, name: string, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null> }> } | null };
 
 export type IGetDispatchesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetDispatchesQuery = { dispatches: { items?: Array<{ id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetDispatchesQuery = { dispatches: { items?: Array<{ id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteDispatchByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -37,15 +39,25 @@ export type IUpdateDispatchMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateDispatchMutation = { updateDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
+export type IUpdateDispatchMutation = { updateDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
 
 export type IScanConfirmMutationVariables = Types.Exact<{
   params: Types.IDepotToDriverConfirmInput;
 }>;
 
 
-export type IScanConfirmMutation = { scanConfirm: { message: string, data: { id: string, status: Types.IDispatchStatus, depotToDriverConfirmedAt?: string | null, dispatchDate: string, transporter: { id: string, name: string }, driver: { id: string, user: { firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
+export type IScanConfirmMutation = { scanConfirm: { message: string, data: { id: string, status: Types.IDispatchStatus, depotToDriverConfirmedAt?: string | null, dispatchDate: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
 
+export const DispatchDriverFragmentFragmentDoc = gql`
+    fragment dispatchDriverFragment on DriverModel {
+  id
+  user {
+    id
+    firstName
+    lastName
+  }
+}
+    `;
 export const CreateDispatchDocument = gql`
     mutation CreateDispatch($params: CreateDispatchInput!) {
   createDispatch(params: $params) {
@@ -62,11 +74,7 @@ export const CreateDispatchDocument = gql`
         name
       }
       driver {
-        id
-        user {
-          firstName
-          lastName
-        }
+        ...dispatchDriverFragment
       }
       vehicle {
         id
@@ -82,7 +90,7 @@ export const CreateDispatchDocument = gql`
     }
   }
 }
-    `;
+    ${DispatchDriverFragmentFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
@@ -108,11 +116,7 @@ export const GetDispatchByIdDocument = gql`
       name
     }
     driver {
-      id
-      user {
-        firstName
-        lastName
-      }
+      ...dispatchDriverFragment
     }
     vehicle {
       id
@@ -137,7 +141,7 @@ export const GetDispatchByIdDocument = gql`
     updatedAt
   }
 }
-    `;
+    ${DispatchDriverFragmentFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
@@ -164,11 +168,7 @@ export const GetDispatchesDocument = gql`
         name
       }
       driver {
-        id
-        user {
-          firstName
-          lastName
-        }
+        ...dispatchDriverFragment
       }
       vehicle {
         id
@@ -187,7 +187,7 @@ export const GetDispatchesDocument = gql`
     }
   }
 }
-    `;
+    ${DispatchDriverFragmentFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
@@ -233,11 +233,7 @@ export const UpdateDispatchDocument = gql`
         name
       }
       driver {
-        id
-        user {
-          firstName
-          lastName
-        }
+        ...dispatchDriverFragment
       }
       vehicle {
         id
@@ -253,7 +249,7 @@ export const UpdateDispatchDocument = gql`
     }
   }
 }
-    `;
+    ${DispatchDriverFragmentFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
@@ -279,11 +275,7 @@ export const ScanConfirmDocument = gql`
         name
       }
       driver {
-        id
-        user {
-          firstName
-          lastName
-        }
+        ...dispatchDriverFragment
       }
       vehicle {
         id
@@ -297,7 +289,7 @@ export const ScanConfirmDocument = gql`
     }
   }
 }
-    `;
+    ${DispatchDriverFragmentFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'

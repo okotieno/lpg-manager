@@ -34,3 +34,4 @@ circle-info
 bell-slash
 copy
 handshake
+scanner-gun

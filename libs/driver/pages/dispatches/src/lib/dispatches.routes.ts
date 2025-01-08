@@ -56,6 +56,24 @@ export const DISPATCHES_ROUTES: Routes = [
         path: 'confirm-load',
         loadComponent: () => import('./confirm-load/confirm-load.component'),
       },
+      {
+        path: 'deliver',
+        loadComponent: () => import('./deliver/deliver.component'),
+        data: {
+          routeLabel: 'Deliver Orders',
+          breadcrumbs: [
+            {
+              label: 'Dispatches',
+              path: ['/dashboard', 'dispatches'],
+            },
+            {
+              label: ':dispatchName',
+              path: ['/dashboard', 'dispatches', ':dispatchId'],
+            },
+            { label: 'Deliver' },
+          ],
+        },
+      },
     ],
   },
 ];
