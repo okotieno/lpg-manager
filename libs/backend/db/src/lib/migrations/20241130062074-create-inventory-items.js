@@ -20,6 +20,17 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
+      inventoryChangeId: {
+        field: 'inventory_change_id',
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'inventory_changes',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
       serialNumber: {
         field: 'serial_number',
         type: Sequelize.STRING,
@@ -85,4 +96,4 @@ module.exports = {
   async down(queryInterface) {
     await queryInterface.dropTable('inventory_items');
   },
-}; 
+};

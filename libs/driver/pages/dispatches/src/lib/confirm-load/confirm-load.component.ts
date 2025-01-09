@@ -29,6 +29,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
 import { IDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
+import { JsonPipe } from '@angular/common';
 
 interface ScanSummaryItem {
   catalogueId: string;
@@ -64,6 +65,7 @@ interface ScanSummaryItem {
     IonCol,
     RouterLink,
     IonText,
+    JsonPipe,
   ],
   templateUrl: './confirm-load.component.html',
   styleUrl: './confirm-load.component.scss',
@@ -181,7 +183,7 @@ export default class ConfirmLoadComponent {
     await this.#dispatchStore.scanConfirm({
       dispatchId: this.dispatch()?.id as string,
       scannedCanisters: this.scannedCanisters(),
-      dispatchStatus: IDispatchStatus.DriverFromDepotConfirmed
+      dispatchStatus: IDispatchStatus.DriverFromDepotConfirmed,
     });
   }
 }

@@ -39,7 +39,7 @@ export class InventoryResolver {
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.CreateInventory)
-  async createInventory(
+   async createInventory(
     @Body('params', new ValidationPipe()) params: CreateInventoryInputDto,
     @CurrentUser() user: UserModel
   ) {

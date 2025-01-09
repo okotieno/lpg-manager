@@ -28,6 +28,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
 import { IDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
+import { JsonPipe } from '@angular/common';
 
 interface ScanSummaryItem {
   catalogueId: string;
@@ -62,6 +63,7 @@ interface ScanSummaryItem {
     IonRow,
     IonCol,
     RouterLink,
+    JsonPipe,
   ],
   templateUrl: './assign-load.component.html',
   styleUrl: './assign-load.component.scss',
@@ -74,15 +76,7 @@ export default class AssignLoadComponent {
   #router = inject(Router);
   #fb = inject(FormBuilder);
   #dispatchStore = inject(DispatchStore);
-  scannerForm = this.#fb.group({
-    canisters: [
-      [
-        'cd14e9e1-220a-41eb-ba3b-915d062e7aec',
-        '656429d9-06b9-4adb-aef3-b69ec3e1308c',
-        '03880912-2071-4953-8440-7e3f00fbd19a',
-      ] as string[],
-    ],
-  });
+  scannerForm = this.#fb.group({ canisters: [[] as string[]] });
 
   scannedCanisters = signal([] as string[]);
   validatedScannedCanisters = computed(() => {
@@ -176,7 +170,7 @@ export default class AssignLoadComponent {
   async depotToDriverConfirm() {
     if (!this.dispatch()) return;
 
-   await this.#dispatchStore.scanConfirm({
+    await this.#dispatchStore.scanConfirm({
       dispatchId: this.dispatch()?.id as string,
       scannedCanisters: this.scannedCanisters(),
       dispatchStatus: IDispatchStatus.DepotToDriverConfirmed,

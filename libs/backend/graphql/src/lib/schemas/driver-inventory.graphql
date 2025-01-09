@@ -1,0 +1,51 @@
+enum  DriverInventoryStatus {
+  ASSIGNED
+  IN_TRANSIT
+  DELIVERED
+  RETURNED
+}
+type DriverInventoryModel {
+  id: UUID!
+  driverId: UUID!
+  inventoryItemId: UUID!
+  dispatchId: UUID!
+  status: DriverInventoryStatus!
+  assignedAt: DateTime
+  returnedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateDriverInventoryInput {
+  driverId: UUID!
+  inventoryItemId: UUID!
+  dispatchId: UUID!
+  status: DriverInventoryStatus!
+  assignedAt: DateTime
+}
+
+input UpdateDriverInventoryInput {
+  status: DriverInventoryStatus
+  returnedAt: DateTime
+}
+
+type PaginatedDriverInventory {
+  items: [DriverInventoryModel]
+  meta: Pagination
+}
+
+type CreateDriverInventorySuccessResponse {
+  message: String!
+  data: DriverInventoryModel!
+}
+
+extend type Query {
+  driverInventories(query: QueryParams): PaginatedDriverInventory!
+  driverInventory(id: UUID!): DriverInventoryModel
+}
+
+extend type Mutation {
+  createDriverInventory(params: CreateDriverInventoryInput!): CreateDriverInventorySuccessResponse!
+  updateDriverInventory(id: UUID!, params: UpdateDriverInventoryInput): CreateDriverInventorySuccessResponse
+  deleteDriverInventory(id: UUID!): DeleteSuccessResponse!
+}

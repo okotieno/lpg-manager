@@ -32,7 +32,7 @@ const rolePermissions = {
     // Notification
     'mark notification as read',
     // Dispatch Management
-    'create dispatch', 'delete dispatch', 'update dispatch', 'view dispatch',
+    'create dispatch', 'delete dispatch', 'update dispatch', 'view dispatch', 'confirm via scanning',
     // Driver Management
     'create driver', 'delete driver', 'update driver', 'view driver',
     // Transporter Management
@@ -44,6 +44,7 @@ const rolePermissions = {
     'access dealer app',
     // Activity Log
     'create activity log', 'delete activity log', 'update activity log',
+    // Inventory Management
     'create inventory', 'delete inventory', 'update inventory',
     // Cart
     'create cart', 'update cart', 'delete cart',
@@ -51,6 +52,9 @@ const rolePermissions = {
     'create order', 'update order', 'delete order',
     // Notification
     'mark notification as read',
+    // Dispatch Management
+    'confirm via scanning'
+
   ],
 
   ['admin depot']: [
@@ -63,7 +67,7 @@ const rolePermissions = {
     // Notification
     'mark notification as read',
     // Dispatch Management
-    'create dispatch', 'delete dispatch', 'update dispatch', 'view dispatch',
+    'create dispatch', 'delete dispatch', 'update dispatch', 'view dispatch', 'confirm via scanning',
     // Transporter
     'view transporter',
     // Driver
@@ -78,6 +82,9 @@ const rolePermissions = {
 
     // Dispatch
     'view dispatch',
+
+    // Dispatch Management
+    'confirm via scanning'
   ],
 };
 

@@ -81,6 +81,7 @@ export class InventoryService extends CrudAbstractService<InventoryModel> {
         { transaction }
       );
 
+
       // Create individual inventory items
       const items = Array.from({ length: data.quantity }).map((_, index) => ({
         inventoryId: inventory.id,
@@ -92,6 +93,8 @@ export class InventoryService extends CrudAbstractService<InventoryModel> {
         expiryDate: data.expiryDate,
         createdBy: data.userId,
       }));
+
+      console.log(items)
 
       await this.inventoryItemModel.bulkCreate(items, { transaction });
 

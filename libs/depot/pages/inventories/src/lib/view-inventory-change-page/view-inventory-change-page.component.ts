@@ -47,7 +47,7 @@ export default class ViewInventoryChangePageComponent {
   printQRCode() {
     const printWindow = window.open('', '_blank');
     printWindow?.document.write(
-      `<html lang="en"><body style="display: flex; flex-wrap: wrap">${this.qrCodesWrappers()
+      `<html lang="en"><body style="display: flex; flex-wrap: wrap; align-content: start">${this.qrCodesWrappers()
         .map((e) => e.nativeElement.innerHTML)
         .join('')}</body></html>`
     );

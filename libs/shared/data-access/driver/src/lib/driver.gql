@@ -25,6 +25,7 @@ query GetDriverById($id: UUID!) {
   driver(id: $id) {
     id
     user {
+      id
       firstName
       lastName
       phone

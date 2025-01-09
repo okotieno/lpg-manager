@@ -40,7 +40,6 @@ export class InventoryItemModel extends Model {
   })
   inventoryId!: string;
 
-
   @ForeignKey(() => InventoryChangeModel)
   @Column({
     type: DataType.UUID,

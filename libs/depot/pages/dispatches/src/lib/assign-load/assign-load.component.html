@@ -42,7 +42,11 @@
           <ion-label>
             {{ validatedScan.inventory?.catalogue?.name }}
           </ion-label>
-          <ion-icon slot="end" name="check" color="success" />
+          @if (validatedScan.inventory) {
+            <ion-icon slot="end" name="check" color="success" />
+          } @else {
+            <ion-icon slot="end" name="triangle-exclamation" color="danger" />
+          }
         </ion-item>
       }
     </ion-list>
