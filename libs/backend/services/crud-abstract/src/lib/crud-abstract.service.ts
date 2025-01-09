@@ -54,9 +54,11 @@ export abstract class CrudAbstractService<T extends Model> {
         };
       }
       if (filter.operator === QueryOperatorEnum.In) {
-        where[filter.field] = {
-          [Op.in]: listValues,
-        };
+        if(listValues.filter(x => !!x).length > 0) {
+          where[filter.field] = {
+            [Op.in]: listValues.filter(x => !!x),
+          };
+        }
       }
 
       if (filter.operator === QueryOperatorEnum.Between) {
