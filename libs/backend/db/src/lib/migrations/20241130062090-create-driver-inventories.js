@@ -3,6 +3,8 @@
 const DriverInventoryStatus = {
   ASSIGNED: 'ASSIGNED',
   IN_TRANSIT: 'IN_TRANSIT',
+  DRIVER_CONFIRMED: 'DRIVER_CONFIRMED',
+  DEALER_CONFIRMED: 'DEALER_CONFIRMED',
   DELIVERED: 'DELIVERED',
   RETURNED: 'RETURNED',
 };
@@ -61,6 +63,27 @@ module.exports = {
         type: DataTypes.DATE,
         allowNull: true,
       },
+      driverToDealerConfirmedAt: {
+        field: 'driver_to_dealer_confirmed_at',
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      dealerFromDriverConfirmedAt: {
+        field: 'dealer_from_driver_confirmed_at',
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      recipientStationId: {
+        field: 'recipient_station_id',
+        type: DataTypes.UUID,
+        allowNull: true,
+        references: {
+          model: 'stations',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
       created_at: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -78,6 +101,7 @@ module.exports = {
     await queryInterface.addIndex('driver_inventories', ['inventory_item_id']);
     await queryInterface.addIndex('driver_inventories', ['dispatch_id']);
     await queryInterface.addIndex('driver_inventories', ['status']);
+    await queryInterface.addIndex('driver_inventories', ['recipient_station_id']);
   },
 
   async down(queryInterface) {

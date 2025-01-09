@@ -45,7 +45,7 @@ export type IUpdateDispatchMutationVariables = Types.Exact<{
 export type IUpdateDispatchMutation = { updateDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
 
 export type IScanConfirmMutationVariables = Types.Exact<{
-  params: Types.IDepotToDriverConfirmInput;
+  params: Types.IScanConfirmInput;
 }>;
 
 
@@ -275,7 +275,7 @@ export const UpdateDispatchDocument = gql`
     }
   }
 export const ScanConfirmDocument = gql`
-    mutation ScanConfirm($params: DepotToDriverConfirmInput!) {
+    mutation ScanConfirm($params: ScanConfirmInput!) {
   scanConfirm(params: $params) {
     message
     data {

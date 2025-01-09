@@ -46,6 +46,7 @@ query GetDrivers($query: QueryParams) {
     items {
       id
       user {
+        id
         firstName
         lastName
         phone
@@ -77,6 +78,7 @@ mutation UpdateDriver($id: UUID!, $params: UpdateDriverInput!) {
     data {
       id
       user {
+        id
         firstName
         lastName
         phone

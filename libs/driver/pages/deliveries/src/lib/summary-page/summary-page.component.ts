@@ -18,13 +18,19 @@ import {
   IonListHeader,
   IonRow,
 } from '@ionic/angular/standalone';
-import { IGetDispatchByIdQuery } from '@lpg-manager/dispatch-store';
-import { JsonPipe } from '@angular/common';
+import {
+  DispatchStore,
+  IGetDispatchByIdQuery,
+} from '@lpg-manager/dispatch-store';
 import { ScannerInputComponent } from '@lpg-manager/scanner-input';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { IQueryOperatorEnum } from '@lpg-manager/types';
+import {
+  IDispatchStatus,
+  IQueryOperatorEnum,
+  IScanConfirmDriverInventoryStatus,
+} from '@lpg-manager/types';
 import { DriverInventoryStore } from '@lpg-manager/driver-inventory-store';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
@@ -62,12 +68,13 @@ interface SummarizedCatalogue {
     UUIDDirective,
     IonBadge,
   ],
-  providers: [DriverInventoryStore],
+  providers: [DriverInventoryStore, DispatchStore],
 })
 export default class SummaryPageComponent {
   #fb = inject(FormBuilder);
   #authStore = inject(AuthStore);
   #driverInventoryStore = inject(DriverInventoryStore);
+  #dispatchStore = inject(DispatchStore);
 
   driverInventories = this.#driverInventoryStore.searchedItemsEntities;
 
@@ -108,8 +115,15 @@ export default class SummaryPageComponent {
     return catalogueSummary;
   });
 
-  totalOrderQuantity = computed(() => this.dealerOrders().reduce((total, order) => total + order.quantity, 0))
+  totalOrderQuantity = computed(() =>
+    this.dealerOrders().reduce((total, order) => total + order.quantity, 0)
+  );
   scannedItems = signal([] as string[]);
+  scannedDriverInventories = computed(() =>
+    this.driverInventories().filter((inventory) => {
+      return this.scannedItems().includes(inventory.inventoryItem.id);
+    })
+  );
 
   scanSummary = computed(() => {
     return this.dealerOrders().map((order) => {
@@ -119,12 +133,7 @@ export default class SummaryPageComponent {
       const orderQuantity = order.quantity;
 
       // Find how many scanned items match the dealer order catalogueId
-      const scannedQuantity = this.driverInventories().filter((inventory) => {
-        return (
-          inventory.inventoryItem.inventory.catalogue.id === catalogueId &&
-          this.scannedItems().includes(inventory.inventoryItem.id)
-        );
-      }).length;
+      const scannedQuantity = this.scannedDriverInventories().length;
 
       // Return the summary object
       return {
@@ -157,7 +166,7 @@ export default class SummaryPageComponent {
           if (canisters) {
             this.scannedItems.set(canisters);
 
-            if(this.totalOrderQuantity() === this.scannedItems().length) {
+            if (this.totalOrderQuantity() === this.scannedItems().length) {
               this.validateScans();
             }
           }
@@ -167,8 +176,19 @@ export default class SummaryPageComponent {
       .subscribe();
   }
 
-  driverToDealerConfirm() {
-    // Logic to initiate scanning
+  async driverToDealerConfirm() {
+    const scannedCanisters = this.scannedItems(); // Assuming this holds the scanned canisters
+    const dispatchId = this.dispatch()?.id as string;
+
+    const driverInventories = this.scannedDriverInventories().map(({ id }) => ({ id }));
+
+    await this.#dispatchStore.scanConfirm({
+      dispatchId,
+      scannedCanisters,
+      dispatchStatus: IDispatchStatus.InTransit,
+      driverInventories,
+      driverInventoryStatus: IScanConfirmDriverInventoryStatus.DriverConfirmed
+    });
   }
 
   validateScans() {

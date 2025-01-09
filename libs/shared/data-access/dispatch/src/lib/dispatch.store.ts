@@ -13,7 +13,7 @@ import {
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 import { lastValueFrom, tap } from 'rxjs';
 import { SHOW_SUCCESS_MESSAGE, SHOW_ERROR_MESSAGE } from '@lpg-manager/injection-token';
-import { IDispatchStatus } from '@lpg-manager/types';
+import { IDispatchStatus, IScanConfirmInput } from '@lpg-manager/types';
 
 export const DispatchStore = signalStore(
   withProps(() => ({
@@ -35,11 +35,7 @@ export const DispatchStore = signalStore(
     'deleteDispatch'
   >(),
   withMethods((store) => ({
-    scanConfirm(params: {
-      dispatchId: string;
-      scannedCanisters: string[],
-      dispatchStatus: IDispatchStatus
-    }) {
+    scanConfirm(params: IScanConfirmInput) {
       return lastValueFrom(
         store._scanConfirmGQL
           .mutate(

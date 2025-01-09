@@ -1,13 +1,6 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import {
-  DispatchModel,
-  OrderModel,
-  OrderItemModel,
-} from '@lpg-manager/db';
+import { DispatchModel, OrderModel, OrderItemModel } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -21,7 +14,7 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
     @InjectModel(DispatchModel) private dispatchModel: typeof DispatchModel,
     @InjectModel(OrderModel) private orderModel: typeof OrderModel,
     private eventEmitter: EventEmitter2,
-    private driverInventoryService: DriverInventoryService,
+    private driverInventoryService: DriverInventoryService
   ) {
     super(dispatchModel);
   }
@@ -74,7 +67,9 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
   async scanConfirm(
     dispatchId: string,
     scannedCanisters: string[],
-    dispatchStatus: DispatchStatus
+    dispatchStatus: DispatchStatus,
+    driverInventories: { id: string }[],
+    driverInventoryStatus: DriverInventoryStatus
   ) {
     const transaction = await this.dispatchModel.sequelize?.transaction();
 
@@ -90,7 +85,9 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
       });
 
       if (!dispatch) {
-        throw new NotFoundException(`Dispatch with ID "${dispatchId}" not found`);
+        throw new NotFoundException(
+          `Dispatch with ID "${dispatchId}" not found`
+        );
       }
 
       // Validate quantities...
@@ -114,15 +111,31 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
       }
 
       // Update dispatch status
-      await dispatch.update(
-        {
-          status: dispatchStatus,
-          ...(dispatchStatus === DispatchStatus.DEPOT_TO_DRIVER_CONFIRMED
-            ? { depotToDriverConfirmedAt: new Date() }
-            : { driverFromDepotConfirmedAt: new Date() }),
-        },
-        { transaction }
-      );
+
+      if (
+        dispatchStatus === DispatchStatus.DRIVER_FROM_DEPOT_CONFIRMED ||
+        dispatchStatus === DispatchStatus.DEPOT_TO_DRIVER_CONFIRMED
+      ) {
+        await dispatch.update(
+          {
+            status: dispatchStatus,
+            ...(dispatchStatus === DispatchStatus.DEPOT_TO_DRIVER_CONFIRMED
+              ? { depotToDriverConfirmedAt: new Date() }
+              : { driverFromDepotConfirmedAt: new Date() }),
+          },
+          { transaction }
+        );
+      }
+
+      if (dispatchStatus === DispatchStatus.IN_TRANSIT) {
+        await this.driverInventoryService.updateStatus(
+          dispatch.driverId,
+          driverInventories.map((di) => di.id),
+          driverInventoryStatus
+        );
+      }
+
+      console.log({ dispatchStatus });
 
       await transaction?.commit();
       return dispatch;

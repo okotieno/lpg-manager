@@ -9,11 +9,14 @@ import {
 import { InventoryItemModel } from './inventory-item.model';
 import { DriverModel } from './driver.model';
 import { DispatchModel } from './dispatch.model';
+import { StationModel } from './station.model';
 
 export enum DriverInventoryStatus {
   ASSIGNED = 'ASSIGNED',      // Driver has received the canister
   IN_TRANSIT = 'IN_TRANSIT',  // Canister is being transported
   DELIVERED = 'DELIVERED',    // Canister was delivered to customer
+  DRIVER_CONFIRMED = 'DRIVER_CONFIRMED',
+  DEALER_CONFIRMED = 'DEALER_CONFIRMED',
   RETURNED = 'RETURNED'       // Canister was returned to depot
 }
 
@@ -78,4 +81,27 @@ export class DriverInventoryModel extends Model {
 
   @BelongsTo(() => DispatchModel)
   dispatch!: DispatchModel;
-} 
+
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  driverToDealerConfirmedAt?: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  dealerFromDriverConfirmedAt?: Date;
+
+  @ForeignKey(() => StationModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: true,
+  })
+  recipientStationId?: string;
+
+  @BelongsTo(() => StationModel)
+  recipientStation!: StationModel;
+}

@@ -16,6 +16,7 @@ type DispatchModel {
   status: DispatchStatus!
   dispatchDate: DateTime!
   depotToDriverConfirmedAt: DateTime
+  driverFromDepotConfirmedAt: DateTime
   transporter: TransporterModel!
   driver: DriverModel!
   vehicle: VehicleModel!
@@ -47,10 +48,18 @@ type CreateDispatchSuccessResponse {
   data: DispatchModel!
 }
 
-input DepotToDriverConfirmInput {
+enum ScanConfirmDriverInventoryStatus {
+  DRIVER_CONFIRMED
+  DEALER_CONFIRMED
+}
+
+input ScanConfirmInput {
   dispatchId: UUID!
   scannedCanisters: [UUID!]!
   dispatchStatus: DispatchStatus!
+  driverInventories: [SelectCategory]
+  driverInventoryStatus: ScanConfirmDriverInventoryStatus
+  depotId: SelectCategory
 }
 
 extend type Query {
@@ -62,5 +71,5 @@ extend type Mutation {
   createDispatch(params: CreateDispatchInput!): CreateDispatchSuccessResponse!
   updateDispatch(id: UUID!, params: UpdateDispatchInput!): CreateDispatchSuccessResponse!
   deleteDispatch(id: UUID!): DeleteSuccessResponse!
-  scanConfirm(params: DepotToDriverConfirmInput!): CreateDispatchSuccessResponse!
+  scanConfirm(params: ScanConfirmInput!): CreateDispatchSuccessResponse!
 }

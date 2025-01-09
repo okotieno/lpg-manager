@@ -157,7 +157,7 @@ mutation UpdateDispatch($id: UUID!, $params: UpdateDispatchInput!) {
   }
 }
 
-mutation ScanConfirm($params: DepotToDriverConfirmInput!) {
+mutation ScanConfirm($params: ScanConfirmInput!) {
   scanConfirm(params: $params) {
     message
     data {

@@ -73,8 +73,8 @@ module.exports = {
         allowNull: true,
       },
 
-      driverFromDealerConfirmedAt: {
-        field: 'driver_from_dealer_confirmed_at',
+      driverFromDepotConfirmedAt: {
+        field: 'driver_from_depot_confirmed_at',
         type: Sequelize.DATE,
         allowNull: true,
       },

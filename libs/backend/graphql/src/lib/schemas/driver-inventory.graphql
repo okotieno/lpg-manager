@@ -3,6 +3,8 @@ enum  DriverInventoryStatus {
   IN_TRANSIT
   DELIVERED
   RETURNED
+  DRIVER_CONFIRMED
+  DEALER_CONFIRMED
 }
 type DriverInventoryModel {
   id: UUID!

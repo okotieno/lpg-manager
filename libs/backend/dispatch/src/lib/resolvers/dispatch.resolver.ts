@@ -21,7 +21,7 @@ import {
   Permissions,
   PermissionsEnum,
 } from '@lpg-manager/permission-service';
-import { DealerToDriverConfirmDto } from '../dto/complete-dispatch.dto';
+import { ScanConfirmDto } from '../dto/scan-confirm.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Resolver(() => DispatchModel)
@@ -113,13 +113,15 @@ export class DispatchResolver {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Permissions(PermissionsEnum.ConfirmViaScanning)
   async scanConfirm(
-    @Args('params') params: DealerToDriverConfirmDto,
+    @Args('params') params: ScanConfirmDto,
     @CurrentUser() currentUser: UserModel
   ) {
     const dispatch = await this.dispatchService.scanConfirm(
       params.dispatchId,
       params.scannedCanisters,
-      params.dispatchStatus
+      params.dispatchStatus,
+      params.driverInventories,
+      params.driverInventoryStatus
     );
 
     this.eventEmitter.emit('dispatch.completed', {

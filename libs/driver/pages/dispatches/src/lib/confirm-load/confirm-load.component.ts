@@ -79,13 +79,7 @@ export default class ConfirmLoadComponent {
   #fb = inject(FormBuilder);
   #dispatchStore = inject(DispatchStore);
   scannerForm = this.#fb.group({
-    canisters: [[
-      'ce91ebd3-df9c-4636-97d7-f236e8212b55',
-      'c9324cfe-2b0b-4ba9-a63b-0046494682d8',
-      '0d48805f-056e-47ae-a052-7b627862dc12',
-      '48174fea-712f-49b3-b82b-ab10925703af'
-
-    ] as string[]],
+    canisters: [[] as string[]],
   });
 
   scannedCanisters = signal([] as string[]);
@@ -109,7 +103,11 @@ export default class ConfirmLoadComponent {
   async confirmAssignment() {
     const dispatchId = this.dispatch()?.id;
     if (dispatchId) {
-      // await this.#dispatchStore.updateDispatchStatus(dispatchId, 'IN_TRANSIT');
+      await this.#dispatchStore.scanConfirm({
+        dispatchId: dispatchId,
+        scannedCanisters: this.scannedCanisters(),
+        dispatchStatus: IDispatchStatus.InTransit,
+      });
       // await this.#router.navigate(['../'], { relativeTo: this.#route });
     }
   }

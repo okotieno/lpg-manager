@@ -381,17 +381,12 @@ export type IDeleteSuccessResponse = {
   message: Scalars['String']['output'];
 };
 
-export type IDepotToDriverConfirmInput = {
-  dispatchId: Scalars['UUID']['input'];
-  dispatchStatus: IDispatchStatus;
-  scannedCanisters: Array<Scalars['UUID']['input']>;
-};
-
 export type IDispatchModel = {
   createdAt: Scalars['DateTime']['output'];
   depotToDriverConfirmedAt?: Maybe<Scalars['DateTime']['output']>;
   dispatchDate: Scalars['DateTime']['output'];
   driver: IDriverModel;
+  driverFromDepotConfirmedAt?: Maybe<Scalars['DateTime']['output']>;
   driverId: Scalars['UUID']['output'];
   id: Scalars['UUID']['output'];
   orders: Array<IOrderModel>;
@@ -428,7 +423,9 @@ export type IDriverInventoryModel = {
 
 export enum IDriverInventoryStatus {
   Assigned = 'ASSIGNED',
+  DealerConfirmed = 'DEALER_CONFIRMED',
   Delivered = 'DELIVERED',
+  DriverConfirmed = 'DRIVER_CONFIRMED',
   InTransit = 'IN_TRANSIT',
   Returned = 'RETURNED'
 }
@@ -892,7 +889,7 @@ export type IMutationRequestAccessTokenArgs = {
 
 
 export type IMutationScanConfirmArgs = {
-  params: IDepotToDriverConfirmInput;
+  params: IScanConfirmInput;
 };
 
 
@@ -1610,6 +1607,20 @@ export type IRoleModel = {
   name: Scalars['String']['output'];
   permissions?: Maybe<Array<Maybe<IPermissionModel>>>;
   stationId: Scalars['UUID']['output'];
+};
+
+export enum IScanConfirmDriverInventoryStatus {
+  DealerConfirmed = 'DEALER_CONFIRMED',
+  DriverConfirmed = 'DRIVER_CONFIRMED'
+}
+
+export type IScanConfirmInput = {
+  depotId?: InputMaybe<ISelectCategory>;
+  dispatchId: Scalars['UUID']['input'];
+  dispatchStatus: IDispatchStatus;
+  driverInventories?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
+  driverInventoryStatus?: InputMaybe<IScanConfirmDriverInventoryStatus>;
+  scannedCanisters: Array<Scalars['UUID']['input']>;
 };
 
 export type ISelectCategory = {
