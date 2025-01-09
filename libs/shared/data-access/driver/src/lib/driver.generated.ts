@@ -15,7 +15,7 @@ export type IGetDriverByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetDriverByIdQuery = { driver?: { id: string, licenseNumber: string, createdAt: string, updatedAt: string, user: { firstName: string, lastName: string, phone?: string | null, email: string }, transporter: { id: string, name: string } } | null };
+export type IGetDriverByIdQuery = { driver?: { id: string, licenseNumber: string, createdAt: string, updatedAt: string, user: { id: string, firstName: string, lastName: string, phone?: string | null, email: string }, transporter: { id: string, name: string } } | null };
 
 export type IGetDriversQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
@@ -79,6 +79,7 @@ export const GetDriverByIdDocument = gql`
   driver(id: $id) {
     id
     user {
+      id
       firstName
       lastName
       phone

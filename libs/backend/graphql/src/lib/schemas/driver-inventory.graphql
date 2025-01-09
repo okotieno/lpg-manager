@@ -8,6 +8,7 @@ type DriverInventoryModel {
   id: UUID!
   driverId: UUID!
   inventoryItemId: UUID!
+  inventoryItem: InventoryItemModel!
   dispatchId: UUID!
   status: DriverInventoryStatus!
   assignedAt: DateTime

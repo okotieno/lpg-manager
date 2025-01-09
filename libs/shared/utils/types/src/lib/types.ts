@@ -185,6 +185,19 @@ export type ICreateDriverInput = {
   transporterId: Scalars['UUID']['input'];
 };
 
+export type ICreateDriverInventoryInput = {
+  assignedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  dispatchId: Scalars['UUID']['input'];
+  driverId: Scalars['UUID']['input'];
+  inventoryItemId: Scalars['UUID']['input'];
+  status: IDriverInventoryStatus;
+};
+
+export type ICreateDriverInventorySuccessResponse = {
+  data: IDriverInventoryModel;
+  message: Scalars['String']['output'];
+};
+
 export type ICreateDriverSuccessResponse = {
   data: IDriverModel;
   message: Scalars['String']['output'];
@@ -400,6 +413,26 @@ export enum IDispatchStatus {
   Pending = 'PENDING'
 }
 
+export type IDriverInventoryModel = {
+  assignedAt?: Maybe<Scalars['DateTime']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  dispatchId: Scalars['UUID']['output'];
+  driverId: Scalars['UUID']['output'];
+  id: Scalars['UUID']['output'];
+  inventoryItem: IInventoryItemModel;
+  inventoryItemId: Scalars['UUID']['output'];
+  returnedAt?: Maybe<Scalars['DateTime']['output']>;
+  status: IDriverInventoryStatus;
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export enum IDriverInventoryStatus {
+  Assigned = 'ASSIGNED',
+  Delivered = 'DELIVERED',
+  InTransit = 'IN_TRANSIT',
+  Returned = 'RETURNED'
+}
+
 export type IDriverModel = {
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['UUID']['output'];
@@ -487,6 +520,7 @@ export type IMutation = {
   createCatalogue?: Maybe<ICreateCatalogueSuccessResponse>;
   createDispatch: ICreateDispatchSuccessResponse;
   createDriver: ICreateDriverSuccessResponse;
+  createDriverInventory: ICreateDriverInventorySuccessResponse;
   createInventory?: Maybe<ICreateInventorySuccessResponse>;
   createInventoryChange?: Maybe<ICreateInventoryChangeSuccessResponse>;
   createInventoryItem: ICreateInventoryItemSuccessResponse;
@@ -506,6 +540,7 @@ export type IMutation = {
   deleteCatalogue: IDeleteSuccessResponse;
   deleteDispatch: IDeleteSuccessResponse;
   deleteDriver: IDeleteSuccessResponse;
+  deleteDriverInventory: IDeleteSuccessResponse;
   deleteInventory: IDeleteSuccessResponse;
   deleteInventoryChange: IDeleteSuccessResponse;
   deleteInventoryItem: IDeleteSuccessResponse;
@@ -541,6 +576,7 @@ export type IMutation = {
   updateCatalogue?: Maybe<ICreateCatalogueSuccessResponse>;
   updateDispatch: ICreateDispatchSuccessResponse;
   updateDriver: ICreateDriverSuccessResponse;
+  updateDriverInventory?: Maybe<ICreateDriverInventorySuccessResponse>;
   updateInventory?: Maybe<ICreateInventorySuccessResponse>;
   updateInventoryChange?: Maybe<ICreateInventoryChangeSuccessResponse>;
   updateInventoryItem: ICreateInventoryItemSuccessResponse;
@@ -629,6 +665,11 @@ export type IMutationCreateDispatchArgs = {
 
 export type IMutationCreateDriverArgs = {
   params: ICreateDriverInput;
+};
+
+
+export type IMutationCreateDriverInventoryArgs = {
+  params: ICreateDriverInventoryInput;
 };
 
 
@@ -723,6 +764,11 @@ export type IMutationDeleteDispatchArgs = {
 
 
 export type IMutationDeleteDriverArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
+export type IMutationDeleteDriverInventoryArgs = {
   id: Scalars['UUID']['input'];
 };
 
@@ -897,6 +943,12 @@ export type IMutationUpdateDispatchArgs = {
 export type IMutationUpdateDriverArgs = {
   id: Scalars['UUID']['input'];
   params: IUpdateDriverInput;
+};
+
+
+export type IMutationUpdateDriverInventoryArgs = {
+  id: Scalars['UUID']['input'];
+  params?: InputMaybe<IUpdateDriverInventoryInput>;
 };
 
 
@@ -1133,6 +1185,11 @@ export type IPaginatedDriver = {
   meta?: Maybe<IPagination>;
 };
 
+export type IPaginatedDriverInventory = {
+  items?: Maybe<Array<Maybe<IDriverInventoryModel>>>;
+  meta?: Maybe<IPagination>;
+};
+
 export type IPaginatedFileUpload = {
   items?: Maybe<Array<Maybe<IFileUploadModel>>>;
   meta?: Maybe<IPagination>;
@@ -1247,6 +1304,8 @@ export type IQuery = {
   dispatch?: Maybe<IDispatchModel>;
   dispatches: IPaginatedDispatch;
   driver?: Maybe<IDriverModel>;
+  driverInventories: IPaginatedDriverInventory;
+  driverInventory?: Maybe<IDriverInventoryModel>;
   drivers: IPaginatedDriver;
   fileUploads: IPaginatedFileUpload;
   healthCheck?: Maybe<Scalars['String']['output']>;
@@ -1344,6 +1403,16 @@ export type IQueryDispatchesArgs = {
 
 
 export type IQueryDriverArgs = {
+  id: Scalars['UUID']['input'];
+};
+
+
+export type IQueryDriverInventoriesArgs = {
+  query?: InputMaybe<IQueryParams>;
+};
+
+
+export type IQueryDriverInventoryArgs = {
   id: Scalars['UUID']['input'];
 };
 
@@ -1665,6 +1734,11 @@ export type IUpdateDriverInput = {
   licenseNumber?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type IUpdateDriverInventoryInput = {
+  returnedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  status?: InputMaybe<IDriverInventoryStatus>;
 };
 
 export type IUpdateInventoryChangeInput = {

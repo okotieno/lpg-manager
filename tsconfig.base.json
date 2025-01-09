@@ -139,6 +139,9 @@
       "@lpg-manager/inventory-change-store": [
         "libs/shared/data-access/inventory-change/src/index.ts"
       ],
+      "@lpg-manager/driver-inventory-store": [
+        "libs/shared/data-access/driver-inventory/src/index.ts"
+      ],
       "@lpg-manager/notification": ["libs/backend/notification/src/index.ts"],
       "@lpg-manager/notification-component": [
         "libs/shared/components/notification/src/index.ts"

@@ -8,7 +8,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { computed, inject, InjectionToken, resource } from '@angular/core';
-import { Apollo, Mutation, MutationResult, Query } from 'apollo-angular';
+import { Mutation, MutationResult, Query } from 'apollo-angular';
 import {
   Exact,
   InputMaybe,
@@ -201,6 +201,7 @@ export const withPaginatedItemsStore = <
               )
               .pipe(
                 tap((result) => {
+                  console.log({ result });
                   if (result) {
                     const newItems = (
                       result.data[store._getItemsKey()].items ?? []
@@ -338,10 +339,10 @@ export const withPaginatedItemsStore = <
           refetchQueriesVariables,
         });
 
-        return store._createItemResource
+        return store._createItemResource;
       },
       refetchItems() {
         store._itemResource.reload();
-      }
+      },
     }))
   );

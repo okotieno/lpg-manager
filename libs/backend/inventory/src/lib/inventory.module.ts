@@ -5,6 +5,7 @@ import { CatalogueServiceModule } from '@lpg-manager/catalogue-service';
 import { StationServiceModule } from '@lpg-manager/station-service';
 import { InventoryChangeResolver } from './resolvers/inventory-change.resolver';
 import { InventoryItemResolver } from './resolvers/inventory-item.resolver';
+import { InventoryDriverResolver } from './resolvers/inventory-driver.resolver';
 
 @Module({
   imports: [
@@ -12,6 +13,11 @@ import { InventoryItemResolver } from './resolvers/inventory-item.resolver';
     StationServiceModule,
     CatalogueServiceModule,
   ],
-  providers: [InventoryResolver, InventoryChangeResolver, InventoryItemResolver],
+  providers: [
+    InventoryResolver,
+    InventoryChangeResolver,
+    InventoryItemResolver,
+    InventoryDriverResolver,
+  ],
 })
 export class InventoryModule {}

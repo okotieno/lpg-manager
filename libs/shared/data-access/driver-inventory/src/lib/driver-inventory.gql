@@ -1,0 +1,58 @@
+mutation CreateDriverInventory(
+  $params: CreateDriverInventoryInput!
+) {
+  createDriverInventory(
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}
+
+query GetDriverInventoryById($id: UUID!) {
+  driverInventory(id: $id) {
+    id
+  }
+}
+
+query GetDriverInventories($query: QueryParams) {
+  driverInventories(query: $query) {
+    items {
+      id
+      status
+      inventoryItem {
+        id
+        inventory {
+          id
+          catalogue {
+            id
+            name
+          }
+        }
+      }
+    }
+    meta {
+      totalItems
+    }
+  }
+}
+
+mutation DeleteDriverInventoryById($id: UUID!) {
+  deleteDriverInventory(id: $id) {
+    message
+  }
+}
+
+mutation UpdateDriverInventory($id: UUID!, $params: UpdateDriverInventoryInput!) {
+  updateDriverInventory(
+    id: $id
+    params: $params
+  ) {
+    message
+    data {
+      id
+    }
+  }
+}

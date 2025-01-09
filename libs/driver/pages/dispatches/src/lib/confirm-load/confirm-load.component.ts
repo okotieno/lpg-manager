@@ -30,6 +30,7 @@ import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
 import { IDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
 import { JsonPipe } from '@angular/common';
+import { DriverInventoryStore } from '@lpg-manager/driver-inventory-store';
 
 interface ScanSummaryItem {
   catalogueId: string;
@@ -69,31 +70,38 @@ interface ScanSummaryItem {
   ],
   templateUrl: './confirm-load.component.html',
   styleUrl: './confirm-load.component.scss',
-  providers: [DispatchStore, InventoryItemStore],
+  providers: [DispatchStore, DriverInventoryStore],
 })
 export default class ConfirmLoadComponent {
-  #route = inject(ActivatedRoute);
-  #inventoryItemStore = inject(InventoryItemStore);
-  searchedInventoryItem = this.#inventoryItemStore.searchedItemsEntities;
-  #router = inject(Router);
+  #driverInventoryStore = inject(DriverInventoryStore);
+  selectedDriverInventoryItems =
+    this.#driverInventoryStore.items;
   #fb = inject(FormBuilder);
   #dispatchStore = inject(DispatchStore);
   scannerForm = this.#fb.group({
-    canisters: [
-      [
-        'cd14e9e1-220a-41eb-ba3b-915d062e7aec',
-        '656429d9-06b9-4adb-aef3-b69ec3e1308c',
-        '03880912-2071-4953-8440-7e3f00fbd19a',
-      ] as string[],
-    ],
+    canisters: [[
+      'ce91ebd3-df9c-4636-97d7-f236e8212b55',
+      'c9324cfe-2b0b-4ba9-a63b-0046494682d8',
+      '0d48805f-056e-47ae-a052-7b627862dc12',
+      '48174fea-712f-49b3-b82b-ab10925703af'
+
+    ] as string[]],
   });
 
   scannedCanisters = signal([] as string[]);
   validatedScannedCanisters = computed(() => {
-    return this.scannedCanisters().map((canisterId) => ({
-      scannedId: canisterId,
-      ...this.searchedInventoryItem().find((item) => item.id === canisterId),
-    }));
+    const scannedCanisters = this.scannedCanisters();
+    const searchedDriverInventoryItems = this.#driverInventoryStore.items()
+    return scannedCanisters.map((canisterId) => {
+      console.log('canisterId', canisterId);
+      console.log('searchedDriverInventoryItems', searchedDriverInventoryItems);
+      return {
+        scannedId: canisterId,
+        ...searchedDriverInventoryItems.find((item) => {
+          return item.inventoryItem.id === canisterId;
+        }),
+      };
+    });
   });
 
   dispatch = input.required<IGetDispatchByIdQuery['dispatch']>();
@@ -127,9 +135,13 @@ export default class ConfirmLoadComponent {
     // Create a map to count scanned quantities by catalogue
     const scannedQuantities = new Map<string, number>();
     this.validatedScannedCanisters().forEach((scan) => {
-      if (scan.inventory?.catalogue) {
-        const current = scannedQuantities.get(scan.inventory.catalogue.id) || 0;
-        scannedQuantities.set(scan.inventory.catalogue.id, current + 1);
+      if (scan.inventoryItem?.inventory?.catalogue) {
+        const current =
+          scannedQuantities.get(scan.inventoryItem.inventory.catalogue.id) || 0;
+        scannedQuantities.set(
+          scan.inventoryItem.inventory.catalogue.id,
+          current + 1
+        );
       }
     });
 
@@ -166,14 +178,23 @@ export default class ConfirmLoadComponent {
   });
 
   validateScans() {
-    this.#inventoryItemStore.setFilters([
+    // this.#inventoryItemStore.setFilters([
+    //   {
+    //     field: 'id',
+    //     value: '',
+    //     values: this.scannerForm.get('canisters')?.value,
+    //     operator: IQueryOperatorEnum.In,
+    //   },
+    // ]);
+    this.#driverInventoryStore.setFilters([
       {
-        field: 'id',
+        field: 'inventoryItemId',
         value: '',
         values: this.scannerForm.get('canisters')?.value,
         operator: IQueryOperatorEnum.In,
       },
     ]);
+
     this.scannedCanisters.set(this.scannerForm.get('canisters')?.value ?? []);
   }
 
