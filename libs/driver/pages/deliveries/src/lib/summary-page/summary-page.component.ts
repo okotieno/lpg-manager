@@ -1,6 +1,7 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
+  IonBadge,
   IonButton,
   IonButtons,
   IonCard,
@@ -26,6 +27,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
 import { DriverInventoryStore } from '@lpg-manager/driver-inventory-store';
 import { AuthStore } from '@lpg-manager/auth-store';
+import { UUIDDirective } from '@lpg-manager/uuid-pipe';
 
 interface SummarizedCatalogue {
   id: string;
@@ -58,6 +60,8 @@ interface SummarizedCatalogue {
     IonCardContent,
     IonGrid,
     IonCol,
+    UUIDDirective,
+    IonBadge,
   ],
   providers: [DriverInventoryStore],
 })
@@ -66,7 +70,7 @@ export default class SummaryPageComponent {
   #authStore = inject(AuthStore);
   #driverInventoryStore = inject(DriverInventoryStore);
 
-  driverInventories = this.#driverInventoryStore.searchedItemsEntities
+  driverInventories = this.#driverInventoryStore.searchedItemsEntities;
 
   dispatch = input<IGetDispatchByIdQuery['dispatch']>();
   dealerId = input<string>();
@@ -107,6 +111,37 @@ export default class SummaryPageComponent {
     return catalogueSummary;
   });
   scannedItems = signal([] as string[]);
+
+  scanSummary = computed(() => {
+    return this.dealerOrders().map((order) => {
+      // Get the catalogue ID and name from the dealer order
+      const catalogueId = order.id;
+      const catalogueName = order.name;
+      const orderQuantity = order.quantity;
+
+      // Find how many scanned items match the dealer order catalogueId
+      const scannedQuantity = this.driverInventories().filter((inventory) => {
+        return (
+          inventory.inventoryItem.inventory.catalogue.id === catalogueId &&
+          this.scannedItems().includes(inventory.inventoryItem.id)
+        );
+      }).length;
+
+      // Return the summary object
+      return {
+        catalogueId,
+        orderQuantity,
+        catalogueName,
+        scannedQuantity,
+        status:
+          orderQuantity === scannedQuantity
+            ? 'OK'
+            : orderQuantity > scannedQuantity
+            ? 'Less'
+            : 'More',
+      };
+    });
+  });
 
   constructor() {
     this.scannerForm

@@ -6,10 +6,7 @@
     @for (order of dealerOrders(); track order.id) {
       <ion-item>
         <ion-label>
-          {{ order | json }}
-          {{ dealerOrders() | json }}
-          {{ scannedItems() | json }}
-          {{ driverInventories() | json }}
+
         </ion-label>
       </ion-item>
     }
@@ -29,20 +26,20 @@
           <ion-col size="4" class="ion-text-center">Qty</ion-col>
           <ion-col size="2" class="ion-text-center">Status</ion-col>
         </ion-row>
-<!--        @for (item of scanSummary(); track item.catalogueId) {-->
-<!--          <ion-row class="data-row">-->
-<!--            <ion-col size="2" class="ion-hide-md-down">-->
-<!--              <span [lpgUUID]="item.catalogueId"></span>-->
-<!--            </ion-col>-->
-<!--            <ion-col size="4">{{ item.catalogueName }}</ion-col>-->
-<!--            <ion-col size="4" class="ion-text-center">{{ item.scannedQuantity }} / {{ item.orderQuantity }}</ion-col>-->
-<!--            <ion-col size="2" class="ion-text-center">-->
-<!--              <ion-badge [color]="item.status === 'OK' ? 'success' : 'warning'">-->
-<!--                {{ item.status }}-->
-<!--              </ion-badge>-->
-<!--            </ion-col>-->
-<!--          </ion-row>-->
-<!--        }-->
+        @for (item of scanSummary(); track item.catalogueId) {
+          <ion-row class="ion-padding-vertical">
+            <ion-col size="2" class="ion-hide-md-down">
+              <span [lpgUUID]="item.catalogueId"></span>
+            </ion-col>
+            <ion-col size="4">{{ item.catalogueName }}</ion-col>
+            <ion-col size="4" class="ion-text-center">{{ item.scannedQuantity }} / {{ item.orderQuantity }}</ion-col>
+            <ion-col size="2" class="ion-text-center">
+              <ion-badge [color]="item.status === 'OK' ? 'success' : 'warning'">
+                {{ item.status }}
+              </ion-badge>
+            </ion-col>
+          </ion-row>
+        }
       </ion-grid>
     </ion-card-content>
   </ion-card>
