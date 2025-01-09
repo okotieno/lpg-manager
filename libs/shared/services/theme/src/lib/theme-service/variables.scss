@@ -44,6 +44,9 @@
   --ion-color-step-50: var(--ion-background-color);
   --ion-color-step-100: rgba(var(--ion-text-color-rgb), 0.05);
   --ion-color-step-150: rgba(var(--ion-text-color-rgb), 0.1);
+  ion-card {
+    --background: #04040040;
+  }
 }
 form {
   ion-item {

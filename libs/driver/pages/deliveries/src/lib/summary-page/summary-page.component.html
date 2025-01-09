@@ -45,8 +45,8 @@
   </ion-card>
 
 </ion-content>
-<ion-footer>
-  <ion-row class="ion-justify-content-between">
+<ion-footer class="ion-padding">
+  <ion-row class="ion-justify-content-between ion-padding">
     <ion-buttons class="ion-justify-content-end">
       @if (isAllQuantitiesMatched()) {
         <ion-button
@@ -57,18 +57,11 @@
         >Complete
         </ion-button>
       } @else {
-
-        <ion-button
-          shape="round"
-          fill="outline"
-          color="primary"
-          (click)="validateScans()"
-        >Validate scan
-        </ion-button>
         <form [formGroup]="scannerForm">
-          <lpg-scanner-input formControlName="canisters" />
+          <lpg-scanner-input
+            [max]="totalOrderQuantity()"
+            formControlName="canisters" />
         </form>
-
       }
     </ion-buttons>
     <ion-button

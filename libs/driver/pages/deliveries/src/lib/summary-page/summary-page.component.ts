@@ -47,7 +47,6 @@ interface SummarizedCatalogue {
     IonLabel,
     IonItem,
     IonButton,
-    JsonPipe,
     IonFooter,
     ScannerInputComponent,
     ReactiveFormsModule,
@@ -74,8 +73,6 @@ export default class SummaryPageComponent {
 
   dispatch = input<IGetDispatchByIdQuery['dispatch']>();
   dealerId = input<string>();
-
-  isAllQuantitiesMatched = signal(false);
 
   scannerForm = this.#fb.group({ canisters: [[] as string[]] });
 
@@ -110,6 +107,8 @@ export default class SummaryPageComponent {
 
     return catalogueSummary;
   });
+
+  totalOrderQuantity = computed(() => this.dealerOrders().reduce((total, order) => total + order.quantity, 0))
   scannedItems = signal([] as string[]);
 
   scanSummary = computed(() => {
@@ -143,6 +142,11 @@ export default class SummaryPageComponent {
     });
   });
 
+  isAllQuantitiesMatched = computed(() => {
+    const summary = this.scanSummary();
+    return summary.length > 0 && summary.every((item) => item.status === 'OK');
+  });
+
   constructor() {
     this.scannerForm
       .get('canisters')
@@ -152,6 +156,10 @@ export default class SummaryPageComponent {
         tap((canisters) => {
           if (canisters) {
             this.scannedItems.set(canisters);
+
+            if(this.totalOrderQuantity() === this.scannedItems().length) {
+              this.validateScans();
+            }
           }
         }),
         takeUntilDestroyed()

@@ -1,4 +1,4 @@
-import { Component, computed, forwardRef, inject, signal } from '@angular/core';
+import { Component, computed, forwardRef, inject, input, signal } from '@angular/core';
 import {
   IonButton,
   IonCol,
@@ -16,7 +16,6 @@ import {
 import { Html5QrcodeResult, Html5QrcodeScanner } from 'html5-qrcode';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Html5QrcodeError } from 'html5-qrcode/core';
-import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
 
 @Component({
   selector: 'lpg-scanner-input',
@@ -51,6 +50,8 @@ export class ScannerInputComponent implements ControlValueAccessor {
   totalCount = computed(() => this.scannedItems().length);
   scanMessage = signal('');
   disabled = signal(false);
+
+  max = input(Infinity);
 
   writeValue(obj: string[]): void {
     this.scannedItems.set(obj);
@@ -88,6 +89,9 @@ export class ScannerInputComponent implements ControlValueAccessor {
       if (this.scanMessage() !== 'Code already scanned') {
         this.scanMessage.set('Code already scanned');
       }
+    }
+    if(this.scannedItems().length >= this.max()) {
+      await this.stopScanning();
     }
   }
 
