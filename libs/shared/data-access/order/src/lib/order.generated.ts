@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
 export type IOrderDealerFragmentFragment = { dealer: { id: string, name: string } };
 
-export type IDispatchDealerFragmentFragment = { dispatch?: { id: string, status: Types.IDispatchStatus, driver: { id: string, user: { firstName: string, lastName: string, phone?: string | null } }, transporter: { id: string, name: string }, vehicle: { id: string, registrationNumber: string } } | null };
+export type IDispatchDealerFragmentFragment = { dispatchStatus?: Types.IOrderDispatchStatus | null, dispatch?: { id: string, status: Types.IDispatchStatus, driver: { id: string, user: { firstName: string, lastName: string, phone?: string | null } }, transporter: { id: string, name: string }, vehicle: { id: string, registrationNumber: string } } | null };
 
 export type ICreateOrderMutationVariables = Types.Exact<{
   params: Types.ICreateOrderInput;
@@ -28,7 +28,7 @@ export type IGetOrdersQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetOrdersQuery = { orders: { items?: Array<{ id: string, createdAt: string, totalPrice: number, status: Types.IOrderStatus, depot: { name: string }, items: Array<{ id: string, quantity: number, catalogue: { pricePerUnit?: number | null, quantityPerUnit: number, unit: Types.ICatalogueUnit, id: string, name: string } } | null>, dealer: { id: string, name: string }, dispatch?: { id: string, status: Types.IDispatchStatus, driver: { id: string, user: { firstName: string, lastName: string, phone?: string | null } }, transporter: { id: string, name: string }, vehicle: { id: string, registrationNumber: string } } | null } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetOrdersQuery = { orders: { items?: Array<{ id: string, createdAt: string, totalPrice: number, status: Types.IOrderStatus, dispatchStatus?: Types.IOrderDispatchStatus | null, depot: { name: string }, items: Array<{ id: string, quantity: number, catalogue: { pricePerUnit?: number | null, quantityPerUnit: number, unit: Types.ICatalogueUnit, id: string, name: string } } | null>, dealer: { id: string, name: string }, dispatch?: { id: string, status: Types.IDispatchStatus, driver: { id: string, user: { firstName: string, lastName: string, phone?: string | null } }, transporter: { id: string, name: string }, vehicle: { id: string, registrationNumber: string } } | null } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteOrderByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -63,6 +63,7 @@ export const OrderDealerFragmentFragmentDoc = gql`
     `;
 export const DispatchDealerFragmentFragmentDoc = gql`
     fragment dispatchDealerFragment on OrderModel {
+  dispatchStatus
   dispatch {
     id
     status

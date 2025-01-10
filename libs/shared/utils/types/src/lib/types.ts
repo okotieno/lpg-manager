@@ -426,6 +426,7 @@ export enum IDriverInventoryStatus {
   DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
   Delivered = 'DELIVERED',
   DepotToDriverConfirmed = 'DEPOT_TO_DRIVER_CONFIRMED',
+  DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED',
   InTransit = 'IN_TRANSIT',
   Returned = 'RETURNED'
 }
@@ -1108,6 +1109,15 @@ export type INotificationUserModel = {
   updatedAt: Scalars['String']['output'];
 };
 
+export enum IOrderDispatchStatus {
+  Cancelled = 'CANCELLED',
+  Completed = 'COMPLETED',
+  DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
+  DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED',
+  Pending = 'PENDING',
+  Rejected = 'REJECTED'
+}
+
 export type IOrderItem = {
   catalogue: ICatalogueModel;
   catalogueId: Scalars['UUID']['output'];
@@ -1125,6 +1135,7 @@ export type IOrderModel = {
   dealer: IStationModel;
   depot: IStationModel;
   dispatch?: Maybe<IDispatchModel>;
+  dispatchStatus?: Maybe<IOrderDispatchStatus>;
   id: Scalars['UUID']['output'];
   items: Array<Maybe<IOrderItem>>;
   status: IOrderStatus;

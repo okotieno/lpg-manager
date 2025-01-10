@@ -11,6 +11,7 @@ import { TransporterModel } from './transporter.model';
 import { DriverModel } from './driver.model';
 import { VehicleModel } from './vehicle.model';
 import { OrderModel } from './order.model';
+import { DriverInventoryModel } from './driver-inventory.model';
 
 export enum DispatchStatus {
   PENDING = 'PENDING',
@@ -87,4 +88,7 @@ export class DispatchModel extends Model {
 
   @HasMany(() => OrderModel)
   orders!: OrderModel[];
+
+  @HasMany(() => DriverInventoryModel)
+  driverInventories!: DriverInventoryModel[];
 }

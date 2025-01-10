@@ -33,11 +33,14 @@ import {
   OrderConfirmedEvent,
   OrderRejectedEvent,
 } from '../events/order.event';
+import { DispatchService } from '@lpg-manager/dispatch-service';
+import { DriverInventoryService } from '@lpg-manager/inventory-service';
 
 @Resolver(() => OrderModel)
 export class OrderResolver {
   constructor(
     private orderService: OrderService,
+    private dispatchService: DispatchService,
     private eventEmitter: EventEmitter2
   ) {}
 
@@ -144,6 +147,15 @@ export class OrderResolver {
       include: [DispatchModel],
     });
     return order?.dispatch;
+  }
+
+  @ResolveField('dispatchStatus')
+  async getDispatchStatus(@Root() orderModel: OrderModel) {
+    const order = await this.dispatchService.model.findOne({
+      where: { id: orderModel.dispatchId },
+      include: [DriverInventoryModel],
+    });
+    return order?.driverInventories[0].status ?? 'PENDING'
   }
 
   @Mutation()

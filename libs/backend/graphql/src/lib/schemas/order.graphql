@@ -8,6 +8,15 @@ enum OrderStatus {
   RETURNED
 }
 
+enum OrderDispatchStatus {
+  PENDING
+  DRIVER_TO_DEALER_CONFIRMED
+  DEALER_FROM_DRIVER_CONFIRMED
+  COMPLETED
+  CANCELLED
+  REJECTED
+}
+
 type OrderItem {
   id: UUID!
   catalogueId: UUID!
@@ -26,6 +35,7 @@ type OrderModel {
   createdAt: DateTime!
   updatedAt: DateTime!
   dispatch: DispatchModel
+  dispatchStatus: OrderDispatchStatus
 }
 
 input CreateOrderInput {

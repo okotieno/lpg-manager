@@ -6,6 +6,7 @@ fragment orderDealerFragment on OrderModel {
 }
 
 fragment dispatchDealerFragment on OrderModel {
+  dispatchStatus
   dispatch {
     id
     status
