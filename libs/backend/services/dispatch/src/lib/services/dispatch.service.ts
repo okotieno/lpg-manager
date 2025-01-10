@@ -136,8 +136,6 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
         );
       }
 
-      console.log({ dispatchStatus });
-
       await transaction?.commit();
       return dispatch;
     } catch (error) {

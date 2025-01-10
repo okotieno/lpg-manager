@@ -5,6 +5,7 @@ enum  DriverInventoryStatus {
   RETURNED
   DEPOT_TO_DRIVER_CONFIRMED
   DEALER_FROM_DRIVER_CONFIRMED
+  DRIVER_TO_DEALER_CONFIRMED
 }
 type DriverInventoryModel {
   id: UUID!

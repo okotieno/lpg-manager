@@ -187,7 +187,7 @@ export default class SummaryPageComponent {
       scannedCanisters,
       dispatchStatus: IDispatchStatus.InTransit,
       driverInventories,
-      driverInventoryStatus: IScanConfirmDriverInventoryStatus.DriverConfirmed
+      driverInventoryStatus: IScanConfirmDriverInventoryStatus.DriverToDealerConfirmed
     });
   }
 

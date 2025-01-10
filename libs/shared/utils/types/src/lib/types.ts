@@ -425,7 +425,7 @@ export enum IDriverInventoryStatus {
   Assigned = 'ASSIGNED',
   DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
   Delivered = 'DELIVERED',
-  DriverFromDepotConfirmed = 'DRIVER_FROM_DEPOT_CONFIRMED',
+  DepotToDriverConfirmed = 'DEPOT_TO_DRIVER_CONFIRMED',
   InTransit = 'IN_TRANSIT',
   Returned = 'RETURNED'
 }
@@ -1611,8 +1611,8 @@ export type IRoleModel = {
 };
 
 export enum IScanConfirmDriverInventoryStatus {
-  DealerConfirmed = 'DEALER_CONFIRMED',
-  DriverConfirmed = 'DRIVER_CONFIRMED'
+  DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
+  DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED'
 }
 
 export type IScanConfirmInput = {
