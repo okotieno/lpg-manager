@@ -39,7 +39,6 @@ interface SummarizedDealer {
     IonLabel,
     IonItem,
     IonButton,
-    JsonPipe,
     IonText,
     UUIDDirective,
     RouterLink,

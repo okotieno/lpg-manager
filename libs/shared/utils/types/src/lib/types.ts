@@ -423,9 +423,9 @@ export type IDriverInventoryModel = {
 
 export enum IDriverInventoryStatus {
   Assigned = 'ASSIGNED',
-  DealerConfirmed = 'DEALER_CONFIRMED',
+  DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
   Delivered = 'DELIVERED',
-  DriverConfirmed = 'DRIVER_CONFIRMED',
+  DriverFromDepotConfirmed = 'DRIVER_FROM_DEPOT_CONFIRMED',
   InTransit = 'IN_TRANSIT',
   Returned = 'RETURNED'
 }
@@ -1124,6 +1124,7 @@ export type IOrderModel = {
   createdAt: Scalars['DateTime']['output'];
   dealer: IStationModel;
   depot: IStationModel;
+  dispatch?: Maybe<IDispatchModel>;
   id: Scalars['UUID']['output'];
   items: Array<Maybe<IOrderItem>>;
   status: IOrderStatus;

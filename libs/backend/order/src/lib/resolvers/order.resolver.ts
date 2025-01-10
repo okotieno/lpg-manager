@@ -16,12 +16,13 @@ import {
 import { OrderService } from '@lpg-manager/order-service';
 import {
   CatalogueModel,
+  DispatchModel, DriverInventoryModel,
   InventoryModel,
   IQueryParam,
   OrderItemModel,
   OrderModel,
   StationModel,
-  UserModel,
+  UserModel
 } from '@lpg-manager/db';
 import { CreateOrderInputDto } from '../dto/create-order-input.dto';
 import { UpdateOrderStatusInput } from '../dto/update-order-status.dto';
@@ -134,6 +135,15 @@ export class OrderResolver {
       ],
     });
     return orderWithDepot?.dealer;
+  }
+
+  @ResolveField('dispatch')
+  async getDispatch(@Root() orderModel: OrderModel) {
+    const order = await this.orderService.model.findOne({
+      where: { id: orderModel.id },
+      include: [DispatchModel],
+    });
+    return order?.dispatch;
   }
 
   @Mutation()

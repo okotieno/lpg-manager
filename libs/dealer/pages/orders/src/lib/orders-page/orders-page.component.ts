@@ -14,6 +14,7 @@ import {
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { IQueryOperatorEnum } from '@lpg-manager/types';
 import { AuthStore } from '@lpg-manager/auth-store';
+import { GET_ITEMS_INCLUDE_FIELDS } from '@lpg-manager/data-table';
 
 @Component({
   selector: 'lpg-orders',
@@ -33,7 +34,15 @@ import { AuthStore } from '@lpg-manager/auth-store';
     CurrencyPipe,
     IonItemDivider,
   ],
-  providers: [OrderStore],
+  providers: [
+    OrderStore,
+    {
+      provide: GET_ITEMS_INCLUDE_FIELDS,
+      useValue: {
+        includeDispatch: true,
+      }
+    }
+  ],
 })
 export default class OrdersPageComponent {
   #orderStore = inject(OrderStore);

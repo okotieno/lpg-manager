@@ -2,9 +2,9 @@ import {
   IsArray,
   IsEnum,
   IsInt,
-  IsNotEmpty,
+  IsNotEmpty, IsOptional,
   IsUUID,
-  ValidateNested,
+  ValidateNested
 } from 'class-validator';
 import { DriverInventoryModel } from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
@@ -17,8 +17,9 @@ enum DispatchStatus {
 }
 
 enum DriverInventoryStatus {
-  DRIVER_CONFIRMED = 'DRIVER_CONFIRMED',
-  DEALER_CONFIRMED = 'DEALER_CONFIRMED',
+  DEPOT_TO_DRIVER_CONFIRMED = 'DEPOT_TO_DRIVER_CONFIRMED',
+  DRIVER_TO_DEALER_CONFIRMED = 'DRIVER_TO_DEALER_CONFIRMED',
+  DEALER_FROM_DRIVER_CONFIRMED = 'DEALER_FROM_DRIVER_CONFIRMED',
 }
 
 export class DriverInventoryDto {
@@ -47,8 +48,7 @@ export class ScanConfirmDto {
   @Type(() => DriverInventoryDto)
   driverInventories: DriverInventoryDto[] = [];
 
-
+  @IsOptional()
   @IsEnum(DriverInventoryStatus)
   driverInventoryStatus!: DriverInventoryStatus;
-
 }

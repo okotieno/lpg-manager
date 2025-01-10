@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import {
   IonBadge,
   IonButton,
@@ -26,10 +26,8 @@ import {
 } from '@lpg-manager/dispatch-store';
 import { ScannerInputComponent } from '@lpg-manager/scanner-input';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
 import { IDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
-import { JsonPipe } from '@angular/common';
 import { DriverInventoryStore } from '@lpg-manager/driver-inventory-store';
 
 interface ScanSummaryItem {
@@ -66,7 +64,6 @@ interface ScanSummaryItem {
     IonCol,
     RouterLink,
     IonText,
-    JsonPipe,
   ],
   templateUrl: './confirm-load.component.html',
   styleUrl: './confirm-load.component.scss',

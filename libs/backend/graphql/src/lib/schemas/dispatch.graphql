@@ -49,8 +49,8 @@ type CreateDispatchSuccessResponse {
 }
 
 enum ScanConfirmDriverInventoryStatus {
-  DRIVER_CONFIRMED
-  DEALER_CONFIRMED
+  DRIVER_FROM_DEPOT_CONFIRMED
+  DEALER_FROM_DRIVER_CONFIRMED
 }
 
 input ScanConfirmInput {
