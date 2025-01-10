@@ -90,6 +90,9 @@
       "@lpg-manager/depot-dispatches-page": [
         "libs/depot/pages/dispatches/src/index.ts"
       ],
+      "@lpg-manager/dealer-dispatches-page": [
+        "libs/dealer/pages/dispatches/src/index.ts"
+      ],
       "@lpg-manager/depot-orders-page": [
         "libs/depot/pages/orders/src/index.ts"
       ],

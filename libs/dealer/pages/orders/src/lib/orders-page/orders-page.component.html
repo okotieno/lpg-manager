@@ -60,7 +60,7 @@
             }
             <ion-item lines="none" class="ion-padding-vertical">
               @if (order?.dispatchStatus === driverToDealerConfirmed) {
-                <ion-button [routerLink]="['/dashboard', 'dispatches', order.dispatch?.id, 'receive' ]" slot="end" color="primary"
+                <ion-button [routerLink]="['/dashboard', 'dispatches', order.dispatch?.id, 'receive-dispatch' ]" slot="end" color="primary"
                             fill="outline">
                   Receive dispatch
                 </ion-button>

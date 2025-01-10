@@ -53,7 +53,7 @@ const rolePermissions = {
     // Notification
     'mark notification as read',
     // Dispatch Management
-    'confirm via scanning'
+    'confirm via scanning', 'view dispatch'
 
   ],
 
