@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { DriverInventoryModel, DriverInventoryStatus, InventoryItemModel } from '@lpg-manager/db';
+import {
+  DriverInventoryModel,
+  DriverInventoryStatus,
+  InventoryItemModel,
+} from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 
@@ -20,7 +24,8 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
     dispatchId: string;
     inventoryItemIds: string[];
   }) {
-    const transaction = await this.driverInventoryModel.sequelize?.transaction();
+    const transaction =
+      await this.driverInventoryModel.sequelize?.transaction();
 
     try {
       const assignments = await Promise.all(
@@ -49,27 +54,55 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
   async updateStatus(
     driverId: string,
     inventoryItemIds: string[],
-    status: DriverInventoryStatus
+    status: DriverInventoryStatus,
+    driverInventoryIds: string[] = []
   ) {
-    const transaction = await this.driverInventoryModel.sequelize?.transaction();
+    const transaction =
+      await this.driverInventoryModel.sequelize?.transaction();
+
+    console.log('driverId', driverId);
+    console.log('status', status);
 
     try {
-      await this.driverInventoryModel.update(
-        {
-          status,
-          ...(status === DriverInventoryStatus.RETURNED ? { returnedAt: new Date() } : {}),
-        },
-        {
-          where: {
-            driverId,
-            inventoryItemId: inventoryItemIds,
-            status: {
-              [Op.ne]: DriverInventoryStatus.RETURNED,
-            },
+      if (driverInventoryIds.length > 0) {
+        await this.driverInventoryModel.update(
+          {
+            status,
+            ...(status === DriverInventoryStatus.RETURNED
+              ? { returnedAt: new Date() }
+              : {}),
           },
-          transaction,
-        }
-      );
+          {
+            where: {
+              driverId,
+              id: driverInventoryIds,
+              status: {
+                [Op.ne]: DriverInventoryStatus.RETURNED,
+              },
+            },
+            transaction,
+          }
+        );
+      } else if (inventoryItemIds.length > 0) {
+        await this.driverInventoryModel.update(
+          {
+            status,
+            ...(status === DriverInventoryStatus.RETURNED
+              ? { returnedAt: new Date() }
+              : {}),
+          },
+          {
+            where: {
+              driverId,
+              inventoryItemId: inventoryItemIds,
+              status: {
+                [Op.ne]: DriverInventoryStatus.RETURNED,
+              },
+            },
+            transaction,
+          }
+        );
+      }
 
       await transaction?.commit();
     } catch (error) {

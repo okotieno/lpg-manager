@@ -25,6 +25,7 @@ type OrderModel {
   status: OrderStatus!
   createdAt: DateTime!
   updatedAt: DateTime!
+  dispatch: DispatchModel
 }
 
 input CreateOrderInput {

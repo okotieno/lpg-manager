@@ -130,8 +130,9 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
       if (dispatchStatus === DispatchStatus.IN_TRANSIT) {
         await this.driverInventoryService.updateStatus(
           dispatch.driverId,
-          driverInventories.map((di) => di.id),
-          driverInventoryStatus
+          [],
+          driverInventoryStatus,
+          driverInventories.map((di) => di.id)
         );
       }
 
