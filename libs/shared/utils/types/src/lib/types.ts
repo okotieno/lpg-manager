@@ -400,6 +400,7 @@ export type IDispatchModel = {
 
 export enum IDispatchStatus {
   Completed = 'COMPLETED',
+  DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
   Delivering = 'DELIVERING',
   DepotToDriverConfirmed = 'DEPOT_TO_DRIVER_CONFIRMED',
   DriverFromDepotConfirmed = 'DRIVER_FROM_DEPOT_CONFIRMED',

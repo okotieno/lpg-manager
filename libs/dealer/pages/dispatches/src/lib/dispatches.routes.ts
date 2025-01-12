@@ -58,7 +58,7 @@ export const DISPATCHES_ROUTES: Routes = [
       },
       {
         path: 'receive-dispatch',
-        loadComponent: () => import('./receive-dispatch/assign-load.component'),
+        loadComponent: () => import('./receive-dispatch/receive-dispatch.component'),
       },
     ],
   },

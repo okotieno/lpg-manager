@@ -28,7 +28,6 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
 import { IDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
-import { JsonPipe } from '@angular/common';
 
 interface ScanSummaryItem {
   catalogueId: string;
@@ -63,13 +62,12 @@ interface ScanSummaryItem {
     IonRow,
     IonCol,
     RouterLink,
-    JsonPipe,
   ],
-  templateUrl: './assign-load.component.html',
-  styleUrl: './assign-load.component.scss',
+  templateUrl: './receive-dispatch.component.html',
+  styleUrl: './receive-dispatch.component.scss',
   providers: [DispatchStore, InventoryItemStore],
 })
-export default class AssignLoadComponent {
+export default class ReceiveDispatchComponent {
   #route = inject(ActivatedRoute);
   #inventoryItemStore = inject(InventoryItemStore);
   searchedInventoryItem = this.#inventoryItemStore.searchedItemsEntities;
@@ -141,8 +139,8 @@ export default class AssignLoadComponent {
             orderQty === scannedQty
               ? 'OK'
               : orderQty > scannedQty
-              ? 'Less'
-              : 'More',
+                ? 'Less'
+                : 'More',
         });
       }
     });
@@ -170,10 +168,10 @@ export default class AssignLoadComponent {
   async dealerToDriverConfirm() {
     if (!this.dispatch()) return;
 
-    // await this.#dispatchStore.scanConfirm({
-    //   dispatchId: this.dispatch()?.id as string,
-    //   scannedCanisters: this.scannedCanisters(),
-    //   dispatchStatus: IDispatchStatus.DealerToDriverConfirmed,
-    // });
+    await this.#dispatchStore.scanConfirm({
+      dispatchId: this.dispatch()?.id as string,
+      scannedCanisters: this.scannedCanisters(),
+      dispatchStatus: IDispatchStatus.DealerFromDriverConfirmed,
+    });
   }
 }

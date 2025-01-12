@@ -1,7 +1,6 @@
 import {
   IsArray,
   IsEnum,
-  IsInt,
   IsNotEmpty, IsOptional,
   IsUUID,
   ValidateNested
@@ -13,6 +12,7 @@ import { Type } from 'class-transformer';
 enum DispatchStatus {
   DEPOT_TO_DRIVER_CONFIRMED = 'DEPOT_TO_DRIVER_CONFIRMED',
   DRIVER_FROM_DEPOT_CONFIRMED = 'DRIVER_FROM_DEPOT_CONFIRMED',
+  DEALER_FROM_DRIVER_CONFIRMED = 'DEALER_FROM_DRIVER_CONFIRMED',
   IN_TRANSIT = 'IN_TRANSIT',
 }
 
