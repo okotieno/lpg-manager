@@ -3,7 +3,8 @@ import {
   IsEnum,
   IsNotEmpty, IsOptional,
   IsUUID,
-  ValidateNested
+  ValidateNested,
+  IsBoolean
 } from 'class-validator';
 import { DriverInventoryModel } from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
@@ -43,12 +44,11 @@ export class ScanConfirmDto {
   @IsEnum(DispatchStatus)
   dispatchStatus!: DispatchStatus;
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => DriverInventoryDto)
-  driverInventories: DriverInventoryDto[] = [];
-
   @IsOptional()
   @IsEnum(DriverInventoryStatus)
-  driverInventoryStatus!: DriverInventoryStatus;
+  driverInventoryStatus?: DriverInventoryStatus;
+
+  @IsOptional()
+  @IsBoolean()
+  isEmptyCanisterScan?: boolean;
 }

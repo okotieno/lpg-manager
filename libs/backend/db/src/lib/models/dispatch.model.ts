@@ -15,12 +15,19 @@ import { DriverInventoryModel } from './driver-inventory.model';
 
 export enum DispatchStatus {
   PENDING = 'PENDING',
-  IN_TRANSIT = 'IN_TRANSIT',
-  DELIVERED = 'DELIVERED',
   CANCELLED = 'CANCELLED',
-  DEPOT_TO_DRIVER_CONFIRMED = 'DEPOT_TO_DRIVER_CONFIRMED',
-  DRIVER_FROM_DEPOT_CONFIRMED = 'DRIVER_FROM_DEPOT_CONFIRMED',
-  DEALER_FROM_DRIVER_CONFIRMED = 'DEALER_FROM_DRIVER_CONFIRMED',
+  
+  // Filled Canisters Flow
+  FILLED_DEPOT_TO_DRIVER = 'FILLED_DEPOT_TO_DRIVER',
+  FILLED_DRIVER_CONFIRMED = 'FILLED_DRIVER_CONFIRMED',
+  FILLED_DELIVERED_TO_DEALER = 'FILLED_DELIVERED_TO_DEALER',
+  
+  // Empty Canisters Flow
+  EMPTY_COLLECTED_FROM_DEALER = 'EMPTY_COLLECTED_FROM_DEALER',
+  EMPTY_RETURNED_TO_DEPOT = 'EMPTY_RETURNED_TO_DEPOT',
+  
+  // Final Status
+  COMPLETED = 'COMPLETED'
 }
 
 @Table({
@@ -76,7 +83,45 @@ export class DispatchModel extends Model {
     type: DataType.DATE,
     allowNull: true,
   })
-  depotToDriverConfirmedAt: Date | null = null;
+  filledDepotToDriverAt: Date | null = null;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  filledDriverConfirmedAt: Date | null = null;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  filledDeliveredToDealerAt: Date | null = null;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  emptyCollectedFromDealerAt: Date | null = null;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  emptyReturnedToDepotAt: Date | null = null;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  })
+  isFilledDeliveryCompleted: boolean = false;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  })
+  isEmptyReturnCompleted: boolean = false;
 
   @BelongsTo(() => TransporterModel)
   transporter!: TransporterModel;
