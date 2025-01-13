@@ -104,7 +104,6 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
       const updates: Partial<DispatchModel> = {};
 
       // Handle filled canisters flow
-      console.log('scanAction',  scanAction );
       switch (scanAction) {
         case IScanAction.DepotToDriverConfirmed:
           updates.depotToDriverConfirmedAt = new Date();

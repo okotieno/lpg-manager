@@ -23,6 +23,7 @@ import {
 } from '@lpg-manager/permission-service';
 import { ScanConfirmDto } from '../dto/scan-confirm.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { IScanAction } from '@lpg-manager/types';
 
 @Resolver(() => DispatchModel)
 export class DispatchResolver {
@@ -116,16 +117,22 @@ export class DispatchResolver {
     @Args('params') params: ScanConfirmDto,
     @CurrentUser() currentUser: UserModel
   ) {
+    const actions: Record<string, string> = {
+      [IScanAction.DepotToDriverConfirmed]: 'dispatch.depotToDriverConfirmed',
+    };
+
     const dispatch = await this.dispatchService.scanConfirm({
       dispatchId: params.dispatchId,
       inventoryItems: params.inventoryItems,
       scanAction: params.scanAction,
     });
 
-    this.eventEmitter.emit('dispatch.completed', {
-      dispatch,
-      userId: currentUser.id,
-    });
+    if(actions[params.scanAction]) {
+      this.eventEmitter.emit(actions[params.scanAction], {
+        dispatch,
+        userId: currentUser.id,
+      });
+    }
 
     return {
       message: 'Dispatch completed successfully',
