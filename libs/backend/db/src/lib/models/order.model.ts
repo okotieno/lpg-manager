@@ -11,6 +11,7 @@ import { CartModel } from './cart.model';
 import { StationModel } from './station.model';
 import { OrderItemModel } from './order-item.model';
 import { DispatchModel } from './dispatch.model';
+import { IOrderStatus } from '@lpg-manager/types';
 
 @Table({
   tableName: 'orders',
@@ -55,26 +56,11 @@ export class OrderModel extends Model {
   totalPrice!: number;
 
   @Column({
-    type: DataType.ENUM(
-      'PENDING',
-      'CONFIRMED',
-      'DELIVERING',
-      'COMPLETED',
-      'REJECTED',
-      'CANCELLED',
-      'RETURNED'
-    ),
+    type: DataType.ENUM(...Object.values(IOrderStatus)),
     allowNull: false,
     defaultValue: 'PENDING',
   })
-  status!:
-    | 'PENDING'
-    | 'CONFIRMED'
-    | 'DELIVERING'
-    | 'COMPLETED'
-    | 'REJECTED'
-    | 'CANCELLED'
-    | 'RETURNED';
+  status!: IOrderStatus
 
   @BelongsTo(() => StationModel, 'depotId')
   depot!: StationModel;

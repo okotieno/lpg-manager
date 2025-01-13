@@ -4,9 +4,8 @@ import { DispatchModel, OrderModel, OrderItemModel } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { DispatchStatus } from '@lpg-manager/db';
 import { DriverInventoryService } from '@lpg-manager/inventory-service';
-import { DriverInventoryStatus } from '@lpg-manager/db';
+import { IDispatchStatus, IDriverInventoryStatus } from '@lpg-manager/types';
 import { IScanAction } from '@lpg-manager/types';
 
 @Injectable()
@@ -107,11 +106,12 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
       switch (scanAction) {
         case IScanAction.DepotToDriverConfirmed:
           updates.depotToDriverConfirmedAt = new Date();
+          updates.status = IDispatchStatus.Initiated;
           await this.driverInventoryService.assignToDriver({
             driverId: dispatch.driverId,
             dispatchId: dispatch.id,
             inventoryItemIds: inventoryItems.map(({ id }) => id),
-            status: DriverInventoryStatus.FILLED_ASSIGNED,
+            status: IDriverInventoryStatus.Assigned,
           });
           break;
         //

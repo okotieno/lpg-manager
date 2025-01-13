@@ -1,9 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { NotificationModel, NotificationUserModel } from '@lpg-manager/db';
+import {
+  NotificationModel,
+  NotificationUserModel,
+  RoleUserModel,
+} from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { UserService } from '@lpg-manager/user-service';
 
 export const SEND_NOTIFICATION_QUEUE = 'send-notification-queue';
 
@@ -20,6 +25,7 @@ export class NotificationService extends CrudAbstractService<NotificationModel> 
       description: string;
       userIds: string[];
     }>,
+    private userService: UserService,
   ) {
     super(notificationModel);
   }
@@ -27,7 +33,7 @@ export class NotificationService extends CrudAbstractService<NotificationModel> 
   async sendNotification(
     title: string,
     description: string,
-    userIds: string[],
+    userIds: string[]
   ) {
     await this.sendNotificationQueue.add({ title, description, userIds });
   }
@@ -37,7 +43,7 @@ export class NotificationService extends CrudAbstractService<NotificationModel> 
       userIds.map((userId) => ({
         userId,
         notificationId,
-      })),
+      }))
     );
   }
 
@@ -55,5 +61,35 @@ export class NotificationService extends CrudAbstractService<NotificationModel> 
       unread,
       read: total - unread,
     };
+  }
+
+  async notifyStationUsers(
+    stationId: string,
+    notification: { title: string; description: string }
+  ) {
+    try {
+      // Get users with roles for this station
+      const stationUsers = await this.userService.model.findAll({
+        include: [
+          {
+            model: RoleUserModel,
+            where: {
+              stationId: stationId,
+            },
+          },
+        ],
+      });
+
+      if (stationUsers.length) {
+        const userIds = stationUsers.map((user) => user.id);
+        await this.sendNotification(
+          notification.title,
+          notification.description,
+          userIds
+        );
+      }
+    } catch (error) {
+      Logger.error(`Failed to notify station users: ${error}`);
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { DispatchModel } from '@lpg-manager/db';
 
 export class DispatchEvent {
-  constructor(public cart: DispatchModel) {}
+  constructor(public dispatch: DispatchModel, public userId: string) {}
 }

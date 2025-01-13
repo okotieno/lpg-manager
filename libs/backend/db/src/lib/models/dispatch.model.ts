@@ -12,23 +12,7 @@ import { DriverModel } from './driver.model';
 import { VehicleModel } from './vehicle.model';
 import { OrderModel } from './order.model';
 import { DriverInventoryModel } from './driver-inventory.model';
-
-export enum DispatchStatus {
-  PENDING = 'PENDING',
-  CANCELLED = 'CANCELLED',
-
-  // Filled Canisters Flow
-  FILLED_DEPOT_TO_DRIVER = 'FILLED_DEPOT_TO_DRIVER',
-  FILLED_DRIVER_CONFIRMED = 'FILLED_DRIVER_CONFIRMED',
-  FILLED_DELIVERED_TO_DEALER = 'FILLED_DELIVERED_TO_DEALER',
-
-  // Empty Canisters Flow
-  EMPTY_COLLECTED_FROM_DEALER = 'EMPTY_COLLECTED_FROM_DEALER',
-  EMPTY_RETURNED_TO_DEPOT = 'EMPTY_RETURNED_TO_DEPOT',
-
-  // Final Status
-  COMPLETED = 'COMPLETED'
-}
+import { IDispatchStatus } from '@lpg-manager/types';
 
 @Table({
   tableName: 'dispatches',
@@ -67,11 +51,11 @@ export class DispatchModel extends Model {
   vehicleId!: string;
 
   @Column({
-    type: DataType.ENUM(...Object.values(DispatchStatus)),
+    type: DataType.ENUM(...Object.values(IDispatchStatus)),
     allowNull: false,
-    defaultValue: DispatchStatus.PENDING,
+    defaultValue: IDispatchStatus.Pending,
   })
-  status!: DispatchStatus;
+  status!: IDispatchStatus;
 
   @Column({
     type: DataType.DATE,

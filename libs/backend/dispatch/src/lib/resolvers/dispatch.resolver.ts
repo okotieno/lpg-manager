@@ -24,6 +24,7 @@ import {
 import { ScanConfirmDto } from '../dto/scan-confirm.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { IScanAction } from '@lpg-manager/types';
+import { DispatchEvent } from '../events/dispatch.event';
 
 @Resolver(() => DispatchModel)
 export class DispatchResolver {
@@ -127,11 +128,11 @@ export class DispatchResolver {
       scanAction: params.scanAction,
     });
 
-    if(actions[params.scanAction]) {
-      this.eventEmitter.emit(actions[params.scanAction], {
-        dispatch,
-        userId: currentUser.id,
-      });
+    if (actions[params.scanAction]) {
+      this.eventEmitter.emit(
+        actions[params.scanAction],
+        new DispatchEvent(dispatch, currentUser.id)
+      );
     }
 
     return {

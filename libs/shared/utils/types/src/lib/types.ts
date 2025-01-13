@@ -400,10 +400,7 @@ export type IDispatchModel = {
 
 export enum IDispatchStatus {
   Completed = 'COMPLETED',
-  DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
   Delivering = 'DELIVERING',
-  DepotToDriverConfirmed = 'DEPOT_TO_DRIVER_CONFIRMED',
-  DriverFromDepotConfirmed = 'DRIVER_FROM_DEPOT_CONFIRMED',
   Initiated = 'INITIATED',
   InTransit = 'IN_TRANSIT',
   Pending = 'PENDING'
@@ -426,7 +423,6 @@ export enum IDriverInventoryStatus {
   Assigned = 'ASSIGNED',
   DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
   Delivered = 'DELIVERED',
-  DepotToDriverConfirmed = 'DEPOT_TO_DRIVER_CONFIRMED',
   DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED',
   InTransit = 'IN_TRANSIT',
   Returned = 'RETURNED'
@@ -1116,6 +1112,7 @@ export type INotificationUserModel = {
 };
 
 export enum IOrderDispatchStatus {
+  Assigned = 'ASSIGNED',
   Cancelled = 'CANCELLED',
   Completed = 'COMPLETED',
   DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',

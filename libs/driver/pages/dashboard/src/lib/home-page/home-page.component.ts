@@ -56,8 +56,9 @@ export default class DashboardComponent {
         operator: IQueryOperatorEnum.In,
         value: '',
         values: [
-          IDispatchStatus.DepotToDriverConfirmed,
-          IDispatchStatus.DriverFromDepotConfirmed,
+          IDispatchStatus.InTransit,
+          IDispatchStatus.Initiated,
+          IDispatchStatus.Delivering,
         ],
       },
     ]);

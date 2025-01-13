@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
 import {
   DriverInventoryModel,
-  DriverInventoryStatus,
   InventoryItemModel,
 } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import { IDriverInventoryStatus } from '@lpg-manager/types'
 
 @Injectable()
 export class DriverInventoryService extends CrudAbstractService<DriverInventoryModel> {
@@ -23,7 +23,7 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
     driverId: string;
     dispatchId: string;
     inventoryItemIds: string[];
-    status: DriverInventoryStatus;
+    status: IDriverInventoryStatus;
   }) {
     const transaction =
       await this.driverInventoryModel.sequelize?.transaction();
@@ -36,7 +36,7 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
               driverId: params.driverId,
               dispatchId: params.dispatchId,
               inventoryItemId: itemId,
-              status: DriverInventoryStatus.ASSIGNED,
+              status: IDriverInventoryStatus.Assigned,
               assignedAt: new Date(),
             },
             { transaction }
@@ -55,7 +55,7 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
   async updateStatus(
     driverId: string,
     inventoryItemIds: string[],
-    status: DriverInventoryStatus,
+    status: IDriverInventoryStatus,
     driverInventoryIds: string[] = []
   ) {
     const transaction =
@@ -69,7 +69,7 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
         await this.driverInventoryModel.update(
           {
             status,
-            ...(status === DriverInventoryStatus.RETURNED
+            ...(status === IDriverInventoryStatus.Returned
               ? { returnedAt: new Date() }
               : {}),
           },
@@ -78,7 +78,7 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
               driverId,
               id: driverInventoryIds,
               status: {
-                [Op.ne]: DriverInventoryStatus.RETURNED,
+                [Op.ne]: IDriverInventoryStatus.Returned,
               },
             },
             transaction,
@@ -88,7 +88,7 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
         await this.driverInventoryModel.update(
           {
             status,
-            ...(status === DriverInventoryStatus.RETURNED
+            ...(status === IDriverInventoryStatus.Returned
               ? { returnedAt: new Date() }
               : {}),
           },
@@ -97,7 +97,7 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
               driverId,
               inventoryItemId: inventoryItemIds,
               status: {
-                [Op.ne]: DriverInventoryStatus.RETURNED,
+                [Op.ne]: IDriverInventoryStatus.Returned,
               },
             },
             transaction,
@@ -117,7 +117,7 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
       where: {
         driverId,
         status: {
-          [Op.ne]: DriverInventoryStatus.RETURNED,
+          [Op.ne]: IDriverInventoryStatus.Returned,
         },
       },
       include: [
@@ -138,7 +138,7 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
     driverId: string;
     dispatchId: string;
     canisterIds: string[];
-    status: DriverInventoryStatus;
+    status: IDriverInventoryStatus;
   }) {
     const transaction =
       await this.driverInventoryModel.sequelize?.transaction();

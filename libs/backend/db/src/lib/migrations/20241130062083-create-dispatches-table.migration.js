@@ -38,6 +38,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.ENUM(
+          'IN_TRANSIT',
           'PENDING',
           'INITIATED',
           'DELIVERING',
