@@ -1,12 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import {
-  DriverInventoryModel,
-  InventoryItemModel,
-} from '@lpg-manager/db';
+import { DriverInventoryModel, InventoryItemModel } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
-import { IDriverInventoryStatus } from '@lpg-manager/types'
+import { IDriverInventoryStatus } from '@lpg-manager/types';
 
 @Injectable()
 export class DriverInventoryService extends CrudAbstractService<DriverInventoryModel> {

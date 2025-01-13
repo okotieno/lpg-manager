@@ -250,9 +250,9 @@ export const AuthStore = signalStore(
     };
 
     const hasPermissionTo = (permissionName: string) => {
-      const permissions = store.userRoles().flatMap(
-        (res) => res?.role?.permissions
-      )
+      const permissions = store
+        .userRoles()
+        .flatMap((res) => res?.role?.permissions);
       return !!permissions.find(
         (permission) => permission?.name === permissionName
       );
@@ -287,7 +287,16 @@ export const AuthStore = signalStore(
         () => {
           const roles = store.userRoles();
           untracked(() => {
+
             if (roles.length > 0 && !store.activeRoleId()) {
+              patchState(store, { activeRoleId: roles[0]?.id });
+            }
+
+            if (
+              roles.length > 0 &&
+              store.activeRoleId() &&
+              !roles.map((role) => role?.id).includes(store.activeRoleId())
+            ) {
               patchState(store, { activeRoleId: roles[0]?.id });
             }
           });

@@ -115,14 +115,15 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
           });
           break;
         //
-        //   case DispatchStatus.FILLED_DRIVER_CONFIRMED:
-        //     updates.filledDriverConfirmedAt = new Date();
-        //     await this.driverInventoryService.updateStatus(
-        //       dispatch.driverId,
-        //       scannedCanisters,
-        //       DriverInventoryStatus.FILLED_IN_TRANSIT
-        //     );
-        //     break;
+          case IScanAction.DriverFromDepotConfirmed:
+            updates.driverFromDepotConfirmedAt = new Date();
+            updates.status = IDispatchStatus.InTransit;
+            await this.driverInventoryService.updateStatus(
+              dispatch.driverId,
+              inventoryItems.map(({ id }) => id),
+              IDriverInventoryStatus.InTransit
+            );
+            break;
         //
         //   case DispatchStatus.FILLED_DELIVERED_TO_DEALER:
         //     updates.filledDeliveredToDealerAt = new Date();

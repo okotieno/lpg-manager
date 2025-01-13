@@ -26,9 +26,11 @@ import {
 } from '@lpg-manager/dispatch-store';
 import { ScannerInputComponent } from '@lpg-manager/scanner-input';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { IDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
+import { IQueryOperatorEnum, IScanAction } from '@lpg-manager/types';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
 import { DriverInventoryStore } from '@lpg-manager/driver-inventory-store';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface ScanSummaryItem {
   catalogueId: string;
@@ -171,16 +173,39 @@ export default class ConfirmLoadComponent {
     const summary = this.scanSummary();
     return summary.length > 0 && summary.every((item) => item.status === 'OK');
   });
+  scannedItems = signal([] as string[]);
+
+  totalOrderQuantity = computed(() =>
+    this.dispatch()?.orders.reduce(
+      (total, order) =>
+        total +
+        order.items.reduce((total, item) => total + (item?.quantity ?? 0), 0),
+      0
+    ) ?? 0
+  );
+
+
+  constructor() {
+    this.scannerForm
+      .get('canisters')
+      ?.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      tap((canisters) => {
+        if (canisters) {
+          this.scannedItems.set(canisters);
+
+          if (this.totalOrderQuantity() === this.scannedItems().length) {
+            this.validateScans();
+          }
+        }
+      }),
+      takeUntilDestroyed()
+    )
+      .subscribe();
+  }
 
   validateScans() {
-    // this.#inventoryItemStore.setFilters([
-    //   {
-    //     field: 'id',
-    //     value: '',
-    //     values: this.scannerForm.get('canisters')?.value,
-    //     operator: IQueryOperatorEnum.In,
-    //   },
-    // ]);
     this.#driverInventoryStore.setFilters([
       {
         field: 'inventoryItemId',
@@ -196,10 +221,10 @@ export default class ConfirmLoadComponent {
   async driverFromDepotConfirm() {
     if (!this.dispatch()) return;
 
-    // await this.#dispatchStore.scanConfirm({
-    //   dispatchId: this.dispatch()?.id as string,
-    //   scannedCanisters: this.scannedCanisters(),
-    //   dispatchStatus: IDispatchStatus.DriverFromDepotConfirmed,
-    // });
+    await this.#dispatchStore.scanConfirm({
+      dispatchId: this.dispatch()?.id as string,
+      inventoryItems: this.scannedCanisters().map((id) => ({ id })),
+      scanAction: IScanAction.DriverFromDepotConfirmed
+    });
   }
 }
