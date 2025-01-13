@@ -168,10 +168,10 @@ export default class ReceiveDispatchComponent {
   async dealerToDriverConfirm() {
     if (!this.dispatch()) return;
 
-    await this.#dispatchStore.scanConfirm({
-      dispatchId: this.dispatch()?.id as string,
-      scannedCanisters: this.scannedCanisters(),
-      dispatchStatus: IDispatchStatus.DealerFromDriverConfirmed,
-    });
+    // await this.#dispatchStore.scanConfirm({
+    //   dispatchId: this.dispatch()?.id as string,
+    //   scannedCanisters: this.scannedCanisters(),
+    //   dispatchStatus: IDispatchStatus.DealerFromDriverConfirmed,
+    // });
   }
 }

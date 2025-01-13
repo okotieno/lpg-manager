@@ -23,6 +23,7 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
     driverId: string;
     dispatchId: string;
     inventoryItemIds: string[];
+    status: DriverInventoryStatus;
   }) {
     const transaction =
       await this.driverInventoryModel.sequelize?.transaction();
@@ -126,5 +127,43 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
         },
       ],
     });
+  }
+
+  async trackEmptyCanisters({
+    driverId,
+    dispatchId,
+    canisterIds,
+    status,
+  }: {
+    driverId: string;
+    dispatchId: string;
+    canisterIds: string[];
+    status: DriverInventoryStatus;
+  }) {
+    const transaction =
+      await this.driverInventoryModel.sequelize?.transaction();
+
+    try {
+      // Create driver inventory records for empty canisters
+      await Promise.all(
+        canisterIds.map((canisterId) =>
+          this.driverInventoryModel.create(
+            {
+              driverId,
+              dispatchId,
+              inventoryItemId: canisterId,
+              status,
+              isEmptyCanister: true, // Flag to identify empty canister records
+            },
+            { transaction }
+          )
+        )
+      );
+
+      await transaction?.commit();
+    } catch (error) {
+      await transaction?.rollback();
+      throw error;
+    }
   }
 }

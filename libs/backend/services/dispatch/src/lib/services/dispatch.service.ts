@@ -7,6 +7,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { DispatchStatus } from '@lpg-manager/db';
 import { DriverInventoryService } from '@lpg-manager/inventory-service';
 import { DriverInventoryStatus } from '@lpg-manager/db';
+import { IScanAction } from '@lpg-manager/types';
 
 @Injectable()
 export class DispatchService extends CrudAbstractService<DispatchModel> {
@@ -64,13 +65,23 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
     ) as Promise<DispatchModel>;
   }
 
-  async scanConfirm(
-    dispatchId: string,
-    scannedCanisters: string[],
-    dispatchStatus: DispatchStatus,
-    driverInventories: { id: string }[],
-    driverInventoryStatus: DriverInventoryStatus,
-  ) {
+  async scanConfirm({
+    dispatchId,
+    inventoryItems,
+    scanAction,
+  }: // dispatchStatus,
+  // driverInventories,
+  // driverInventoryStatus,
+  {
+    dispatchId: string;
+    inventoryItems: { id: string }[];
+    scanAction: IScanAction;
+
+    // scannedCanisters: string[];
+    // dispatchStatus: DispatchStatus;
+    // driverInventories: { id: string }[];
+    // driverInventoryStatus: DriverInventoryStatus;
+  }) {
     const transaction = await this.dispatchModel.sequelize?.transaction();
 
     try {
@@ -85,75 +96,75 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
       });
 
       if (!dispatch) {
-        throw new NotFoundException(`Dispatch with ID "${dispatchId}" not found`);
+        throw new NotFoundException(
+          `Dispatch with ID "${dispatchId}" not found`
+        );
       }
 
-      const updates: Partial<DispatchModel> = {
-        status: dispatchStatus
-      };
+      const updates: Partial<DispatchModel> = {};
 
       // Handle filled canisters flow
-      switch (dispatchStatus) {
-        case DispatchStatus.FILLED_DEPOT_TO_DRIVER:
-          updates.filledDepotToDriverAt = new Date();
+      console.log('scanAction',  scanAction );
+      switch (scanAction) {
+        case IScanAction.DepotToDriverConfirmed:
+          updates.depotToDriverConfirmedAt = new Date();
           await this.driverInventoryService.assignToDriver({
             driverId: dispatch.driverId,
             dispatchId: dispatch.id,
-            inventoryItemIds: scannedCanisters,
-            status: DriverInventoryStatus.FILLED_ASSIGNED
+            inventoryItemIds: inventoryItems.map(({ id }) => id),
+            status: DriverInventoryStatus.FILLED_ASSIGNED,
           });
           break;
-
-        case DispatchStatus.FILLED_DRIVER_CONFIRMED:
-          updates.filledDriverConfirmedAt = new Date();
-          await this.driverInventoryService.updateStatus(
-            dispatch.driverId,
-            scannedCanisters,
-            DriverInventoryStatus.FILLED_IN_TRANSIT
-          );
-          break;
-
-        case DispatchStatus.FILLED_DELIVERED_TO_DEALER:
-          updates.filledDeliveredToDealerAt = new Date();
-          updates.isFilledDeliveryCompleted = true;
-          await this.driverInventoryService.updateStatus(
-            dispatch.driverId,
-            scannedCanisters,
-            DriverInventoryStatus.FILLED_DELIVERED
-          );
-          break;
-
-        // Handle empty canisters flow
-        case DispatchStatus.EMPTY_COLLECTED_FROM_DEALER:
-          updates.emptyCollectedFromDealerAt = new Date();
-          await this.driverInventoryService.trackEmptyCanisters({
-            driverId: dispatch.driverId,
-            dispatchId: dispatch.id,
-            canisterIds: scannedCanisters,
-            status: DriverInventoryStatus.EMPTY_COLLECTED
-          });
-          break;
-
-        case DispatchStatus.EMPTY_RETURNED_TO_DEPOT:
-          updates.emptyReturnedToDepotAt = new Date();
-          updates.isEmptyReturnCompleted = true;
-          await this.driverInventoryService.updateStatus(
-            dispatch.driverId,
-            scannedCanisters,
-            DriverInventoryStatus.EMPTY_RETURNED
-          );
-          break;
+        //
+        //   case DispatchStatus.FILLED_DRIVER_CONFIRMED:
+        //     updates.filledDriverConfirmedAt = new Date();
+        //     await this.driverInventoryService.updateStatus(
+        //       dispatch.driverId,
+        //       scannedCanisters,
+        //       DriverInventoryStatus.FILLED_IN_TRANSIT
+        //     );
+        //     break;
+        //
+        //   case DispatchStatus.FILLED_DELIVERED_TO_DEALER:
+        //     updates.filledDeliveredToDealerAt = new Date();
+        //     updates.isFilledDeliveryCompleted = true;
+        //     await this.driverInventoryService.updateStatus(
+        //       dispatch.driverId,
+        //       scannedCanisters,
+        //       DriverInventoryStatus.FILLED_DELIVERED
+        //     );
+        //     break;
+        //
+        //   // Handle empty canisters flow
+        //   case DispatchStatus.EMPTY_COLLECTED_FROM_DEALER:
+        //     updates.emptyCollectedFromDealerAt = new Date();
+        //     await this.driverInventoryService.trackEmptyCanisters({
+        //       driverId: dispatch.driverId,
+        //       dispatchId: dispatch.id,
+        //       canisterIds: scannedCanisters,
+        //       status: DriverInventoryStatus.EMPTY_COLLECTED,
+        //     });
+        //     break;
+        //
+        //   case DispatchStatus.EMPTY_RETURNED_TO_DEPOT:
+        //     updates.emptyReturnedToDepotAt = new Date();
+        //     updates.isEmptyReturnCompleted = true;
+        //     await this.driverInventoryService.updateStatus(
+        //       dispatch.driverId,
+        //       scannedCanisters,
+        //       DriverInventoryStatus.EMPTY_RETURNED
+        //     );
+        //     break;
       }
 
       // Check if both flows are complete
-      if (updates.isFilledDeliveryCompleted && updates.isEmptyReturnCompleted) {
-        updates.status = DispatchStatus.COMPLETED;
-      }
+      // if (updates.isFilledDeliveryCompleted && updates.isEmptyReturnCompleted) {
+      //   updates.status = DispatchStatus.COMPLETED;
+      // }
 
       await dispatch.update(updates, { transaction });
-      await transaction.commit();
+      await transaction?.commit();
       return dispatch;
-
     } catch (error) {
       await transaction?.rollback();
       throw error;

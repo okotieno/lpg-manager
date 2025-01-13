@@ -1,3 +1,14 @@
+enum ScanAction {
+  DEPOT_TO_DRIVER_CONFIRMED
+  DRIVER_FROM_DEPOT_CONFIRMED
+  DRIVER_TO_DEALER_CONFIRMED
+  DEALER_FROM_DRIVER_CONFIRMED
+  DEALER_TO_DRIVER_CONFIRMED
+  DRIVER_FROM_DEALER_CONFIRMED
+  DRIVER_TO_DEPOT_CONFIRMED
+  DEPOT_FROM_DRIVER_CONFIRMED
+}
+
 enum DispatchStatus {
   PENDING
   INITIATED
@@ -54,12 +65,21 @@ enum ScanConfirmDriverInventoryStatus {
   DEALER_FROM_DRIVER_CONFIRMED
 }
 
+input EmptyCylindersScanConfirmInput {
+  catalogueId: UUID
+  quantity: PositiveInt
+}
+
 input ScanConfirmInput {
   dispatchId: UUID!
-  scannedCanisters: [UUID!]!
-  dispatchStatus: DispatchStatus!
-  driverInventories: [SelectCategory]
-  driverInventoryStatus: ScanConfirmDriverInventoryStatus
+  inventoryItems: [SelectCategory]
+  scanAction: ScanAction!
+  emptyCylinders: EmptyCylindersScanConfirmInput
+
+#  scannedCanisters: [UUID!]!
+#  dispatchStatus: DispatchStatus!
+#  driverInventories: [SelectCategory]
+#  driverInventoryStatus: ScanConfirmDriverInventoryStatus
   depotId: SelectCategory
 }
 

@@ -182,13 +182,13 @@ export default class SummaryPageComponent {
 
     const driverInventories = this.scannedDriverInventories().map(({ id }) => ({ id }));
 
-    await this.#dispatchStore.scanConfirm({
-      dispatchId,
-      scannedCanisters,
-      dispatchStatus: IDispatchStatus.InTransit,
-      driverInventories,
-      driverInventoryStatus: IScanConfirmDriverInventoryStatus.DriverToDealerConfirmed
-    });
+    // await this.#dispatchStore.scanConfirm({
+    //   dispatchId,
+    //   scannedCanisters,
+    //   dispatchStatus: IDispatchStatus.InTransit,
+    //   driverInventories,
+    //   driverInventoryStatus: IScanConfirmDriverInventoryStatus.DriverToDealerConfirmed
+    // });
   }
 
   validateScans() {

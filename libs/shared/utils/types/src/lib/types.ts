@@ -443,6 +443,11 @@ export type IDriverModel = {
   vehicles?: Maybe<Array<IVehicleModel>>;
 };
 
+export type IEmptyCylindersScanConfirmInput = {
+  catalogueId?: InputMaybe<Scalars['UUID']['input']>;
+  quantity?: InputMaybe<Scalars['PositiveInt']['input']>;
+};
+
 export type IFileUploadModel = {
   id: Scalars['UUID']['output'];
   mimetype?: Maybe<Scalars['String']['output']>;
@@ -1622,6 +1627,17 @@ export type IRoleModel = {
   stationId: Scalars['UUID']['output'];
 };
 
+export enum IScanAction {
+  DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
+  DealerToDriverConfirmed = 'DEALER_TO_DRIVER_CONFIRMED',
+  DepotFromDriverConfirmed = 'DEPOT_FROM_DRIVER_CONFIRMED',
+  DepotToDriverConfirmed = 'DEPOT_TO_DRIVER_CONFIRMED',
+  DriverFromDealerConfirmed = 'DRIVER_FROM_DEALER_CONFIRMED',
+  DriverFromDepotConfirmed = 'DRIVER_FROM_DEPOT_CONFIRMED',
+  DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED',
+  DriverToDepotConfirmed = 'DRIVER_TO_DEPOT_CONFIRMED'
+}
+
 export enum IScanConfirmDriverInventoryStatus {
   DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
   DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED'
@@ -1630,10 +1646,9 @@ export enum IScanConfirmDriverInventoryStatus {
 export type IScanConfirmInput = {
   depotId?: InputMaybe<ISelectCategory>;
   dispatchId: Scalars['UUID']['input'];
-  dispatchStatus: IDispatchStatus;
-  driverInventories?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
-  driverInventoryStatus?: InputMaybe<IScanConfirmDriverInventoryStatus>;
-  scannedCanisters: Array<Scalars['UUID']['input']>;
+  emptyCylinders?: InputMaybe<IEmptyCylindersScanConfirmInput>;
+  inventoryItems?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
+  scanAction: IScanAction;
 };
 
 export type ISelectCategory = {

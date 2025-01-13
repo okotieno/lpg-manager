@@ -116,13 +116,11 @@ export class DispatchResolver {
     @Args('params') params: ScanConfirmDto,
     @CurrentUser() currentUser: UserModel
   ) {
-    const dispatch = await this.dispatchService.scanConfirm(
-      params.dispatchId,
-      params.scannedCanisters,
-      params.dispatchStatus,
-      params.driverInventories,
-      params.driverInventoryStatus
-    );
+    const dispatch = await this.dispatchService.scanConfirm({
+      dispatchId: params.dispatchId,
+      inventoryItems: params.inventoryItems,
+      scanAction: params.scanAction,
+    });
 
     this.eventEmitter.emit('dispatch.completed', {
       dispatch,

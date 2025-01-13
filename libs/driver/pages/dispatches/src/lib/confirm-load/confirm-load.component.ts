@@ -100,11 +100,11 @@ export default class ConfirmLoadComponent {
   async confirmAssignment() {
     const dispatchId = this.dispatch()?.id;
     if (dispatchId) {
-      await this.#dispatchStore.scanConfirm({
-        dispatchId: dispatchId,
-        scannedCanisters: this.scannedCanisters(),
-        dispatchStatus: IDispatchStatus.InTransit,
-      });
+      // await this.#dispatchStore.scanConfirm({
+      //   dispatchId: dispatchId,
+      //   scannedCanisters: this.scannedCanisters(),
+      //   dispatchStatus: IDispatchStatus.InTransit,
+      // });
       // await this.#router.navigate(['../'], { relativeTo: this.#route });
     }
   }
@@ -196,10 +196,10 @@ export default class ConfirmLoadComponent {
   async driverFromDepotConfirm() {
     if (!this.dispatch()) return;
 
-    await this.#dispatchStore.scanConfirm({
-      dispatchId: this.dispatch()?.id as string,
-      scannedCanisters: this.scannedCanisters(),
-      dispatchStatus: IDispatchStatus.DriverFromDepotConfirmed,
-    });
+    // await this.#dispatchStore.scanConfirm({
+    //   dispatchId: this.dispatch()?.id as string,
+    //   scannedCanisters: this.scannedCanisters(),
+    //   dispatchStatus: IDispatchStatus.DriverFromDepotConfirmed,
+    // });
   }
 }
