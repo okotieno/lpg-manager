@@ -6,7 +6,7 @@ import {
   ITableColumn,
   PaginatedResource,
 } from '@lpg-manager/data-table';
-import { IUserModel } from '@lpg-manager/types';
+import { IQueryOperatorEnum, IUserModel } from '@lpg-manager/types';
 
 @Component({
   standalone: true,
@@ -24,4 +24,10 @@ export default class UsersPageComponent {
     { label: 'Last Name', key: 'lastName', fieldType: 'string' },
     // { label: 'Roles', key: 'roles', fieldType: 'string' },
   ];
+
+  constructor() {
+    this.userStore.setFilters([
+      { field: 'roles.name', operator: IQueryOperatorEnum.DoesNotEqual, value: 'driver' },
+    ]);
+  }
 }

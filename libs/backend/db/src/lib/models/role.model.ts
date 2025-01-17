@@ -41,6 +41,12 @@ export class RoleModel extends Model {
   })
   name!: string;
 
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  label!: string;
+
   @BelongsToMany(() => PermissionModel, {
     foreignKeyConstraint: true,
     through: 'permission_role',

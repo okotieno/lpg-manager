@@ -4,7 +4,7 @@ import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
 export type ICreatePermissionMutationVariables = Types.Exact<{
-  name: Types.Scalars['String']['input'];
+  params: Types.ICreatePermissionInput;
 }>;
 
 
@@ -15,14 +15,14 @@ export type IGetPermissionByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetPermissionByIdQuery = { permission?: { id: string, name: string } | null };
+export type IGetPermissionByIdQuery = { permission?: { id: string, name: Types.IPermission } | null };
 
 export type IGetPermissionsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetPermissionsQuery = { permissions: { items?: Array<{ id: string, name: string } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetPermissionsQuery = { permissions: { items?: Array<{ id: string, name: Types.IPermission } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeletePermissionByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -32,8 +32,8 @@ export type IDeletePermissionByIdMutationVariables = Types.Exact<{
 export type IDeletePermissionByIdMutation = { deletePermission: { message: string } };
 
 export const CreatePermissionDocument = gql`
-    mutation CreatePermission($name: String!) {
-  createPermission(name: $name) {
+    mutation CreatePermission($params: CreatePermissionInput!) {
+  createPermission(params: $params) {
     message
     data {
       id

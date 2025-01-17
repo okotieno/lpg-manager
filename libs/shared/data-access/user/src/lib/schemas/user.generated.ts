@@ -23,7 +23,7 @@ export type IGetUserByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetUserByIdQuery = { user?: { phone?: string | null, id: string, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null, roles?: Array<{ id: string, role?: { id: string, name: string } | null, station?: { id: string, name: string, type: Types.IStationType } | null } | null> | null } | null };
+export type IGetUserByIdQuery = { user?: { phone?: string | null, id: string, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null, roles?: Array<{ id: string, role?: { id: string, name: Types.IDefaultRole } | null, station?: { id: string, name: string, type: Types.IStationType } | null } | null> | null } | null };
 
 export type IGetUsersQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
@@ -52,7 +52,7 @@ export type IUserWithRolesQueryVariables = Types.Exact<{
 }>;
 
 
-export type IUserWithRolesQuery = { user?: { phone?: string | null, id: string, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null } | null, userRoles?: { items?: Array<{ id: string, name: string, permissions?: Array<{ id: string, name: string } | null> | null } | null> | null, meta?: { totalItems: number } | null } | null };
+export type IUserWithRolesQuery = { user?: { phone?: string | null, id: string, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null } | null, userRoles?: { items?: Array<{ id: string, name: Types.IDefaultRole, permissions?: Array<{ id: string, name: Types.IPermission } | null> | null } | null> | null, meta?: { totalItems: number } | null } | null };
 
 export type IGetUserCountQueryVariables = Types.Exact<{ [key: string]: never; }>;
 

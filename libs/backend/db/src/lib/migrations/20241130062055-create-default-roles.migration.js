@@ -2,170 +2,153 @@
 const { v4: uuidv4 } = require('uuid');
 
 const rolePermissions = {
-  ['super admin']: '*', // Special case - gets all permissions
-
-  ['admin admin-portal']: [
-    // Access Apps
-    'access admin portal',
-    // User Management
-    'create user', 'delete user', 'update user',
-    // Role Management
-    'create role', 'delete role', 'update role',
-    // Permission Management
-    'create permission', 'delete permission', 'update permission', 'give permission to role',
-    // Role Assignment
-    'assign role to user',
-    // Settings Management
-    'create setting', 'delete setting', 'update setting',
-    // Brand Management
-    'create brand', 'delete brand', 'update brand',
-    // Station Management
-    'create station', 'delete station', 'update station',
-    // Catalogue Management
-    'create brand catalogue', 'delete brand catalogue', 'update brand catalogue',
-    // Inventory Management
-    'create inventory', 'delete inventory', 'update inventory',
-    // Cart
-    'create cart', 'update cart', 'delete cart',
-    // Order
-    'create order', 'update order', 'delete order',
-    // Notification
-    'mark notification as read',
-    // Dispatch Management
-    'create dispatch', 'delete dispatch', 'update dispatch', 'view dispatch', 'confirm via scanning',
-    // Driver Management
-    'create driver', 'delete driver', 'update driver', 'view driver',
-    // Transporter Management
-    'create transporter', 'delete transporter', 'update transporter', 'view transporter'
-  ],
-
-  ['admin dealer']: [
-    // Access Apps
-    'access dealer app',
-    // Activity Log
-    'create activity log', 'delete activity log', 'update activity log',
-    // Inventory Management
-    'create inventory', 'delete inventory', 'update inventory',
-    // Cart
-    'create cart', 'update cart', 'delete cart',
-    // Order
-    'create order', 'update order', 'delete order',
-    // Notification
-    'mark notification as read',
-    // Dispatch Management
-    'confirm via scanning', 'view dispatch'
-
-  ],
-
-  ['admin depot']: [
-    // Access Apps
-    'access depot app',
-    // Activity Log
-    'create inventory', 'delete inventory', 'update inventory',
-    // Order
-    'create order', 'update order', 'delete order',
-    // Notification
-    'mark notification as read',
-    // Dispatch Management
-    'create dispatch', 'delete dispatch', 'update dispatch', 'view dispatch', 'confirm via scanning',
-    // Transporter
-    'view transporter',
-    // Driver
-    'view driver'
-  ],
-
-  driver: [
-    // Access Apps
-    'access driver app',
-    // Notification
-    'mark notification as read',
-
-    // Dispatch
-    'view dispatch',
-
-    // Dispatch Management
-    'confirm via scanning'
-  ],
+  SUPER_ADMIN: {
+    label: 'super admin',
+    permissions: '*' // Special case - gets all permissions
+  },
+  ADMIN_PORTAL_ADMIN: {
+    label: 'admin admin-portal',
+    permissions: [
+      // Access Apps
+      'ACCESS_ADMIN_PORTAL',
+      // User Management
+      'CREATE_USER', 'DELETE_USER', 'UPDATE_USER',
+      // Role Management
+      'CREATE_ROLE', 'DELETE_ROLE', 'UPDATE_ROLE',
+      // Permission Management
+      'CREATE_PERMISSION', 'DELETE_PERMISSION', 'UPDATE_PERMISSION', 'GIVE_PERMISSION_TO_ROLE',
+      // Role Assignment
+      'ASSIGN_ROLE_TO_USER',
+      // Settings Management
+      'CREATE_SETTING', 'DELETE_SETTING', 'UPDATE_SETTING',
+      // Brand Management
+      'CREATE_BRAND', 'DELETE_BRAND', 'UPDATE_BRAND',
+      // Station Management
+      'CREATE_STATION', 'DELETE_STATION', 'UPDATE_STATION',
+      // Catalogue Management
+      'CREATE_BRAND_CATALOGUE', 'DELETE_BRAND_CATALOGUE', 'UPDATE_BRAND_CATALOGUE',
+      // Inventory Management
+      'CREATE_INVENTORY', 'DELETE_INVENTORY', 'UPDATE_INVENTORY',
+      // Cart
+      'CREATE_CART', 'UPDATE_CART', 'DELETE_CART',
+      // Order
+      'CREATE_ORDER', 'UPDATE_ORDER', 'DELETE_ORDER',
+      // Notification
+      'MARK_NOTIFICATION_AS_READ',
+      // Dispatch Management
+      'CREATE_DISPATCH', 'DELETE_DISPATCH', 'UPDATE_DISPATCH', 'VIEW_DISPATCH', 'CONFIRM_VIA_SCANNING',
+      // Driver Management
+      'CREATE_DRIVER', 'DELETE_DRIVER', 'UPDATE_DRIVER', 'VIEW_DRIVER',
+      // Transporter Management
+      'CREATE_TRANSPORTER', 'DELETE_TRANSPORTER', 'UPDATE_TRANSPORTER', 'VIEW_TRANSPORTER'
+    ]
+  },
+  ADMIN_DEALER: {
+    label: 'admin dealer',
+    permissions: [
+      // Access Apps
+      'ACCESS_DEALER_APP',
+      // Activity Log
+      'CREATE_ACTIVITY_LOG', 'DELETE_ACTIVITY_LOG', 'UPDATE_ACTIVITY_LOG',
+      // Inventory Management
+      'CREATE_INVENTORY', 'DELETE_INVENTORY', 'UPDATE_INVENTORY',
+      // Cart
+      'CREATE_CART', 'UPDATE_CART', 'DELETE_CART',
+      // Order
+      'CREATE_ORDER', 'UPDATE_ORDER', 'DELETE_ORDER',
+      // Notification
+      'MARK_NOTIFICATION_AS_READ',
+      // Dispatch Management
+      'CONFIRM_VIA_SCANNING', 'VIEW_DISPATCH'
+    ]
+  },
+  ADMIN_DEPOT: {
+    label: 'admin depot',
+    permissions: [
+      // Access Apps
+      'ACCESS_DEPOT_APP',
+      // Activity Log
+      'CREATE_INVENTORY', 'DELETE_INVENTORY', 'UPDATE_INVENTORY',
+      // Order
+      'CREATE_ORDER', 'UPDATE_ORDER', 'DELETE_ORDER',
+      // Notification
+      'MARK_NOTIFICATION_AS_READ',
+      // Dispatch Management
+      'CREATE_DISPATCH', 'DELETE_DISPATCH', 'UPDATE_DISPATCH', 'VIEW_DISPATCH', 'CONFIRM_VIA_SCANNING',
+      // Transporter
+      'VIEW_TRANSPORTER',
+      // Driver
+      'VIEW_DRIVER'
+    ]
+  },
+  DRIVER: {
+    label: 'driver',
+    permissions: [
+      // Access Apps
+      'ACCESS_DRIVER_APP',
+      // Notification
+      'MARK_NOTIFICATION_AS_READ',
+      // Dispatch
+      'VIEW_DISPATCH',
+      // Dispatch Management
+      'CONFIRM_VIA_SCANNING'
+    ]
+  }
 };
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface) {
-    // Create roles first
-    const rolesToInsert = Object.entries(rolePermissions).map(([name]) => ({
-      id: uuidv4(),
-      name,
-      created_at: new Date(),
-      updated_at: new Date()
-    }));
+  async up(queryInterface, Sequelize) {
+    // Create roles
+    for (const [name, roleData] of Object.entries(rolePermissions)) {
+      const roleId = uuidv4();
+      await queryInterface.bulkInsert('roles', [{
+        id: roleId,
+        name: name,
+        label: roleData.label,
+        created_at: new Date(),
+        updated_at: new Date()
+      }]);
 
-    await queryInterface.bulkInsert('roles', rolesToInsert);
-
-    // Get all permissions
-    const [permissions] = await queryInterface.sequelize.query(
-      `SELECT id, name FROM permissions;`
-    );
-
-    // Create a map of permission names to IDs
-    const permissionMap = permissions.reduce((acc, perm) => {
-      acc[perm.name] = perm.id;
-      return acc;
-    }, {});
-
-    // Get all created roles
-    const [roles] = await queryInterface.sequelize.query(
-      `SELECT id, name FROM roles WHERE name IN (${Object.keys(rolePermissions).map(name => `'${name}'`).join(',')});`
-    );
-
-    // Create permission-role assignments
-    const permissionRoleEntries = [];
-
-    for (const role of roles) {
-      const rolePerms = rolePermissions[role.name];
-
-      if (rolePerms === '*') {
-        // Assign all permissions for super_admin
-        permissions.forEach(permission => {
-          permissionRoleEntries.push({
-            role_id: role.id,
+      // If this is the super admin role, they get all permissions
+      if (roleData.permissions === '*') {
+        const allPermissions = await queryInterface.sequelize.query(
+          `SELECT id FROM permissions WHERE deleted_at IS NULL`,
+          { type: queryInterface.sequelize.QueryTypes.SELECT }
+        );
+        
+        await queryInterface.bulkInsert('permission_role',
+          allPermissions.map(permission => ({
+            role_id: roleId,
             permission_id: permission.id,
             created_at: new Date(),
             updated_at: new Date()
-          });
-        });
-      } else {
-        // Assign specific permissions for other roles
-        rolePerms.forEach(permName => {
-          if (permissionMap[permName]) {
-            permissionRoleEntries.push({
-              role_id: role.id,
-              permission_id: permissionMap[permName],
-              created_at: new Date(),
-              updated_at: new Date()
-            });
-          }
-        });
+          }))
+        );
+        continue;
+      }
+
+      // For other roles, assign specific permissions
+      const permissions = await queryInterface.sequelize.query(
+        `SELECT id FROM permissions WHERE name IN (${roleData.permissions.map(p => `'${p}'`).join(',')}) AND deleted_at IS NULL`,
+        { type: queryInterface.sequelize.QueryTypes.SELECT }
+      );
+
+      if (permissions.length > 0) {
+        await queryInterface.bulkInsert('permission_role',
+          permissions.map(permission => ({
+            role_id: roleId,
+            permission_id: permission.id,
+            created_at: new Date(),
+            updated_at: new Date()
+          }))
+        );
       }
     }
-
-    await queryInterface.bulkInsert('permission_role', permissionRoleEntries);
   },
 
   async down(queryInterface) {
-    // First remove all permission_role entries for these roles
-    const [roles] = await queryInterface.sequelize.query(
-      `SELECT id FROM roles WHERE name IN (${Object.keys(rolePermissions).map(name => `'${name}'`).join(',')});`
-    );
-
-    if (roles.length > 0) {
-      await queryInterface.bulkDelete('permission_role', {
-        role_id: roles.map(role => role.id)
-      });
-    }
-
-    // Then remove the roles
-    await queryInterface.bulkDelete('roles', {
-      name: Object.keys(rolePermissions)
-    });
+    await queryInterface.bulkDelete('permission_role', null, {});
+    await queryInterface.bulkDelete('roles', null, {});
   }
 };

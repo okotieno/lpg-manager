@@ -8,28 +8,28 @@ export type ICreateRoleMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateRoleMutation = { createRole?: { message: string, data: { id: string } } | null };
+export type ICreateRoleMutation = { createRole: { message: string, data: { id: string } } };
 
 export type IGetRoleByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetRoleByIdQuery = { role?: { id: string, name: string, permissions?: Array<{ id: string, name: string } | null> | null } | null };
+export type IGetRoleByIdQuery = { role?: { id: string, name: Types.IDefaultRole, permissions?: Array<{ id: string, name: Types.IPermission } | null> | null } | null };
 
 export type IGetRoleByIdWithPermissionQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetRoleByIdWithPermissionQuery = { role?: { id: string, name: string, permissions?: Array<{ id: string, name: string } | null> | null } | null };
+export type IGetRoleByIdWithPermissionQuery = { role?: { id: string, name: Types.IDefaultRole, permissions?: Array<{ id: string, name: Types.IPermission } | null> | null } | null };
 
 export type IGetRolesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetRolesQuery = { roles: { items?: Array<{ id: string, name: string } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetRolesQuery = { roles: { items?: Array<{ id: string, name: Types.IDefaultRole } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IGivePermissionsToRoleMutationVariables = Types.Exact<{
   permissions?: Types.InputMaybe<Array<Types.InputMaybe<Types.ISelectCategory>> | Types.InputMaybe<Types.ISelectCategory>>;
@@ -52,7 +52,7 @@ export type IUpdateRoleMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateRoleMutation = { updateRole?: { message: string, data: { id: string } } | null };
+export type IUpdateRoleMutation = { updateRole: { message: string, data: { id: string } } };
 
 export const CreateRoleDocument = gql`
     mutation CreateRole($params: CreateRoleInput!) {

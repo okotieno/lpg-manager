@@ -2,104 +2,105 @@
 const { v4: uuidv4 } = require('uuid');
 
 const permissions = [
-  'access dealer app',
-  'access depot app',
-  'access admin portal',
-  'access driver app',
+  // Access Apps
+  { name: 'ACCESS_DEALER_APP', label: 'access dealer app' },
+  { name: 'ACCESS_DEPOT_APP', label: 'access depot app' },
+  { name: 'ACCESS_ADMIN_PORTAL', label: 'access admin portal' },
+  { name: 'ACCESS_DRIVER_APP', label: 'access driver app' },
 
   // User Management
-  'create user',
-  'delete user',
-  'update user',
+  { name: 'CREATE_USER', label: 'create user' },
+  { name: 'DELETE_USER', label: 'delete user' },
+  { name: 'UPDATE_USER', label: 'update user' },
 
   // Role Management
-  'create role',
-  'delete role',
-  'update role',
+  { name: 'CREATE_ROLE', label: 'create role' },
+  { name: 'DELETE_ROLE', label: 'delete role' },
+  { name: 'UPDATE_ROLE', label: 'update role' },
 
   // Permission Management
-  'create permission',
-  'delete permission',
-  'update permission',
-  'give permission to role',
+  { name: 'CREATE_PERMISSION', label: 'create permission' },
+  { name: 'DELETE_PERMISSION', label: 'delete permission' },
+  { name: 'UPDATE_PERMISSION', label: 'update permission' },
+  { name: 'GIVE_PERMISSION_TO_ROLE', label: 'give permission to role' },
 
   // Role Assignment
-  'assign role to user',
+  { name: 'ASSIGN_ROLE_TO_USER', label: 'assign role to user' },
 
   // OTP Management
-  'create otp',
-  'delete otp',
-  'update otp',
+  { name: 'CREATE_OTP', label: 'create otp' },
+  { name: 'DELETE_OTP', label: 'delete otp' },
+  { name: 'UPDATE_OTP', label: 'update otp' },
 
   // Password Reset
-  'create password-reset',
-  'delete password-reset',
-  'update password-reset',
+  { name: 'CREATE_PASSWORD_RESET', label: 'create password-reset' },
+  { name: 'DELETE_PASSWORD_RESET', label: 'delete password-reset' },
+  { name: 'UPDATE_PASSWORD_RESET', label: 'update password-reset' },
 
   // Notification Management
-  'create notification',
-  'delete notification',
-  'update notification',
-  'mark notification as read',
+  { name: 'CREATE_NOTIFICATION', label: 'create notification' },
+  { name: 'DELETE_NOTIFICATION', label: 'delete notification' },
+  { name: 'UPDATE_NOTIFICATION', label: 'update notification' },
+  { name: 'MARK_NOTIFICATION_AS_READ', label: 'mark notification as read' },
 
   // Settings Management
-  'create setting',
-  'delete setting',
-  'update setting',
+  { name: 'CREATE_SETTING', label: 'create setting' },
+  { name: 'DELETE_SETTING', label: 'delete setting' },
+  { name: 'UPDATE_SETTING', label: 'update setting' },
 
   // Activity Log
-  'create activity log',
-  'delete activity log',
-  'update activity log',
+  { name: 'CREATE_ACTIVITY_LOG', label: 'create activity log' },
+  { name: 'DELETE_ACTIVITY_LOG', label: 'delete activity log' },
+  { name: 'UPDATE_ACTIVITY_LOG', label: 'update activity log' },
 
-  // Brand
-  'create brand',
-  'delete brand',
-  'update brand',
+  // Brand Management
+  { name: 'CREATE_BRAND', label: 'create brand' },
+  { name: 'DELETE_BRAND', label: 'delete brand' },
+  { name: 'UPDATE_BRAND', label: 'update brand' },
 
-  // Brand
-  'create station',
-  'delete station',
-  'update station',
+  // Station Management
+  { name: 'CREATE_STATION', label: 'create station' },
+  { name: 'DELETE_STATION', label: 'delete station' },
+  { name: 'UPDATE_STATION', label: 'update station' },
 
-  // Catalogue
-  'create brand catalogue',
-  'delete brand catalogue',
-  'update brand catalogue',
+  // Catalogue Management
+  { name: 'CREATE_BRAND_CATALOGUE', label: 'create brand catalogue' },
+  { name: 'DELETE_BRAND_CATALOGUE', label: 'delete brand catalogue' },
+  { name: 'UPDATE_BRAND_CATALOGUE', label: 'update brand catalogue' },
 
-  // Inventory
-  'create inventory',
-  'delete inventory',
-  'update inventory',
+  // Inventory Management
+  { name: 'CREATE_INVENTORY', label: 'create inventory' },
+  { name: 'DELETE_INVENTORY', label: 'delete inventory' },
+  { name: 'UPDATE_INVENTORY', label: 'update inventory' },
 
-  // Cart
-  'create cart',
-  'update cart',
-  'delete cart',
+  // Cart Management
+  { name: 'CREATE_CART', label: 'create cart' },
+  { name: 'UPDATE_CART', label: 'update cart' },
+  { name: 'DELETE_CART', label: 'delete cart' },
 
-  // Cart
-  'create order',
-  'update order',
-  'delete order',
+  // Order Management
+  { name: 'CREATE_ORDER', label: 'create order' },
+  { name: 'UPDATE_ORDER', label: 'update order' },
+  { name: 'DELETE_ORDER', label: 'delete order' },
 
   // Dispatch Management
-  'create dispatch',
-  'delete dispatch',
-  'update dispatch',
-  'view dispatch',
-  'confirm via scanning',
+  { name: 'CREATE_DISPATCH', label: 'create dispatch' },
+  { name: 'DELETE_DISPATCH', label: 'delete dispatch' },
+  { name: 'UPDATE_DISPATCH', label: 'update dispatch' },
+  { name: 'VIEW_DISPATCH', label: 'view dispatch' },
+  { name: 'CONFIRM_VIA_SCANNING', label: 'confirm via scanning' },
 
   // Driver Management
-  'create driver',
-  'delete driver',
-  'update driver',
-  'view driver',
+  { name: 'CREATE_DRIVER', label: 'create driver' },
+  { name: 'DELETE_DRIVER', label: 'delete driver' },
+  { name: 'UPDATE_DRIVER', label: 'update driver' },
+  { name: 'VIEW_DRIVER', label: 'view driver' },
 
   // Transporter Management
-  'create transporter',
-  'delete transporter',
-  'update transporter',
-  'view transporter',
+  { name: 'CREATE_TRANSPORTER', label: 'create transporter' },
+  { name: 'DELETE_TRANSPORTER', label: 'delete transporter' },
+  { name: 'UPDATE_TRANSPORTER', label: 'update transporter' },
+  { name: 'VIEW_TRANSPORTER', label: 'view transporter' },
 ];
 
 /** @type {import('sequelize-cli').Migration} */
@@ -107,7 +108,8 @@ module.exports = {
   async up(queryInterface) {
     const permissionsToInsert = permissions.map(permission => ({
       id: uuidv4(),
-      name: permission,
+      name: permission.name,
+      label: permission.label,
       created_at: new Date(),
       updated_at: new Date()
     }));
@@ -143,7 +145,7 @@ module.exports = {
 
     // Then remove all permissions
     await queryInterface.bulkDelete('permissions', {
-      name: permissions
+      name: permissions.map(permission => permission.name)
     }, {});
   }
 };

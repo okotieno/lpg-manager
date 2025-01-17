@@ -3,6 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    // Create roles table
     await queryInterface.createTable('roles', {
       id: {
         type: Sequelize.UUID,
@@ -13,22 +14,23 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      createdAt: {
+      label: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
         allowNull: false,
-        field: 'created_at',
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
         allowNull: false,
-        field: 'updated_at',
       },
-      deletedAt: {
+      deleted_at: {
         type: Sequelize.DATE,
         allowNull: true,
-        field: 'deleted_at',
       },
     });
 
@@ -49,10 +51,9 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      roleId: {
+      role_id: {
         type: Sequelize.UUID,
         allowNull: false,
-        field: 'role_id',
         references: {
           model: 'roles',
           key: 'id',
@@ -60,10 +61,9 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      userId: {
+      user_id: {
         type: Sequelize.UUID,
         allowNull: false,
-        field: 'user_id',
         references: {
           model: 'users',
           key: 'id',
@@ -71,10 +71,9 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      stationId: {
+      station_id: {
         type: Sequelize.UUID,
         allowNull: true,
-        field: 'station_id',
         references: {
           model: 'stations',
           key: 'id',
@@ -82,34 +81,30 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      createdAt: {
+      created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
         allowNull: false,
-        field: 'created_at',
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
         allowNull: false,
-        field: 'updated_at',
       }
     });
 
-    // Add composite unique constraint
+    // Add unique constraint for role_id and user_id combination
     await queryInterface.addConstraint('role_user', {
-      fields: ['user_id', 'role_id', 'station_id'],
+      fields: ['role_id', 'user_id'],
       type: 'unique',
-      name: 'unique_user_role_station'
+      name: 'unique_role_user'
     });
   },
 
   async down(queryInterface) {
-    // Drop the index first
-    await queryInterface.removeIndex('roles', 'roles_name_unique_not_deleted');
-
-    // Then drop the tables
+    await queryInterface.removeConstraint('role_user', 'unique_role_user');
     await queryInterface.dropTable('role_user');
+    await queryInterface.removeIndex('roles', 'roles_name_unique_not_deleted');
     await queryInterface.dropTable('roles');
   }
 };

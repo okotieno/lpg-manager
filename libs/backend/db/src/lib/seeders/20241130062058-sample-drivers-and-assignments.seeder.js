@@ -14,7 +14,7 @@ module.exports = {
 
     // Get driver role
     const [roles] = await queryInterface.sequelize.query(
-      `SELECT id FROM roles WHERE name = 'driver';`
+      `SELECT id FROM roles WHERE name = 'DRIVER';`
     );
     const driverRoleId = roles[0]?.id;
 
@@ -89,4 +89,4 @@ module.exports = {
       email: { [queryInterface.sequelize.Op.like]: '%@example.com' }
     }, {});
   }
-}; 
+};

@@ -1,14 +1,100 @@
+enum Permission {
+  ACCESS_DEALER_APP
+  ACCESS_DEPOT_APP
+  ACCESS_ADMIN_PORTAL
+  ACCESS_DRIVER_APP
+  
+  CREATE_USER
+  DELETE_USER
+  UPDATE_USER
+  
+  CREATE_ROLE
+  DELETE_ROLE
+  UPDATE_ROLE
+  
+  CREATE_PERMISSION
+  DELETE_PERMISSION
+  UPDATE_PERMISSION
+  GIVE_PERMISSION_TO_ROLE
+  
+  ASSIGN_ROLE_TO_USER
+  
+  CREATE_OTP
+  DELETE_OTP
+  UPDATE_OTP
+  
+  CREATE_PASSWORD_RESET
+  DELETE_PASSWORD_RESET
+  UPDATE_PASSWORD_RESET
+  
+  CREATE_NOTIFICATION
+  DELETE_NOTIFICATION
+  UPDATE_NOTIFICATION
+  MARK_NOTIFICATION_AS_READ
+  
+  CREATE_SETTING
+  DELETE_SETTING
+  UPDATE_SETTING
+  
+  CREATE_ACTIVITY_LOG
+  DELETE_ACTIVITY_LOG
+  UPDATE_ACTIVITY_LOG
+  
+  CREATE_BRAND
+  DELETE_BRAND
+  UPDATE_BRAND
+  
+  CREATE_STATION
+  DELETE_STATION
+  UPDATE_STATION
+  
+  CREATE_BRAND_CATALOGUE
+  DELETE_BRAND_CATALOGUE
+  UPDATE_BRAND_CATALOGUE
+  
+  CREATE_INVENTORY
+  DELETE_INVENTORY
+  UPDATE_INVENTORY
+  
+  CREATE_CART
+  UPDATE_CART
+  DELETE_CART
+  
+  CREATE_ORDER
+  UPDATE_ORDER
+  DELETE_ORDER
+  
+  CREATE_DISPATCH
+  DELETE_DISPATCH
+  UPDATE_DISPATCH
+  VIEW_DISPATCH
+  CONFIRM_VIA_SCANNING
+  
+  CREATE_DRIVER
+  DELETE_DRIVER
+  UPDATE_DRIVER
+  VIEW_DRIVER
+  
+  CREATE_TRANSPORTER
+  DELETE_TRANSPORTER
+  UPDATE_TRANSPORTER
+  VIEW_TRANSPORTER
+}
+
 type PermissionModel {
   id: UUID!
-  name: String!
+  name: Permission!
+  label: String!
 }
 
 input CreatePermissionInput {
-  name: String
+  name: Permission!
+  label: String!
 }
 
 input UpdatePermissionInput {
-  name: String
+  name: Permission
+  label: String
 }
 
 type PaginatedPermission {
@@ -32,7 +118,9 @@ extend type Mutation {
     params: UpdatePermissionInput
   ): CreatePermissionSuccessResponse
 
-  createPermission(name: String!): CreatePermissionSuccessResponse
+  createPermission(
+    params: CreatePermissionInput!
+  ): CreatePermissionSuccessResponse
 
   deletePermission(id: UUID!): DeleteSuccessResponse!
 }

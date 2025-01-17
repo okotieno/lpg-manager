@@ -1,13 +1,14 @@
 import {
   Component,
-  computed, DestroyRef,
+  computed,
+  DestroyRef,
   effect,
   inject,
   input,
   signal,
   untracked,
   viewChild,
-  WritableSignal
+  WritableSignal,
 } from '@angular/core';
 import { CdkTableModule } from '@angular/cdk/table';
 import {
@@ -108,6 +109,7 @@ export class DataTableComponent<T extends { id: string }> {
       { label: 'Greater than', value: IQueryOperatorEnum.GreaterThan },
       { label: 'In', value: IQueryOperatorEnum.In },
       { label: 'Between', value: IQueryOperatorEnum.Between },
+      { label: 'Does not equal', value: IQueryOperatorEnum.DoesNotEqual },
     ];
     const fieldTypesSearchOptions = {
       [IQueryOperatorEnum.Contains]: ['uuid', 'date', 'integer', 'string'],
@@ -122,6 +124,7 @@ export class DataTableComponent<T extends { id: string }> {
       [IQueryOperatorEnum.GreaterThan]: ['date', 'integer', 'string'],
       [IQueryOperatorEnum.LessThan]: ['date', 'integer', 'string'],
       [IQueryOperatorEnum.Between]: ['date', 'integer', 'string'],
+      [IQueryOperatorEnum.DoesNotEqual]: ['string'],
     };
 
     return columns.reduce((acc, column) => {
@@ -246,17 +249,20 @@ export class DataTableComponent<T extends { id: string }> {
       value: ['', validators],
     });
 
-    control.get('operator')?.valueChanges.pipe(
-      filter(() => fieldType === 'uuid'),
-      tap((value) => {
-        if(value === IQueryOperatorEnum.Equals) {
-          control.get('value')?.addValidators([validateUUID]);
-        } else {
-          control.get('value')?.removeValidators([validateUUID]);
-        }
-      }),
-      takeUntilDestroyed(this.#destroyRef)
-    ).subscribe();
+    control
+      .get('operator')
+      ?.valueChanges.pipe(
+        filter(() => fieldType === 'uuid'),
+        tap((value) => {
+          if (value === IQueryOperatorEnum.Equals) {
+            control.get('value')?.addValidators([validateUUID]);
+          } else {
+            control.get('value')?.removeValidators([validateUUID]);
+          }
+        }),
+        takeUntilDestroyed(this.#destroyRef)
+      )
+      .subscribe();
 
     (this.searchForm.get(key as string) as FormArray).push(control);
     const filtersTracker = { ...this.filtersTracker() };

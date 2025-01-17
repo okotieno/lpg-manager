@@ -35,6 +35,7 @@ import {
 import { AuthState } from './auth.state';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { IPermission } from '@lpg-manager/types';
 
 const initialState: AuthState = {
   initialLoadComplete: false,
@@ -167,7 +168,7 @@ export const AuthStore = signalStore(
       const _activeRole = activeRole();
       console.log(
         _activeRole?.role?.permissions?.find(
-          (permission) => permission?.name === 'access dealer app'
+          (permission) => permission?.name === IPermission.AccessDealerApp
         )
       );
       if (!activeRole) return of(false);
