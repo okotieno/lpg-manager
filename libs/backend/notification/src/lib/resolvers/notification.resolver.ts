@@ -23,8 +23,8 @@ import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 
 @Resolver(() => NotificationModel)
 export class NotificationResolver {
@@ -49,7 +49,7 @@ export class NotificationResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateNotification)
+  @Permissions(IPermissionEnum.CreateNotification)
   async createNotification(
     @Body('params', new ValidationPipe()) params: CreateNotificationInputDto
   ) {
@@ -70,7 +70,7 @@ export class NotificationResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateNotification)
+  @Permissions(IPermissionEnum.UpdateNotification)
   async updateNotification(
     @Body(new ValidationPipe()) params: UpdateNotificationInputDto
   ) {
@@ -92,7 +92,7 @@ export class NotificationResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeleteNotification)
+  @Permissions(IPermissionEnum.DeleteNotification)
   async deleteNotification(
     @Body(new ValidationPipe()) { id }: DeleteNotificationInputDto
   ) {

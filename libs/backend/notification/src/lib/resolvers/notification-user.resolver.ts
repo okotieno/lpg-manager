@@ -28,8 +28,8 @@ import { PUB_SUB } from '@lpg-manager/util';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 
 @Resolver(() => NotificationUserModel)
 export class NotificationUserResolver {
@@ -84,7 +84,7 @@ export class NotificationUserResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.MarkNotificationAsRead)
+  @Permissions(IPermissionEnum.MarkNotificationAsRead)
   async markNotificationAsRead(
     @Body(new ValidationPipe()) params: MarkAsReadNotificationInputDto,
     @CurrentUser() currentUser: UserModel

@@ -70,6 +70,8 @@
             <lpg-searchable-select
               [itemsStore]="roleStore"
               label="Role"
+              [selectLabelFormatter]="roleSelectLabelFormatter"
+              [valueLabelFormatter]="roleSelectLabelFormatter"
               labelPlacement="stacked"
               formControlName="role"
               placeholder="Select roles"
@@ -86,22 +88,42 @@
               fill="solid"
               interface="popover"
             >
-              <ion-select-option value="DEPOT">Depot</ion-select-option>
-              <ion-select-option value="DEALER">Dealer</ion-select-option>
+              @if (roles.controls[$index].value['role']?.name === driverRoleName) {
+                <ion-select-option value="TRANSPORTER">Transporter</ion-select-option>
+              } @else if (roles.controls[$index].value['role']?.name === adminDealerRoleName) {
+                <ion-select-option value="DEALER">Dealer</ion-select-option>
+              } @else if (roles.controls[$index].value['role']?.name === adminDepotRoleName) {
+                <ion-select-option value="DEPOT">Depot</ion-select-option>
+              } @else {
+                <ion-select-option value="TRANSPORTER">Transporter</ion-select-option>
+                <ion-select-option value="DEALER">Dealer</ion-select-option>
+                <ion-select-option value="DEPOT">Depot</ion-select-option>
+              }
             </ion-select>
           </ion-col>
           <ion-col size="12" sizeMd="3">
-            <lpg-searchable-select
-              [itemsStore]="stationStore"
-              label="Station"
-              labelPlacement="stacked"
-              formControlName="station"
-              [defaultParams]="
+            @if (roles.controls[$index].value['stationType'] === 'TRANSPORTER') {
+              <lpg-searchable-select
+                [itemsStore]="transporterStore"
+                label="Transporter"
+                labelPlacement="stacked"
+                formControlName="station"
+                placeholder="Select transporter"
+              ></lpg-searchable-select>
+            } @else {
+              <lpg-searchable-select
+                [itemsStore]="stationStore"
+                label="Station"
+                labelPlacement="stacked"
+                formControlName="station"
+                [defaultParams]="
                roles.controls[$index].value['stationType'] ? [{field: 'type', operator: equalsOperator, value: roles.controls[$index].value['stationType'] ?? '', values: []}]: []"
-              placeholder="Select station"
-            ></lpg-searchable-select>
+                placeholder="Select station"
+              ></lpg-searchable-select>
+            }
           </ion-col>
-          <ion-col size="12" offsetLg="2" sizeMd="1" class="ion-align-self-end">
+
+          <ion-col size="12" offsetLg="1" sizeMd="1" class="ion-align-self-end">
             <ion-button fill="clear" color="danger" (click)="removeRole($index)">
               <ion-icon name="trash-can"></ion-icon>
             </ion-button>

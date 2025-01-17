@@ -1,4 +1,4 @@
-enum DefaultRole {
+enum DefaultRoles {
   SUPER_ADMIN
   ADMIN_PORTAL_ADMIN
   ADMIN_DEALER
@@ -8,20 +8,20 @@ enum DefaultRole {
 
 type RoleModel {
   id: UUID!
-  name: DefaultRole!
+  name: String!
   label: String!
   stationId: UUID!
   permissions: [PermissionModel]
 }
 
 input CreateRoleInput {
-  name: DefaultRole!
+  name: String!
   label: String!
   permissions: [SelectCategory]!
 }
 
 input UpdateRoleInput {
-  name: DefaultRole!
+  name: String!
   label: String!
   permissions: [SelectCategory]!
 }

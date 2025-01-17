@@ -11,8 +11,8 @@ import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { OrderService } from '@lpg-manager/order-service';
 import {
   CatalogueModel,
@@ -46,7 +46,7 @@ export class OrderResolver {
 
   @Mutation(() => OrderModel)
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateOrder)
+  @Permissions(IPermissionEnum.CreateOrder)
   async createOrder(
     @Body('params', new ValidationPipe()) params: CreateOrderInputDto
   ) {
@@ -93,7 +93,7 @@ export class OrderResolver {
 
   @Mutation(() => OrderModel)
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeleteOrder)
+  @Permissions(IPermissionEnum.DeleteOrder)
   async deleteOrder(@Args('id') id: string) {
     await this.orderService.deleteById(id);
     return {
@@ -160,7 +160,7 @@ export class OrderResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateOrder)
+  @Permissions(IPermissionEnum.UpdateOrder)
   async updateOrderStatus(
     @Args('id') id: string,
     @Args('params') params: UpdateOrderStatusInput,

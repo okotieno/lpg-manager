@@ -15,21 +15,21 @@ export type IGetRoleByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetRoleByIdQuery = { role?: { id: string, name: Types.IDefaultRole, permissions?: Array<{ id: string, name: Types.IPermission } | null> | null } | null };
+export type IGetRoleByIdQuery = { role?: { id: string, name: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null };
 
 export type IGetRoleByIdWithPermissionQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
 }>;
 
 
-export type IGetRoleByIdWithPermissionQuery = { role?: { id: string, name: Types.IDefaultRole, permissions?: Array<{ id: string, name: Types.IPermission } | null> | null } | null };
+export type IGetRoleByIdWithPermissionQuery = { role?: { id: string, name: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null };
 
 export type IGetRolesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetRolesQuery = { roles: { items?: Array<{ id: string, name: Types.IDefaultRole } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetRolesQuery = { roles: { items?: Array<{ id: string, name: string, label: string } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IGivePermissionsToRoleMutationVariables = Types.Exact<{
   permissions?: Types.InputMaybe<Array<Types.InputMaybe<Types.ISelectCategory>> | Types.InputMaybe<Types.ISelectCategory>>;
@@ -127,6 +127,7 @@ export const GetRolesDocument = gql`
     items {
       id
       name
+      label
     }
     meta {
       totalItems

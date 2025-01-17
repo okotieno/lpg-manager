@@ -10,7 +10,7 @@ module.exports = {
 
     // Get admin role ID
     const [adminRole] = await queryInterface.sequelize.query(
-      `SELECT id FROM roles WHERE name = 'admin admin-portal' LIMIT 1;`
+      `SELECT id FROM roles WHERE name = 'ADMIN_PORTAL_ADMIN' LIMIT 1;`
     );
 
     // Create admin user

@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthStore, showAccessDeniedAlert } from '@lpg-manager/auth-store';
 import { runGuardsInOrder } from '@lpg-manager/sequential-guards';
+import { IPermissionEnum } from '@lpg-manager/types';
 
 export const appRoutes: Route[] = [
   {
@@ -40,7 +41,7 @@ export const appRoutes: Route[] = [
         loadChildren: () => import('@lpg-manager/driver-dashboard-page'),
         canMatch: [
           () => inject(AuthStore).isLoggedIn(),
-          () => inject(AuthStore).hasPermissionTo('access driver app'),
+          () => inject(AuthStore).hasPermissionTo(IPermissionEnum.AccessDriverApp),
         ],
       },
       {
@@ -48,7 +49,7 @@ export const appRoutes: Route[] = [
         canMatch: [
           () => inject(AuthStore).isLoggedIn(),
           runGuardsInOrder(
-            () => !inject(AuthStore).hasPermissionTo('access driver app'),
+            () => !inject(AuthStore).hasPermissionTo(IPermissionEnum.AccessDriverApp),
             () => showAccessDeniedAlert({ app: 'driver app '})
           ),
         ],

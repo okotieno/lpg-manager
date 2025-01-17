@@ -35,7 +35,7 @@ import {
 import { AuthState } from './auth.state';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { IPermission } from '@lpg-manager/types';
+import { IPermissionEnum } from '@lpg-manager/types';
 
 const initialState: AuthState = {
   initialLoadComplete: false,
@@ -168,7 +168,7 @@ export const AuthStore = signalStore(
       const _activeRole = activeRole();
       console.log(
         _activeRole?.role?.permissions?.find(
-          (permission) => permission?.name === IPermission.AccessDealerApp
+          (permission) => permission?.name === IPermissionEnum.AccessDealerApp
         )
       );
       if (!activeRole) return of(false);
@@ -250,19 +250,13 @@ export const AuthStore = signalStore(
       return true;
     };
 
-    const hasPermissionTo = (permissionName: string) => {
+    const hasPermissionTo = (permissionName: IPermissionEnum) => {
       const permissions = store
         .userRoles()
         .flatMap((res) => res?.role?.permissions);
       return !!permissions.find(
         (permission) => permission?.name === permissionName
       );
-    };
-
-    const isDriver = () => {
-      const activeRole = store.activeRole();
-      if (!activeRole) return of(false);
-      return of(activeRole.role?.name.toLowerCase() === 'driver');
     };
 
     return {
@@ -272,7 +266,6 @@ export const AuthStore = signalStore(
       sendResetLink,
       updateActiveRole,
       hasPermissionTo,
-      isDriver,
       changePasswordUsingResetToken,
       loadUserInfoGuard,
     };

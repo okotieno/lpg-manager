@@ -27,6 +27,7 @@ import {
 } from '@lpg-manager/permission-store';
 import { ISelectCategory } from '@lpg-manager/types';
 import { PaginatedResource } from '@lpg-manager/data-table';
+import { UpperCasePipe } from '@angular/common';
 
 type PermissionItem =     NonNullable<
   NonNullable<IGetPermissionsQuery['permissions']['items']>[number]
@@ -46,10 +47,11 @@ type PermissionItem =     NonNullable<
     IonRow,
   ],
   templateUrl: './role-form.component.html',
-  providers: [PermissionStore],
+  providers: [PermissionStore, UpperCasePipe],
 })
 export default class RoleFormComponent {
   #fb = inject(FormBuilder);
+  #upperCasePipe = inject(UpperCasePipe);
   #createRoleGQL = inject(ICreateRoleGQL);
   #updateRoleGQL = inject(IUpdateRoleGQL);
   permissionsStore = inject(PermissionStore) as PaginatedResource<PermissionItem>;
@@ -85,7 +87,8 @@ export default class RoleFormComponent {
     if (this.roleForm.valid) {
       const { name, permissions } = this.roleForm.value;
       const params = {
-        name: name as string,
+        label: name as string,
+        name: this.#upperCasePipe.transform(name as string),
         permissions:
           permissions?.map((permission) => ({ id: permission.id as string })) ??
           [],

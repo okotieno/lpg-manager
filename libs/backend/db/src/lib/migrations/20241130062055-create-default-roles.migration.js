@@ -97,32 +97,36 @@ const rolePermissions = {
 };
 
 /** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface, { QueryTypes }) {
     // Create roles
     for (const [name, roleData] of Object.entries(rolePermissions)) {
       const roleId = uuidv4();
-      await queryInterface.bulkInsert('roles', [{
-        id: roleId,
-        name: name,
-        label: roleData.label,
-        created_at: new Date(),
-        updated_at: new Date()
-      }]);
+      await queryInterface.bulkInsert('roles', [
+        {
+          id: roleId,
+          name: name,
+          label: roleData.label,
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+      ]);
 
       // If this is the super admin role, they get all permissions
       if (roleData.permissions === '*') {
         const allPermissions = await queryInterface.sequelize.query(
           `SELECT id FROM permissions WHERE deleted_at IS NULL`,
-          { type: queryInterface.sequelize.QueryTypes.SELECT }
+          { type: QueryTypes.SELECT }
         );
-        
-        await queryInterface.bulkInsert('permission_role',
-          allPermissions.map(permission => ({
+
+        await queryInterface.bulkInsert(
+          'permission_role',
+          allPermissions.map((permission) => ({
             role_id: roleId,
             permission_id: permission.id,
             created_at: new Date(),
-            updated_at: new Date()
+            updated_at: new Date(),
           }))
         );
         continue;
@@ -130,17 +134,20 @@ module.exports = {
 
       // For other roles, assign specific permissions
       const permissions = await queryInterface.sequelize.query(
-        `SELECT id FROM permissions WHERE name IN (${roleData.permissions.map(p => `'${p}'`).join(',')}) AND deleted_at IS NULL`,
-        { type: queryInterface.sequelize.QueryTypes.SELECT }
+        `SELECT id FROM permissions WHERE name IN (${roleData.permissions
+          .map((p) => `'${p}'`)
+          .join(',')}) AND deleted_at IS NULL`,
+        { type: QueryTypes.SELECT }
       );
 
       if (permissions.length > 0) {
-        await queryInterface.bulkInsert('permission_role',
-          permissions.map(permission => ({
+        await queryInterface.bulkInsert(
+          'permission_role',
+          permissions.map((permission) => ({
             role_id: roleId,
             permission_id: permission.id,
             created_at: new Date(),
-            updated_at: new Date()
+            updated_at: new Date(),
           }))
         );
       }
@@ -150,5 +157,5 @@ module.exports = {
   async down(queryInterface) {
     await queryInterface.bulkDelete('permission_role', null, {});
     await queryInterface.bulkDelete('roles', null, {});
-  }
+  },
 };

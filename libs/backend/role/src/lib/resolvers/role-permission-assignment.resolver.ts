@@ -4,7 +4,6 @@ import { JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
   PermissionService,
 } from '@lpg-manager/permission-service';
 import { RoleService } from '@lpg-manager/role-service';
@@ -18,6 +17,7 @@ import {
 import { AssignRoleToUserInputDto } from '../dto/assign-role-to-user-input.dto';
 import { UserService } from '@lpg-manager/user-service';
 import { InjectModel } from '@nestjs/sequelize';
+import { IPermissionEnum } from '@lpg-manager/types';
 
 @Resolver(() => RoleModel)
 export class RolePermissionAssignmentResolver {
@@ -30,7 +30,7 @@ export class RolePermissionAssignmentResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.GivePermissionToRole)
+  @Permissions(IPermissionEnum.GivePermissionToRole)
   async givePermissionsToRole(
     @Body(new ValidationPipe()) input: GivePermissionToRoleInputDto
   ) {
@@ -52,7 +52,7 @@ export class RolePermissionAssignmentResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.AssignRoleToUser)
+  @Permissions(IPermissionEnum.AssignRoleToUser)
   async assignRoleToUser(
     @Body(new ValidationPipe()) input: AssignRoleToUserInputDto
   ) {

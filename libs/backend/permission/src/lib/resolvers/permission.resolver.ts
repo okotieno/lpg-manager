@@ -5,10 +5,10 @@ import { JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
   PermissionService,
 } from '@lpg-manager/permission-service';
 import { IQueryParam, PermissionModel } from '@lpg-manager/db';
+import { IPermissionEnum } from '@lpg-manager/types';
 
 @Resolver()
 export class PermissionResolver {
@@ -16,7 +16,7 @@ export class PermissionResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreatePermission)
+  @Permissions(IPermissionEnum.CreatePermission)
   async createPermission(
     @Body(new ValidationPipe()) params: CreatePermissionInputDto
   ) {

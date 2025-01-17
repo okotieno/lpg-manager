@@ -15,14 +15,14 @@ export type IGetPermissionByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetPermissionByIdQuery = { permission?: { id: string, name: Types.IPermission } | null };
+export type IGetPermissionByIdQuery = { permission?: { id: string, name: Types.IPermissionEnum } | null };
 
 export type IGetPermissionsQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetPermissionsQuery = { permissions: { items?: Array<{ id: string, name: Types.IPermission } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetPermissionsQuery = { permissions: { items?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeletePermissionByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];

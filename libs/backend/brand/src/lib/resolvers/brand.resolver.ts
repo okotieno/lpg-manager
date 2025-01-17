@@ -12,7 +12,6 @@ import { JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
 import { BrandService } from '@lpg-manager/brand-service';
 import {
@@ -23,6 +22,7 @@ import {
   SortByDirectionEnum,
 } from '@lpg-manager/db';
 import { CatalogueService } from '@lpg-manager/catalogue-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 
 @Resolver(() => BrandModel)
 export class BrandResolver {
@@ -33,7 +33,7 @@ export class BrandResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateBrand)
+  @Permissions(IPermissionEnum.CreateBrand)
   async createBrand(
     @Body('params', new ValidationPipe()) params: CreateBrandInputDto
   ) {

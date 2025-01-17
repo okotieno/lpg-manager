@@ -12,8 +12,8 @@ import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { InventoryService } from '@lpg-manager/inventory-service';
 import {
   CatalogueModel,
@@ -38,7 +38,7 @@ export class InventoryResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateInventory)
+  @Permissions(IPermissionEnum.CreateInventory)
    async createInventory(
     @Body('params', new ValidationPipe()) params: CreateInventoryInputDto,
     @CurrentUser() user: UserModel
@@ -67,7 +67,7 @@ export class InventoryResolver {
 
   @Mutation(() => InventoryItemModel)
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateInventory)
+  @Permissions(IPermissionEnum.UpdateInventory)
   async updateInventoryItemStatus(
     @Body('params', new ValidationPipe())
     params: {
@@ -104,7 +104,7 @@ export class InventoryResolver {
 
   @Mutation(() => InventoryModel)
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeleteInventory)
+  @Permissions(IPermissionEnum.DeleteInventory)
   async deleteInventory(@Args('id') id: string) {
     await this.inventoryService.deleteById(id);
     return {

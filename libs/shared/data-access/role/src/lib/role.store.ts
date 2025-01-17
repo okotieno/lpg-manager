@@ -11,6 +11,9 @@ import {
 } from './role.generated';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
+export type IRoleItem =
+  NonNullable<NonNullable<IGetRolesQuery['roles']['items']>[number]>
+
 export const RoleStore = signalStore(
   withProps(() => ({
     _createItemGQL: inject(ICreateRoleGQL),

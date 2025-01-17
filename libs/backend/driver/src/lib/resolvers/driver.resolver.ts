@@ -16,8 +16,8 @@ import { UpdateDriverInputDto } from '../dto/update-driver-input.dto';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { UserService } from '@lpg-manager/user-service';
 
 @Resolver(() => DriverModel)
@@ -30,7 +30,7 @@ export class DriverResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateDriver)
+  @Permissions(IPermissionEnum.CreateDriver)
   async createDriver(@Args('params') params: CreateDriverInputDto) {
     const driver = await this.driverService.create(params);
     if (params.vehicles?.length) {
@@ -45,21 +45,21 @@ export class DriverResolver {
 
   @Query()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ViewDriver)
+  @Permissions(IPermissionEnum.ViewDriver)
   async drivers(@Args('query') query: IQueryParam) {
     return this.driverService.findAll(query);
   }
 
   @Query()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ViewDriver)
+  @Permissions(IPermissionEnum.ViewDriver)
   async driver(@Args('id') id: string) {
     return this.driverService.findById(id);
   }
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateDriver)
+  @Permissions(IPermissionEnum.UpdateDriver)
   async updateDriver(
     @Args('id') id: string,
     @Args('params') params: UpdateDriverInputDto
@@ -77,7 +77,7 @@ export class DriverResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeleteDriver)
+  @Permissions(IPermissionEnum.DeleteDriver)
   async deleteDriver(@Args('id') id: string) {
     await this.driverService.deleteById(id);
 

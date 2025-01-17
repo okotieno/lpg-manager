@@ -15,8 +15,8 @@ import { UpdateTransporterInputDto } from '../dto/update-transporter-input.dto';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { DriverService } from '@lpg-manager/driver-service';
 import { VehicleService } from '@lpg-manager/vehicle-service';
 import { UserService } from '@lpg-manager/user-service';
@@ -32,7 +32,7 @@ export class TransporterResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateTransporter)
+  @Permissions(IPermissionEnum.CreateTransporter)
   async createTransporter(@Body('params') params: CreateTransporterInputDto) {
     const transporter = await this.transporterService.create({
       name: params.name,
@@ -85,21 +85,21 @@ export class TransporterResolver {
 
   @Query()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ViewTransporter)
+  @Permissions(IPermissionEnum.ViewTransporter)
   async transporters(@Args('query') query: IQueryParam) {
     return this.transporterService.findAll(query);
   }
 
   @Query()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ViewTransporter)
+  @Permissions(IPermissionEnum.ViewTransporter)
   async transporter(@Args('id') id: string) {
     return this.transporterService.findById(id);
   }
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateTransporter)
+  @Permissions(IPermissionEnum.UpdateTransporter)
   async updateTransporter(
     @Body(new ValidationPipe()) { id, params }: UpdateTransporterInputDto
   ) {
@@ -250,7 +250,7 @@ export class TransporterResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeleteTransporter)
+  @Permissions(IPermissionEnum.DeleteTransporter)
   async deleteTransporter(@Args('id') id: string) {
     await this.transporterService.deleteById(id);
 

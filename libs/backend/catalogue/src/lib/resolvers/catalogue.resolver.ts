@@ -12,8 +12,8 @@ import { JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { CatalogueService } from '@lpg-manager/catalogue-service';
 import {
   BrandModel,
@@ -32,7 +32,7 @@ export class CatalogueResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateCatalogue)
+  @Permissions(IPermissionEnum.CreateCatalogue)
   async createCatalogue(
     @Body('params', new ValidationPipe()) params: CreateCatalogueInputDto
   ) {

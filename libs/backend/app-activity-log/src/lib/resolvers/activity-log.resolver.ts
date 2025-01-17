@@ -13,8 +13,8 @@ import { JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { ActivityLogModel, IQueryParam } from '@lpg-manager/db';
 import { UpdateActivityLogInputDto } from '../dto/update-activity-log-input.dto';
 import { ActivityLogUpdatedEvent } from '../events/activity-log-updated.event';
@@ -44,7 +44,7 @@ export class ActivityLogResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateActivityLog)
+  @Permissions(IPermissionEnum.CreateActivityLog)
   async createActivityLog(
     @Body('params', new ValidationPipe()) params: CreateActivityLogInputDto
   ) {
@@ -65,7 +65,7 @@ export class ActivityLogResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateActivityLog)
+  @Permissions(IPermissionEnum.UpdateActivityLog)
   async updateActivityLog(
     @Body(new ValidationPipe()) params: UpdateActivityLogInputDto
   ) {
@@ -88,7 +88,7 @@ export class ActivityLogResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeleteActivityLog)
+  @Permissions(IPermissionEnum.DeleteActivityLog)
   async deleteActivityLog(
     @Body(new ValidationPipe()) { id }: DeleteActivityLogInputDto
   ) {

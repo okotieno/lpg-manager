@@ -20,8 +20,8 @@ import { JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import {
   DriverModel,
   IQueryParam,
@@ -55,7 +55,7 @@ export class UserResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateUser)
+  @Permissions(IPermissionEnum.CreateUser)
   async createUser(
     @Body('params', new ValidationPipe()) params: CreateUserInputDto
   ) {
@@ -83,7 +83,7 @@ export class UserResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateUser)
+  @Permissions(IPermissionEnum.UpdateUser)
   async updateUser(@Body(new ValidationPipe()) input: UpdateUserInputDto) {
     const user = await this.userService.findById(input.id);
     if (user) {
@@ -103,7 +103,7 @@ export class UserResolver {
 
   // @Mutation()
   // @UseGuards(JwtAuthGuard, PermissionGuard)
-  // @Permissions(PermissionsEnum.AssignCountryToUser)
+  // @Permissions(IPermissionEnum.AssignCountryToUser)
   // async assignCountriesLanguagesToUser(@Body(new ValidationPipe()) params: AssignCountryToUserInputDto) {
   //   await this.userService.assignCountriesLanguages(params)
   //   return {
@@ -113,7 +113,7 @@ export class UserResolver {
   //
   // @Mutation()
   // @UseGuards(JwtAuthGuard, PermissionGuard)
-  // @Permissions(PermissionsEnum.AllocateWarehouseToUser)
+  // @Permissions(IPermissionEnum.AllocateWarehouseToUser)
   // async allocateWarehouseToUser(@Body(new ValidationPipe()) params: AllocateWarehouseToUserInputDTO) {
   //   await this.userService.allocateWarehouse(params);
   //   return {

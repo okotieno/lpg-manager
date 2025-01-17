@@ -19,8 +19,8 @@ import { UpdateDispatchInputDto } from '../dto/update-dispatch-input.dto';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { ScanConfirmDto } from '../dto/scan-confirm.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { IScanAction } from '@lpg-manager/types';
@@ -39,7 +39,7 @@ export class DispatchResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateDispatch)
+  @Permissions(IPermissionEnum.CreateDispatch)
   async createDispatch(
     @Body('params', new ValidationPipe()) params: CreateDispatchInputDto
   ) {
@@ -53,21 +53,21 @@ export class DispatchResolver {
 
   @Query()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ViewDispatch)
+  @Permissions(IPermissionEnum.ViewDispatch)
   async dispatches(@Args('query') query: IQueryParam) {
     return this.dispatchService.findAll(query);
   }
 
   @Query()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ViewDispatch)
+  @Permissions(IPermissionEnum.ViewDispatch)
   async dispatch(@Args('id') id: string) {
     return this.dispatchService.findById(id);
   }
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateDispatch)
+  @Permissions(IPermissionEnum.UpdateDispatch)
   async updateDispatch(
     @Body(new ValidationPipe()) { id, params }: UpdateDispatchInputDto
   ) {
@@ -80,7 +80,7 @@ export class DispatchResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeleteDispatch)
+  @Permissions(IPermissionEnum.DeleteDispatch)
   async deleteDispatch(@Args('id') id: string) {
     await this.dispatchService.deleteById(id);
 
@@ -113,7 +113,7 @@ export class DispatchResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ConfirmViaScanning)
+  @Permissions(IPermissionEnum.ConfirmViaScanning)
   async scanConfirm(
     @Args('params') params: ScanConfirmDto,
     @CurrentUser() currentUser: UserModel

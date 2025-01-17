@@ -16,8 +16,8 @@ import { UpdateVehicleInputDto } from '../dto/update-vehicle-input.dto';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 
 @Resolver(() => VehicleModel)
 export class VehicleResolver {
@@ -28,7 +28,7 @@ export class VehicleResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateVehicle)
+  @Permissions(IPermissionEnum.CreateVehicle)
   async createVehicle(
     @Body('params', new ValidationPipe()) params: CreateVehicleInputDto
   ) {
@@ -57,7 +57,7 @@ export class VehicleResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateVehicle)
+  @Permissions(IPermissionEnum.UpdateVehicle)
   async updateVehicle(
     @Args('id') id: string,
     @Body('params', new ValidationPipe()) params: UpdateVehicleInputDto
@@ -72,7 +72,7 @@ export class VehicleResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeleteVehicle)
+  @Permissions(IPermissionEnum.DeleteVehicle)
   async deleteVehicle(@Args('id') id: string) {
     await this.vehicleService.deleteById(id);
 

@@ -296,7 +296,7 @@ export type ICreatePasswordResetSuccessResponse = {
 
 export type ICreatePermissionInput = {
   label: Scalars['String']['input'];
-  name: IPermission;
+  name: IPermissionEnum;
 };
 
 export type ICreatePermissionSuccessResponse = {
@@ -306,7 +306,7 @@ export type ICreatePermissionSuccessResponse = {
 
 export type ICreateRoleInput = {
   label: Scalars['String']['input'];
-  name: IDefaultRole;
+  name: Scalars['String']['input'];
   permissions: Array<InputMaybe<ISelectCategory>>;
 };
 
@@ -379,7 +379,7 @@ export type ICreateVehicleSuccessResponse = {
   message: Scalars['String']['output'];
 };
 
-export enum IDefaultRole {
+export enum IDefaultRoles {
   AdminDealer = 'ADMIN_DEALER',
   AdminDepot = 'ADMIN_DEPOT',
   AdminPortalAdmin = 'ADMIN_PORTAL_ADMIN',
@@ -1306,7 +1306,7 @@ export type IPasswordResetModel = {
   name: Scalars['String']['output'];
 };
 
-export enum IPermission {
+export enum IPermissionEnum {
   AccessAdminPortal = 'ACCESS_ADMIN_PORTAL',
   AccessDealerApp = 'ACCESS_DEALER_APP',
   AccessDepotApp = 'ACCESS_DEPOT_APP',
@@ -1317,6 +1317,7 @@ export enum IPermission {
   CreateBrand = 'CREATE_BRAND',
   CreateBrandCatalogue = 'CREATE_BRAND_CATALOGUE',
   CreateCart = 'CREATE_CART',
+  CreateCatalogue = 'CREATE_CATALOGUE',
   CreateDispatch = 'CREATE_DISPATCH',
   CreateDriver = 'CREATE_DRIVER',
   CreateInventory = 'CREATE_INVENTORY',
@@ -1330,10 +1331,12 @@ export enum IPermission {
   CreateStation = 'CREATE_STATION',
   CreateTransporter = 'CREATE_TRANSPORTER',
   CreateUser = 'CREATE_USER',
+  CreateVehicle = 'CREATE_VEHICLE',
   DeleteActivityLog = 'DELETE_ACTIVITY_LOG',
   DeleteBrand = 'DELETE_BRAND',
   DeleteBrandCatalogue = 'DELETE_BRAND_CATALOGUE',
   DeleteCart = 'DELETE_CART',
+  DeleteCatalogue = 'DELETE_CATALOGUE',
   DeleteDispatch = 'DELETE_DISPATCH',
   DeleteDriver = 'DELETE_DRIVER',
   DeleteInventory = 'DELETE_INVENTORY',
@@ -1347,12 +1350,14 @@ export enum IPermission {
   DeleteStation = 'DELETE_STATION',
   DeleteTransporter = 'DELETE_TRANSPORTER',
   DeleteUser = 'DELETE_USER',
+  DeleteVehicle = 'DELETE_VEHICLE',
   GivePermissionToRole = 'GIVE_PERMISSION_TO_ROLE',
   MarkNotificationAsRead = 'MARK_NOTIFICATION_AS_READ',
   UpdateActivityLog = 'UPDATE_ACTIVITY_LOG',
   UpdateBrand = 'UPDATE_BRAND',
   UpdateBrandCatalogue = 'UPDATE_BRAND_CATALOGUE',
   UpdateCart = 'UPDATE_CART',
+  UpdateCatalogue = 'UPDATE_CATALOGUE',
   UpdateDispatch = 'UPDATE_DISPATCH',
   UpdateDriver = 'UPDATE_DRIVER',
   UpdateInventory = 'UPDATE_INVENTORY',
@@ -1366,6 +1371,7 @@ export enum IPermission {
   UpdateStation = 'UPDATE_STATION',
   UpdateTransporter = 'UPDATE_TRANSPORTER',
   UpdateUser = 'UPDATE_USER',
+  UpdateVehicle = 'UPDATE_VEHICLE',
   ViewDispatch = 'VIEW_DISPATCH',
   ViewDriver = 'VIEW_DRIVER',
   ViewTransporter = 'VIEW_TRANSPORTER'
@@ -1374,7 +1380,7 @@ export enum IPermission {
 export type IPermissionModel = {
   id: Scalars['UUID']['output'];
   label: Scalars['String']['output'];
-  name: IPermission;
+  name: IPermissionEnum;
 };
 
 export type IQuery = {
@@ -1697,7 +1703,7 @@ export enum IReferenceType {
 export type IRoleModel = {
   id: Scalars['UUID']['output'];
   label: Scalars['String']['output'];
-  name: IDefaultRole;
+  name: Scalars['String']['output'];
   permissions?: Maybe<Array<Maybe<IPermissionModel>>>;
   stationId: Scalars['UUID']['output'];
 };
@@ -1913,12 +1919,12 @@ export type IUpdatePasswordResetInput = {
 
 export type IUpdatePermissionInput = {
   label?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<IPermission>;
+  name?: InputMaybe<IPermissionEnum>;
 };
 
 export type IUpdateRoleInput = {
   label: Scalars['String']['input'];
-  name: IDefaultRole;
+  name: Scalars['String']['input'];
   permissions: Array<InputMaybe<ISelectCategory>>;
 };
 
