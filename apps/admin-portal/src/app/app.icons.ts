@@ -83,5 +83,6 @@ export const APP_ICONS = [
   'desktop',
   'bell-slash',
   'circle-info',
-  'truck-arrow-right'
+  'truck-arrow-right',
+  'copy'
 ];

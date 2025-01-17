@@ -131,6 +131,14 @@ export default class CataloguesPageComponent {
   });
 
   constructor() {
+    this.inventoryStore.setFilters([
+      {
+        field: 'station.type',
+        operator: IQueryOperatorEnum.Equals,
+        value: 'DEPOT',
+        values:[]
+      },
+    ]);
 
     this.searchForm
       .get('depot')
@@ -147,6 +155,12 @@ export default class CataloguesPageComponent {
     if (selectedDepot) {
       this.inventoryStore.setFilters([
         {
+          field: 'station.type',
+          operator: IQueryOperatorEnum.Equals,
+          value: 'DEPOT',
+          values:[]
+        },
+        {
           field: 'stationId',
           operator: IQueryOperatorEnum.In,
           value: '',
@@ -154,7 +168,14 @@ export default class CataloguesPageComponent {
         },
       ]);
     } else {
-      this.inventoryStore.setFilters([]);
+      this.inventoryStore.setFilters([
+        {
+          field: 'station.type',
+          operator: IQueryOperatorEnum.Equals,
+          value: 'DEPOT',
+          values:[]
+        },
+      ]);
     }
   }
 
