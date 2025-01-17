@@ -226,21 +226,26 @@ export default class UserFormComponent implements IHasUnsavedChanges {
         { value: null as null | { id: string }, disabled: true },
         [Validators.required],
       ],
+      licenseNumber: [{ value: '', disabled: true }],
     });
 
     roleForm.get('role')?.valueChanges.pipe(
       tap((role) => {
-        if (role?.name === this.adminDepotRoleName) {
-          roleForm.get('stationType')?.setValue('DEPOT');
-        } else if(role?.name === this.adminDealerRoleName) {
-          roleForm.get('stationType')?.setValue('DEALER');
-        } else if(role?.name === this.driverRoleName) {
+        if (role?.name === this.driverRoleName) {
           roleForm.get('stationType')?.setValue('TRANSPORTER');
+          roleForm.get('licenseNumber')?.enable();
+        } else if (role?.name === this.adminDepotRoleName) {
+          roleForm.get('stationType')?.setValue('DEPOT');
+          roleForm.get('licenseNumber')?.disable();
+        } else if (role?.name === this.adminDealerRoleName) {
+          roleForm.get('stationType')?.setValue('DEALER');
+          roleForm.get('licenseNumber')?.disable();
         }
 
-        roleForm.get('stationType')?.enable()
+        roleForm.get('stationType')?.enable();
       })
-    ).subscribe()
+    ).subscribe();
+
     roleForm
       .get('stationType')
       ?.valueChanges.pipe(
@@ -252,6 +257,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
         })
       )
       .subscribe();
+
     this.roles.push(roleForm);
     this.rolesList.set(this.roles.value);
   }

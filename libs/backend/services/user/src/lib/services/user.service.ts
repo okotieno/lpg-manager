@@ -85,7 +85,13 @@ export class UserService extends CrudAbstractService<UserModel> {
 
   async assignRoleToUser(
     user: UserModel,
-    roles: { id: string; roleId: string; stationId: string }[]
+    roles: {
+      id: string;
+      roleId: string;
+      stationId?: string;
+      transporterId?: string;
+      licenseNumber?: string;
+    }[]
   ) {
     // First remove all existing roles from the user
     await user.$set('roles', []);
