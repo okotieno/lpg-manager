@@ -25,7 +25,7 @@ export const RoleStore = signalStore(
     ICreateRoleMutation,
     ICreateRoleMutationVariables,
     ICreateRoleGQL,
-    NonNullable<NonNullable<IGetRolesQuery['roles']['items']>[number]>,
+    IRoleItem,
     IGetRolesQueryVariables,
     'roles',
     'deleteRole'

@@ -95,8 +95,8 @@ export default class DashboardComponent {
     await this.#router.navigate(['/auth', 'login']);
   }
 
-  goToProfile() {
-    this.#router.navigate(['/dashboard', 'profile']);
+  async goToProfile() {
+    await this.#router.navigate(['/dashboard', 'profile']);
   }
   updateActiveRole($event: CustomEvent) {
     this.#authStore.updateActiveRole($event.detail.value);

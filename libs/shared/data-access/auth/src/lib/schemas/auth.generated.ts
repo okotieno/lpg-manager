@@ -3,9 +3,9 @@ import * as Types from '@lpg-manager/types';
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
-export type IUserFieldsFragment = { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null, driver?: { id: string, transporter: { id: string, name: string } } | null } | null> | null };
+export type IUserFieldsFragment = { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, label: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null, driver?: { id: string, transporter: { id: string, name: string } } | null } | null> | null };
 
-export type IAuthDetailsFragment = { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null, driver?: { id: string, transporter: { id: string, name: string } } | null } | null> | null } | null };
+export type IAuthDetailsFragment = { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, label: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null, driver?: { id: string, transporter: { id: string, name: string } } | null } | null> | null } | null };
 
 export type ILoginWithPasswordMutationVariables = Types.Exact<{
   email: Types.Scalars['String']['input'];
@@ -13,14 +13,14 @@ export type ILoginWithPasswordMutationVariables = Types.Exact<{
 }>;
 
 
-export type ILoginWithPasswordMutation = { loginWithPassword?: { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null, driver?: { id: string, transporter: { id: string, name: string } } | null } | null> | null } | null } | null };
+export type ILoginWithPasswordMutation = { loginWithPassword?: { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, label: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null, driver?: { id: string, transporter: { id: string, name: string } } | null } | null> | null } | null } | null };
 
 export type ILoginWithTokenMutationVariables = Types.Exact<{
   token: Types.Scalars['String']['input'];
 }>;
 
 
-export type ILoginWithTokenMutation = { loginWithToken?: { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null, driver?: { id: string, transporter: { id: string, name: string } } | null } | null> | null } | null } | null };
+export type ILoginWithTokenMutation = { loginWithToken?: { accessToken: string, refreshToken: string, refreshTokenKey: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, label: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null, driver?: { id: string, transporter: { id: string, name: string } } | null } | null> | null } | null } | null };
 
 export type IRequestAccessTokenMutationVariables = Types.Exact<{
   refreshToken: Types.Scalars['String']['input'];
@@ -43,7 +43,7 @@ export type IChangePasswordUsingResetTokenMutationVariables = Types.Exact<{
 }>;
 
 
-export type IChangePasswordUsingResetTokenMutation = { changePasswordUsingResetToken?: { accessToken: string, refreshToken: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null, driver?: { id: string, transporter: { id: string, name: string } } | null } | null> | null } | null } | null };
+export type IChangePasswordUsingResetTokenMutation = { changePasswordUsingResetToken?: { accessToken: string, refreshToken: string, user?: { id: string, email: string, firstName: string, lastName: string, phone?: string | null, createdAt?: string | null, updatedAt?: string | null, profilePhotoLink?: string | null, roles?: Array<{ id: string, station?: { id: string, name: string, type: Types.IStationType } | null, role?: { id: string, name: string, label: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null, driver?: { id: string, transporter: { id: string, name: string } } | null } | null> | null } | null } | null };
 
 export const UserFieldsFragmentDoc = gql`
     fragment UserFields on UserModel {
@@ -65,6 +65,7 @@ export const UserFieldsFragmentDoc = gql`
     role {
       id
       name
+      label
       permissions {
         id
         name

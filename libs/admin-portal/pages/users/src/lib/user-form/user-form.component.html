@@ -101,8 +101,9 @@
               }
             </ion-select>
           </ion-col>
-          <ion-col size="12" sizeMd="3">
-            @if (roles.controls[$index].value['role']?.name === driverRoleName) {
+
+          @if (roles.controls[$index].value['role']?.name === driverRoleName) {
+            <ion-col size="12" sizeMd="3">
               <ion-item>
                 <ion-input
                   label="License Number"
@@ -111,8 +112,9 @@
                   placeholder="Enter license number"
                 ></ion-input>
               </ion-item>
-            }
-          </ion-col>
+            </ion-col>
+          }
+
           <ion-col size="12" sizeMd="3">
             @if (roles.controls[$index].value['stationType'] === 'TRANSPORTER') {
               <lpg-searchable-select

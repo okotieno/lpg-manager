@@ -140,7 +140,7 @@ export class UserResolver {
           include: [
             {
               model: RoleModel,
-              attributes: ['id', 'name'],
+              attributes: ['id', 'name', 'label'],
             },
             {
               model: StationModel,
