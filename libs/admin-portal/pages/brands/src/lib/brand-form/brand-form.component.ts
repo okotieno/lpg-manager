@@ -103,6 +103,7 @@ export default class BrandFormComponent
 
   async onSubmit() {
     this.brandForm.updateValueAndValidity();
+    this.formSubmitted = true;
     if (this.brandForm.valid) {
       const { name, companyName, images } = this.brandForm.value;
       const params = {
@@ -218,9 +219,6 @@ export default class BrandFormComponent
   }
 
   get hasUnsavedChanges() {
-    console.log(this.brandForm.get('name')?.dirty)
-    console.log(this.brandForm.get('images')?.dirty)
-    console.log(this.brandForm.get('companyName')?.dirty)
     return this.brandForm.dirty && !this.formSubmitted;
   }
 

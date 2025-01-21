@@ -1,5 +1,4 @@
-import { Column, ForeignKey, Model, Table } from 'sequelize-typescript';
-import { DataTypes } from 'sequelize';
+import { Column, ForeignKey, Model, Table, DataType } from 'sequelize-typescript';
 import { BrandModel } from './brand.model';
 import { FileUploadModel } from './file-upload.model';
 
@@ -11,16 +10,24 @@ import { FileUploadModel } from './file-upload.model';
   deletedAt: false,
 })
 export class BrandFileUploadModel extends Model {
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
+    primaryKey: true,
+    allowNull: false,
+  })
+  override id!: string;
+
   @ForeignKey(() => BrandModel)
   @Column({
-    type: DataTypes.UUID,
+    type: DataType.UUID,
     allowNull: false,
   })
   brandId!: string;
 
   @ForeignKey(() => FileUploadModel)
   @Column({
-    type: DataTypes.UUID,
+    type: DataType.UUID,
     allowNull: false,
   })
   fileUploadId!: string;

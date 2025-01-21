@@ -85,8 +85,6 @@ export default class ConfirmLoadComponent {
     const scannedCanisters = this.scannedCanisters();
     const searchedDriverInventoryItems = this.#driverInventoryStore.items();
     return scannedCanisters.map((canisterId) => {
-      console.log('canisterId', canisterId);
-      console.log('searchedDriverInventoryItems', searchedDriverInventoryItems);
       return {
         scannedId: canisterId,
         ...searchedDriverInventoryItems.find((item) => {

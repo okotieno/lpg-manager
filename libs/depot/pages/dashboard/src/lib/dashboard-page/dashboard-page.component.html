@@ -37,7 +37,7 @@
       <ion-icon slot="start" name="warehouse"></ion-icon>
       @for (station of userRoleStation(); track station?.id; ) {
         <ion-select-option class="ion-margin-end" [value]="station?.id">
-          {{ station?.role?.name | titlecase }} | {{ station?.station?.name | titlecase }}
+          {{ station?.role?.label | titlecase }} | {{ station?.station?.name | titlecase }}
         </ion-select-option>
       }
 

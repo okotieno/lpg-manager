@@ -433,4 +433,8 @@ export class DataTableComponent<T extends { id: string }> {
 
     await alert.present();
   }
+
+  refreshData() {
+    this.store().refetchItems()
+  }
 }

@@ -19,16 +19,20 @@ import {
   CatalogueModel,
   IQueryParam,
   QueryOperatorEnum,
-  SortByDirectionEnum, UserModel
+  SortByDirectionEnum, UserModel, BrandFileUploadModel
 } from '@lpg-manager/db';
 import { CatalogueService } from '@lpg-manager/catalogue-service';
 import { IPermissionEnum } from '@lpg-manager/types';
+import { InjectModel } from '@nestjs/sequelize';
+import { v4 as uuidv4 } from 'uuid';
 
 @Resolver(() => BrandModel)
 export class BrandResolver {
   constructor(
     private brandService: BrandService,
-    private catalogueService: CatalogueService
+    private catalogueService: CatalogueService,
+    @InjectModel(BrandFileUploadModel)
+    private brandFileUploadModel: typeof BrandFileUploadModel
   ) {}
 
   @Mutation()
@@ -43,10 +47,12 @@ export class BrandResolver {
     });
 
     if (params.images?.length) {
-      await brand.$set(
-        'images',
-        params.images.map((img) => img.id)
-      );
+      const brandFileUploads = params.images.map((img) => ({
+        id: uuidv4(),
+        brandId: brand.id,
+        fileUploadId: img.id,
+      }));
+      await this.brandFileUploadModel.bulkCreate(brandFileUploads);
     }
 
     // Handle catalogue creation

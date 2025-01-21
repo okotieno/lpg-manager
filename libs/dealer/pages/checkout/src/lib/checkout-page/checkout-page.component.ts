@@ -6,7 +6,7 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCol,
+  IonCol, IonContent,
   IonGrid,
   IonIcon,
   IonItem,
@@ -14,7 +14,7 @@ import {
   IonList,
   IonRow,
   IonText,
-  IonTitle,
+  IonTitle
 } from '@ionic/angular/standalone';
 import { CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -38,6 +38,7 @@ import { RouterLink } from '@angular/router';
     IonCol,
     IonGrid,
     RouterLink,
+    IonContent,
   ],
   templateUrl: './checkout-page.component.html',
   styleUrl: './checkout-page.component.scss',

@@ -61,7 +61,20 @@
     }
 
     <ng-container cdkColumnDef="actions">
-      <th cdk-header-cell *cdkHeaderCellDef>Actions</th>
+      <th cdk-header-cell *cdkHeaderCellDef>
+        <ion-row class="ion-justify-content-between ion-align-items-center">
+          Actions
+          <ion-button
+            color="light"
+            shape="round"
+            fill="clear"
+            size="small"
+            (click)="refreshData()"
+          >
+            <ion-icon slot="icon-only" name="arrows-rotate" />
+          </ion-button>
+        </ion-row>
+      </th>
       <td cdk-cell *cdkCellDef="let item">
         @if (isLoading()) {
           <ion-row>

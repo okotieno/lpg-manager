@@ -84,5 +84,6 @@ export const APP_ICONS = [
   'bell-slash',
   'circle-info',
   'truck-arrow-right',
-  'copy'
+  'copy',
+  'arrows-rotate'
 ];

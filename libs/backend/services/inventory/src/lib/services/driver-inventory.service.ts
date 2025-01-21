@@ -58,9 +58,6 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
     const transaction =
       await this.driverInventoryModel.sequelize?.transaction();
 
-    console.log('driverId', driverId);
-    console.log('status', status);
-
     try {
       if (driverInventoryIds.length > 0) {
         await this.driverInventoryModel.update(

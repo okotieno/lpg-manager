@@ -268,7 +268,6 @@ export class TransporterResolver {
 
   @ResolveField('vehicles')
   async getVehicles(@Root() transporter: TransporterModel) {
-    console.log(transporter);
     return this.vehicleService.model.findAll({
       where: { transporterId: transporter.id },
     });
