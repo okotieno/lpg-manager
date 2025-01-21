@@ -84,7 +84,7 @@ export default class SummaryPageComponent {
   scannerForm = this.#fb.group({ canisters: [[] as string[]] });
 
   dealerOrders = computed(() => {
-    const orders = this.dispatch()?.orders ?? [];
+    const orders = this.dispatch()?.consolidatedOrders.map(o => o.orders).flat() ?? [];
     const dealerId = this.dealerId();
 
     const filteredOrders = orders.filter(

@@ -100,7 +100,7 @@ export default class ReceiveDispatchComponent {
 
     // Create a map to count ordered quantities by catalogue
     const orderQuantities = new Map<string, number>();
-    dispatch.orders.forEach((order) => {
+    dispatch.consolidatedOrders.map(o => o.orders).flat().forEach((order) => {
       order.items.forEach((item) => {
         if (item?.catalogue) {
           const current = orderQuantities.get(item.catalogue.id as string) || 0;
@@ -125,7 +125,7 @@ export default class ReceiveDispatchComponent {
     const summary: ScanSummaryItem[] = [];
     orderQuantities.forEach((orderQty, catalogueId) => {
       const scannedQty = scannedQuantities.get(catalogueId) || 0;
-      const catalogue = dispatch.orders
+      const catalogue = dispatch.consolidatedOrders.map(o => o.orders).flat()
         .flatMap((o) => o.items)
         .find((i) => i?.catalogue?.id === catalogueId)?.catalogue;
 

@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import {
   IonBadge,
   IonButton,
@@ -70,10 +70,8 @@ interface ScanSummaryItem {
   providers: [DispatchStore, InventoryItemStore],
 })
 export default class AssignLoadComponent {
-  #route = inject(ActivatedRoute);
   #inventoryItemStore = inject(InventoryItemStore);
   searchedInventoryItem = this.#inventoryItemStore.searchedItemsEntities;
-  #router = inject(Router);
   #fb = inject(FormBuilder);
   #dispatchStore = inject(DispatchStore);
   scannerForm = this.#fb.group({ canisters: [[] as string[]] });
@@ -104,7 +102,7 @@ export default class AssignLoadComponent {
 
     // Create a map to count ordered quantities by catalogue
     const orderQuantities = new Map<string, number>();
-    dispatch.orders.forEach((order) => {
+    dispatch.consolidatedOrders.map(o => o.orders).flat().forEach((order) => {
       order.items.forEach((item) => {
         if (item?.catalogue) {
           const current = orderQuantities.get(item.catalogue.id as string) || 0;
@@ -129,7 +127,8 @@ export default class AssignLoadComponent {
     const summary: ScanSummaryItem[] = [];
     orderQuantities.forEach((orderQty, catalogueId) => {
       const scannedQty = scannedQuantities.get(catalogueId) || 0;
-      const catalogue = dispatch.orders
+      const catalogue = dispatch.consolidatedOrders.map(o => o.orders)
+        .flat()
         .flatMap((o) => o.items)
         .find((i) => i?.catalogue?.id === catalogueId)?.catalogue;
 
@@ -157,13 +156,20 @@ export default class AssignLoadComponent {
     return summary.length > 0 && summary.every((item) => item.status === 'OK');
   });
 
-  totalOrderQuantity = computed(() =>
-    this.dispatch()?.orders.reduce(
-      (total, order) =>
-        total +
-        order.items.reduce((total, item) => total + (item?.quantity ?? 0), 0),
-      0
-    ) ?? 0
+  totalOrderQuantity = computed(
+    () =>
+      this.dispatch()
+        ?.consolidatedOrders.map((o) => o.orders)
+        .flat()
+        .reduce(
+          (total, order) =>
+            total +
+            order.items.reduce(
+              (total, item) => total + (item?.quantity ?? 0),
+              0
+            ),
+          0
+        ) ?? 0
   );
 
   constructor() {
@@ -204,9 +210,9 @@ export default class AssignLoadComponent {
     await this.#dispatchStore.scanConfirm({
       dispatchId: this.dispatch()?.id as string,
       // scannedCanisters: this.scannedCanisters(),
-      inventoryItems:  this.scannedCanisters().map((id) => ({id})),
+      inventoryItems: this.scannedCanisters().map((id) => ({ id })),
       // dispatchStatus: IDispatchStatus.DepotToDriverConfirmed,
-      scanAction: IScanAction.DepotToDriverConfirmed
+      scanAction: IScanAction.DepotToDriverConfirmed,
     });
   }
 }

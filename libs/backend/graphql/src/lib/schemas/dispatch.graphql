@@ -17,6 +17,14 @@ enum DispatchStatus {
   COMPLETED
 }
 
+type ConsolidatedOrderModel {
+  id: UUID!
+  dispatchId: UUID!
+  dealerId: UUID!
+  dealer: StationModel!
+  orders: [OrderModel!]!
+}
+
 type DispatchModel {
   id: UUID!
   transporterId: UUID!
@@ -29,7 +37,7 @@ type DispatchModel {
   transporter: TransporterModel!
   driver: DriverModel!
   vehicle: VehicleModel!
-  orders: [OrderModel!]!
+  consolidatedOrders: [ConsolidatedOrderModel!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }

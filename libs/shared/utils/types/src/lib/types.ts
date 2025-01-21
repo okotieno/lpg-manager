@@ -110,6 +110,14 @@ export enum ICatalogueUnit {
   Litre = 'LITRE'
 }
 
+export type IConsolidatedOrderModel = {
+  dealer: IStationModel;
+  dealerId: Scalars['UUID']['output'];
+  dispatchId: Scalars['UUID']['output'];
+  id: Scalars['UUID']['output'];
+  orders: Array<IOrderModel>;
+};
+
 export type ICountriesLanguagesInput = {
   countryId: Scalars['Int']['input'];
   languageId: Scalars['Int']['input'];
@@ -396,6 +404,7 @@ export type IDeleteSuccessResponse = {
 };
 
 export type IDispatchModel = {
+  consolidatedOrders: Array<IConsolidatedOrderModel>;
   createdAt: Scalars['DateTime']['output'];
   depotToDriverConfirmedAt?: Maybe<Scalars['DateTime']['output']>;
   dispatchDate: Scalars['DateTime']['output'];
@@ -403,7 +412,6 @@ export type IDispatchModel = {
   driverFromDepotConfirmedAt?: Maybe<Scalars['DateTime']['output']>;
   driverId: Scalars['UUID']['output'];
   id: Scalars['UUID']['output'];
-  orders: Array<IOrderModel>;
   status: IDispatchStatus;
   transporter: ITransporterModel;
   transporterId: Scalars['UUID']['output'];

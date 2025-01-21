@@ -34,10 +34,13 @@ mutation CreateDispatch($params: CreateDispatchInput!) {
         id
         registrationNumber
       }
-      orders {
+      consolidatedOrders {
         id
-        status
-        totalPrice
+        orders {
+          id
+          status
+          totalPrice
+        }
       }
       createdAt
       updatedAt
@@ -64,19 +67,22 @@ query GetDispatchById($id: UUID! $includeDealer: Boolean = false) {
       id
       registrationNumber
     }
-    orders {
+    consolidatedOrders {
       id
-      status
-      totalPrice
-      ...dealerDispatchFragment @include(if: $includeDealer)
-      items {
+      orders {
         id
-        quantity
-        catalogue {
+        status
+        totalPrice
+        ...dealerDispatchFragment @include(if: $includeDealer)
+        items {
           id
-          name
-          unit
-          quantityPerUnit
+          quantity
+          catalogue {
+            id
+            name
+            unit
+            quantityPerUnit
+          }
         }
       }
     }
@@ -105,10 +111,13 @@ query GetDispatches($query: QueryParams) {
         id
         registrationNumber
       }
-      orders {
+      consolidatedOrders {
         id
-        status
-        totalPrice
+        orders {
+          id
+          status
+          totalPrice
+        }
       }
       createdAt
       updatedAt
@@ -146,10 +155,13 @@ mutation UpdateDispatch($id: UUID!, $params: UpdateDispatchInput!) {
         id
         registrationNumber
       }
-      orders {
+      consolidatedOrders {
         id
-        status
-        totalPrice
+        orders {
+          id
+          status
+          totalPrice
+        }
       }
       createdAt
       updatedAt
@@ -176,11 +188,15 @@ mutation ScanConfirm($params: ScanConfirmInput!) {
         id
         registrationNumber
       }
-      orders {
+      consolidatedOrders {
         id
-        status
-        totalPrice
+        orders {
+          id
+          status
+          totalPrice
+        }
       }
     }
   }
 }
+

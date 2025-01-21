@@ -12,7 +12,7 @@ export type ICreateDispatchMutationVariables = Types.Exact<{
 }>;
 
 
-export type ICreateDispatchMutation = { createDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
+export type ICreateDispatchMutation = { createDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, consolidatedOrders: Array<{ id: string, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> }> } } };
 
 export type IGetDispatchByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -20,14 +20,14 @@ export type IGetDispatchByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetDispatchByIdQuery = { dispatch?: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number, items: Array<{ id: string, quantity: number, catalogue: { id: string, name: string, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null>, dealer: { id: string, name: string } }> } | null };
+export type IGetDispatchByIdQuery = { dispatch?: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, consolidatedOrders: Array<{ id: string, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number, items: Array<{ id: string, quantity: number, catalogue: { id: string, name: string, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null>, dealer: { id: string, name: string } }> }> } | null };
 
 export type IGetDispatchesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
 }>;
 
 
-export type IGetDispatchesQuery = { dispatches: { items?: Array<{ id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetDispatchesQuery = { dispatches: { items?: Array<{ id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, consolidatedOrders: Array<{ id: string, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> }> } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteDispatchByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -42,14 +42,14 @@ export type IUpdateDispatchMutationVariables = Types.Exact<{
 }>;
 
 
-export type IUpdateDispatchMutation = { updateDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
+export type IUpdateDispatchMutation = { updateDispatch: { message: string, data: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, consolidatedOrders: Array<{ id: string, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> }> } } };
 
 export type IScanConfirmMutationVariables = Types.Exact<{
   params: Types.IScanConfirmInput;
 }>;
 
 
-export type IScanConfirmMutation = { scanConfirm: { message: string, data: { id: string, status: Types.IDispatchStatus, depotToDriverConfirmedAt?: string | null, dispatchDate: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> } } };
+export type IScanConfirmMutation = { scanConfirm: { message: string, data: { id: string, status: Types.IDispatchStatus, depotToDriverConfirmedAt?: string | null, dispatchDate: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, consolidatedOrders: Array<{ id: string, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number }> }> } } };
 
 export const DispatchDriverFragmentFragmentDoc = gql`
     fragment dispatchDriverFragment on DriverModel {
@@ -91,10 +91,13 @@ export const CreateDispatchDocument = gql`
         id
         registrationNumber
       }
-      orders {
+      consolidatedOrders {
         id
-        status
-        totalPrice
+        orders {
+          id
+          status
+          totalPrice
+        }
       }
       createdAt
       updatedAt
@@ -133,19 +136,22 @@ export const GetDispatchByIdDocument = gql`
       id
       registrationNumber
     }
-    orders {
+    consolidatedOrders {
       id
-      status
-      totalPrice
-      ...dealerDispatchFragment @include(if: $includeDealer)
-      items {
+      orders {
         id
-        quantity
-        catalogue {
+        status
+        totalPrice
+        ...dealerDispatchFragment @include(if: $includeDealer)
+        items {
           id
-          name
-          unit
-          quantityPerUnit
+          quantity
+          catalogue {
+            id
+            name
+            unit
+            quantityPerUnit
+          }
         }
       }
     }
@@ -187,10 +193,13 @@ export const GetDispatchesDocument = gql`
         id
         registrationNumber
       }
-      orders {
+      consolidatedOrders {
         id
-        status
-        totalPrice
+        orders {
+          id
+          status
+          totalPrice
+        }
       }
       createdAt
       updatedAt
@@ -252,10 +261,13 @@ export const UpdateDispatchDocument = gql`
         id
         registrationNumber
       }
-      orders {
+      consolidatedOrders {
         id
-        status
-        totalPrice
+        orders {
+          id
+          status
+          totalPrice
+        }
       }
       createdAt
       updatedAt
@@ -294,10 +306,13 @@ export const ScanConfirmDocument = gql`
         id
         registrationNumber
       }
-      orders {
+      consolidatedOrders {
         id
-        status
-        totalPrice
+        orders {
+          id
+          status
+          totalPrice
+        }
       }
     }
   }

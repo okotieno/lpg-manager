@@ -12,7 +12,7 @@ import { DispatchService } from '@lpg-manager/dispatch-service';
 import { TransporterService } from '@lpg-manager/transporter-service';
 import { DriverService } from '@lpg-manager/driver-service';
 import { VehicleService } from '@lpg-manager/vehicle-service';
-import { OrderService } from '@lpg-manager/order-service';
+import { OrderService, ConsolidatedOrderService } from '@lpg-manager/order-service';
 import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
 import { CreateDispatchInputDto } from '../dto/create-dispatch-input.dto';
 import { UpdateDispatchInputDto } from '../dto/update-dispatch-input.dto';
@@ -34,6 +34,7 @@ export class DispatchResolver {
     private driverService: DriverService,
     private vehicleService: VehicleService,
     private orderService: OrderService,
+    private consolidatedOrderService: ConsolidatedOrderService,
     private eventEmitter: EventEmitter2
   ) {}
 
@@ -104,9 +105,9 @@ export class DispatchResolver {
     return this.vehicleService.findById(dispatch.vehicleId);
   }
 
-  @ResolveField('orders')
+  @ResolveField('consolidatedOrders')
   async getOrders(@Root() dispatch: DispatchModel) {
-    return this.orderService.model.findAll({
+    return this.consolidatedOrderService.model.findAll({
       where: { dispatchId: dispatch.id },
     });
   }

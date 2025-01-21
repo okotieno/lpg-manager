@@ -10,7 +10,7 @@
           <ion-item>
             <ion-label>
               <h2>Dispatch <span [lpgUUID]="dispatch.id"></span></h2>
-              <p>Orders: {{ dispatch.orders.length || 0 }}</p>
+              <p>Orders: {{ dispatch.consolidatedOrders.length || 0 }}</p>
               @if (dispatch.status === dispatchStatus.Initiated) {
                 <p>Dispatch from driver</p>
               }

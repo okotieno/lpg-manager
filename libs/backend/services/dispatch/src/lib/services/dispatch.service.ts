@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { DispatchModel, OrderModel, OrderItemModel } from '@lpg-manager/db';
+import { DispatchModel, OrderModel, OrderItemModel, StationModel, ConsolidatedOrderModel } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -13,6 +13,7 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
   constructor(
     @InjectModel(DispatchModel) private dispatchModel: typeof DispatchModel,
     @InjectModel(OrderModel) private orderModel: typeof OrderModel,
+    @InjectModel(ConsolidatedOrderModel) private consolidatedOrderModel: typeof ConsolidatedOrderModel,
     private eventEmitter: EventEmitter2,
     private driverInventoryService: DriverInventoryService
   ) {
@@ -39,19 +40,48 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
           { transaction }
         );
 
-        // Update orders with the dispatch ID and status
-        await this.orderModel.update(
-          {
-            dispatchId: dispatch.id,
-            status: 'DELIVERING',
-          },
-          {
-            where: { id: data.orderIds },
-            transaction,
-          }
-        );
+        // Get all orders with their dealer information
+        const orders = await this.orderModel.findAll({
+          where: { id: data.orderIds },
+          include: [{ model: StationModel, as: 'dealer' }],
+          transaction,
+        });
 
-        // Emit event for each order
+        // Group orders by dealer
+        const ordersByDealer = orders.reduce((acc, order) => {
+          const dealerId = order.dealerId;
+          if (!acc[dealerId]) {
+            acc[dealerId] = [];
+          }
+          acc[dealerId].push(order);
+          return acc;
+        }, {} as Record<string, OrderModel[]>);
+
+        // Create consolidated orders
+        for (const [dealerId, dealerOrders] of Object.entries(ordersByDealer)) {
+          // Create consolidated order
+          await this.consolidatedOrderModel.create(
+            {
+              dispatchId: dispatch.id,
+              dealerId,
+            },
+            { transaction }
+          );
+
+          // Update orders with dispatch ID and status
+          await this.orderModel.update(
+            {
+              dispatchId: dispatch.id,
+              status: 'DELIVERING',
+            },
+            {
+              where: { id: dealerOrders.map(order => order.id) },
+              transaction,
+            }
+          );
+        }
+
+        // Emit events for each order
         for (const orderId of data.orderIds) {
           const order = await this.orderModel.findByPk(orderId);
           if (order) {

@@ -27,3 +27,4 @@ export * from './driver-vehicle.model';
 export * from './inventory-change.model';
 export * from './inventory-item.model';
 export * from './driver-inventory.model';
+export * from './consolidated-order.model';

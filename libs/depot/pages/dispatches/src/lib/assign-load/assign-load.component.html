@@ -22,15 +22,17 @@
         <ion-label>Orders to Transfer</ion-label>
       </ion-item-divider>
 
-      @for (order of dispatch.orders; track order.id) {
-        <ion-item>
-          <ion-label>
-            <h3>Order <span [lpgUUID]="order.id"></span></h3>
-            <!--                <p>{{ order.dealer.name }}</p>-->
-            <!--                <p>Total Items: {{ order.items.length }}</p>-->
-          </ion-label>
-          <ion-badge slot="end" color="success">Ready</ion-badge>
-        </ion-item>
+      @for (consolidatedOrder of dispatch.consolidatedOrders; track consolidatedOrder.id) {
+        @for (order of consolidatedOrder.orders; track order.id) {
+          <ion-item>
+            <ion-label>
+              <h3>Order <span [lpgUUID]="order.id"></span></h3>
+              <!--                <p>{{ order.dealer.name }}</p>-->
+              <!--                <p>Total Items: {{ order.items.length }}</p>-->
+            </ion-label>
+            <ion-badge slot="end" color="success">Ready</ion-badge>
+          </ion-item>
+        }
       }
       <ion-item-divider>
         <ion-label>Scans</ion-label>
