@@ -1,5 +1,5 @@
-<ion-content>
-  <form [formGroup]="transporterForm" (ngSubmit)="onSubmit()">
+<ion-content class="ion-padding-horizontal">
+  <form id="manage-transporter-form" [formGroup]="transporterForm" (ngSubmit)="onSubmit()">
     <ion-row class="ion-padding">
       <ion-col size="12" sizeMd="6">
         <ion-item lines="none">
@@ -30,14 +30,16 @@
       <ion-col size="12" sizeMd="6">
         <ion-item lines="none">
           <ion-input
-            label="Contact Number"
+            label="Phone"
             labelPlacement="stacked"
             formControlName="phone"
-            placeholder="Enter contact number"
-            errorText="Contact number is required"
-            helperText="&nbsp;"
-          >
-          </ion-input>
+            type="tel"
+            [maskito]="phoneMask"
+            [maskitoElement]="maskPredicate"
+            placeholder="Enter phone number"
+            helperText="Format: +254 7XX XXX XXX"
+            [errorText]="transporterForm.get('phone')?.errors?.['pattern'] ? 'Invalid phone number format' : ''"
+          />
         </ion-item>
       </ion-col>
     </ion-row>
@@ -134,14 +136,17 @@
       </ion-col>
     </ion-row>
 
-    <ion-row class="ion-padding">
-      <ion-col class="ion-text-end">
-        <ion-button fill="clear" [routerLink]="['../']">Cancel</ion-button>
-        <ion-button type="submit" [disabled]="!transporterForm.valid">
-          {{ isEditing() ? 'Update' : 'Create' }}
-        </ion-button>
-      </ion-col>
-    </ion-row>
+
   </form>
 
 </ion-content>
+<ion-footer>
+  <ion-row class="ion-padding">
+    <ion-col class="ion-text-end">
+      <ion-button fill="clear" [routerLink]="['../']">Cancel</ion-button>
+      <ion-button form="manage-transporter-form" type="submit" [disabled]="!transporterForm.valid">
+        {{ isEditing() ? 'Update' : 'Create' }}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

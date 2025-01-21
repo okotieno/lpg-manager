@@ -9,16 +9,25 @@ import {
   ITableColumn,
   PaginatedResource,
 } from '@lpg-manager/data-table';
+import { IonCol, IonContent, IonRow } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'lpg-transporters-page',
   standalone: true,
-  imports: [CdkTableModule, DataTableComponent],
-  template: ` <lpg-data-table
-    createNewIcon="plus"
-    [store]="transporterStore"
-    [columns]="allColumns"
-  ></lpg-data-table>`,
+  imports: [CdkTableModule, DataTableComponent, IonContent, IonRow, IonCol],
+  template: `
+    <ion-content class="ion-padding">
+      <ion-row>
+        <ion-col class="ion-padding-horizontal">
+          <lpg-data-table
+            createNewIcon="plus"
+            [store]="transporterStore"
+            [columns]="allColumns"
+          ></lpg-data-table>
+        </ion-col>
+      </ion-row>
+    </ion-content>
+  `,
   providers: [TransporterStore],
 })
 export default class TransportersLandingPageComponent {

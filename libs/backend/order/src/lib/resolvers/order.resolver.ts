@@ -155,7 +155,7 @@ export class OrderResolver {
       where: { id: orderModel.dispatchId },
       include: [DriverInventoryModel],
     });
-    return order?.driverInventories[0].status ?? 'PENDING'
+    return order?.driverInventories[0]?.status ?? 'PENDING'
   }
 
   @Mutation()

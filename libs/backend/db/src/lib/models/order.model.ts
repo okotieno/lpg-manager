@@ -12,6 +12,7 @@ import { StationModel } from './station.model';
 import { OrderItemModel } from './order-item.model';
 import { DispatchModel } from './dispatch.model';
 import { IOrderStatus } from '@lpg-manager/types';
+import { ConsolidatedOrderModel } from './consolidated-order.model';
 
 @Table({
   tableName: 'orders',
@@ -83,4 +84,14 @@ export class OrderModel extends Model {
 
   @BelongsTo(() => DispatchModel)
   dispatch?: DispatchModel;
+
+  @ForeignKey(() => ConsolidatedOrderModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: true,
+  })
+  consolidatedOrderId?: string;
+
+  @BelongsTo(() => ConsolidatedOrderModel)
+  consolidatedOrder?: ConsolidatedOrderModel;
 }

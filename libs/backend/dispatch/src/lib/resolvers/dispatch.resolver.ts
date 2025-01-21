@@ -7,7 +7,7 @@ import {
   Root,
 } from '@nestjs/graphql';
 import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
-import { DispatchModel, IQueryParam, UserModel } from '@lpg-manager/db';
+import { DispatchModel, IQueryParam, OrderModel, UserModel } from '@lpg-manager/db';
 import { DispatchService } from '@lpg-manager/dispatch-service';
 import { TransporterService } from '@lpg-manager/transporter-service';
 import { DriverService } from '@lpg-manager/driver-service';
@@ -109,6 +109,7 @@ export class DispatchResolver {
   async getOrders(@Root() dispatch: DispatchModel) {
     return this.consolidatedOrderService.model.findAll({
       where: { dispatchId: dispatch.id },
+      include: [OrderModel]
     });
   }
 

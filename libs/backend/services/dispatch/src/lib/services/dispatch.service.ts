@@ -1,6 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { DispatchModel, OrderModel, OrderItemModel, StationModel, ConsolidatedOrderModel } from '@lpg-manager/db';
+import {
+  DispatchModel,
+  OrderModel,
+  OrderItemModel,
+  StationModel,
+  ConsolidatedOrderModel,
+} from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -13,7 +19,8 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
   constructor(
     @InjectModel(DispatchModel) private dispatchModel: typeof DispatchModel,
     @InjectModel(OrderModel) private orderModel: typeof OrderModel,
-    @InjectModel(ConsolidatedOrderModel) private consolidatedOrderModel: typeof ConsolidatedOrderModel,
+    @InjectModel(ConsolidatedOrderModel)
+    private consolidatedOrderModel: typeof ConsolidatedOrderModel,
     private eventEmitter: EventEmitter2,
     private driverInventoryService: DriverInventoryService
   ) {
@@ -60,7 +67,7 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
         // Create consolidated orders
         for (const [dealerId, dealerOrders] of Object.entries(ordersByDealer)) {
           // Create consolidated order
-          await this.consolidatedOrderModel.create(
+          const consolidatedOrder = await this.consolidatedOrderModel.create(
             {
               dispatchId: dispatch.id,
               dealerId,
@@ -73,9 +80,10 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
             {
               dispatchId: dispatch.id,
               status: 'DELIVERING',
+              consolidatedOrderId: consolidatedOrder.id,
             },
             {
-              where: { id: dealerOrders.map(order => order.id) },
+              where: { id: dealerOrders.map((order) => order.id) },
               transaction,
             }
           );
@@ -145,15 +153,15 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
           });
           break;
         //
-          case IScanAction.DriverFromDepotConfirmed:
-            updates.driverFromDepotConfirmedAt = new Date();
-            updates.status = IDispatchStatus.InTransit;
-            await this.driverInventoryService.updateStatus(
-              dispatch.driverId,
-              inventoryItems.map(({ id }) => id),
-              IDriverInventoryStatus.InTransit
-            );
-            break;
+        case IScanAction.DriverFromDepotConfirmed:
+          updates.driverFromDepotConfirmedAt = new Date();
+          updates.status = IDispatchStatus.InTransit;
+          await this.driverInventoryService.updateStatus(
+            dispatch.driverId,
+            inventoryItems.map(({ id }) => id),
+            IDriverInventoryStatus.InTransit
+          );
+          break;
         //
         //   case DispatchStatus.FILLED_DELIVERED_TO_DEALER:
         //     updates.filledDeliveredToDealerAt = new Date();

@@ -10,7 +10,7 @@ import {
 import {
   AlertController,
   IonButton,
-  IonCol, IonContent,
+  IonCol, IonContent, IonFooter,
   IonIcon,
   IonInput,
   IonItem,
@@ -40,6 +40,9 @@ import { defaultQueryParams } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
 import { VehicleDialogComponent } from '../vehicle-dialog/vehicle-dialog.component';
 import { DriverDialogComponent } from '../driver-dialog/driver-dialog.component';
+import { kenyaPhoneMask } from '../../../../users/src/lib/utils/phone-mask.util';
+import { MaskitoDirective } from '@maskito/angular';
+import { MaskitoElementPredicate } from '@maskito/core';
 
 const VEHICLE_TYPE_LABELS: Record<string, string> = {
   VAN: 'Van - 1.5T',
@@ -67,6 +70,8 @@ const VEHICLE_TYPE_LABELS: Record<string, string> = {
     IonIcon,
     RouterLink,
     IonContent,
+    IonFooter,
+    MaskitoDirective,
   ],
   templateUrl: './transporters-form.component.html',
   styleUrl: './transporters-form.component.scss',
@@ -78,6 +83,9 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
   #updateTransporterGQL = inject(IUpdateTransporterGQL);
   #modalCtrl = inject(ModalController);
   #alertCtrl = inject(AlertController);
+
+  readonly maskPredicate: MaskitoElementPredicate = async (el) =>
+    (el as HTMLIonInputElement).getInputElement();
 
   transporterForm = this.#fb.group({
     name: ['', [Validators.required]],
@@ -402,4 +410,6 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
       }
     }
   }
+
+  protected readonly phoneMask = kenyaPhoneMask;
 }
