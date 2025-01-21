@@ -19,7 +19,7 @@ import {
   CatalogueModel,
   IQueryParam,
   QueryOperatorEnum,
-  SortByDirectionEnum,
+  SortByDirectionEnum, UserModel
 } from '@lpg-manager/db';
 import { CatalogueService } from '@lpg-manager/catalogue-service';
 import { IPermissionEnum } from '@lpg-manager/types';
@@ -104,5 +104,11 @@ export class BrandResolver {
         ],
       })
       .then((result) => result.items);
+  }
+
+  @Query()
+  async brandCount() {
+    const count = await this.brandService.model.count();
+    return { count };
   }
 }

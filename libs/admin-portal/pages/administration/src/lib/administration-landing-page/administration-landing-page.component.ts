@@ -11,7 +11,7 @@ import {
   IonText,
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
-import { IGetUserCountGQL } from '@lpg-manager/user-store';
+import { IGetBrandCountGQL } from '@lpg-manager/brand-store';
 
 @Component({
   selector: 'lpg-user-table',
@@ -32,7 +32,7 @@ import { IGetUserCountGQL } from '@lpg-manager/user-store';
   styles: ``,
 })
 export default class UserTableComponent {
-  private getUserCountGQL = inject(IGetUserCountGQL);
+  private getUserCountGQL = inject(IGetBrandCountGQL);
   brandCount = signal(0);
 
   constructor() {
@@ -41,8 +41,8 @@ export default class UserTableComponent {
 
   loadUserCount() {
     this.getUserCountGQL.fetch().subscribe((response) => {
-      if (response.data?.userCount) {
-        this.brandCount.set(response.data.userCount.count);
+      if (response.data?.brandCount) {
+        this.brandCount.set(response.data.brandCount.count);
       }
     });
   }

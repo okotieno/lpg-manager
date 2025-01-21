@@ -1,8 +1,8 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>{{ isEditing() ? 'Edit Brand Item' : 'Add Brand Item' }}</ion-title>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">{{ isEditing() ? 'Edit Brand Item' : 'Add Brand Item' }}</ion-title>
     <ion-button shape="round" color="danger" fill="clear" slot="end" (click)="cancel()">
-      <ion-icon color="light" slot="icon-only" name="circle-xmark"></ion-icon>
+      <ion-icon color="danger" slot="icon-only" name="circle-xmark"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>

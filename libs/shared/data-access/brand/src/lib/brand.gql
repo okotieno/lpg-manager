@@ -57,3 +57,9 @@ mutation UpdateBrand($id: UUID!, $params: UpdateBrandInput!) {
     }
   }
 }
+
+query GetBrandCount {
+  brandCount {
+    count
+  }
+}

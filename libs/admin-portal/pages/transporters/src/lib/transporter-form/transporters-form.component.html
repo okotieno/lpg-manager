@@ -1,144 +1,147 @@
-<form [formGroup]="transporterForm" (ngSubmit)="onSubmit()">
-  <ion-row class="ion-padding">
-    <ion-col size="12" sizeMd="6">
-      <ion-item lines="none">
-        <ion-input
-          label="Name"
-          labelPlacement="stacked"
-          formControlName="name"
-          placeholder="Enter transporter name"
-          errorText="Transporter name is required"
-          helperText="&nbsp;"
-        >
-        </ion-input>
-      </ion-item>
-    </ion-col>
-    <ion-col size="12" sizeMd="6">
-      <ion-item lines="none">
-        <ion-input
-          label="Contact Person"
-          labelPlacement="stacked"
-          formControlName="contactPerson"
-          placeholder="Enter contact person name"
-          errorText="Contact person is required"
-          helperText="&nbsp;"
-        >
-        </ion-input>
-      </ion-item>
-    </ion-col>
-    <ion-col size="12" sizeMd="6">
-      <ion-item lines="none">
-        <ion-input
-          label="Contact Number"
-          labelPlacement="stacked"
-          formControlName="phone"
-          placeholder="Enter contact number"
-          errorText="Contact number is required"
-          helperText="&nbsp;"
-        >
-        </ion-input>
-      </ion-item>
-    </ion-col>
-  </ion-row>
+<ion-content>
+  <form [formGroup]="transporterForm" (ngSubmit)="onSubmit()">
+    <ion-row class="ion-padding">
+      <ion-col size="12" sizeMd="6">
+        <ion-item lines="none">
+          <ion-input
+            label="Name"
+            labelPlacement="stacked"
+            formControlName="name"
+            placeholder="Enter transporter name"
+            errorText="Transporter name is required"
+            helperText="&nbsp;"
+          >
+          </ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" sizeMd="6">
+        <ion-item lines="none">
+          <ion-input
+            label="Contact Person"
+            labelPlacement="stacked"
+            formControlName="contactPerson"
+            placeholder="Enter contact person name"
+            errorText="Contact person is required"
+            helperText="&nbsp;"
+          >
+          </ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" sizeMd="6">
+        <ion-item lines="none">
+          <ion-input
+            label="Contact Number"
+            labelPlacement="stacked"
+            formControlName="phone"
+            placeholder="Enter contact number"
+            errorText="Contact number is required"
+            helperText="&nbsp;"
+          >
+          </ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
 
-  <!-- Vehicles Section -->
-  <ion-row class="ion-padding">
-    <ion-col size="12">
-      <div class="section-header">
-        <h2>Vehicles</h2>
-      </div>
+    <!-- Vehicles Section -->
+    <ion-row class="ion-padding">
+      <ion-col size="12">
+        <div class="section-header">
+          <h2>Vehicles</h2>
+        </div>
 
-      <table class="data-table">
-        <thead>
-        <tr>
-          <th>Registration Number</th>
-          <th>Type</th>
-          <th>Capacity</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-          @for (vehicle of vehiclesWithLabels(); track vehicle.id; let i = $index) {
-            <tr>
-              <td>{{ vehicle.registrationNumber }}</td>
-              <td>{{ vehicle.typeLabel }}</td>
-              <td>{{ vehicle.capacity }}</td>
-              <td>
-                <ion-button fill="clear" color="primary" (click)="addVehicle(vehicle)">
-                  <ion-icon slot="icon-only" name="pen-to-square"></ion-icon>
-                </ion-button>
-                <ion-button fill="clear" color="danger" (click)="removeVehicle(i)">
-                  <ion-icon slot="icon-only" name="trash-can"></ion-icon>
-                </ion-button>
-              </td>
-            </tr>
-          } @empty {
-            <tr>
-              <td colspan="4" class="no-data">No vehicles added yet</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-      <ion-button shape="round" fill="clear" (click)="addVehicle()" color="primary">
-        <ion-icon slot="icon-only" name="grid-2-plus"></ion-icon>
-      </ion-button>
-    </ion-col>
-  </ion-row>
-
-  <!-- Drivers Section -->
-  <ion-row class="ion-padding">
-    <ion-col size="12">
-      <div class="section-header">
-        <h2>Drivers</h2>
-      </div>
-
-      <table class="data-table">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>License Number</th>
-          <th>Contact Number</th>
-          <th>Email</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-          @for (driver of drivers(); track driver.id; let i = $index) {
-            <tr>
-              <td>{{ driver.name }}</td>
-              <td>{{ driver.licenseNumber }}</td>
-              <td>{{ driver.phone }}</td>
-              <td>{{ driver.email }}</td>
-              <td>
-                <ion-button fill="clear" color="primary" (click)="addDriver(driver)">
-                  <ion-icon slot="icon-only" name="pen-to-square"></ion-icon>
-                </ion-button>
-                <ion-button fill="clear" color="danger" (click)="removeDriver(i)">
-                  <ion-icon slot="icon-only" name="trash-can"></ion-icon>
-                </ion-button>
-              </td>
-            </tr>
-          } @empty {
-            <tr>
-              <td colspan="4" class="no-data">No drivers added yet</td>
-            </tr>
-          }
-        </tbody>
-        <tfoot>
-        <ion-button shape="round" fill="clear" (click)="addDriver()" color="primary">
+        <table class="data-table">
+          <thead>
+          <tr>
+            <th>Registration Number</th>
+            <th>Type</th>
+            <th>Capacity</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (vehicle of vehiclesWithLabels(); track vehicle.id; let i = $index) {
+              <tr>
+                <td>{{ vehicle.registrationNumber }}</td>
+                <td>{{ vehicle.typeLabel }}</td>
+                <td>{{ vehicle.capacity }}</td>
+                <td>
+                  <ion-button fill="clear" color="primary" (click)="addVehicle(vehicle)">
+                    <ion-icon slot="icon-only" name="pen-to-square"></ion-icon>
+                  </ion-button>
+                  <ion-button fill="clear" color="danger" (click)="removeVehicle(i)">
+                    <ion-icon slot="icon-only" name="trash-can"></ion-icon>
+                  </ion-button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="no-data">No vehicles added yet</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <ion-button shape="round" fill="clear" (click)="addVehicle()" color="primary">
           <ion-icon slot="icon-only" name="grid-2-plus"></ion-icon>
         </ion-button>
-        </tfoot>
-      </table>
-    </ion-col>
-  </ion-row>
+      </ion-col>
+    </ion-row>
 
-  <ion-row class="ion-padding">
-    <ion-col class="ion-text-end">
-      <ion-button fill="clear" [routerLink]="['../']">Cancel</ion-button>
-      <ion-button type="submit" [disabled]="!transporterForm.valid">
-        {{ isEditing() ? 'Update' : 'Create' }}
-      </ion-button>
-    </ion-col>
-  </ion-row>
-</form>
+    <!-- Drivers Section -->
+    <ion-row class="ion-padding">
+      <ion-col size="12">
+        <div class="section-header">
+          <h2>Drivers</h2>
+        </div>
+
+        <table class="data-table">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>License Number</th>
+            <th>Contact Number</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (driver of drivers(); track driver.id; let i = $index) {
+              <tr>
+                <td>{{ driver.name }}</td>
+                <td>{{ driver.licenseNumber }}</td>
+                <td>{{ driver.phone }}</td>
+                <td>{{ driver.email }}</td>
+                <td>
+                  <ion-button fill="clear" color="primary" (click)="addDriver(driver)">
+                    <ion-icon slot="icon-only" name="pen-to-square"></ion-icon>
+                  </ion-button>
+                  <ion-button fill="clear" color="danger" (click)="removeDriver(i)">
+                    <ion-icon slot="icon-only" name="trash-can"></ion-icon>
+                  </ion-button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="no-data">No drivers added yet</td>
+              </tr>
+            }
+          </tbody>
+          <tfoot>
+          <ion-button shape="round" fill="clear" (click)="addDriver()" color="primary">
+            <ion-icon slot="icon-only" name="grid-2-plus"></ion-icon>
+          </ion-button>
+          </tfoot>
+        </table>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-padding">
+      <ion-col class="ion-text-end">
+        <ion-button fill="clear" [routerLink]="['../']">Cancel</ion-button>
+        <ion-button type="submit" [disabled]="!transporterForm.valid">
+          {{ isEditing() ? 'Update' : 'Create' }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+</ion-content>

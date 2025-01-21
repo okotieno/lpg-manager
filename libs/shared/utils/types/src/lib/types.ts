@@ -51,6 +51,10 @@ export type IActivityLogUserModel = {
   userId: Scalars['Int']['output'];
 };
 
+export type IBrandCount = {
+  count: Scalars['Int']['output'];
+};
+
 export type IBrandModel = {
   catalogues?: Maybe<Array<Maybe<ICatalogueModel>>>;
   companyName?: Maybe<Scalars['String']['output']>;
@@ -1390,6 +1394,7 @@ export type IQuery = {
   authenticatedUserNotificationStats?: Maybe<INotificationStat>;
   authenticatedUserNotifications?: Maybe<IPaginatedUserNotification>;
   brand?: Maybe<IBrandModel>;
+  brandCount: IBrandCount;
   brands: IPaginatedBrand;
   cart?: Maybe<ICartModel>;
   carts: IPaginatedCart;

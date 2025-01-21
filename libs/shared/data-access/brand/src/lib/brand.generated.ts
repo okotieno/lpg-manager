@@ -39,6 +39,11 @@ export type IUpdateBrandMutationVariables = Types.Exact<{
 
 export type IUpdateBrandMutation = { updateBrand?: { message: string, data: { id: string } } | null };
 
+export type IGetBrandCountQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type IGetBrandCountQuery = { brandCount: { count: number } };
+
 export const CreateBrandDocument = gql`
     mutation CreateBrand($params: CreateBrandInput!) {
   createBrand(params: $params) {
@@ -147,6 +152,24 @@ export const UpdateBrandDocument = gql`
   })
   export class IUpdateBrandGQL extends Apollo.Mutation<IUpdateBrandMutation, IUpdateBrandMutationVariables> {
     override document = UpdateBrandDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetBrandCountDocument = gql`
+    query GetBrandCount {
+  brandCount {
+    count
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class IGetBrandCountGQL extends Apollo.Query<IGetBrandCountQuery, IGetBrandCountQueryVariables> {
+    override document = GetBrandCountDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

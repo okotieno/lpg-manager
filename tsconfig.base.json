@@ -65,6 +65,9 @@
       "@lpg-manager/dashboard-page": [
         "libs/admin-portal/pages/dashboard/src/index.ts"
       ],
+      "@lpg-manager/home-page": [
+        "libs/admin-portal/pages/home/src/index.ts"
+      ],
       "@lpg-manager/data-table": [
         "libs/shared/components/data-table/src/index.ts"
       ],

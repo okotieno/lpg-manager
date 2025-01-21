@@ -10,12 +10,12 @@ import {
 import {
   AlertController,
   IonButton,
-  IonCol,
+  IonCol, IonContent,
   IonIcon,
   IonInput,
   IonItem,
   IonRow,
-  ModalController,
+  ModalController
 } from '@ionic/angular/standalone';
 import {
   FormArray,
@@ -65,7 +65,8 @@ const VEHICLE_TYPE_LABELS: Record<string, string> = {
     IonRow,
     IonCol,
     IonIcon,
-    RouterLink
+    RouterLink,
+    IonContent,
   ],
   templateUrl: './transporters-form.component.html',
   styleUrl: './transporters-form.component.scss',
@@ -97,7 +98,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
       licenseNumber: string;
       phone: string;
       email: string;
-      vehicles: string[]
+      vehicles: string[];
     }[]
   >([]);
   vehicles = signal<
@@ -109,9 +110,9 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
     }[]
   >([]);
   vehiclesWithLabels = computed(() =>
-    this.vehicles().map(vehicle => ({
+    this.vehicles().map((vehicle) => ({
       ...vehicle,
-      typeLabel: VEHICLE_TYPE_LABELS[vehicle.type] || vehicle.type
+      typeLabel: VEHICLE_TYPE_LABELS[vehicle.type] || vehicle.type,
     }))
   );
   transporterChangeEffect = effect(() => {
@@ -126,7 +127,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
 
         // Populate drivers
         if (transporter.drivers) {
-          transporter.drivers.forEach(driver => {
+          transporter.drivers.forEach((driver) => {
             if (driver?.user && driver.licenseNumber) {
               const driverForm = this.#fb.nonNullable.group({
                 id: [driver.id],
@@ -134,10 +135,10 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
                 licenseNumber: [driver.licenseNumber],
                 phone: [driver.user.phone || ''],
                 email: [driver.user.email],
-                vehicles: [driver.vehicles?.map((v) => v?.id as string ) ?? []]
+                vehicles: [driver.vehicles?.map((v) => v?.id as string) ?? []],
               });
               this.driverInput.push(driverForm);
-              this.drivers.update(drivers => [
+              this.drivers.update((drivers) => [
                 ...drivers,
                 driverForm.value as Required<typeof driverForm.value>,
               ]);
@@ -147,7 +148,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
 
         // Populate vehicles
         if (transporter.vehicles) {
-          transporter.vehicles.forEach(vehicle => {
+          transporter.vehicles.forEach((vehicle) => {
             if (vehicle) {
               const vehicleForm = this.#fb.nonNullable.group({
                 id: [vehicle.id],
@@ -156,7 +157,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
                 type: [vehicle.type],
               });
               this.vehicleInput.push(vehicleForm);
-              this.vehicles.update(vehicles => [
+              this.vehicles.update((vehicles) => [
                 ...vehicles,
                 vehicleForm.value as Required<typeof vehicleForm.value>,
               ]);
@@ -185,7 +186,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
       componentProps: {
         driver: existingDriver,
         vehicles: this.vehicles(),
-      }
+      },
     });
 
     await modal.present();
@@ -194,10 +195,12 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
     if (role === 'confirm' && data) {
       if (existingDriver) {
         // Update existing driver
-        const index = this.drivers().findIndex(d => d.id === existingDriver.id);
+        const index = this.drivers().findIndex(
+          (d) => d.id === existingDriver.id
+        );
         if (index !== -1) {
           this.driverInput.at(index).patchValue(data);
-          this.drivers.update(drivers => {
+          this.drivers.update((drivers) => {
             drivers[index] = data;
             return [...drivers];
           });
@@ -251,7 +254,7 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
   async addVehicle(existingVehicle?: any) {
     const modal = await this.#modalCtrl.create({
       component: VehicleDialogComponent,
-      componentProps: { vehicle: existingVehicle }
+      componentProps: { vehicle: existingVehicle },
     });
 
     await modal.present();
@@ -260,10 +263,12 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
     if (role === 'confirm' && data) {
       if (existingVehicle) {
         // Update existing vehicle
-        const index = this.vehicles().findIndex(v => v.id === existingVehicle.id);
+        const index = this.vehicles().findIndex(
+          (v) => v.id === existingVehicle.id
+        );
         if (index !== -1) {
           this.vehicleInput.at(index).patchValue(data);
-          this.vehicles.update(vehicles => {
+          this.vehicles.update((vehicles) => {
             vehicles[index] = data;
             return [...vehicles];
           });
@@ -321,20 +326,22 @@ export default class TransportersFormComponent implements IHasUnsavedChanges {
         name: name as string,
         phone: phone as string,
         contactPerson: contactPerson as string,
-        drivers: drivers?.map((driver) => ({
-          id: driver?.id as string,
-          phone: driver?.phone as string,
-          email: driver?.email as string,
-          licenseNumber: driver?.licenseNumber as string,
-          name: driver?.name as string,
-          vehicles: driver?.vehicles as string[],
-        })) ?? [],
-        vehicles: vehicles?.map((vehicle) => ({
-          id: vehicle?.id as string,
-          capacity: vehicle?.capacity as number,
-          type: vehicle?.type as string,
-          registrationNumber: vehicle?.registrationNumber as string,
-        })) ?? []
+        drivers:
+          drivers?.map((driver) => ({
+            id: driver?.id as string,
+            phone: driver?.phone as string,
+            email: driver?.email as string,
+            licenseNumber: driver?.licenseNumber as string,
+            name: driver?.name as string,
+            vehicles: driver?.vehicles as string[],
+          })) ?? [],
+        vehicles:
+          vehicles?.map((vehicle) => ({
+            id: vehicle?.id as string,
+            capacity: vehicle?.capacity as number,
+            type: vehicle?.type as string,
+            registrationNumber: vehicle?.registrationNumber as string,
+          })) ?? [],
       };
 
       if (this.isEditing() && this.roleId()) {

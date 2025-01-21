@@ -48,9 +48,14 @@ type CreateBrandSuccessResponse {
   data: BrandModel!
 }
 
+type BrandCount {
+  count: Int!
+}
+
 extend type Query {
   brands(query: QueryParams): PaginatedBrand!
   brand(id: UUID!): BrandModel
+  brandCount: BrandCount!
 }
 
 extend type Mutation {

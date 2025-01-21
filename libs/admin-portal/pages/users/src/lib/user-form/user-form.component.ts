@@ -12,7 +12,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import {
   AlertController,
   IonButton,
-  IonCol,
+  IonCol, IonContent, IonFooter,
   IonIcon,
   IonInput,
   IonItem,
@@ -21,7 +21,7 @@ import {
   IonListHeader,
   IonRow,
   IonSelect,
-  IonSelectOption,
+  IonSelectOption
 } from '@ionic/angular/standalone';
 import {
   FormArray,
@@ -73,6 +73,8 @@ import { ITransporterItem, TransporterStore } from '@lpg-manager/transporter-sto
     MaskitoDirective,
     IonSelect,
     IonSelectOption,
+    IonContent,
+    IonFooter,
   ],
   templateUrl: './user-form.component.html',
   providers: [RoleStore, StationStore, TransporterStore, TitleCasePipe],
@@ -205,11 +207,13 @@ export default class UserFormComponent implements IHasUnsavedChanges {
     NonNullable<NonNullable<IGetStationsQuery['stations']['items']>[number]>
   >;
 
-  transporterStore = inject(TransporterStore) as PaginatedResource<ITransporterItem>;
+  transporterStore = inject(
+    TransporterStore
+  ) as PaginatedResource<ITransporterItem>;
 
-  driverRoleName = IDefaultRoles.Driver
-  adminDealerRoleName = IDefaultRoles.AdminDealer
-  adminDepotRoleName = IDefaultRoles.AdminDepot
+  driverRoleName = IDefaultRoles.Driver;
+  adminDealerRoleName = IDefaultRoles.AdminDealer;
+  adminDepotRoleName = IDefaultRoles.AdminDepot;
 
   get roles() {
     return this.userForm.get('roles') as FormArray;
@@ -220,7 +224,10 @@ export default class UserFormComponent implements IHasUnsavedChanges {
       id: [crypto.randomUUID(), Validators.required],
       role: [null as null | { id: string; name?: string }, Validators.required],
       stationType: [
-        { value: null as null | 'DEALER' | 'DEPOT' | 'TRANSPORTER', disabled: true },
+        {
+          value: null as null | 'DEALER' | 'DEPOT' | 'TRANSPORTER',
+          disabled: true,
+        },
       ],
       station: [
         { value: null as null | { id: string }, disabled: true },
@@ -229,22 +236,25 @@ export default class UserFormComponent implements IHasUnsavedChanges {
       licenseNumber: [{ value: '', disabled: true }],
     });
 
-    roleForm.get('role')?.valueChanges.pipe(
-      tap((role) => {
-        if (role?.name === this.driverRoleName) {
-          roleForm.get('stationType')?.setValue('TRANSPORTER');
-          roleForm.get('licenseNumber')?.enable();
-        } else if (role?.name === this.adminDepotRoleName) {
-          roleForm.get('stationType')?.setValue('DEPOT');
-          roleForm.get('licenseNumber')?.disable();
-        } else if (role?.name === this.adminDealerRoleName) {
-          roleForm.get('stationType')?.setValue('DEALER');
-          roleForm.get('licenseNumber')?.disable();
-        }
+    roleForm
+      .get('role')
+      ?.valueChanges.pipe(
+        tap((role) => {
+          if (role?.name === this.driverRoleName) {
+            roleForm.get('stationType')?.setValue('TRANSPORTER');
+            roleForm.get('licenseNumber')?.enable();
+          } else if (role?.name === this.adminDepotRoleName) {
+            roleForm.get('stationType')?.setValue('DEPOT');
+            roleForm.get('licenseNumber')?.disable();
+          } else if (role?.name === this.adminDealerRoleName) {
+            roleForm.get('stationType')?.setValue('DEALER');
+            roleForm.get('licenseNumber')?.disable();
+          }
 
-        roleForm.get('stationType')?.enable();
-      })
-    ).subscribe();
+          roleForm.get('stationType')?.enable();
+        })
+      )
+      .subscribe();
 
     roleForm
       .get('stationType')

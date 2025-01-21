@@ -7,10 +7,17 @@ import {
   PaginatedResource,
 } from '@lpg-manager/data-table';
 import { IQueryOperatorEnum, IUserModel } from '@lpg-manager/types';
+import { IonCol, IonContent, IonRow } from '@ionic/angular/standalone';
 
 @Component({
   standalone: true,
-  imports: [ReactiveFormsModule, DataTableComponent],
+  imports: [
+    ReactiveFormsModule,
+    DataTableComponent,
+    IonContent,
+    IonRow,
+    IonCol,
+  ],
   templateUrl: './users-page.component.html',
   styleUrl: './users-page.component.css',
   providers: [UserStore],
@@ -27,7 +34,11 @@ export default class UsersPageComponent {
 
   constructor() {
     this.userStore.setFilters([
-      { field: 'roles.name', operator: IQueryOperatorEnum.DoesNotEqual, value: 'driver' },
+      {
+        field: 'roles.name',
+        operator: IQueryOperatorEnum.DoesNotEqual,
+        value: 'driver',
+      },
     ]);
   }
 }
