@@ -1,11 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
 import {
+  CatalogueModel,
   ConsolidatedOrderModel,
-  DispatchModel,
+  DispatchModel, InventoryChangeModel, InventoryChangeType,
+  InventoryItemModel,
+  InventoryModel,
   OrderItemModel,
-  OrderModel,
-  StationModel,
+  OrderModel, ReferenceType,
+  StationModel
 } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
@@ -15,7 +18,7 @@ import {
   IConsolidatedOrderStatus,
   IDispatchStatus,
   IDriverInventoryStatus,
-  IScanAction
+  IScanAction,
 } from '@lpg-manager/types';
 
 @Injectable()
@@ -23,6 +26,10 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
   constructor(
     @InjectModel(DispatchModel) private dispatchModel: typeof DispatchModel,
     @InjectModel(OrderModel) private orderModel: typeof OrderModel,
+    @InjectModel(InventoryItemModel)
+    private inventoryItemModel: typeof InventoryItemModel,
+    @InjectModel(InventoryModel) private inventoryModel: typeof InventoryModel,
+    @InjectModel(InventoryChangeModel) private inventoryChangeModel: typeof InventoryChangeModel,
     @InjectModel(ConsolidatedOrderModel)
     private consolidatedOrderModel: typeof ConsolidatedOrderModel,
     private eventEmitter: EventEmitter2,
@@ -169,14 +176,16 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
           break;
         case IScanAction.DriverToDealerConfirmed:
           {
-            const consolidatedOrderModel = await this.consolidatedOrderModel.findOne({
-              where: {
-                dealerId: dealer?.id as string,
-                dispatchId: dispatch.id,
-              },
-            }) as ConsolidatedOrderModel;
-            consolidatedOrderModel.status = IConsolidatedOrderStatus.DriverToDealerConfirmed
-            await consolidatedOrderModel.save({ transaction })
+            const consolidatedOrderModel =
+              (await this.consolidatedOrderModel.findOne({
+                where: {
+                  dealerId: dealer?.id as string,
+                  dispatchId: dispatch.id,
+                },
+              })) as ConsolidatedOrderModel;
+            consolidatedOrderModel.status =
+              IConsolidatedOrderStatus.DriverToDealerConfirmed;
+            await consolidatedOrderModel.save({ transaction });
             await this.driverInventoryService.updateStatus(
               dispatch.driverId,
               inventoryItems.map(({ id }) => id),
@@ -184,15 +193,100 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
             );
           }
           break;
-        case IScanAction.DealerFromDriverConfirmed:
+        case IScanAction.DealerFromDriverConfirmed: {
+          // ... existing code ...
+
           await this.driverInventoryService.updateStatus(
             dispatch.driverId,
             inventoryItems.map(({ id }) => id),
             IDriverInventoryStatus.DealerFromDriverConfirmed
           );
 
-          // TODO Add functionality to add the scanned items to dealer inventory
+          // Create dealer inventory records for the scanned items
+          const inventoryItemsCreated = await this.inventoryItemModel.findAll({
+            where: {
+              id: inventoryItems.map(({ id }) => id),
+            },
+            include: [
+              {
+                model: InventoryModel,
+                include: [CatalogueModel],
+              },
+            ],
+            transaction,
+          });
+
+          // Group items by catalogue for bulk inventory creation
+          const itemsByCatalogue = inventoryItemsCreated.reduce((acc, item) => {
+            const catalogueId = item.inventory?.catalogueId;
+            if (!catalogueId) return acc;
+
+            if (!acc[catalogueId]) {
+              acc[catalogueId] = {
+                count: 0,
+                catalogueId,
+              };
+            }
+            acc[catalogueId].count++;
+            return acc;
+          }, {} as Record<string, { count: number; catalogueId: string }>);
+
+          // Create or update dealer inventory records and track changes
+          for (const catalogueId in itemsByCatalogue) {
+            const existingInventory = await this.inventoryModel.findOne({
+              where: {
+                stationId: dealer?.id,
+                catalogueId,
+              },
+              transaction,
+            });
+
+            if (existingInventory) {
+              await existingInventory.increment('quantity', {
+                by: itemsByCatalogue[catalogueId].count,
+                transaction,
+              });
+
+              // Record inventory change
+              await this.inventoryChangeModel.create(
+                {
+                  inventoryId: existingInventory.id,
+                  userId: dispatch.driverId, // Using driver ID as the user who made the change
+                  quantity: itemsByCatalogue[catalogueId].count,
+                  type: InventoryChangeType.INCREASE,
+                  reason: `Received from dispatch #${dispatch.id}`,
+                  referenceType: ReferenceType.DISPATCH,
+                  referenceId: dispatch.id,
+                },
+                { transaction }
+              );
+            } else {
+              const newInventory = await this.inventoryModel.create(
+                {
+                  stationId: dealer?.id,
+                  catalogueId,
+                  quantity: itemsByCatalogue[catalogueId].count,
+                },
+                { transaction }
+              );
+
+              // Record inventory change for new inventory
+              await this.inventoryChangeModel.create(
+                {
+                  inventoryId: newInventory.id,
+                  userId: dispatch.driverId,
+                  quantity: itemsByCatalogue[catalogueId].count,
+                  type: InventoryChangeType.INCREASE,
+                  reason: `Initial stock from dispatch #${dispatch.id}`,
+                  referenceType: ReferenceType.DISPATCH,
+                  referenceId: dispatch.id,
+                },
+                { transaction }
+              );
+            }
+          }
           break;
+        }
         //
         //   case DispatchStatus.FILLED_DELIVERED_TO_DEALER:
         //     updates.filledDeliveredToDealerAt = new Date();

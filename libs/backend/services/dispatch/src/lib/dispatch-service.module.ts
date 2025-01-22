@@ -3,8 +3,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import {
   CatalogueModel,
   ConsolidatedOrderModel,
-  DispatchModel,
-  InventoryItemModel,
+  DispatchModel, InventoryChangeModel,
+  InventoryItemModel, InventoryModel,
   OrderItemModel,
   OrderModel
 } from '@lpg-manager/db';
@@ -20,7 +20,9 @@ import { InventoryServiceModule } from '@lpg-manager/inventory-service';
       OrderItemModel,
       CatalogueModel,
       InventoryItemModel,
-      ConsolidatedOrderModel
+      InventoryModel,
+      ConsolidatedOrderModel,
+      InventoryChangeModel
     ])],
   providers: [DispatchService],
   exports: [DispatchService],
