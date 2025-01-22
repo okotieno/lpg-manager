@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lpg-manager-admin-portal
+  labels:
+    app: lpg-manager-admin-portal
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lpg-manager-admin-portal
+  template:
+    metadata:
+      labels:
+        app: lpg-manager-admin-portal
+    spec:
+      containers:
+        - name: dashboard-container
+          image: ghcr.io/okotieno/lpg-manager-admin-portal:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: LPG_ENVIRONMENT
+              valueFrom:
+                secretKeyRef:
+                  name: tahiniwa-secrets
+                  key: LPG_ENVIRONMENT
+            - name: LPG_APP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: tahiniwa-secrets
+                  key: LPG_APP_URL
+            - name: LPG_BACKEND_URL
+              valueFrom:
+                secretKeyRef:
+                  name: tahiniwa-secrets
+                  key: LPG_BACKEND_URL
+            - name: LPG_GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: tahiniwa-secrets
+                  key: LPG_GOOGLE_CLIENT_ID
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lpg-manager-admin-portal-service
+spec:
+  selector:
+    app: lpg-manager-admin-portal
+  ports:
+    - protocol: TCP
+      port: 80
+      nodePort: 6001
+  type: LoadBalancer

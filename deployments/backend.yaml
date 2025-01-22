@@ -1,0 +1,171 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lpg-manager-backend
+  labels:
+    app: lpg-manager-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lpg-manager-backend
+  template:
+    metadata:
+      labels:
+        app: lpg-manager-backend
+    spec:
+      containers:
+        - name: backend-container
+          image: ghcr.io/okotieno/lpg-manager-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: LPG_ENVIRONMENT
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_ENVIRONMENT
+            - name: LPG_EXPIRY_PERIOD_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_EXPIRY_PERIOD_ACCESS_TOKEN
+            - name: LPG_DATABASE_DIALECT
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_DATABASE_DIALECT
+            - name: LPG_DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_DATABASE_HOST
+            - name: LPG_DATABASE_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_DATABASE_PORT
+            - name: LPG_DATABASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_DATABASE_USERNAME
+            - name: LPG_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_DATABASE_PASSWORD
+            - name: LPG_DATABASE_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_DATABASE_DATABASE
+            - name: LPG_MAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_MAIL_HOST
+            - name: LPG_MAIL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_MAIL_PORT
+            - name: LPG_MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_MAIL_USERNAME
+            - name: LPG_MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_MAIL_PASSWORD
+            - name: LPG_MAIL_FROM
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_MAIL_FROM
+            - name: LPG_BACKEND_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_BACKEND_PORT
+            - name: LPG_MINIO_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_MINIO_ENDPOINT
+            - name: LPG_MINIO_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_MINIO_PORT
+            - name: LPG_MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_MINIO_ACCESS_KEY
+            - name: LPG_MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_MINIO_SECRET_KEY
+            - name: LPG_MINIO_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_MINIO_BUCKET
+            - name: LPG_GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_GOOGLE_CLIENT_ID
+            - name: LPG_GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_GOOGLE_CLIENT_SECRET
+            - name: LPG_REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_REDIS_HOST
+            - name: LPG_REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_REDIS_PORT
+            - name: LPG_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_REDIS_PASSWORD
+            - name: LPG_BACKEND_URL
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_BACKEND_URL
+            - name: LPG_APP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_APP_URL
+            - name: LPG_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: lpg-manager-secrets
+                  key: LPG_JWT_SECRET
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lpg-manager-backend-service
+spec:
+  selector:
+    app: lpg-manager-backend
+  ports:
+    - protocol: TCP
+      port: 3000
+      nodePort: 30006
+  type: LoadBalancer
