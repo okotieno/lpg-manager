@@ -7,13 +7,17 @@
     @for (dealer of summarizedOrders(); track dealer.id) {
       <ion-item>
         <ion-label>
-          <h2>{{ dealer.name}} (<span [lpgUUID]="dealer.id"></span>)</h2>
+          <h2>{{ dealer.name }} (<span [lpgUUID]="dealer.id"></span>)</h2>
           <p>Items: {{ dealer.catalogues.length }}</p>
 
         </ion-label>
-        <ion-button
-          [routerLink]="[dealer.id]"
-          slot="end">Deliver</ion-button>
+        @if (dealer.consolidatedOrderStatus === consolidatedOrderStatusCreated) {
+          <ion-button
+            [routerLink]="[dealer.id]"
+            slot="end">Deliver
+          </ion-button>
+        }
+
       </ion-item>
     } @empty {
       <ion-item>

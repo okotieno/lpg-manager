@@ -128,6 +128,7 @@ export class DispatchResolver {
       dispatchId: params.dispatchId,
       inventoryItems: params.inventoryItems,
       scanAction: params.scanAction,
+      dealer: params.dealer
     });
 
     if (actions[params.scanAction]) {

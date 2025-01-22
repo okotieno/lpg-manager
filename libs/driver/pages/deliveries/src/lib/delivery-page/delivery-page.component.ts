@@ -12,6 +12,7 @@ import {
 import { JsonPipe } from '@angular/common';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
 import { RouterLink } from '@angular/router';
+import { IConsolidatedOrderStatus } from '@lpg-manager/types';
 
 // Type for the Summarized Catalogue in the result
 interface SummarizedCatalogue {
@@ -49,16 +50,29 @@ interface SummarizedDealer {
 export default class DeliveryPageComponent {
   dispatch = input<IGetDispatchByIdQuery['dispatch']>();
 
+  consolidatedOrderStatusCreated = IConsolidatedOrderStatus.Created
+  consolidatedOrderStatusDriverToDealerConfirmed = IConsolidatedOrderStatus.DriverToDealerConfirmed
+
   summarizedOrders = computed(() => {
     const consolidatedOrders = this.dispatch()?.consolidatedOrders ?? [];
 
-    return consolidatedOrders.map(o => o.orders).flat().map(order => {
-      const dealer = order.dealer;
-      const catalogues: {id: string; name: string; quantity: number}[] = [];
+    return consolidatedOrders
+      .map((consolidatedOrder) =>
+        consolidatedOrder.orders.map((order) => ({
+          ...order,
+          consolidatedOrderStatus: consolidatedOrder.status,
+        }))
+      )
+      .flat()
+      .map((order) => {
+        const dealer = order.dealer;
+        const catalogues: { id: string; name: string; quantity: number }[] = [];
 
-        order.items.forEach(item => {
+        order.items.forEach((item) => {
           const catalogue = item?.catalogue;
-          const existingCatalogue = catalogues.find(c => c.id === catalogue?.id);
+          const existingCatalogue = catalogues.find(
+            (c) => c.id === catalogue?.id
+          );
 
           if (existingCatalogue) {
             existingCatalogue.quantity += item?.quantity ?? 0;
@@ -71,11 +85,12 @@ export default class DeliveryPageComponent {
           }
         });
 
-      return {
-        id: dealer.id,
-        name: dealer.name,
-        catalogues,
-      };
-    });
+        return {
+          consolidatedOrderStatus: order.consolidatedOrderStatus,
+          id: dealer.id,
+          name: dealer.name,
+          catalogues,
+        };
+      });
   });
 }

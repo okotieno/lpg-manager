@@ -1,0 +1,14 @@
+enum ConsolidatedOrderStatus {
+  CREATED
+  DRIVER_TO_DEALER_CONFIRMED
+  DEALER_FROM_DRIVER_CONFIRMED
+  COMPLETED
+}
+type ConsolidatedOrderModel {
+  id: UUID!
+  dispatchId: UUID!
+  status: ConsolidatedOrderStatus!
+  dealerId: UUID!
+  dealer: StationModel!
+  orders: [OrderModel!]!
+}

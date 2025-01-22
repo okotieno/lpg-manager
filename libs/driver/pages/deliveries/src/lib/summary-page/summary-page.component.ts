@@ -26,11 +26,7 @@ import { ScannerInputComponent } from '@lpg-manager/scanner-input';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  IDispatchStatus,
-  IQueryOperatorEnum,
-  IScanConfirmDriverInventoryStatus,
-} from '@lpg-manager/types';
+import { IQueryOperatorEnum, IScanAction } from '@lpg-manager/types';
 import { DriverInventoryStore } from '@lpg-manager/driver-inventory-store';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
@@ -79,7 +75,7 @@ export default class SummaryPageComponent {
   driverInventories = this.#driverInventoryStore.searchedItemsEntities;
 
   dispatch = input<IGetDispatchByIdQuery['dispatch']>();
-  dealerId = input<string>();
+  dealerId = input.required<string>();
 
   scannerForm = this.#fb.group({ canisters: [[] as string[]] });
 
@@ -182,13 +178,17 @@ export default class SummaryPageComponent {
 
     const driverInventories = this.scannedDriverInventories().map(({ id }) => ({ id }));
 
-    // await this.#dispatchStore.scanConfirm({
-    //   dispatchId,
-    //   scannedCanisters,
-    //   dispatchStatus: IDispatchStatus.InTransit,
-    //   driverInventories,
-    //   driverInventoryStatus: IScanConfirmDriverInventoryStatus.DriverToDealerConfirmed
-    // });
+    console.log({  });
+
+    await this.#dispatchStore.scanConfirm({
+      dispatchId,
+      inventoryItems: scannedCanisters.map((id) => ({id})),
+      scanAction: IScanAction.DriverToDealerConfirmed,
+      dealer: { id: this.dealerId() }
+      // dispatchStatus: IDispatchStatus.InTransit,
+      // driverInventories,
+      // driverInventoryStatus: IScanConfirmDriverInventoryStatus.DriverToDealerConfirmed
+    });
   }
 
   validateScans() {

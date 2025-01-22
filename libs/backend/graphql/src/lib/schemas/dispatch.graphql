@@ -17,14 +17,6 @@ enum DispatchStatus {
   COMPLETED
 }
 
-type ConsolidatedOrderModel {
-  id: UUID!
-  dispatchId: UUID!
-  dealerId: UUID!
-  dealer: StationModel!
-  orders: [OrderModel!]!
-}
-
 type DispatchModel {
   id: UUID!
   transporterId: UUID!
@@ -85,7 +77,7 @@ input ScanConfirmInput {
 #  dispatchStatus: DispatchStatus!
 #  driverInventories: [SelectCategory]
 #  driverInventoryStatus: ScanConfirmDriverInventoryStatus
-  depotId: SelectCategory
+  dealer: SelectCategory
 }
 
 extend type Query {

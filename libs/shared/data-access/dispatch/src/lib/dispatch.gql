@@ -69,6 +69,7 @@ query GetDispatchById($id: UUID! $includeDealer: Boolean = false) {
     }
     consolidatedOrders {
       id
+      status
       orders {
         id
         status

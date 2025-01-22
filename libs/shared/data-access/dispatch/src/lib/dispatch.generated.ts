@@ -20,7 +20,7 @@ export type IGetDispatchByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type IGetDispatchByIdQuery = { dispatch?: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, consolidatedOrders: Array<{ id: string, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number, items: Array<{ id: string, quantity: number, catalogue: { id: string, name: string, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null>, dealer: { id: string, name: string } }> }> } | null };
+export type IGetDispatchByIdQuery = { dispatch?: { id: string, status: Types.IDispatchStatus, dispatchDate: string, transporterId: string, driverId: string, vehicleId: string, createdAt: string, updatedAt: string, transporter: { id: string, name: string }, driver: { id: string, user: { id: string, firstName: string, lastName: string } }, vehicle: { id: string, registrationNumber: string }, consolidatedOrders: Array<{ id: string, status: Types.IConsolidatedOrderStatus, orders: Array<{ id: string, status: Types.IOrderStatus, totalPrice: number, items: Array<{ id: string, quantity: number, catalogue: { id: string, name: string, unit: Types.ICatalogueUnit, quantityPerUnit: number } } | null>, dealer: { id: string, name: string } }> }> } | null };
 
 export type IGetDispatchesQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
@@ -138,6 +138,7 @@ export const GetDispatchByIdDocument = gql`
     }
     consolidatedOrders {
       id
+      status
       orders {
         id
         status

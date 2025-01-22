@@ -116,7 +116,15 @@ export type IConsolidatedOrderModel = {
   dispatchId: Scalars['UUID']['output'];
   id: Scalars['UUID']['output'];
   orders: Array<IOrderModel>;
+  status: IConsolidatedOrderStatus;
 };
+
+export enum IConsolidatedOrderStatus {
+  Completed = 'COMPLETED',
+  Created = 'CREATED',
+  DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
+  DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED'
+}
 
 export type ICountriesLanguagesInput = {
   countryId: Scalars['Int']['input'];
@@ -1738,7 +1746,7 @@ export enum IScanConfirmDriverInventoryStatus {
 }
 
 export type IScanConfirmInput = {
-  depotId?: InputMaybe<ISelectCategory>;
+  dealer?: InputMaybe<ISelectCategory>;
   dispatchId: Scalars['UUID']['input'];
   emptyCylinders?: InputMaybe<IEmptyCylindersScanConfirmInput>;
   inventoryItems?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;

@@ -1,18 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
 import {
-  DispatchModel,
-  OrderModel,
-  OrderItemModel,
-  StationModel,
   ConsolidatedOrderModel,
+  DispatchModel,
+  OrderItemModel,
+  OrderModel,
+  StationModel,
 } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Transaction } from 'sequelize';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { DriverInventoryService } from '@lpg-manager/inventory-service';
-import { IDispatchStatus, IDriverInventoryStatus } from '@lpg-manager/types';
-import { IScanAction } from '@lpg-manager/types';
+import {
+  IConsolidatedOrderStatus,
+  IDispatchStatus,
+  IDriverInventoryStatus,
+  IScanAction
+} from '@lpg-manager/types';
 
 @Injectable()
 export class DispatchService extends CrudAbstractService<DispatchModel> {
@@ -106,6 +110,7 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
     dispatchId,
     inventoryItems,
     scanAction,
+    dealer,
   }: // dispatchStatus,
   // driverInventories,
   // driverInventoryStatus,
@@ -113,7 +118,7 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
     dispatchId: string;
     inventoryItems: { id: string }[];
     scanAction: IScanAction;
-
+    dealer?: { id: string };
     // scannedCanisters: string[];
     // dispatchStatus: DispatchStatus;
     // driverInventories: { id: string }[];
@@ -160,6 +165,30 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
             dispatch.driverId,
             inventoryItems.map(({ id }) => id),
             IDriverInventoryStatus.InTransit
+          );
+          break;
+        case IScanAction.DriverToDealerConfirmed:
+          {
+            const consolidatedOrderModel = await this.consolidatedOrderModel.findOne({
+              where: {
+                dealerId: dealer?.id as string,
+                dispatchId: dispatch.id,
+              },
+            }) as ConsolidatedOrderModel;
+            consolidatedOrderModel.status = IConsolidatedOrderStatus.DriverToDealerConfirmed
+            await consolidatedOrderModel.save({ transaction })
+            await this.driverInventoryService.updateStatus(
+              dispatch.driverId,
+              inventoryItems.map(({ id }) => id),
+              IDriverInventoryStatus.DriverToDealerConfirmed
+            );
+          }
+          break;
+        case IScanAction.DealerFromDriverConfirmed:
+          await this.driverInventoryService.updateStatus(
+            dispatch.driverId,
+            inventoryItems.map(({ id }) => id),
+            IDriverInventoryStatus.DealerFromDriverConfirmed
           );
           break;
         //

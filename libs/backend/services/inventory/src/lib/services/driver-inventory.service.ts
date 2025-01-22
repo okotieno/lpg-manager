@@ -85,6 +85,12 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
             ...(status === IDriverInventoryStatus.Returned
               ? { returnedAt: new Date() }
               : {}),
+            ...(status === IDriverInventoryStatus.DriverToDealerConfirmed
+              ? { driverToDealerConfirmedAt: new Date() }
+              : {}),
+            ...(status === IDriverInventoryStatus.DealerFromDriverConfirmed
+              ? { dealerFromDriverConfirmedAt: new Date() }
+              : {}),
           },
           {
             where: {

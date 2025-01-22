@@ -77,5 +77,5 @@ export class ScanConfirmDto {
   @IsOptional()
   @ValidateNested()
   @Type(() => StationDto)
-  depotId?: StationDto;
+  dealer?: StationDto;
 }

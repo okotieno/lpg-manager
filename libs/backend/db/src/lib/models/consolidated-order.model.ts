@@ -10,6 +10,7 @@ import {
 import { StationModel } from './station.model';
 import { OrderModel } from './order.model';
 import { DispatchModel } from './dispatch.model';
+import { IConsolidatedOrderStatus } from '@lpg-manager/types';
 
 @Table({
   tableName: 'consolidated_orders',
@@ -40,6 +41,13 @@ export class ConsolidatedOrderModel extends Model {
   })
   dealerId!: string;
 
+  @Column({
+    type: DataType.ENUM(...Object.values(IConsolidatedOrderStatus)),
+    allowNull: false,
+    defaultValue: IConsolidatedOrderStatus.Created,
+  })
+  status!: IConsolidatedOrderStatus;
+
   @BelongsTo(() => DispatchModel)
   dispatch!: DispatchModel;
 
@@ -48,4 +56,4 @@ export class ConsolidatedOrderModel extends Model {
 
   @HasMany(() => OrderModel)
   orders!: OrderModel[];
-} 
+}
