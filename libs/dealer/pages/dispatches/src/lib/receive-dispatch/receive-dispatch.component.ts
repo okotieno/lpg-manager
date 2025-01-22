@@ -26,8 +26,15 @@ import {
 import { ScannerInputComponent } from '@lpg-manager/scanner-input';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
-import { IDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
+import {
+  IDispatchStatus,
+  IQueryOperatorEnum,
+  IScanAction,
+} from '@lpg-manager/types';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AuthStore } from '@lpg-manager/auth-store';
 
 interface ScanSummaryItem {
   catalogueId: string;
@@ -68,6 +75,10 @@ interface ScanSummaryItem {
   providers: [DispatchStore, InventoryItemStore],
 })
 export default class ReceiveDispatchComponent {
+  #authStore = inject(AuthStore);
+  dealerId = computed(
+    () => this.#authStore.activeRole()?.station?.id as string
+  );
   #route = inject(ActivatedRoute);
   #inventoryItemStore = inject(InventoryItemStore);
   searchedInventoryItem = this.#inventoryItemStore.searchedItemsEntities;
@@ -94,23 +105,29 @@ export default class ReceiveDispatchComponent {
     }
   }
 
+  scannedItems = signal([] as string[]);
+
   scanSummary = computed(() => {
     const dispatch = this.dispatch();
     if (!dispatch) return [];
 
     // Create a map to count ordered quantities by catalogue
     const orderQuantities = new Map<string, number>();
-    dispatch.consolidatedOrders.map(o => o.orders).flat().forEach((order) => {
-      order.items.forEach((item) => {
-        if (item?.catalogue) {
-          const current = orderQuantities.get(item.catalogue.id as string) || 0;
-          orderQuantities.set(
-            item.catalogue.id as string,
-            current + (item.quantity ?? 0)
-          );
-        }
+    dispatch.consolidatedOrders
+      .map((o) => o.orders)
+      .flat()
+      .forEach((order) => {
+        order.items.forEach((item) => {
+          if (item?.catalogue) {
+            const current =
+              orderQuantities.get(item.catalogue.id as string) || 0;
+            orderQuantities.set(
+              item.catalogue.id as string,
+              current + (item.quantity ?? 0)
+            );
+          }
+        });
       });
-    });
 
     // Create a map to count scanned quantities by catalogue
     const scannedQuantities = new Map<string, number>();
@@ -125,7 +142,9 @@ export default class ReceiveDispatchComponent {
     const summary: ScanSummaryItem[] = [];
     orderQuantities.forEach((orderQty, catalogueId) => {
       const scannedQty = scannedQuantities.get(catalogueId) || 0;
-      const catalogue = dispatch.consolidatedOrders.map(o => o.orders).flat()
+      const catalogue = dispatch.consolidatedOrders
+        .map((o) => o.orders)
+        .flat()
         .flatMap((o) => o.items)
         .find((i) => i?.catalogue?.id === catalogueId)?.catalogue;
 
@@ -139,8 +158,8 @@ export default class ReceiveDispatchComponent {
             orderQty === scannedQty
               ? 'OK'
               : orderQty > scannedQty
-                ? 'Less'
-                : 'More',
+              ? 'Less'
+              : 'More',
         });
       }
     });
@@ -152,6 +171,42 @@ export default class ReceiveDispatchComponent {
     const summary = this.scanSummary();
     return summary.length > 0 && summary.every((item) => item.status === 'OK');
   });
+
+  totalOrderQuantity = computed(
+    () =>
+      this.dispatch()
+        ?.consolidatedOrders.map((o) => o.orders)
+        .flat()
+        .reduce(
+          (total, order) =>
+            total +
+            order.items.reduce(
+              (total, item) => total + (item?.quantity ?? 0),
+              0
+            ),
+          0
+        ) ?? 0
+  );
+
+  constructor() {
+    this.scannerForm
+      .get('canisters')
+      ?.valueChanges.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap((canisters) => {
+          if (canisters) {
+            this.scannedItems.set(canisters);
+
+            if (this.totalOrderQuantity() === this.scannedItems().length) {
+              this.validateScans();
+            }
+          }
+        }),
+        takeUntilDestroyed()
+      )
+      .subscribe();
+  }
 
   validateScans() {
     this.#inventoryItemStore.setFilters([
@@ -165,13 +220,16 @@ export default class ReceiveDispatchComponent {
     this.scannedCanisters.set(this.scannerForm.get('canisters')?.value ?? []);
   }
 
-  async dealerToDriverConfirm() {
+  async dealerFromDriverConfirm() {
     if (!this.dispatch()) return;
 
-    // await this.#dispatchStore.scanConfirm({
-    //   dispatchId: this.dispatch()?.id as string,
-    //   scannedCanisters: this.scannedCanisters(),
-    //   dispatchStatus: IDispatchStatus.DealerFromDriverConfirmed,
-    // });
+    const scannedCanisters = this.scannedItems();
+
+    await this.#dispatchStore.scanConfirm({
+      dispatchId: this.dispatch()?.id as string,
+      inventoryItems: scannedCanisters.map((id) => ({ id })),
+      scanAction: IScanAction.DealerFromDriverConfirmed,
+      dealer: { id: this.dealerId() },
+    });
   }
 }

@@ -178,7 +178,6 @@ export default class SummaryPageComponent {
 
     const driverInventories = this.scannedDriverInventories().map(({ id }) => ({ id }));
 
-    console.log({  });
 
     await this.#dispatchStore.scanConfirm({
       dispatchId,

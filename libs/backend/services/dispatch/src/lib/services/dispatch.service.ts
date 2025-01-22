@@ -190,6 +190,8 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
             inventoryItems.map(({ id }) => id),
             IDriverInventoryStatus.DealerFromDriverConfirmed
           );
+
+          // TODO Add functionality to add the scanned items to dealer inventory
           break;
         //
         //   case DispatchStatus.FILLED_DELIVERED_TO_DEALER:
