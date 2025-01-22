@@ -80,7 +80,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - uses: nrwl/nx-set-shas@v4
 
-      - name: Build dashboard
+      - name: Build admin portal
         run: pnpm exec nx build dashboard
 
       - name: Upload build artifact
@@ -111,7 +111,7 @@ jobs:
       - uses: nrwl/nx-set-shas@v4
 
       - name: Build backend
-        run: pnpm exec nx build backend
+        run: pnpm exec nx build admin-portal
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
@@ -289,4 +289,4 @@ jobs:
             export KUBECONFIG=/etc/kubernetes/admin.conf
             kubectl delete deployment lpg-manger-admin-portal
             kubectl delete svc lpg-manger-admin-portal-service
-            kubectl apply -f ~/lpg_manager_deployments/deployments/dashboard.yaml
+            kubectl apply -f ~/lpg_manager_deployments/deployments/admin-portal.yaml
