@@ -81,7 +81,7 @@ jobs:
       - uses: nrwl/nx-set-shas@v4
 
       - name: Build admin portal
-        run: pnpm exec nx build dashboard
+        run: pnpm exec nx build admin-portal
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
