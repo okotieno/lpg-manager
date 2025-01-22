@@ -21,7 +21,7 @@ import {
   PermissionGuard,
   Permissions,
 } from '@lpg-manager/permission-service';
-import { IPermissionEnum } from '@lpg-manager/types';
+import { IDefaultRoles, IPermissionEnum } from '@lpg-manager/types';
 import {
   DriverModel,
   IQueryParam,
@@ -155,7 +155,7 @@ export class UserResolver {
         id: roleUser.id,
         role: roleUser.role,
         station: roleUser.station,
-        ...(userWithRoles?.driver?.id && roleUser.role.name === 'driver' ? {
+        ...(userWithRoles?.driver?.id && roleUser.role.name === IDefaultRoles.Driver ? {
           driver: userWithRoles.driver
         }: undefined)
       })) || []
