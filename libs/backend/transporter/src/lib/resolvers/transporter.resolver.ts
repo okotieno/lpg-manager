@@ -16,10 +16,11 @@ import {
   PermissionGuard,
   Permissions,
 } from '@lpg-manager/permission-service';
-import { IPermissionEnum } from '@lpg-manager/types';
+import { IDefaultRoles, IPermissionEnum } from '@lpg-manager/types';
 import { DriverService } from '@lpg-manager/driver-service';
 import { VehicleService } from '@lpg-manager/vehicle-service';
 import { UserService } from '@lpg-manager/user-service';
+import { RoleService } from '@lpg-manager/role-service';
 
 @Resolver(() => TransporterModel)
 export class TransporterResolver {
@@ -27,7 +28,8 @@ export class TransporterResolver {
     private transporterService: TransporterService,
     private driverService: DriverService,
     private userService: UserService,
-    private vehicleService: VehicleService
+    private vehicleService: VehicleService,
+    private roleService: RoleService
   ) {}
 
   @Mutation()
@@ -61,9 +63,10 @@ export class TransporterResolver {
             firstName: driver.name.split(' ')[0],
             lastName: driver.name.split(' ')[1],
             phone: driver.phone,
-            role: 'DRIVER',
             password: Math.random().toString(36).slice(-8), // Generate random password
           });
+
+          await this.roleService.assignRoleToUser(user.id as string, IDefaultRoles.Driver)
 
           // Create driver record
           const driverCreated = await this.driverService.model.create({
