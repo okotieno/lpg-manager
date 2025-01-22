@@ -12,7 +12,6 @@ import { JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
 import { BrandService } from '@lpg-manager/brand-service';
 import {
@@ -20,20 +19,25 @@ import {
   CatalogueModel,
   IQueryParam,
   QueryOperatorEnum,
-  SortByDirectionEnum,
+  SortByDirectionEnum, UserModel, BrandFileUploadModel
 } from '@lpg-manager/db';
 import { CatalogueService } from '@lpg-manager/catalogue-service';
+import { IPermissionEnum } from '@lpg-manager/types';
+import { InjectModel } from '@nestjs/sequelize';
+import { v4 as uuidv4 } from 'uuid';
 
 @Resolver(() => BrandModel)
 export class BrandResolver {
   constructor(
     private brandService: BrandService,
-    private catalogueService: CatalogueService
+    private catalogueService: CatalogueService,
+    @InjectModel(BrandFileUploadModel)
+    private brandFileUploadModel: typeof BrandFileUploadModel
   ) {}
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateBrand)
+  @Permissions(IPermissionEnum.CreateBrand)
   async createBrand(
     @Body('params', new ValidationPipe()) params: CreateBrandInputDto
   ) {
@@ -43,10 +47,12 @@ export class BrandResolver {
     });
 
     if (params.images?.length) {
-      await brand.$set(
-        'images',
-        params.images.map((img) => img.id)
-      );
+      const brandFileUploads = params.images.map((img) => ({
+        id: uuidv4(),
+        brandId: brand.id,
+        fileUploadId: img.id,
+      }));
+      await this.brandFileUploadModel.bulkCreate(brandFileUploads);
     }
 
     // Handle catalogue creation
@@ -104,5 +110,11 @@ export class BrandResolver {
         ],
       })
       .then((result) => result.items);
+  }
+
+  @Query()
+  async brandCount() {
+    const count = await this.brandService.model.count();
+    return { count };
   }
 }

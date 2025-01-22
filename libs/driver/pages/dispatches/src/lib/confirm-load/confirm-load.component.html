@@ -66,15 +66,10 @@
         >Complete
         </ion-button>
       } @else {
-        <ion-button
-          shape="round"
-          fill="outline"
-          color="primary"
-          (click)="validateScans()"
-        >Validate scan
-        </ion-button>
         <form [formGroup]="scannerForm">
-          <lpg-scanner-input formControlName="canisters" />
+          <lpg-scanner-input
+            [max]="totalOrderQuantity()"
+            formControlName="canisters" />
         </form>
 
       }

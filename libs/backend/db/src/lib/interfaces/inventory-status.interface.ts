@@ -1,6 +1,11 @@
 export enum DriverInventoryStatus {
-  ASSIGNED = 'ASSIGNED',      // When depot assigns canisters to driver
-  IN_TRANSIT = 'IN_TRANSIT',  // When driver confirms receipt and starts delivery
-  DELIVERED = 'DELIVERED',    // When driver delivers to customer
-  RETURNED = 'RETURNED'       // When driver returns canisters to depot
+  // Filled Canisters Flow
+  FILLED_ASSIGNED = 'FILLED_ASSIGNED',
+  FILLED_IN_TRANSIT = 'FILLED_IN_TRANSIT',
+  FILLED_DELIVERED = 'FILLED_DELIVERED',
+  
+  // Empty Canisters Flow
+  EMPTY_COLLECTED = 'EMPTY_COLLECTED',
+  EMPTY_IN_TRANSIT = 'EMPTY_IN_TRANSIT',
+  EMPTY_RETURNED = 'EMPTY_RETURNED'
 }

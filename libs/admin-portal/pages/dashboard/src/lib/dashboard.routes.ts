@@ -10,8 +10,9 @@ export const DASHBOARD_ROUTES: Routes = [
     },
     children: [
       {
-        path: 'dashboard',
-        children: [],
+        path: '',
+        loadChildren: () => import('@lpg-manager/home-page'),
+        pathMatch: 'full'
       },
       {
         path: 'user-management',

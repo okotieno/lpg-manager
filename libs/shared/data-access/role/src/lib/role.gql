@@ -38,6 +38,7 @@ query GetRoles($query: QueryParams) {
     items {
       id
       name
+      label
     }
     meta {
       totalItems

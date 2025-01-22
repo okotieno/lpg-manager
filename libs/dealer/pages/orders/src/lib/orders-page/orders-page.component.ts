@@ -3,17 +3,19 @@ import { OrderStore } from '@lpg-manager/order-store';
 import {
   IonAccordion,
   IonAccordionGroup,
-  IonBadge,
+  IonBadge, IonButton,
   IonContent,
   IonItem,
   IonItemDivider,
   IonLabel,
   IonList,
-  IonText,
+  IonText
 } from '@ionic/angular/standalone';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { IQueryOperatorEnum } from '@lpg-manager/types';
+import { IOrderDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
 import { AuthStore } from '@lpg-manager/auth-store';
+import { GET_ITEMS_INCLUDE_FIELDS } from '@lpg-manager/data-table';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'lpg-orders',
@@ -32,12 +34,23 @@ import { AuthStore } from '@lpg-manager/auth-store';
     DatePipe,
     CurrencyPipe,
     IonItemDivider,
+    IonButton,
+    RouterLink,
   ],
-  providers: [OrderStore],
+  providers: [
+    OrderStore,
+    {
+      provide: GET_ITEMS_INCLUDE_FIELDS,
+      useValue: {
+        includeDispatch: true,
+      },
+    },
+  ],
 })
 export default class OrdersPageComponent {
   #orderStore = inject(OrderStore);
   #authStore = inject(AuthStore);
+  driverToDealerConfirmed = IOrderDispatchStatus.DriverToDealerConfirmed;
   orders = computed(() => this.#orderStore.searchedItemsEntities() || []);
   ordersDisplayed = computed(() =>
     this.orders().map((order) => ({

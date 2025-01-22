@@ -31,9 +31,15 @@ type CreateStationSuccessResponse {
   data: StationModel!
 }
 
+
+type StationCount {
+  count: Int!
+}
+
 extend type Query {
   stations(query: QueryParams): PaginatedStation!
   station(id: UUID!): StationModel
+  stationCount: StationCount
 }
 
 extend type Mutation {

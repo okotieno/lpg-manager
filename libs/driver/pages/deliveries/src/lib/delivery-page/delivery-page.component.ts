@@ -12,6 +12,7 @@ import {
 import { JsonPipe } from '@angular/common';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
 import { RouterLink } from '@angular/router';
+import { IConsolidatedOrderStatus } from '@lpg-manager/types';
 
 // Type for the Summarized Catalogue in the result
 interface SummarizedCatalogue {
@@ -39,7 +40,6 @@ interface SummarizedDealer {
     IonLabel,
     IonItem,
     IonButton,
-    JsonPipe,
     IonText,
     UUIDDirective,
     RouterLink,
@@ -50,46 +50,47 @@ interface SummarizedDealer {
 export default class DeliveryPageComponent {
   dispatch = input<IGetDispatchByIdQuery['dispatch']>();
 
+  consolidatedOrderStatusCreated = IConsolidatedOrderStatus.Created
+  consolidatedOrderStatusDriverToDealerConfirmed = IConsolidatedOrderStatus.DriverToDealerConfirmed
+
   summarizedOrders = computed(() => {
-    const orders = this.dispatch()?.orders ?? [];
-    const summary: SummarizedDealer[] = [];
+    const consolidatedOrders = this.dispatch()?.consolidatedOrders ?? [];
 
-    orders.forEach((order) => {
-      const dealer = order.dealer;
+    return consolidatedOrders
+      .map((consolidatedOrder) =>
+        consolidatedOrder.orders.map((order) => ({
+          ...order,
+          consolidatedOrderStatus: consolidatedOrder.status,
+        }))
+      )
+      .flat()
+      .map((order) => {
+        const dealer = order.dealer;
+        const catalogues: { id: string; name: string; quantity: number }[] = [];
 
-      // Find or create the dealer entry in the summary
-      let dealerSummary = summary.find((d) => d.id === dealer.id);
-      if (!dealerSummary) {
-        dealerSummary = {
+        order.items.forEach((item) => {
+          const catalogue = item?.catalogue;
+          const existingCatalogue = catalogues.find(
+            (c) => c.id === catalogue?.id
+          );
+
+          if (existingCatalogue) {
+            existingCatalogue.quantity += item?.quantity ?? 0;
+          } else {
+            catalogues.push({
+              id: catalogue?.id as string,
+              name: catalogue?.name as string,
+              quantity: item?.quantity as number,
+            });
+          }
+        });
+
+        return {
+          consolidatedOrderStatus: order.consolidatedOrderStatus,
           id: dealer.id,
           name: dealer.name,
-          catalogues: [],
+          catalogues,
         };
-        summary.push(dealerSummary);
-      }
-
-      // Process each item in the order
-      order.items.forEach((item) => {
-        const catalogue = item?.catalogue;
-
-        // Find or create the catalogue entry under this dealer
-        let catalogueSummary = dealerSummary.catalogues.find(
-          (c) => c.id === catalogue?.id
-        );
-        if (!catalogueSummary) {
-          catalogueSummary = {
-            id: catalogue?.id as string,
-            name: catalogue?.name as string,
-            quantity: 0,
-          };
-          dealerSummary.catalogues.push(catalogueSummary);
-        }
-
-        // Sum the quantities for each catalogue
-        catalogueSummary.quantity += item?.quantity ?? 0;
       });
-    });
-
-    return summary;
   });
 }

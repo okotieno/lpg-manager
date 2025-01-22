@@ -17,6 +17,7 @@ export interface PaginatedResource<T> {
   isLoading: Signal<boolean>;
 
   setFilters(filters: IQueryParamsFilter[]): void;
+  refetchItems(): void;
 
   setSearchTerm(value: string): void;
 
@@ -26,6 +27,7 @@ export interface PaginatedResource<T> {
   selectedItemsEntities: Signal<T[]>;
 
   setSelectedItemIds(param: { id: string }[]): void;
+
 }
 
 

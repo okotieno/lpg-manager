@@ -11,15 +11,8 @@ import { TransporterModel } from './transporter.model';
 import { DriverModel } from './driver.model';
 import { VehicleModel } from './vehicle.model';
 import { OrderModel } from './order.model';
-
-export enum DispatchStatus {
-  PENDING = 'PENDING',
-  IN_TRANSIT = 'IN_TRANSIT',
-  DELIVERED = 'DELIVERED',
-  CANCELLED = 'CANCELLED',
-  DEPOT_TO_DRIVER_CONFIRMED = 'DEPOT_TO_DRIVER_CONFIRMED',
-  DRIVER_FROM_DEPOT_CONFIRMED = 'DRIVER_FROM_DEPOT_CONFIRMED',
-}
+import { DriverInventoryModel } from './driver-inventory.model';
+import { IDispatchStatus } from '@lpg-manager/types';
 
 @Table({
   tableName: 'dispatches',
@@ -58,11 +51,11 @@ export class DispatchModel extends Model {
   vehicleId!: string;
 
   @Column({
-    type: DataType.ENUM(...Object.values(DispatchStatus)),
+    type: DataType.ENUM(...Object.values(IDispatchStatus)),
     allowNull: false,
-    defaultValue: DispatchStatus.PENDING,
+    defaultValue: IDispatchStatus.Pending,
   })
-  status!: DispatchStatus;
+  status!: IDispatchStatus;
 
   @Column({
     type: DataType.DATE,
@@ -76,6 +69,44 @@ export class DispatchModel extends Model {
   })
   depotToDriverConfirmedAt: Date | null = null;
 
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  driverFromDepotConfirmedAt: Date | null = null;
+
+  // @Column({
+  //   type: DataType.DATE,
+  //   allowNull: true,
+  // })
+  // filledDeliveredToDealerAt: Date | null = null;
+
+  // @Column({
+  //   type: DataType.DATE,
+  //   allowNull: true,
+  // })
+  // emptyCollectedFromDealerAt: Date | null = null;
+  //
+  // @Column({
+  //   type: DataType.DATE,
+  //   allowNull: true,
+  // })
+  // emptyReturnedToDepotAt: Date | null = null;
+  //
+  // @Column({
+  //   type: DataType.BOOLEAN,
+  //   allowNull: false,
+  //   defaultValue: false,
+  // })
+  // isFilledDeliveryCompleted: boolean = false;
+
+  // @Column({
+  //   type: DataType.BOOLEAN,
+  //   allowNull: false,
+  //   defaultValue: false,
+  // })
+  // isEmptyReturnCompleted: boolean = false;
+
   @BelongsTo(() => TransporterModel)
   transporter!: TransporterModel;
 
@@ -87,4 +118,7 @@ export class DispatchModel extends Model {
 
   @HasMany(() => OrderModel)
   orders!: OrderModel[];
+
+  @HasMany(() => DriverInventoryModel)
+  driverInventories!: DriverInventoryModel[];
 }

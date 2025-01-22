@@ -1,31 +1,57 @@
 import {
   IsArray,
   IsEnum,
-  IsInt,
   IsNotEmpty,
+  IsOptional,
   IsUUID,
   ValidateNested,
+  IsInt,
 } from 'class-validator';
-import { DriverInventoryModel } from '@lpg-manager/db';
+import {
+  CatalogueModel,
+  DriverInventoryModel,
+  InventoryItemModel,
+  StationModel,
+} from '@lpg-manager/db';
 import { Exists } from '@lpg-manager/validators';
 import { Type } from 'class-transformer';
+import { IScanAction } from '@lpg-manager/types';
 
-enum DispatchStatus {
-  DEPOT_TO_DRIVER_CONFIRMED = 'DEPOT_TO_DRIVER_CONFIRMED',
-  DRIVER_FROM_DEPOT_CONFIRMED = 'DRIVER_FROM_DEPOT_CONFIRMED',
-  IN_TRANSIT = 'IN_TRANSIT',
-}
-
-enum DriverInventoryStatus {
-  DRIVER_CONFIRMED = 'DRIVER_CONFIRMED',
-  DEALER_CONFIRMED = 'DEALER_CONFIRMED',
-}
-
-export class DriverInventoryDto {
+class DriverInventoryDto {
   @IsUUID()
   @Exists(DriverInventoryModel, 'id', {
     message: (validationArguments) =>
       `Driver inventory with id  ${validationArguments.value}" not found`,
+  })
+  id!: string;
+}
+
+class InventoryItemDto {
+  @IsUUID()
+  @Exists(InventoryItemModel, 'id', {
+    message: (validationArguments) =>
+      `Inventory with id  ${validationArguments.value}" not found`,
+  })
+  id!: string;
+}
+
+class CatalogueDto {
+  @IsUUID()
+  @Exists(CatalogueModel, 'id', {
+    message: (validationArguments) =>
+      `Catalogue with id  ${validationArguments.value}" not found`,
+  })
+  catalogueId!: string;
+
+  @IsInt()
+  quantity!: number;
+}
+
+class StationDto {
+  @IsUUID()
+  @Exists(StationModel, 'id', {
+    message: (validationArguments) =>
+      `Depot with id  ${validationArguments.value}" not found`,
   })
   id!: string;
 }
@@ -36,19 +62,20 @@ export class ScanConfirmDto {
   dispatchId!: string;
 
   @IsArray()
-  @IsUUID('4', { each: true })
-  scannedCanisters: string[] = [];
+  @ValidateNested({ each: true })
+  @Type(() => InventoryItemDto)
+  inventoryItems: InventoryItemDto[] = [];
 
-  @IsEnum(DispatchStatus)
-  dispatchStatus!: DispatchStatus;
+  @IsEnum(IScanAction)
+  scanAction!: IScanAction;
 
-  @IsArray()
+  @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => DriverInventoryDto)
-  driverInventories: DriverInventoryDto[] = [];
+  emptyCylinders: CatalogueDto[] = [];
 
-
-  @IsEnum(DriverInventoryStatus)
-  driverInventoryStatus!: DriverInventoryStatus;
-
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => StationDto)
+  dealer?: StationDto;
 }

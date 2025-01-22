@@ -1,6 +1,13 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { CatalogueModel, DispatchModel, InventoryItemModel, OrderItemModel, OrderModel } from '@lpg-manager/db';
+import {
+  CatalogueModel,
+  ConsolidatedOrderModel,
+  DispatchModel, InventoryChangeModel,
+  InventoryItemModel, InventoryModel,
+  OrderItemModel,
+  OrderModel
+} from '@lpg-manager/db';
 import { DispatchService } from './services/dispatch.service';
 import { InventoryServiceModule } from '@lpg-manager/inventory-service';
 
@@ -12,7 +19,10 @@ import { InventoryServiceModule } from '@lpg-manager/inventory-service';
       OrderModel,
       OrderItemModel,
       CatalogueModel,
-      InventoryItemModel
+      InventoryItemModel,
+      InventoryModel,
+      ConsolidatedOrderModel,
+      InventoryChangeModel
     ])],
   providers: [DispatchService],
   exports: [DispatchService],

@@ -1,5 +1,6 @@
 enum QueryOperatorEnum {
   EQUALS
+  DOES_NOT_EQUAL
   IN
   CONTAINS
   LESS_THAN

@@ -10,17 +10,17 @@
           <ion-item>
             <ion-label>
               <h2>Dispatch <span [lpgUUID]="dispatch.id"></span></h2>
-              <p>Orders: {{ dispatch.orders.length || 0 }}</p>
-              @if (dispatch.status === dispatchStatus.DepotToDriverConfirmed) {
+              <p>Orders: {{ dispatch.consolidatedOrders.length || 0 }}</p>
+              @if (dispatch.status === dispatchStatus.Initiated) {
                 <p>Dispatch from driver</p>
               }
-              @if (dispatch.status === dispatchStatus.DriverFromDepotConfirmed) {
+              @if (dispatch.status === dispatchStatus.InTransit) {
                 <p>You have confirmed this</p>
               }
 
             </ion-label>
 
-            @if (dispatch.status === dispatchStatus.DepotToDriverConfirmed) {
+            @if (dispatch.status === dispatchStatus.Initiated) {
               <ion-buttons>
                 <ion-button
                   slot="end"
@@ -34,7 +34,7 @@
               </ion-buttons>
             }
 
-            @if (dispatch.status === dispatchStatus.DriverFromDepotConfirmed) {
+            @if (dispatch.status === dispatchStatus.InTransit) {
               <ion-buttons>
                 <ion-button
                   slot="end"

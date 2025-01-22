@@ -50,6 +50,8 @@
             <ion-skeleton-text animated />
           } @else if (column.fieldType === 'string') {
             {{ item[column.key] | titlecase }}
+          } @else if (column.fieldType === 'uuid') {
+            <span [lpgUUID]="item[column.key]"></span>
           } @else {
             {{ item[column.key] }}
           }
@@ -59,7 +61,20 @@
     }
 
     <ng-container cdkColumnDef="actions">
-      <th cdk-header-cell *cdkHeaderCellDef>Actions</th>
+      <th cdk-header-cell *cdkHeaderCellDef>
+        <ion-row class="ion-justify-content-between ion-align-items-center">
+          Actions
+          <ion-button
+            color="light"
+            shape="round"
+            fill="clear"
+            size="small"
+            (click)="refreshData()"
+          >
+            <ion-icon slot="icon-only" name="arrows-rotate" />
+          </ion-button>
+        </ion-row>
+      </th>
       <td cdk-cell *cdkCellDef="let item">
         @if (isLoading()) {
           <ion-row>
@@ -111,14 +126,16 @@
         <ng-container [formGroupName]="$any(activeFilterKey())">
           @for (filter of activeFilterTracker(); track filter; let filterIndex = $index) {
             <ion-row class="ion-justify-content-start ion-margin-bottom" [formArrayName]="filterIndex">
-              <ion-select interface="popover" style="width: fit-content" fill="solid" formControlName="operator" class="custom">
+              <ion-select style="width: fit-content" fill="solid" formControlName="operator"
+                          class="custom">
                 @for (option of searchOptions(); track option) {
                   <ion-select-option [value]="option.value">{{ option.label }}</ion-select-option>
                 }
               </ion-select>
               <ion-col class="ion-no-padding ion-no-margin">
                 @if (activeColumn().fieldType === 'enum') {
-                  <ion-select interface="popover" fill="solid" formControlName="value" [label]="activeColumn().label" placeholder="Select">
+                  <ion-select interface="popover" fill="solid" formControlName="value" [label]="activeColumn().label"
+                              placeholder="Select">
                     @for (option of $any(activeColumn()).enumList; track option) {
                       <ion-select-option [value]="option.value">{{ option.label }}</ion-select-option>
                     }

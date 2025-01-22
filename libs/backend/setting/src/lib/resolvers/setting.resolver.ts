@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { SettingBackendService } from '@lpg-manager/setting-backend-service';
+import { SettingBackendService } from '@lpg-manager/setting-service';
 import { CreateSettingInputDto } from '../dto/create-setting-input.dto';
 import {
   BadRequestException,
@@ -13,13 +13,13 @@ import { JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
 import { IQueryParam, SettingModel } from '@lpg-manager/db';
 import { UpdateSettingInputDto } from '../dto/update-setting-input.dto';
 import { SettingUpdatedEvent } from '../events/setting-updated.event';
 import { DeleteSettingInputDto } from '../dto/delete-setting-input.dto';
 import { SettingDeletedEvent } from '../events/setting-deleted.event';
+import { IPermissionEnum } from '@lpg-manager/types';
 
 @Resolver(() => SettingModel)
 export class SettingResolver {
@@ -43,7 +43,7 @@ export class SettingResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateSetting)
+  @Permissions(IPermissionEnum.CreateSetting)
   async createSetting(
     @Body('params', new ValidationPipe()) params: CreateSettingInputDto
   ) {
@@ -61,7 +61,7 @@ export class SettingResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateSetting)
+  @Permissions(IPermissionEnum.UpdateSetting)
   async updateSetting(
     @Body(new ValidationPipe()) params: UpdateSettingInputDto
   ) {
@@ -84,7 +84,7 @@ export class SettingResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeleteSetting)
+  @Permissions(IPermissionEnum.DeleteSetting)
   async deleteSetting(
     @Body(new ValidationPipe()) { id }: DeleteSettingInputDto
   ) {

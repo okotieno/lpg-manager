@@ -84,3 +84,4 @@ bell-slash
 circle-info
 truck-arrow-right
 copy
+arrows-rotate

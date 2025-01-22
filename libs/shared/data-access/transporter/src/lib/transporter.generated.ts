@@ -43,6 +43,11 @@ export type IUpdateTransporterMutationVariables = Types.Exact<{
 
 export type IUpdateTransporterMutation = { updateTransporter: { message: string, data: { id: string, name: string, contactPerson: string, phone: string, createdAt: string, updatedAt: string } } };
 
+export type IGetTransporterCountQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type IGetTransporterCountQuery = { transporterCount: { count: number } };
+
 export const TransporterVehiclesFragmentDoc = gql`
     fragment transporterVehicles on TransporterModel {
   vehicles {
@@ -191,6 +196,24 @@ export const UpdateTransporterDocument = gql`
   })
   export class IUpdateTransporterGQL extends Apollo.Mutation<IUpdateTransporterMutation, IUpdateTransporterMutationVariables> {
     override document = UpdateTransporterDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetTransporterCountDocument = gql`
+    query GetTransporterCount {
+  transporterCount {
+    count
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class IGetTransporterCountGQL extends Apollo.Query<IGetTransporterCountQuery, IGetTransporterCountQueryVariables> {
+    override document = GetTransporterCountDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

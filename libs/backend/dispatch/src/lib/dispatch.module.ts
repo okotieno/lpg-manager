@@ -5,6 +5,7 @@ import { TransporterServiceModule } from '@lpg-manager/transporter-service';
 import { DriverServiceModule } from '@lpg-manager/driver-service';
 import { VehicleServiceModule } from '@lpg-manager/vehicle-service';
 import { OrderServiceModule } from '@lpg-manager/order-service';
+import { DispatchEventsListener } from './listeners/dispatch-events.listener';
 
 @Module({
   imports: [
@@ -14,6 +15,9 @@ import { OrderServiceModule } from '@lpg-manager/order-service';
     VehicleServiceModule,
     OrderServiceModule,
   ],
-  providers: [DispatchResolver],
+  providers: [
+    DispatchEventsListener,
+    DispatchResolver
+  ],
 })
 export class DispatchModule {}

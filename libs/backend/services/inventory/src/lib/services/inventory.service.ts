@@ -94,8 +94,6 @@ export class InventoryService extends CrudAbstractService<InventoryModel> {
         createdBy: data.userId,
       }));
 
-      console.log(items)
-
       await this.inventoryItemModel.bulkCreate(items, { transaction });
 
       await transaction?.commit();

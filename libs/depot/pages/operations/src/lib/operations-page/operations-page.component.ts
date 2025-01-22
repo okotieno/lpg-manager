@@ -3,10 +3,10 @@ import { RouterLink } from '@angular/router';
 import {
   IonCard,
   IonCardContent, IonCardHeader, IonCardTitle,
-  IonCol,
+  IonCol, IonContent,
   IonGrid,
   IonIcon,
-  IonRow,
+  IonRow
 } from '@ionic/angular/standalone';
 import { DispatchStore } from '@lpg-manager/dispatch-store';
 
@@ -25,6 +25,7 @@ import { DispatchStore } from '@lpg-manager/dispatch-store';
     IonCardContent,
     IonCardHeader,
     IonCardTitle,
+    IonContent,
   ],
   providers: [DispatchStore],
 })

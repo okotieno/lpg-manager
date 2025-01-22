@@ -11,17 +11,18 @@ import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { OrderService } from '@lpg-manager/order-service';
 import {
   CatalogueModel,
+  DispatchModel, DriverInventoryModel,
   InventoryModel,
   IQueryParam,
   OrderItemModel,
   OrderModel,
   StationModel,
-  UserModel,
+  UserModel
 } from '@lpg-manager/db';
 import { CreateOrderInputDto } from '../dto/create-order-input.dto';
 import { UpdateOrderStatusInput } from '../dto/update-order-status.dto';
@@ -32,17 +33,20 @@ import {
   OrderConfirmedEvent,
   OrderRejectedEvent,
 } from '../events/order.event';
+import { DispatchService } from '@lpg-manager/dispatch-service';
+import { DriverInventoryService } from '@lpg-manager/inventory-service';
 
 @Resolver(() => OrderModel)
 export class OrderResolver {
   constructor(
     private orderService: OrderService,
+    private dispatchService: DispatchService,
     private eventEmitter: EventEmitter2
   ) {}
 
   @Mutation(() => OrderModel)
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateOrder)
+  @Permissions(IPermissionEnum.CreateOrder)
   async createOrder(
     @Body('params', new ValidationPipe()) params: CreateOrderInputDto
   ) {
@@ -89,7 +93,7 @@ export class OrderResolver {
 
   @Mutation(() => OrderModel)
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeleteOrder)
+  @Permissions(IPermissionEnum.DeleteOrder)
   async deleteOrder(@Args('id') id: string) {
     await this.orderService.deleteById(id);
     return {
@@ -136,9 +140,27 @@ export class OrderResolver {
     return orderWithDepot?.dealer;
   }
 
+  @ResolveField('dispatch')
+  async getDispatch(@Root() orderModel: OrderModel) {
+    const order = await this.orderService.model.findOne({
+      where: { id: orderModel.id },
+      include: [DispatchModel],
+    });
+    return order?.dispatch;
+  }
+
+  @ResolveField('dispatchStatus')
+  async getDispatchStatus(@Root() orderModel: OrderModel) {
+    const order = await this.dispatchService.model.findOne({
+      where: { id: orderModel.dispatchId },
+      include: [DriverInventoryModel],
+    });
+    return order?.driverInventories[0]?.status ?? 'PENDING'
+  }
+
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateOrder)
+  @Permissions(IPermissionEnum.UpdateOrder)
   async updateOrderStatus(
     @Args('id') id: string,
     @Args('params') params: UpdateOrderStatusInput,

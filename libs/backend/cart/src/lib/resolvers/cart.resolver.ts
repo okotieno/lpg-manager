@@ -11,8 +11,8 @@ import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { CartService } from '@lpg-manager/cart-service';
 import {
   CartCatalogueModel,
@@ -35,7 +35,7 @@ export class CartResolver {
 
   @Mutation(() => CartModel)
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateCart)
+  @Permissions(IPermissionEnum.CreateCart)
   async createCart(
     @Body('params', new ValidationPipe()) params: CreateCartInputDto,
     @CurrentUser() user: UserModel
@@ -124,7 +124,7 @@ export class CartResolver {
 
   @Mutation(() => CartModel)
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateCart)
+  @Permissions(IPermissionEnum.UpdateCart)
   async completeCart(@Args('cartId') cartId: string) {
     const cart = await this.cartService.completeCart(cartId);
 

@@ -38,11 +38,9 @@ module.exports = {
       },
       status: {
         type: Sequelize.ENUM(
+          'IN_TRANSIT',
           'PENDING',
           'INITIATED',
-          'DEPOT_TO_DRIVER_CONFIRMED',
-          'DRIVER_FROM_DEPOT_CONFIRMED',
-          'IN_TRANSIT',
           'DELIVERING',
           'COMPLETED',
         ),

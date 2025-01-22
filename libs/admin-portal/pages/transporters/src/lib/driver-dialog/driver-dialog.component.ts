@@ -23,6 +23,9 @@ import {
   IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
+import { MaskitoDirective } from '@maskito/angular';
+import { MaskitoElementPredicate } from '@maskito/core';
+import { kenyaPhoneMask } from '../../../../users/src/lib/utils/phone-mask.util';
 
 interface IDriverData {
   vehicles: string[];
@@ -57,6 +60,7 @@ interface IVehicleData {
     IonRow,
     IonSelect,
     IonSelectOption,
+    MaskitoDirective,
   ],
   templateUrl: 'driver-dialog.component.html',
 })
@@ -67,6 +71,11 @@ export class DriverDialogComponent {
   driver = input<IDriverData>();
   vehicles = input<IVehicleData[]>([]);
   isEditing = computed(() => !!this.driver()?.id);
+
+  protected readonly phoneMask = kenyaPhoneMask;
+
+  readonly maskPredicate: MaskitoElementPredicate = async (el) =>
+    (el as HTMLIonInputElement).getInputElement();
 
   driverForm = this.#fb.group({
     id: [crypto.randomUUID() as string],

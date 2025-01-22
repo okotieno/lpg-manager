@@ -18,6 +18,7 @@ fragment UserFields on UserModel {
     role {
       id
       name
+      label
       permissions {
         id
         name

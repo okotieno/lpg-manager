@@ -10,6 +10,7 @@ interface CreateRoleInputDto {
 
 @Injectable()
 export class RoleService extends CrudAbstractService<RoleModel> {
+  override globalSearchFields = ['name', 'label'];
   constructor(
     @InjectModel(RoleModel) private roleModel: typeof RoleModel,
     @InjectModel(RoleUserModel) private roleUserModel: typeof RoleUserModel

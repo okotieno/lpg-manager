@@ -11,6 +11,8 @@ import { CartModel } from './cart.model';
 import { StationModel } from './station.model';
 import { OrderItemModel } from './order-item.model';
 import { DispatchModel } from './dispatch.model';
+import { IOrderStatus } from '@lpg-manager/types';
+import { ConsolidatedOrderModel } from './consolidated-order.model';
 
 @Table({
   tableName: 'orders',
@@ -55,26 +57,11 @@ export class OrderModel extends Model {
   totalPrice!: number;
 
   @Column({
-    type: DataType.ENUM(
-      'PENDING',
-      'CONFIRMED',
-      'DELIVERING',
-      'COMPLETED',
-      'REJECTED',
-      'CANCELLED',
-      'RETURNED'
-    ),
+    type: DataType.ENUM(...Object.values(IOrderStatus)),
     allowNull: false,
     defaultValue: 'PENDING',
   })
-  status!:
-    | 'PENDING'
-    | 'CONFIRMED'
-    | 'DELIVERING'
-    | 'COMPLETED'
-    | 'REJECTED'
-    | 'CANCELLED'
-    | 'RETURNED';
+  status!: IOrderStatus
 
   @BelongsTo(() => StationModel, 'depotId')
   depot!: StationModel;
@@ -97,4 +84,14 @@ export class OrderModel extends Model {
 
   @BelongsTo(() => DispatchModel)
   dispatch?: DispatchModel;
+
+  @ForeignKey(() => ConsolidatedOrderModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: true,
+  })
+  consolidatedOrderId?: string;
+
+  @BelongsTo(() => ConsolidatedOrderModel)
+  consolidatedOrder?: ConsolidatedOrderModel;
 }

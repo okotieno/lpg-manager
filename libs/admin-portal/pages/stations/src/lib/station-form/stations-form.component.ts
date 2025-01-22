@@ -9,12 +9,12 @@ import {
 } from '@angular/core';
 import {
   IonButton,
-  IonCol,
+  IonCol, IonContent, IonFooter,
   IonInput,
   IonItem,
   IonRow,
   IonSelect,
-  IonSelectOption,
+  IonSelectOption
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -52,6 +52,8 @@ import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
     IonRow,
     IonCol,
     SearchableSelectComponent,
+    IonContent,
+    IonFooter,
   ],
   templateUrl: './stations-form.component.html',
   providers: [BrandStore],

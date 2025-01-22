@@ -73,6 +73,7 @@ interface StoreState<T, ICreateItemMutationVariables> {
   totalItems: number;
   items: T[];
   _selectedItems: { id: string }[];
+  isReloadRequest: boolean;
 }
 
 export const withPaginatedItemsStore = <
@@ -118,6 +119,7 @@ export const withPaginatedItemsStore = <
       _selectedItems: [],
       createItemMutationVariables: undefined,
       refetchQueriesVariables: undefined,
+      isReloadRequest: false
     } as StoreState<IGetItemsQueryItem, ICreateItemMutationVariables>),
     withComputed((store) => ({
       _getItemsKey: computed(() => {
@@ -201,7 +203,6 @@ export const withPaginatedItemsStore = <
               )
               .pipe(
                 tap((result) => {
-                  console.log({ result });
                   if (result) {
                     const newItems = (
                       result.data[store._getItemsKey()].items ?? []
@@ -239,10 +240,11 @@ export const withPaginatedItemsStore = <
                   ...store._getItemsIncludeFields,
                 } as IGetItemsQueryVariables,
 
-                { fetchPolicy: 'cache-first' }
+                { fetchPolicy: store.isReloadRequest() ? 'network-only': 'cache-first' }
               )
               .pipe(
                 tap((result) => {
+                  patchState(store, { isReloadRequest: false });
                   if (result) {
                     const getItemsKey = store._getItemsKey();
 
@@ -342,6 +344,7 @@ export const withPaginatedItemsStore = <
         return store._createItemResource;
       },
       refetchItems() {
+        patchState(store, { isReloadRequest: true });
         store._itemResource.reload();
       },
     }))

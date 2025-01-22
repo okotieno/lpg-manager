@@ -52,7 +52,7 @@ export type IUserWithRolesQueryVariables = Types.Exact<{
 }>;
 
 
-export type IUserWithRolesQuery = { user?: { phone?: string | null, id: string, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null } | null, userRoles?: { items?: Array<{ id: string, name: string, permissions?: Array<{ id: string, name: string } | null> | null } | null> | null, meta?: { totalItems: number } | null } | null };
+export type IUserWithRolesQuery = { user?: { phone?: string | null, id: string, email: string, firstName: string, lastName: string, profilePhotoLink?: string | null, createdAt?: string | null } | null, userRoles?: { items?: Array<{ id: string, name: string, permissions?: Array<{ id: string, name: Types.IPermissionEnum } | null> | null } | null> | null, meta?: { totalItems: number } | null } | null };
 
 export type IGetUserCountQueryVariables = Types.Exact<{ [key: string]: never; }>;
 

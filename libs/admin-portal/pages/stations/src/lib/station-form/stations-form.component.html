@@ -1,55 +1,57 @@
-<form [formGroup]="stationForm" (ngSubmit)="onSubmit()">
-  <ion-row class="ion-padding">
-    <ion-col size="12" sizeMd="6">
-      <ion-item lines="none">
-        <ion-input
-          label="Name"
-          labelPlacement="stacked"
-          formControlName="name"
-          placeholder="Enter station name"
-          errorText="Station name is required"
-          helperText="&nbsp;"
-        >
-        </ion-input>
-      </ion-item>
-    </ion-col>
-    <ion-col size="12" sizeMd="6">
-      <ion-item>
-        <ion-select
-          toggle-icon="caret-down"
-          label="Station type"
-          labelPlacement="stacked"
-          formControlName="type"
-          placeholder="Select station type"
-        >
-          <ion-select-option  value="DEPOT">Depot</ion-select-option>
-          <ion-select-option value="DEALER">Dealer</ion-select-option>
-        </ion-select>
-      </ion-item>
-    </ion-col>
-    @if (showBrandsField()) {
-      <ion-col size="12">
+<ion-content class="ion-padding-horizontal">
+  <form id="create-station-form" [formGroup]="stationForm" (ngSubmit)="onSubmit()">
+    <ion-row class="ion-padding">
+      <ion-col size="12" sizeMd="6">
         <ion-item lines="none">
-          <lpg-searchable-select
-            [multiple]="true"
-            [itemsStore]="brandStore"
-            label="Brands"
+          <ion-input
+            label="Name"
             labelPlacement="stacked"
-            formControlName="brands"
-            placeholder="Select station"
-          ></lpg-searchable-select>
+            formControlName="name"
+            placeholder="Enter station name"
+            errorText="Station name is required"
+            helperText="&nbsp;"
+          >
+          </ion-input>
         </ion-item>
       </ion-col>
-    }
+      <ion-col size="12" sizeMd="6">
+        <ion-item>
+          <ion-select
+            toggle-icon="caret-down"
+            label="Station type"
+            labelPlacement="stacked"
+            formControlName="type"
+            placeholder="Select station type"
+          >
+            <ion-select-option  value="DEPOT">Depot</ion-select-option>
+            <ion-select-option value="DEALER">Dealer</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      @if (showBrandsField()) {
+        <ion-col size="12">
+          <ion-item lines="none">
+            <lpg-searchable-select
+              [multiple]="true"
+              [itemsStore]="brandStore"
+              label="Brands"
+              labelPlacement="stacked"
+              formControlName="brands"
+              placeholder="Select station"
+            ></lpg-searchable-select>
+          </ion-item>
+        </ion-col>
+      }
 
-  </ion-row>
+    </ion-row>
+  </form>
 
-  <div class="ion-margin-top ion-text-end">
-    <ion-button fill="clear" type="button" [routerLink]="['../']">
-      Cancel
-    </ion-button>
-    <ion-button type="submit" [disabled]="!stationForm.valid">
-      {{ isEditing() ? 'Update' : 'Create' }}
-    </ion-button>
-  </div>
-</form>
+</ion-content>
+<ion-footer class="ion-padding ion-text-end">
+  <ion-button fill="clear" type="button" [routerLink]="['../']">
+    Cancel
+  </ion-button>
+  <ion-button form="create-station-form" type="submit" [disabled]="!stationForm.valid">
+    {{ isEditing() ? 'Update' : 'Create' }}
+  </ion-button>
+</ion-footer>

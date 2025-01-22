@@ -4,6 +4,31 @@ fragment orderDealerFragment on OrderModel {
     name
   }
 }
+
+fragment dispatchDealerFragment on OrderModel {
+  dispatchStatus
+  dispatch {
+    id
+    status
+    driver {
+      id
+      user {
+        firstName
+        lastName
+        phone
+      }
+    }
+    transporter {
+      id
+      name
+    }
+    vehicle {
+      id
+      registrationNumber
+    }
+
+  }
+}
 mutation CreateOrder(
   $params: CreateOrderInput!
 ) {
@@ -26,6 +51,7 @@ query GetOrderById($id: UUID!) {
 query GetOrders(
   $query: QueryParams,
   $includeDealer: Boolean = true
+  $includeDispatch: Boolean = true
 ) {
   orders(query: $query) {
     items {
@@ -37,6 +63,7 @@ query GetOrders(
         name
       }
       ...orderDealerFragment @include(if: $includeDealer)
+      ...dispatchDealerFragment @include(if: $includeDispatch)
       items {
         id
         quantity

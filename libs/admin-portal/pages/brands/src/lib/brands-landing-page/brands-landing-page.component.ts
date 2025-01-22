@@ -7,16 +7,22 @@ import {
   PaginatedResource,
 } from '@lpg-manager/data-table';
 import { IBrandModel } from '@lpg-manager/types';
+import { IonContent } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'lpg-brands-page',
   standalone: true,
-  imports: [CdkTableModule, DataTableComponent],
-  template: `<lpg-data-table
-    createNewIcon="shield-plus"
-    [store]="brandsStore"
-    [columns]="allColumns"
-  ></lpg-data-table>`,
+  imports: [CdkTableModule, DataTableComponent, IonContent],
+  template: `
+    <ion-content class="ion-padding">
+      <lpg-data-table
+        createNewIcon="shield-plus"
+        [store]="brandsStore"
+        [columns]="allColumns"
+      ></lpg-data-table>
+    </ion-content>
+
+  `,
   providers: [BrandStore],
 })
 export default class BrandsLandingPageComponent {

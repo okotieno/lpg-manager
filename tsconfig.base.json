@@ -65,6 +65,9 @@
       "@lpg-manager/dashboard-page": [
         "libs/admin-portal/pages/dashboard/src/index.ts"
       ],
+      "@lpg-manager/home-page": [
+        "libs/admin-portal/pages/home/src/index.ts"
+      ],
       "@lpg-manager/data-table": [
         "libs/shared/components/data-table/src/index.ts"
       ],
@@ -89,6 +92,9 @@
       ],
       "@lpg-manager/depot-dispatches-page": [
         "libs/depot/pages/dispatches/src/index.ts"
+      ],
+      "@lpg-manager/dealer-dispatches-page": [
+        "libs/dealer/pages/dispatches/src/index.ts"
       ],
       "@lpg-manager/depot-orders-page": [
         "libs/depot/pages/orders/src/index.ts"

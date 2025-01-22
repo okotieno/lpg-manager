@@ -7,6 +7,7 @@ import {
 } from 'sequelize-typescript';
 import { DriverModel } from './driver.model';
 import { VehicleModel } from './vehicle.model';
+import { IDispatchStatus } from '../../../../../shared/utils/types/src';
 
 @Table({
   tableName: 'driver_vehicle',
@@ -30,3 +31,5 @@ export class DriverVehicleModel extends Model {
   })
   vehicleId!: string;
 }
+
+IDispatchStatus

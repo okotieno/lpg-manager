@@ -1,17 +1,28 @@
+enum DefaultRoles {
+  SUPER_ADMIN
+  ADMIN_PORTAL_ADMIN
+  ADMIN_DEALER
+  ADMIN_DEPOT
+  DRIVER
+}
+
 type RoleModel {
   id: UUID!
   name: String!
+  label: String!
   stationId: UUID!
   permissions: [PermissionModel]
 }
 
 input CreateRoleInput {
   name: String!
+  label: String!
   permissions: [SelectCategory]!
 }
 
 input UpdateRoleInput {
   name: String!
+  label: String!
   permissions: [SelectCategory]!
 }
 
@@ -31,9 +42,7 @@ extend type Query {
 }
 
 extend type Mutation {
-  updateRole(id: UUID!, params: UpdateRoleInput): CreateRoleSuccessResponse
-
-  createRole(params: CreateRoleInput): CreateRoleSuccessResponse
-
+  createRole(params: CreateRoleInput!): CreateRoleSuccessResponse!
+  updateRole(id: UUID!, params: UpdateRoleInput): CreateRoleSuccessResponse!
   deleteRole(id: UUID!): DeleteSuccessResponse!
 }

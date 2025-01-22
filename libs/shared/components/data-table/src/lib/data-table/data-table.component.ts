@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  DestroyRef,
   effect,
   inject,
   input,
@@ -47,6 +48,9 @@ import {
 import { AlertController } from '@ionic/angular';
 import { validate as isValidUUID } from 'uuid';
 import { defaultQueryParams } from '../default-variables';
+import { UUIDDirective } from '@lpg-manager/uuid-pipe';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter, tap } from 'rxjs';
 
 const validateUUID = (control: AbstractControl) => {
   if (isValidUUID(control.value)) {
@@ -79,12 +83,14 @@ const validateUUID = (control: AbstractControl) => {
     IonTitle,
     IonSearchbar,
     IonBadge,
+    UUIDDirective,
   ],
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.css',
 })
 export class DataTableComponent<T extends { id: string }> {
   #alertCtrl = inject(AlertController);
+  #destroyRef = inject(DestroyRef);
   popover = viewChild.required(IonPopover);
   createNewIcon = input<string>('plus');
   createNewLabel = input<string>('New');
@@ -103,9 +109,10 @@ export class DataTableComponent<T extends { id: string }> {
       { label: 'Greater than', value: IQueryOperatorEnum.GreaterThan },
       { label: 'In', value: IQueryOperatorEnum.In },
       { label: 'Between', value: IQueryOperatorEnum.Between },
+      { label: 'Does not equal', value: IQueryOperatorEnum.DoesNotEqual },
     ];
     const fieldTypesSearchOptions = {
-      [IQueryOperatorEnum.Contains]: ['date', 'integer', 'string'],
+      [IQueryOperatorEnum.Contains]: ['uuid', 'date', 'integer', 'string'],
       [IQueryOperatorEnum.Equals]: [
         'date',
         'integer',
@@ -117,6 +124,7 @@ export class DataTableComponent<T extends { id: string }> {
       [IQueryOperatorEnum.GreaterThan]: ['date', 'integer', 'string'],
       [IQueryOperatorEnum.LessThan]: ['date', 'integer', 'string'],
       [IQueryOperatorEnum.Between]: ['date', 'integer', 'string'],
+      [IQueryOperatorEnum.DoesNotEqual]: ['string'],
     };
 
     return columns.reduce((acc, column) => {
@@ -231,16 +239,32 @@ export class DataTableComponent<T extends { id: string }> {
     if (fieldType === 'uuid') {
       validators.push(validateUUID);
     }
-    (this.searchForm.get(key as string) as FormArray).push(
-      this.fb.group({
-        operator: [
-          ['uuid', 'integer', 'enum'].includes(fieldType as string)
-            ? IQueryOperatorEnum.Equals
-            : IQueryOperatorEnum.Contains,
-        ],
-        value: ['', validators],
-      })
-    );
+
+    const control = this.fb.group({
+      operator: [
+        ['uuid', 'integer', 'enum'].includes(fieldType as string)
+          ? IQueryOperatorEnum.Equals
+          : IQueryOperatorEnum.Contains,
+      ],
+      value: ['', validators],
+    });
+
+    control
+      .get('operator')
+      ?.valueChanges.pipe(
+        filter(() => fieldType === 'uuid'),
+        tap((value) => {
+          if (value === IQueryOperatorEnum.Equals) {
+            control.get('value')?.setValidators([Validators.required, validateUUID]);
+          } else {
+            control.get('value')?.setValidators([Validators.required]);
+          }
+        }),
+        takeUntilDestroyed(this.#destroyRef)
+      )
+      .subscribe();
+
+    (this.searchForm.get(key as string) as FormArray).push(control);
     const filtersTracker = { ...this.filtersTracker() };
     if (!filtersTracker[key]) {
       filtersTracker[key] = [];
@@ -408,5 +432,9 @@ export class DataTableComponent<T extends { id: string }> {
     });
 
     await alert.present();
+  }
+
+  refreshData() {
+    this.store().refetchItems()
   }
 }

@@ -17,8 +17,8 @@ import { JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { StationService } from '@lpg-manager/station-service';
 import { IQueryParam, StationModel } from '@lpg-manager/db';
 import { UpdateStationInputDto } from '../dto/update-station-input.dto';
@@ -34,7 +34,7 @@ export class StationResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateStation)
+  @Permissions(IPermissionEnum.CreateStation)
   async createStation(
     @Body('params', new ValidationPipe()) params: CreateStationInputDto
   ) {
@@ -71,7 +71,7 @@ export class StationResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateStation)
+  @Permissions(IPermissionEnum.UpdateStation)
   async updateStation(
     @Body(new ValidationPipe()) { id, params }: UpdateStationInputDto
   ) {
@@ -110,5 +110,11 @@ export class StationResolver {
       return station.$get('brands');
     }
     return [];
+  }
+
+  @Query()
+  async stationCount() {
+    const count = await this.stationService.model.count();
+    return { count };
   }
 }

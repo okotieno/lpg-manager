@@ -10,15 +10,22 @@ import { InventoryItemModel } from './inventory-item.model';
 import { DriverModel } from './driver.model';
 import { DispatchModel } from './dispatch.model';
 import { StationModel } from './station.model';
+import { IDriverInventoryStatus } from '@lpg-manager/types';
 
-export enum DriverInventoryStatus {
-  ASSIGNED = 'ASSIGNED',      // Driver has received the canister
-  IN_TRANSIT = 'IN_TRANSIT',  // Canister is being transported
-  DELIVERED = 'DELIVERED',    // Canister was delivered to customer
-  DRIVER_CONFIRMED = 'DRIVER_CONFIRMED',
-  DEALER_CONFIRMED = 'DEALER_CONFIRMED',
-  RETURNED = 'RETURNED'       // Canister was returned to depot
-}
+// export enum DriverInventoryStatus {
+//   ASSIGNED = 'ASSIGNED',
+//   IN_TRANSIT = 'IN_TRANSIT',
+//   DELIVERED = 'DELIVERED',
+//   DRIVER_TO_DEALER_CONFIRMED = 'DRIVER_TO_DEALER_CONFIRMED',
+//   DEALER_FROM_DRIVER_CONFIRMED = 'DEALER_FROM_DRIVER_CONFIRMED',
+//   DEPOT_TO_DRIVER_CONFIRMED = 'DEPOT_TO_DRIVER_CONFIRMED',
+//   RETURNED = 'RETURNED',
+//   FILLED_IN_TRANSIT = 'FILLED_IN_TRANSIT',
+//   FILLED_DELIVERED = 'FILLED_DELIVERED',
+//   EMPTY_COLLECTED = 'EMPTY_COLLECTED',
+//   EMPTY_RETURNED = 'EMPTY_RETURNED',
+//   FILLED_ASSIGNED = 'FILLED_ASSIGNED',
+// }
 
 @Table({
   tableName: 'driver_inventories',
@@ -55,11 +62,11 @@ export class DriverInventoryModel extends Model {
   dispatchId!: string;
 
   @Column({
-    type: DataType.ENUM(...Object.values(DriverInventoryStatus)),
+    type: DataType.ENUM(...Object.values(IDriverInventoryStatus)),
     allowNull: false,
-    defaultValue: DriverInventoryStatus.ASSIGNED,
+    defaultValue: IDriverInventoryStatus.Assigned,
   })
-  status!: DriverInventoryStatus;
+  status!: IDriverInventoryStatus;
 
   @Column({
     type: DataType.DATE,
@@ -81,7 +88,6 @@ export class DriverInventoryModel extends Model {
 
   @BelongsTo(() => DispatchModel)
   dispatch!: DispatchModel;
-
 
   @Column({
     type: DataType.DATE,

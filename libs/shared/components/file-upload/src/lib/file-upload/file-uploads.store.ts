@@ -62,7 +62,7 @@ export default signalStore(
     ) => {
       const fileUploads = [...store.fileUploads()];
       if (!store.multiple()) {
-        fileUploads[0][prop] = val;
+        fileUploads[0] ={...fileUploads[0], [prop]: val};
       } else {
         fileUploads[i][prop] = val;
       }

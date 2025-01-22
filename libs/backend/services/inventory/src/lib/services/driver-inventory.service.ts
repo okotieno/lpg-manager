@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CrudAbstractService } from '@lpg-manager/crud-abstract';
-import { DriverInventoryModel, DriverInventoryStatus, InventoryItemModel } from '@lpg-manager/db';
+import { DriverInventoryModel, InventoryItemModel } from '@lpg-manager/db';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import { IDriverInventoryStatus } from '@lpg-manager/types';
 
 @Injectable()
 export class DriverInventoryService extends CrudAbstractService<DriverInventoryModel> {
@@ -19,8 +20,10 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
     driverId: string;
     dispatchId: string;
     inventoryItemIds: string[];
+    status: IDriverInventoryStatus;
   }) {
-    const transaction = await this.driverInventoryModel.sequelize?.transaction();
+    const transaction =
+      await this.driverInventoryModel.sequelize?.transaction();
 
     try {
       const assignments = await Promise.all(
@@ -30,7 +33,7 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
               driverId: params.driverId,
               dispatchId: params.dispatchId,
               inventoryItemId: itemId,
-              status: DriverInventoryStatus.ASSIGNED,
+              status: IDriverInventoryStatus.Assigned,
               assignedAt: new Date(),
             },
             { transaction }
@@ -49,27 +52,58 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
   async updateStatus(
     driverId: string,
     inventoryItemIds: string[],
-    status: DriverInventoryStatus
+    status: IDriverInventoryStatus,
+    driverInventoryIds: string[] = []
   ) {
-    const transaction = await this.driverInventoryModel.sequelize?.transaction();
+    const transaction =
+      await this.driverInventoryModel.sequelize?.transaction();
 
     try {
-      await this.driverInventoryModel.update(
-        {
-          status,
-          ...(status === DriverInventoryStatus.RETURNED ? { returnedAt: new Date() } : {}),
-        },
-        {
-          where: {
-            driverId,
-            inventoryItemId: inventoryItemIds,
-            status: {
-              [Op.ne]: DriverInventoryStatus.RETURNED,
-            },
+      if (driverInventoryIds.length > 0) {
+        await this.driverInventoryModel.update(
+          {
+            status,
+            ...(status === IDriverInventoryStatus.Returned
+              ? { returnedAt: new Date() }
+              : {}),
           },
-          transaction,
-        }
-      );
+          {
+            where: {
+              driverId,
+              id: driverInventoryIds,
+              status: {
+                [Op.ne]: IDriverInventoryStatus.Returned,
+              },
+            },
+            transaction,
+          }
+        );
+      } else if (inventoryItemIds.length > 0) {
+        await this.driverInventoryModel.update(
+          {
+            status,
+            ...(status === IDriverInventoryStatus.Returned
+              ? { returnedAt: new Date() }
+              : {}),
+            ...(status === IDriverInventoryStatus.DriverToDealerConfirmed
+              ? { driverToDealerConfirmedAt: new Date() }
+              : {}),
+            ...(status === IDriverInventoryStatus.DealerFromDriverConfirmed
+              ? { dealerFromDriverConfirmedAt: new Date() }
+              : {}),
+          },
+          {
+            where: {
+              driverId,
+              inventoryItemId: inventoryItemIds,
+              status: {
+                [Op.ne]: IDriverInventoryStatus.Returned,
+              },
+            },
+            transaction,
+          }
+        );
+      }
 
       await transaction?.commit();
     } catch (error) {
@@ -83,7 +117,7 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
       where: {
         driverId,
         status: {
-          [Op.ne]: DriverInventoryStatus.RETURNED,
+          [Op.ne]: IDriverInventoryStatus.Returned,
         },
       },
       include: [
@@ -93,5 +127,43 @@ export class DriverInventoryService extends CrudAbstractService<DriverInventoryM
         },
       ],
     });
+  }
+
+  async trackEmptyCanisters({
+    driverId,
+    dispatchId,
+    canisterIds,
+    status,
+  }: {
+    driverId: string;
+    dispatchId: string;
+    canisterIds: string[];
+    status: IDriverInventoryStatus;
+  }) {
+    const transaction =
+      await this.driverInventoryModel.sequelize?.transaction();
+
+    try {
+      // Create driver inventory records for empty canisters
+      await Promise.all(
+        canisterIds.map((canisterId) =>
+          this.driverInventoryModel.create(
+            {
+              driverId,
+              dispatchId,
+              inventoryItemId: canisterId,
+              status,
+              isEmptyCanister: true, // Flag to identify empty canister records
+            },
+            { transaction }
+          )
+        )
+      );
+
+      await transaction?.commit();
+    } catch (error) {
+      await transaction?.rollback();
+      throw error;
+    }
   }
 }

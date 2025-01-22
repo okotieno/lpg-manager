@@ -12,6 +12,8 @@ import {
   IonButton,
   IonButtons,
   IonCol,
+  IonContent,
+  IonFooter,
   IonIcon,
   IonInput,
   IonItem,
@@ -20,6 +22,7 @@ import {
   IonListHeader,
   IonRow,
   ModalController,
+  ViewDidEnter,
 } from '@ionic/angular/standalone';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -59,17 +62,22 @@ import { PermissionStore } from '@lpg-manager/permission-store';
     IonButtons,
     IonRow,
     IonCol,
+    IonContent,
+    IonFooter,
   ],
   templateUrl: './brand-form.component.html',
   providers: [PermissionStore],
 })
-export default class BrandFormComponent implements IHasUnsavedChanges {
+export default class BrandFormComponent
+  implements IHasUnsavedChanges, ViewDidEnter
+{
   brandItems = signal<IUpdateBrandCatalogueInput[]>([]);
   #modalCtrl = inject(ModalController);
   #alertController = inject(AlertController);
   #fb = inject(FormBuilder);
   #createRoleGQL = inject(ICreateBrandGQL);
   #updateRoleGQL = inject(IUpdateBrandGQL);
+  formSubmitted = false;
   brandForm = this.#fb.group({
     name: ['', [Validators.required]],
     companyName: [''],
@@ -95,6 +103,7 @@ export default class BrandFormComponent implements IHasUnsavedChanges {
 
   async onSubmit() {
     this.brandForm.updateValueAndValidity();
+    this.formSubmitted = true;
     if (this.brandForm.valid) {
       const { name, companyName, images } = this.brandForm.value;
       const params = {
@@ -210,6 +219,10 @@ export default class BrandFormComponent implements IHasUnsavedChanges {
   }
 
   get hasUnsavedChanges() {
-    return this.brandForm.dirty;
+    return this.brandForm.dirty && !this.formSubmitted;
+  }
+
+  ionViewDidEnter(): void {
+    this.formSubmitted = false;
   }
 }

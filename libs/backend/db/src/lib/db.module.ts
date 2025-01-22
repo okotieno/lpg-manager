@@ -30,7 +30,8 @@ import {
   VehicleModel,
   InventoryChangeModel,
   InventoryItemModel,
-  DriverInventoryModel
+  DriverInventoryModel,
+  ConsolidatedOrderModel,
 } from './models';
 import { SequelizeOptions } from 'sequelize-typescript';
 
@@ -77,7 +78,8 @@ import { SequelizeOptions } from 'sequelize-typescript';
           DriverVehicleModel,
           InventoryChangeModel,
           InventoryItemModel,
-          DriverInventoryModel
+          DriverInventoryModel,
+          ConsolidatedOrderModel,
         ],
       }),
     }),

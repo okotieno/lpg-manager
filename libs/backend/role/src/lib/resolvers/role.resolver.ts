@@ -12,8 +12,8 @@ import { JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { RoleService } from '@lpg-manager/role-service';
 import { IQueryParam, PermissionModel, RoleModel } from '@lpg-manager/db';
 import { UpdateRoleInputDto } from '../dto/update-role-input.dto';
@@ -24,7 +24,7 @@ export class RoleResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateRole)
+  @Permissions(IPermissionEnum.CreateRole)
   async createRole(
     @Body('params', new ValidationPipe()) input: CreateRoleInputDto
   ) {
@@ -69,7 +69,7 @@ export class RoleResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateRole)
+  @Permissions(IPermissionEnum.UpdateRole)
   async updateRole(
     @Body(new ValidationPipe()) { id, params }: UpdateRoleInputDto
   ) {

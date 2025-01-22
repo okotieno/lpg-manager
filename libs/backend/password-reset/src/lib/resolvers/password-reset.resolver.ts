@@ -13,8 +13,8 @@ import { JwtAuthGuard } from '@lpg-manager/auth';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { IQueryParam, PasswordResetModel } from '@lpg-manager/db';
 import { UpdatePasswordResetInputDto } from '../dto/update-password-reset-input.dto';
 import { PasswordResetUpdatedEvent } from '../events/password-reset-updated.event';
@@ -43,7 +43,7 @@ export class PasswordResetResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreatePasswordReset)
+  @Permissions(IPermissionEnum.CreatePasswordReset)
   async createPasswordReset(
     @Body(new ValidationPipe()) params: CreatePasswordResetInputDto
   ) {
@@ -64,7 +64,7 @@ export class PasswordResetResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdatePasswordReset)
+  @Permissions(IPermissionEnum.UpdatePasswordReset)
   async updatePasswordReset(
     @Body(new ValidationPipe()) params: UpdatePasswordResetInputDto
   ) {
@@ -87,7 +87,7 @@ export class PasswordResetResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeletePasswordReset)
+  @Permissions(IPermissionEnum.DeletePasswordReset)
   async deletePasswordReset(
     @Body(new ValidationPipe()) { id }: DeletePasswordResetInputDto
   ) {

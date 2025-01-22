@@ -51,6 +51,10 @@ export type IActivityLogUserModel = {
   userId: Scalars['Int']['output'];
 };
 
+export type IBrandCount = {
+  count: Scalars['Int']['output'];
+};
+
 export type IBrandModel = {
   catalogues?: Maybe<Array<Maybe<ICatalogueModel>>>;
   companyName?: Maybe<Scalars['String']['output']>;
@@ -104,6 +108,22 @@ export type ICatalogueModel = {
 export enum ICatalogueUnit {
   Kg = 'KG',
   Litre = 'LITRE'
+}
+
+export type IConsolidatedOrderModel = {
+  dealer: IStationModel;
+  dealerId: Scalars['UUID']['output'];
+  dispatchId: Scalars['UUID']['output'];
+  id: Scalars['UUID']['output'];
+  orders: Array<IOrderModel>;
+  status: IConsolidatedOrderStatus;
+};
+
+export enum IConsolidatedOrderStatus {
+  Completed = 'COMPLETED',
+  Created = 'CREATED',
+  DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
+  DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED'
 }
 
 export type ICountriesLanguagesInput = {
@@ -295,7 +315,8 @@ export type ICreatePasswordResetSuccessResponse = {
 };
 
 export type ICreatePermissionInput = {
-  name?: InputMaybe<Scalars['String']['input']>;
+  label: Scalars['String']['input'];
+  name: IPermissionEnum;
 };
 
 export type ICreatePermissionSuccessResponse = {
@@ -304,6 +325,7 @@ export type ICreatePermissionSuccessResponse = {
 };
 
 export type ICreateRoleInput = {
+  label: Scalars['String']['input'];
   name: Scalars['String']['input'];
   permissions: Array<InputMaybe<ISelectCategory>>;
 };
@@ -377,11 +399,20 @@ export type ICreateVehicleSuccessResponse = {
   message: Scalars['String']['output'];
 };
 
+export enum IDefaultRoles {
+  AdminDealer = 'ADMIN_DEALER',
+  AdminDepot = 'ADMIN_DEPOT',
+  AdminPortalAdmin = 'ADMIN_PORTAL_ADMIN',
+  Driver = 'DRIVER',
+  SuperAdmin = 'SUPER_ADMIN'
+}
+
 export type IDeleteSuccessResponse = {
   message: Scalars['String']['output'];
 };
 
 export type IDispatchModel = {
+  consolidatedOrders: Array<IConsolidatedOrderModel>;
   createdAt: Scalars['DateTime']['output'];
   depotToDriverConfirmedAt?: Maybe<Scalars['DateTime']['output']>;
   dispatchDate: Scalars['DateTime']['output'];
@@ -389,7 +420,6 @@ export type IDispatchModel = {
   driverFromDepotConfirmedAt?: Maybe<Scalars['DateTime']['output']>;
   driverId: Scalars['UUID']['output'];
   id: Scalars['UUID']['output'];
-  orders: Array<IOrderModel>;
   status: IDispatchStatus;
   transporter: ITransporterModel;
   transporterId: Scalars['UUID']['output'];
@@ -401,8 +431,6 @@ export type IDispatchModel = {
 export enum IDispatchStatus {
   Completed = 'COMPLETED',
   Delivering = 'DELIVERING',
-  DepotToDriverConfirmed = 'DEPOT_TO_DRIVER_CONFIRMED',
-  DriverFromDepotConfirmed = 'DRIVER_FROM_DEPOT_CONFIRMED',
   Initiated = 'INITIATED',
   InTransit = 'IN_TRANSIT',
   Pending = 'PENDING'
@@ -423,9 +451,9 @@ export type IDriverInventoryModel = {
 
 export enum IDriverInventoryStatus {
   Assigned = 'ASSIGNED',
-  DealerConfirmed = 'DEALER_CONFIRMED',
+  DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
   Delivered = 'DELIVERED',
-  DriverConfirmed = 'DRIVER_CONFIRMED',
+  DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED',
   InTransit = 'IN_TRANSIT',
   Returned = 'RETURNED'
 }
@@ -439,6 +467,11 @@ export type IDriverModel = {
   updatedAt: Scalars['DateTime']['output'];
   user: IUserModel;
   vehicles?: Maybe<Array<IVehicleModel>>;
+};
+
+export type IEmptyCylindersScanConfirmInput = {
+  catalogueId?: InputMaybe<Scalars['UUID']['input']>;
+  quantity?: InputMaybe<Scalars['PositiveInt']['input']>;
 };
 
 export type IFileUploadModel = {
@@ -526,7 +559,7 @@ export type IMutation = {
   createOtp?: Maybe<ICreateOtpSuccessResponse>;
   createPasswordReset?: Maybe<ICreatePasswordResetSuccessResponse>;
   createPermission?: Maybe<ICreatePermissionSuccessResponse>;
-  createRole?: Maybe<ICreateRoleSuccessResponse>;
+  createRole: ICreateRoleSuccessResponse;
   createSetting?: Maybe<ICreateSettingSuccessResponse>;
   createStation?: Maybe<ICreateStationSuccessResponse>;
   createTransporter: ICreateTransporterSuccessResponse;
@@ -585,7 +618,7 @@ export type IMutation = {
   updateOtp?: Maybe<ICreateOtpSuccessResponse>;
   updatePasswordReset?: Maybe<ICreatePasswordResetSuccessResponse>;
   updatePermission?: Maybe<ICreatePermissionSuccessResponse>;
-  updateRole?: Maybe<ICreateRoleSuccessResponse>;
+  updateRole: ICreateRoleSuccessResponse;
   updateSetting?: Maybe<ICreateSettingSuccessResponse>;
   updateStation?: Maybe<ICreateStationSuccessResponse>;
   updateTransporter: ICreateTransporterSuccessResponse;
@@ -706,12 +739,12 @@ export type IMutationCreatePasswordResetArgs = {
 
 
 export type IMutationCreatePermissionArgs = {
-  name: Scalars['String']['input'];
+  params: ICreatePermissionInput;
 };
 
 
 export type IMutationCreateRoleArgs = {
-  params?: InputMaybe<ICreateRoleInput>;
+  params: ICreateRoleInput;
 };
 
 
@@ -1108,6 +1141,16 @@ export type INotificationUserModel = {
   updatedAt: Scalars['String']['output'];
 };
 
+export enum IOrderDispatchStatus {
+  Assigned = 'ASSIGNED',
+  Cancelled = 'CANCELLED',
+  Completed = 'COMPLETED',
+  DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
+  DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED',
+  Pending = 'PENDING',
+  Rejected = 'REJECTED'
+}
+
 export type IOrderItem = {
   catalogue: ICatalogueModel;
   catalogueId: Scalars['UUID']['output'];
@@ -1124,6 +1167,8 @@ export type IOrderModel = {
   createdAt: Scalars['DateTime']['output'];
   dealer: IStationModel;
   depot: IStationModel;
+  dispatch?: Maybe<IDispatchModel>;
+  dispatchStatus?: Maybe<IOrderDispatchStatus>;
   id: Scalars['UUID']['output'];
   items: Array<Maybe<IOrderItem>>;
   status: IOrderStatus;
@@ -1281,9 +1326,81 @@ export type IPasswordResetModel = {
   name: Scalars['String']['output'];
 };
 
+export enum IPermissionEnum {
+  AccessAdminPortal = 'ACCESS_ADMIN_PORTAL',
+  AccessDealerApp = 'ACCESS_DEALER_APP',
+  AccessDepotApp = 'ACCESS_DEPOT_APP',
+  AccessDriverApp = 'ACCESS_DRIVER_APP',
+  AssignRoleToUser = 'ASSIGN_ROLE_TO_USER',
+  ConfirmViaScanning = 'CONFIRM_VIA_SCANNING',
+  CreateActivityLog = 'CREATE_ACTIVITY_LOG',
+  CreateBrand = 'CREATE_BRAND',
+  CreateBrandCatalogue = 'CREATE_BRAND_CATALOGUE',
+  CreateCart = 'CREATE_CART',
+  CreateCatalogue = 'CREATE_CATALOGUE',
+  CreateDispatch = 'CREATE_DISPATCH',
+  CreateDriver = 'CREATE_DRIVER',
+  CreateInventory = 'CREATE_INVENTORY',
+  CreateNotification = 'CREATE_NOTIFICATION',
+  CreateOrder = 'CREATE_ORDER',
+  CreateOtp = 'CREATE_OTP',
+  CreatePasswordReset = 'CREATE_PASSWORD_RESET',
+  CreatePermission = 'CREATE_PERMISSION',
+  CreateRole = 'CREATE_ROLE',
+  CreateSetting = 'CREATE_SETTING',
+  CreateStation = 'CREATE_STATION',
+  CreateTransporter = 'CREATE_TRANSPORTER',
+  CreateUser = 'CREATE_USER',
+  CreateVehicle = 'CREATE_VEHICLE',
+  DeleteActivityLog = 'DELETE_ACTIVITY_LOG',
+  DeleteBrand = 'DELETE_BRAND',
+  DeleteBrandCatalogue = 'DELETE_BRAND_CATALOGUE',
+  DeleteCart = 'DELETE_CART',
+  DeleteCatalogue = 'DELETE_CATALOGUE',
+  DeleteDispatch = 'DELETE_DISPATCH',
+  DeleteDriver = 'DELETE_DRIVER',
+  DeleteInventory = 'DELETE_INVENTORY',
+  DeleteNotification = 'DELETE_NOTIFICATION',
+  DeleteOrder = 'DELETE_ORDER',
+  DeleteOtp = 'DELETE_OTP',
+  DeletePasswordReset = 'DELETE_PASSWORD_RESET',
+  DeletePermission = 'DELETE_PERMISSION',
+  DeleteRole = 'DELETE_ROLE',
+  DeleteSetting = 'DELETE_SETTING',
+  DeleteStation = 'DELETE_STATION',
+  DeleteTransporter = 'DELETE_TRANSPORTER',
+  DeleteUser = 'DELETE_USER',
+  DeleteVehicle = 'DELETE_VEHICLE',
+  GivePermissionToRole = 'GIVE_PERMISSION_TO_ROLE',
+  MarkNotificationAsRead = 'MARK_NOTIFICATION_AS_READ',
+  UpdateActivityLog = 'UPDATE_ACTIVITY_LOG',
+  UpdateBrand = 'UPDATE_BRAND',
+  UpdateBrandCatalogue = 'UPDATE_BRAND_CATALOGUE',
+  UpdateCart = 'UPDATE_CART',
+  UpdateCatalogue = 'UPDATE_CATALOGUE',
+  UpdateDispatch = 'UPDATE_DISPATCH',
+  UpdateDriver = 'UPDATE_DRIVER',
+  UpdateInventory = 'UPDATE_INVENTORY',
+  UpdateNotification = 'UPDATE_NOTIFICATION',
+  UpdateOrder = 'UPDATE_ORDER',
+  UpdateOtp = 'UPDATE_OTP',
+  UpdatePasswordReset = 'UPDATE_PASSWORD_RESET',
+  UpdatePermission = 'UPDATE_PERMISSION',
+  UpdateRole = 'UPDATE_ROLE',
+  UpdateSetting = 'UPDATE_SETTING',
+  UpdateStation = 'UPDATE_STATION',
+  UpdateTransporter = 'UPDATE_TRANSPORTER',
+  UpdateUser = 'UPDATE_USER',
+  UpdateVehicle = 'UPDATE_VEHICLE',
+  ViewDispatch = 'VIEW_DISPATCH',
+  ViewDriver = 'VIEW_DRIVER',
+  ViewTransporter = 'VIEW_TRANSPORTER'
+}
+
 export type IPermissionModel = {
   id: Scalars['UUID']['output'];
-  name: Scalars['String']['output'];
+  label: Scalars['String']['output'];
+  name: IPermissionEnum;
 };
 
 export type IQuery = {
@@ -1293,6 +1410,7 @@ export type IQuery = {
   authenticatedUserNotificationStats?: Maybe<INotificationStat>;
   authenticatedUserNotifications?: Maybe<IPaginatedUserNotification>;
   brand?: Maybe<IBrandModel>;
+  brandCount: IBrandCount;
   brands: IPaginatedBrand;
   cart?: Maybe<ICartModel>;
   carts: IPaginatedCart;
@@ -1327,8 +1445,10 @@ export type IQuery = {
   setting?: Maybe<ISettingModel>;
   settings: IPaginatedSetting;
   station?: Maybe<IStationModel>;
+  stationCount?: Maybe<IStationCount>;
   stations: IPaginatedStation;
   transporter?: Maybe<ITransporterModel>;
+  transporterCount: ITransporterCount;
   transporters: IPaginatedTransporter;
   user?: Maybe<IUserModel>;
   userCount: IUserCount;
@@ -1571,6 +1691,7 @@ export type IQueryVehiclesArgs = {
 export enum IQueryOperatorEnum {
   Between = 'BETWEEN',
   Contains = 'CONTAINS',
+  DoesNotEqual = 'DOES_NOT_EQUAL',
   Equals = 'EQUALS',
   GreaterThan = 'GREATER_THAN',
   In = 'IN',
@@ -1604,23 +1725,34 @@ export enum IReferenceType {
 
 export type IRoleModel = {
   id: Scalars['UUID']['output'];
+  label: Scalars['String']['output'];
   name: Scalars['String']['output'];
   permissions?: Maybe<Array<Maybe<IPermissionModel>>>;
   stationId: Scalars['UUID']['output'];
 };
 
+export enum IScanAction {
+  DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
+  DealerToDriverConfirmed = 'DEALER_TO_DRIVER_CONFIRMED',
+  DepotFromDriverConfirmed = 'DEPOT_FROM_DRIVER_CONFIRMED',
+  DepotToDriverConfirmed = 'DEPOT_TO_DRIVER_CONFIRMED',
+  DriverFromDealerConfirmed = 'DRIVER_FROM_DEALER_CONFIRMED',
+  DriverFromDepotConfirmed = 'DRIVER_FROM_DEPOT_CONFIRMED',
+  DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED',
+  DriverToDepotConfirmed = 'DRIVER_TO_DEPOT_CONFIRMED'
+}
+
 export enum IScanConfirmDriverInventoryStatus {
-  DealerConfirmed = 'DEALER_CONFIRMED',
-  DriverConfirmed = 'DRIVER_CONFIRMED'
+  DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
+  DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED'
 }
 
 export type IScanConfirmInput = {
-  depotId?: InputMaybe<ISelectCategory>;
+  dealer?: InputMaybe<ISelectCategory>;
   dispatchId: Scalars['UUID']['input'];
-  dispatchStatus: IDispatchStatus;
-  driverInventories?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
-  driverInventoryStatus?: InputMaybe<IScanConfirmDriverInventoryStatus>;
-  scannedCanisters: Array<Scalars['UUID']['input']>;
+  emptyCylinders?: InputMaybe<IEmptyCylindersScanConfirmInput>;
+  inventoryItems?: InputMaybe<Array<InputMaybe<ISelectCategory>>>;
+  scanAction: IScanAction;
 };
 
 export type ISelectCategory = {
@@ -1640,6 +1772,10 @@ export enum ISortByEnum {
   Asc = 'ASC',
   Desc = 'DESC'
 }
+
+export type IStationCount = {
+  count: Scalars['Int']['output'];
+};
 
 export type IStationModel = {
   brands?: Maybe<Array<IBrandModel>>;
@@ -1673,6 +1809,10 @@ export type ISubscriptionResetPasswordNotificationArgs = {
 export type ISuccessResponse = {
   message: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
+};
+
+export type ITransporterCount = {
+  count: Scalars['Int']['output'];
 };
 
 export type ITransporterDriverInput = {
@@ -1809,10 +1949,12 @@ export type IUpdatePasswordResetInput = {
 };
 
 export type IUpdatePermissionInput = {
-  name?: InputMaybe<Scalars['String']['input']>;
+  label?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<IPermissionEnum>;
 };
 
 export type IUpdateRoleInput = {
+  label: Scalars['String']['input'];
   name: Scalars['String']['input'];
   permissions: Array<InputMaybe<ISelectCategory>>;
 };

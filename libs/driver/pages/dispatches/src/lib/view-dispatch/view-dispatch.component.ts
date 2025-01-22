@@ -99,19 +99,21 @@ import { RouterLink } from '@angular/router';
                 <ion-label>Orders</ion-label>
               </ion-item-divider>
 
-              @for (order of dispatch()?.orders; track order.id) {
-                <ion-item>
-                  <ion-label>
-                    <ion-row class="ion-justify-content-between">
-                      <h3>Order <span [lpgUUID]="order.id"></span></h3>
+              @for (consolidatedOrder of dispatch()?.consolidatedOrders; track consolidatedOrder.id) {
+                @for (order of consolidatedOrder.orders; track order.id) {
+                  <ion-item>
+                    <ion-label>
+                      <ion-row class="ion-justify-content-between">
+                        <h3>Order <span [lpgUUID]="order.id"></span></h3>
 
-                      <ion-badge [color]="getStatusColor($any(order.status))">
-                        {{ order.status }}
-                      </ion-badge>
-                    </ion-row>
-                    <p>Total Amount: {{ order.totalPrice | currency }}</p>
-                  </ion-label>
-                </ion-item>
+                        <ion-badge [color]="getStatusColor($any(order.status))">
+                          {{ order.status }}
+                        </ion-badge>
+                      </ion-row>
+                      <p>Total Amount: {{ order.totalPrice | currency }}</p>
+                    </ion-label>
+                  </ion-item>
+                }
               }
             </ion-list>
           </ion-grid>

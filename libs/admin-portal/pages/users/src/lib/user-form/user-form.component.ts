@@ -12,7 +12,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import {
   AlertController,
   IonButton,
-  IonCol,
+  IonCol, IonContent, IonFooter,
   IonIcon,
   IonInput,
   IonItem,
@@ -21,7 +21,7 @@ import {
   IonListHeader,
   IonRow,
   IonSelect,
-  IonSelectOption,
+  IonSelectOption
 } from '@ionic/angular/standalone';
 import {
   FormArray,
@@ -36,8 +36,8 @@ import {
   IUpdateUserGQL,
 } from '@lpg-manager/user-store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { IGetRolesQuery, RoleStore } from '@lpg-manager/role-store';
-import { IQueryOperatorEnum } from '@lpg-manager/types';
+import { IRoleItem, RoleStore } from '@lpg-manager/role-store';
+import { IDefaultRoles, IQueryOperatorEnum } from '@lpg-manager/types';
 import { SearchableSelectComponent } from '@lpg-manager/searchable-select';
 import { PaginatedResource } from '@lpg-manager/data-table';
 import { IHasUnsavedChanges } from '@lpg-manager/form-exit-guard';
@@ -51,6 +51,8 @@ import {
   SHOW_ERROR_MESSAGE,
   SHOW_SUCCESS_MESSAGE,
 } from '@lpg-manager/injection-token';
+import { TitleCasePipe } from '@angular/common';
+import { ITransporterItem, TransporterStore } from '@lpg-manager/transporter-store';
 
 @Component({
   selector: 'lpg-user-form',
@@ -71,9 +73,11 @@ import {
     MaskitoDirective,
     IonSelect,
     IonSelectOption,
+    IonContent,
+    IonFooter,
   ],
   templateUrl: './user-form.component.html',
-  providers: [RoleStore, StationStore],
+  providers: [RoleStore, StationStore, TransporterStore, TitleCasePipe],
   animations: [
     trigger('roleAnimation', [
       transition(':enter', [
@@ -125,6 +129,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
   #route = inject(ActivatedRoute);
   #router = inject(Router);
   #alertController = inject(AlertController);
+  #titleCasePipe = inject(TitleCasePipe);
   protected readonly phoneMask = kenyaPhoneMask;
   protected readonly equalsOperator = IQueryOperatorEnum.Equals;
   readonly maskPredicate: MaskitoElementPredicate = async (el) =>
@@ -143,7 +148,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
     roles: this.#fb.array(
       [] as Array<{
         id: string;
-        role: { id: string };
+        role: { id: string; name?: string };
         station?: { id: string };
         stationType: null | string;
       }>
@@ -196,13 +201,19 @@ export default class UserFormComponent implements IHasUnsavedChanges {
     });
   });
 
-  roleStore: PaginatedResource<
-    NonNullable<NonNullable<IGetRolesQuery['roles']['items']>[number]>
-  > = inject(RoleStore);
+  roleStore: PaginatedResource<IRoleItem> = inject(RoleStore);
 
   stationStore = inject(StationStore) as PaginatedResource<
     NonNullable<NonNullable<IGetStationsQuery['stations']['items']>[number]>
   >;
+
+  transporterStore = inject(
+    TransporterStore
+  ) as PaginatedResource<ITransporterItem>;
+
+  driverRoleName = IDefaultRoles.Driver;
+  adminDealerRoleName = IDefaultRoles.AdminDealer;
+  adminDepotRoleName = IDefaultRoles.AdminDepot;
 
   get roles() {
     return this.userForm.get('roles') as FormArray;
@@ -211,13 +222,40 @@ export default class UserFormComponent implements IHasUnsavedChanges {
   addRole() {
     const roleForm = this.#fb.group({
       id: [crypto.randomUUID(), Validators.required],
-      role: [null as null | { id: string }, Validators.required],
-      stationType: [null as null | string],
+      role: [null as null | { id: string; name?: string }, Validators.required],
+      stationType: [
+        {
+          value: null as null | 'DEALER' | 'DEPOT' | 'TRANSPORTER',
+          disabled: true,
+        },
+      ],
       station: [
         { value: null as null | { id: string }, disabled: true },
         [Validators.required],
       ],
+      licenseNumber: [{ value: '', disabled: true }],
     });
+
+    roleForm
+      .get('role')
+      ?.valueChanges.pipe(
+        tap((role) => {
+          if (role?.name === this.driverRoleName) {
+            roleForm.get('stationType')?.setValue('TRANSPORTER');
+            roleForm.get('licenseNumber')?.enable();
+          } else if (role?.name === this.adminDepotRoleName) {
+            roleForm.get('stationType')?.setValue('DEPOT');
+            roleForm.get('licenseNumber')?.disable();
+          } else if (role?.name === this.adminDealerRoleName) {
+            roleForm.get('stationType')?.setValue('DEALER');
+            roleForm.get('licenseNumber')?.disable();
+          }
+
+          roleForm.get('stationType')?.enable();
+        })
+      )
+      .subscribe();
+
     roleForm
       .get('stationType')
       ?.valueChanges.pipe(
@@ -229,6 +267,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
         })
       )
       .subscribe();
+
     this.roles.push(roleForm);
     this.rolesList.set(this.roles.value);
   }
@@ -310,7 +349,7 @@ export default class UserFormComponent implements IHasUnsavedChanges {
             }
           )
           .subscribe({
-            next: async (res) => {
+            next: async () => {
               this.userForm.reset();
               await this.#router.navigate(['../../users'], {
                 relativeTo: this.#route,
@@ -324,4 +363,8 @@ export default class UserFormComponent implements IHasUnsavedChanges {
   get hasUnsavedChanges() {
     return this.userForm.dirty;
   }
+
+  roleSelectLabelFormatter = (role: IRoleItem) => {
+    return this.#titleCasePipe.transform(role.label);
+  };
 }

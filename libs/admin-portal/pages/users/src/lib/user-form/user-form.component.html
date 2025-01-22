@@ -1,136 +1,175 @@
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-  <ion-row class="ion-margin">
-    <ion-col size="12" sizeMd="6">
-      <ion-item lines="none">
-        <ion-input
-          label="First Name"
-          labelPlacement="stacked"
-          formControlName="firstName"
-          placeholder="Enter first name"
-          errorText="First name is required"
-          helperText="&nbsp;"
-        >
-        </ion-input>
-      </ion-item>
-    </ion-col>
-    <ion-col size="12" sizeMd="6">
-      <ion-item lines="none">
-        <ion-input
-          label="Last Name"
-          labelPlacement="stacked"
-          formControlName="lastName"
-          placeholder="Enter last name"
-          errorText="Last name is required"
-          helperText="&nbsp;"
-        >
-        </ion-input>
-      </ion-item>
-    </ion-col>
-    <ion-col size="12" sizeMd="6">
-      <ion-item lines="none">
-        <ion-input
-          label="Email"
-          labelPlacement="stacked"
-          formControlName="email"
-          type="email"
-          placeholder="Enter email address"
-          errorText="Valid email is required"
-          helperText="&nbsp;"
-        >
-        </ion-input>
-      </ion-item>
-    </ion-col>
-    <ion-col size="12" sizeMd="6">
-      <ion-item lines="none">
-        <ion-input
-          label="Phone"
-          labelPlacement="stacked"
-          formControlName="phone"
-          type="tel"
-          [maskito]="phoneMask"
-          [maskitoElement]="maskPredicate"
-          placeholder="Enter phone number"
-          helperText="Format: +254 7XX XXX XXX"
-          [errorText]="userForm.get('phone')?.errors?.['pattern'] ? 'Invalid phone number format' : ''"
-        >
-        </ion-input>
-      </ion-item>
-    </ion-col>
-  </ion-row>
-  <ion-list formArrayName="roles">
-    <ion-list-header>
-      <ion-label>
-        Assigned roles
-      </ion-label>
-    </ion-list-header>
-    @for (role of rolesList(); track role.id; ) {
-      <ion-item class="ion-margin-start" lines="none" [formGroupName]="$index" @roleAnimation>
-        <ion-row style="width: 100%;">
-          <ion-col size="12" sizeMd="3">
-            <lpg-searchable-select
-              [itemsStore]="roleStore"
-              label="Role"
-              labelPlacement="stacked"
-              formControlName="role"
-              placeholder="Select roles"
-            ></lpg-searchable-select>
-          </ion-col>
-          <ion-col size="12" sizeMd="3">
-            <ion-select
-              color="primary"
-              label="Station type"
-              labelPlacement="stacked"
-              formControlName="stationType"
-              placeholder="Select station type"
-              toggle-icon="caret-down"
-              fill="solid"
-              interface="popover"
-            >
-              <ion-select-option value="DEPOT">Depot</ion-select-option>
-              <ion-select-option value="DEALER">Dealer</ion-select-option>
-            </ion-select>
-          </ion-col>
-          <ion-col size="12" sizeMd="3">
-            <lpg-searchable-select
-              [itemsStore]="stationStore"
-              label="Station"
-              labelPlacement="stacked"
-              formControlName="station"
-              [defaultParams]="
+<ion-content class="ion-padding">
+  <form id="create-user-form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <ion-row class="ion-margin">
+      <ion-col size="12" sizeMd="6">
+        <ion-item lines="none">
+          <ion-input
+            label="First Name"
+            labelPlacement="stacked"
+            formControlName="firstName"
+            placeholder="Enter first name"
+            errorText="First name is required"
+            helperText="&nbsp;"
+          >
+          </ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" sizeMd="6">
+        <ion-item lines="none">
+          <ion-input
+            label="Last Name"
+            labelPlacement="stacked"
+            formControlName="lastName"
+            placeholder="Enter last name"
+            errorText="Last name is required"
+            helperText="&nbsp;"
+          >
+          </ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" sizeMd="6">
+        <ion-item lines="none">
+          <ion-input
+            label="Email"
+            labelPlacement="stacked"
+            formControlName="email"
+            type="email"
+            placeholder="Enter email address"
+            errorText="Valid email is required"
+            helperText="&nbsp;"
+          >
+          </ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" sizeMd="6">
+        <ion-item lines="none">
+          <ion-input
+            label="Phone"
+            labelPlacement="stacked"
+            formControlName="phone"
+            type="tel"
+            [maskito]="phoneMask"
+            [maskitoElement]="maskPredicate"
+            placeholder="Enter phone number"
+            helperText="Format: +254 7XX XXX XXX"
+            [errorText]="userForm.get('phone')?.errors?.['pattern'] ? 'Invalid phone number format' : ''"
+          />
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-list formArrayName="roles">
+      <ion-list-header>
+        <ion-label>
+          Assigned roles
+        </ion-label>
+      </ion-list-header>
+      @for (role of rolesList(); track role.id; ) {
+        <ion-item class="ion-margin-start" lines="none" [formGroupName]="$index" @roleAnimation>
+          <ion-row style="width: 100%;">
+            <ion-col size="12" sizeMd="3">
+              <lpg-searchable-select
+                [itemsStore]="roleStore"
+                label="Role"
+                [selectLabelFormatter]="roleSelectLabelFormatter"
+                [valueLabelFormatter]="roleSelectLabelFormatter"
+                labelPlacement="stacked"
+                formControlName="role"
+                placeholder="Select roles"
+              ></lpg-searchable-select>
+            </ion-col>
+            <ion-col size="12" sizeMd="3">
+              <ion-select
+                color="primary"
+                label="Station type"
+                labelPlacement="stacked"
+                formControlName="stationType"
+                placeholder="Select station type"
+                toggle-icon="caret-down"
+                fill="solid"
+                interface="popover"
+              >
+                @if (roles.controls[$index].value['role']?.name === driverRoleName) {
+                  <ion-select-option value="TRANSPORTER">Transporter</ion-select-option>
+                } @else if (roles.controls[$index].value['role']?.name === adminDealerRoleName) {
+                  <ion-select-option value="DEALER">Dealer</ion-select-option>
+                } @else if (roles.controls[$index].value['role']?.name === adminDepotRoleName) {
+                  <ion-select-option value="DEPOT">Depot</ion-select-option>
+                } @else {
+                  <ion-select-option value="TRANSPORTER">Transporter</ion-select-option>
+                  <ion-select-option value="DEALER">Dealer</ion-select-option>
+                  <ion-select-option value="DEPOT">Depot</ion-select-option>
+                }
+              </ion-select>
+            </ion-col>
+
+            @if (roles.controls[$index].value['role']?.name === driverRoleName) {
+              <ion-col size="12" sizeMd="3">
+                <ion-item>
+                  <ion-input
+                    label="License Number"
+                    labelPlacement="stacked"
+                    formControlName="licenseNumber"
+                    placeholder="Enter license number"
+                  ></ion-input>
+                </ion-item>
+              </ion-col>
+            }
+
+            <ion-col size="12" sizeMd="3">
+              @if (roles.controls[$index].value['stationType'] === 'TRANSPORTER') {
+                <lpg-searchable-select
+                  [itemsStore]="transporterStore"
+                  label="Transporter"
+                  labelPlacement="stacked"
+                  formControlName="station"
+                  placeholder="Select transporter"
+                ></lpg-searchable-select>
+              } @else {
+                <lpg-searchable-select
+                  [itemsStore]="stationStore"
+                  label="Station"
+                  labelPlacement="stacked"
+                  formControlName="station"
+                  [defaultParams]="
                roles.controls[$index].value['stationType'] ? [{field: 'type', operator: equalsOperator, value: roles.controls[$index].value['stationType'] ?? '', values: []}]: []"
-              placeholder="Select station"
-            ></lpg-searchable-select>
-          </ion-col>
-          <ion-col size="12" offsetLg="2" sizeMd="1" class="ion-align-self-end">
-            <ion-button fill="clear" color="danger" (click)="removeRole($index)">
-              <ion-icon name="trash-can"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
+                  placeholder="Select station"
+                ></lpg-searchable-select>
+              }
+            </ion-col>
+
+            <ion-col size="12" offsetLg="1" sizeMd="1" class="ion-align-self-end">
+              <ion-button fill="clear" color="danger" (click)="removeRole($index)">
+                <ion-icon name="trash-can"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      }
+    </ion-list>
+    @if (rolesList().length < 1) {
+      <ion-item class="ion-margin-horizontal">
+        <ion-icon name="circle-info" slot="start"></ion-icon>
+        <ion-label color="medium">
+          No items added yet. Click the Add Item button to begin.
+        </ion-label>
       </ion-item>
     }
-  </ion-list>
-  @if (rolesList().length < 1) {
-    <ion-item class="ion-margin-horizontal">
-      <ion-icon name="circle-info" slot="start"></ion-icon>
-      <ion-label color="medium">
-        No items added yet. Click the Add Item button to begin.
-      </ion-label>
-    </ion-item>
-  }
 
-  <ion-button [disabled]="roles.invalid" class="ion-padding" shape="round" (click)="addRole()" fill="outline"
-              size="small">
-    <ion-icon name="grid-2-plus" slot="start"></ion-icon>
-    Add role
-  </ion-button>
+    <ion-button [disabled]="roles.invalid" class="ion-padding" shape="round" (click)="addRole()" fill="outline"
+                size="small">
+      <ion-icon name="grid-2-plus" slot="start"></ion-icon>
+      Add role
+    </ion-button>
+  </form>
 
+</ion-content>
+<ion-footer class="ion-padding">
   <div class="ion-margin-top ion-text-end">
     <ion-button fill="clear" type="button" [routerLink]="['../../users']">
       Cancel
     </ion-button>
-    <ion-button type="submit" [disabled]="!userForm.valid">
+    <ion-button form="create-user-form" type="submit" [disabled]="!userForm.valid">
       {{ isEditing() ? 'Update' : 'Create' }}
     </ion-button>
   </div>
-</form>
+</ion-footer>

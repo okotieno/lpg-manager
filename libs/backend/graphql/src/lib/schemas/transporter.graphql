@@ -49,9 +49,14 @@ type CreateTransporterSuccessResponse {
   data: TransporterModel!
 }
 
+type TransporterCount {
+  count: Int!
+}
+
 extend type Query {
   transporters(query: QueryParams): PaginatedTransporter!
   transporter(id: UUID!): TransporterModel
+  transporterCount: TransporterCount!
 }
 
 extend type Mutation {

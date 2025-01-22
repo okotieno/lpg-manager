@@ -1,89 +1,84 @@
-<form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
+<ion-content class="ion-padding-horizontal">
+  <form id="create-brand-form" [formGroup]="brandForm" (ngSubmit)="onSubmit()">
 
-  <ion-row class="ion-padding">
-    <ion-col size="12" sizeMd="6">
-      <ion-item lines="none">
-        <ion-input
-          label="Name"
-          labelPlacement="stacked"
-          formControlName="name"
-          placeholder="Enter role name"
-          errorText="Role is required"
-          helperText="&nbsp;"
-        >
-        </ion-input>
-      </ion-item>
-    </ion-col>
-    <ion-col size="12" sizeMd="6">
-      <ion-item lines="none">
-        <ion-input
-          label="Company name"
-          labelPlacement="stacked"
-          formControlName="companyName"
-          placeholder="Enter company name"
-          helperText="&nbsp;"
-        >
-        </ion-input>
-      </ion-item>
-    </ion-col>
-    <ion-col size="12">
-      <ion-item lines="none">
-        <lpg-file-upload formControlName="images" [multiple]="false"></lpg-file-upload>
-      </ion-item>
-    </ion-col>
-    <ion-col size="12">
-      <ion-list>
-        <ng-template
-          [ngTemplateOutlet]="addItem"
-          [ngTemplateOutletContext]="{ showLabel: true, showButton: brandItems().length < 1 }"
-        />
+    <ion-row class="ion-padding">
+      <ion-col size="12" sizeMd="6">
+        <ion-item lines="none">
+          <ion-input
+            label="Name"
+            labelPlacement="stacked"
+            formControlName="name"
+            placeholder="Enter role name"
+            errorText="Role is required"
+            helperText="&nbsp;"
+          >
+          </ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" sizeMd="6">
+        <ion-item lines="none">
+          <ion-input
+            label="Company name"
+            labelPlacement="stacked"
+            formControlName="companyName"
+            placeholder="Enter company name"
+            helperText="&nbsp;"
+          >
+          </ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12">
+        <ion-item lines="none">
+          <lpg-file-upload formControlName="images" [multiple]="false"></lpg-file-upload>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12">
+        <ion-list>
+          <ng-template
+            [ngTemplateOutlet]="addItem"
+            [ngTemplateOutletContext]="{ showLabel: true, showButton: brandItems().length < 1 }"
+          />
 
-        @for (item of brandItems(); track item) {
-          <ion-item>
-            <ion-label>
-              <h2>{{ item.name }}</h2>
-              <p>{{ item.description }}</p>
-              <p>{{ item.unit }}</p>
-              <!--              <p>{{ item.pricePerUnit }}</p>-->
-              <p>{{ item.quantityPerUnit }}</p>
-            </ion-label>
-            <ion-buttons>
-              <ion-button shape="round" fill="clear" color="primary"
-                          (click)="openAddItemModal(item)">
-                <ion-icon slot="icon-only" name="pen-to-square"></ion-icon>
-              </ion-button>
-              <ion-button shape="round" fill="clear" color="danger"
-                          (click)="removeItem(item)">
-                <ion-icon slot="icon-only" name="trash-can"></ion-icon>
-              </ion-button>
-            </ion-buttons>
-          </ion-item>
-        }
-        <ng-template
-          [ngTemplateOutlet]="addItem"
-          [ngTemplateOutletContext]=" { showLabel: false, showButton: brandItems().length > 0 } "
-        />
+          @for (item of brandItems(); track item) {
+            <ion-item>
+              <ion-label>
+                <h2>{{ item.name }}</h2>
+                <p>{{ item.description }}</p>
+                <p>{{ item.unit }}</p>
+                <!--              <p>{{ item.pricePerUnit }}</p>-->
+                <p>{{ item.quantityPerUnit }}</p>
+              </ion-label>
+              <ion-buttons>
+                <ion-button shape="round" fill="clear" color="primary"
+                            (click)="openAddItemModal(item)">
+                  <ion-icon slot="icon-only" name="pen-to-square"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear" color="danger"
+                            (click)="removeItem(item)">
+                  <ion-icon slot="icon-only" name="trash-can"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-item>
+          }
+          <ng-template
+            [ngTemplateOutlet]="addItem"
+            [ngTemplateOutletContext]=" { showLabel: false, showButton: brandItems().length > 0 } "
+          />
 
-        @if (brandItems().length === 0) {
-          <ion-item>
-            <ion-label color="medium">
-              No items added yet. Click the Add Item button to begin.
-            </ion-label>
-          </ion-item>
-        }
-      </ion-list>
-    </ion-col>
-  </ion-row>
+          @if (brandItems().length === 0) {
+            <ion-item>
+              <ion-label color="medium">
+                No items added yet. Click the Add Item button to begin.
+              </ion-label>
+            </ion-item>
+          }
+        </ion-list>
+      </ion-col>
+    </ion-row>
 
-  <div class="ion-margin-top ion-text-end">
-    <ion-button fill="clear" type="button" [routerLink]="['/roles']">
-      Cancel
-    </ion-button>
-    <ion-button type="submit" [disabled]="!brandForm.valid">
-      {{ isEditing() ? 'Update' : 'Create' }}
-    </ion-button>
-  </div>
-</form>
+
+  </form>
+</ion-content>
 <ng-template #addItem let-showLabel="showLabel" let-showButton="showButton">
   @if (showLabel || showButton) {
     <ion-list-header class="ion-no-padding">
@@ -100,3 +95,12 @@
     </ion-list-header>
   }
 </ng-template>
+
+<ion-footer class="ion-margin-top ion-text-end ion-padding">
+  <ion-button fill="clear" type="button" [routerLink]="['../']">
+    Cancel
+  </ion-button>
+  <ion-button form="create-brand-form" type="submit" [disabled]="!brandForm.valid">
+    {{ isEditing() ? 'Update' : 'Create' }}
+  </ion-button>
+</ion-footer>

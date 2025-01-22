@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import {
   IonBadge,
   IonButton,
@@ -26,11 +26,11 @@ import {
 } from '@lpg-manager/dispatch-store';
 import { ScannerInputComponent } from '@lpg-manager/scanner-input';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { InventoryItemStore } from '@lpg-manager/inventory-item-store';
-import { IDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
+import { IQueryOperatorEnum, IScanAction } from '@lpg-manager/types';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
-import { JsonPipe } from '@angular/common';
 import { DriverInventoryStore } from '@lpg-manager/driver-inventory-store';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface ScanSummaryItem {
   catalogueId: string;
@@ -66,7 +66,6 @@ interface ScanSummaryItem {
     IonCol,
     RouterLink,
     IonText,
-    JsonPipe,
   ],
   templateUrl: './confirm-load.component.html',
   styleUrl: './confirm-load.component.scss',
@@ -74,8 +73,7 @@ interface ScanSummaryItem {
 })
 export default class ConfirmLoadComponent {
   #driverInventoryStore = inject(DriverInventoryStore);
-  selectedDriverInventoryItems =
-    this.#driverInventoryStore.items;
+  selectedDriverInventoryItems = this.#driverInventoryStore.items;
   #fb = inject(FormBuilder);
   #dispatchStore = inject(DispatchStore);
   scannerForm = this.#fb.group({
@@ -85,10 +83,8 @@ export default class ConfirmLoadComponent {
   scannedCanisters = signal([] as string[]);
   validatedScannedCanisters = computed(() => {
     const scannedCanisters = this.scannedCanisters();
-    const searchedDriverInventoryItems = this.#driverInventoryStore.items()
+    const searchedDriverInventoryItems = this.#driverInventoryStore.items();
     return scannedCanisters.map((canisterId) => {
-      console.log('canisterId', canisterId);
-      console.log('searchedDriverInventoryItems', searchedDriverInventoryItems);
       return {
         scannedId: canisterId,
         ...searchedDriverInventoryItems.find((item) => {
@@ -103,11 +99,11 @@ export default class ConfirmLoadComponent {
   async confirmAssignment() {
     const dispatchId = this.dispatch()?.id;
     if (dispatchId) {
-      await this.#dispatchStore.scanConfirm({
-        dispatchId: dispatchId,
-        scannedCanisters: this.scannedCanisters(),
-        dispatchStatus: IDispatchStatus.InTransit,
-      });
+      // await this.#dispatchStore.scanConfirm({
+      //   dispatchId: dispatchId,
+      //   scannedCanisters: this.scannedCanisters(),
+      //   dispatchStatus: IDispatchStatus.InTransit,
+      // });
       // await this.#router.navigate(['../'], { relativeTo: this.#route });
     }
   }
@@ -118,7 +114,7 @@ export default class ConfirmLoadComponent {
 
     // Create a map to count ordered quantities by catalogue
     const orderQuantities = new Map<string, number>();
-    dispatch.orders.forEach((order) => {
+    dispatch.consolidatedOrders.map(o => o.orders).flat().forEach((order) => {
       order.items.forEach((item) => {
         if (item?.catalogue) {
           const current = orderQuantities.get(item.catalogue.id as string) || 0;
@@ -147,7 +143,9 @@ export default class ConfirmLoadComponent {
     const summary: ScanSummaryItem[] = [];
     orderQuantities.forEach((orderQty, catalogueId) => {
       const scannedQty = scannedQuantities.get(catalogueId) || 0;
-      const catalogue = dispatch.orders
+      const catalogue = dispatch.consolidatedOrders
+        .map((o) => o.orders)
+        .flat()
         .flatMap((o) => o.items)
         .find((i) => i?.catalogue?.id === catalogueId)?.catalogue;
 
@@ -174,16 +172,45 @@ export default class ConfirmLoadComponent {
     const summary = this.scanSummary();
     return summary.length > 0 && summary.every((item) => item.status === 'OK');
   });
+  scannedItems = signal([] as string[]);
+
+  totalOrderQuantity = computed(
+    () =>
+      this.dispatch()
+        ?.consolidatedOrders.map((o) => o.orders)
+        .flat()
+        .reduce(
+          (total, order) =>
+            total +
+            order.items.reduce(
+              (total, item) => total + (item?.quantity ?? 0),
+              0
+            ),
+          0
+        ) ?? 0
+  );
+
+  constructor() {
+    this.scannerForm
+      .get('canisters')
+      ?.valueChanges.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap((canisters) => {
+          if (canisters) {
+            this.scannedItems.set(canisters);
+
+            if (this.totalOrderQuantity() === this.scannedItems().length) {
+              this.validateScans();
+            }
+          }
+        }),
+        takeUntilDestroyed()
+      )
+      .subscribe();
+  }
 
   validateScans() {
-    // this.#inventoryItemStore.setFilters([
-    //   {
-    //     field: 'id',
-    //     value: '',
-    //     values: this.scannerForm.get('canisters')?.value,
-    //     operator: IQueryOperatorEnum.In,
-    //   },
-    // ]);
     this.#driverInventoryStore.setFilters([
       {
         field: 'inventoryItemId',
@@ -201,8 +228,8 @@ export default class ConfirmLoadComponent {
 
     await this.#dispatchStore.scanConfirm({
       dispatchId: this.dispatch()?.id as string,
-      scannedCanisters: this.scannedCanisters(),
-      dispatchStatus: IDispatchStatus.DriverFromDepotConfirmed,
+      inventoryItems: this.scannedCanisters().map((id) => ({ id })),
+      scanAction: IScanAction.DriverFromDepotConfirmed,
     });
   }
 }

@@ -156,7 +156,9 @@ export class SearchableSelectComponent<T extends { id: string }>
     if (this.selectedItemsActive().length < 1) {
       return this.placeholder();
     }
-    if (this.selectedItemsActive().length > 1) {}
+    if (this.selectedItemsActive().length > 1) {
+      //
+    }
     return this.selectedItems()
       .map(
         (item) =>

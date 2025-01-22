@@ -54,18 +54,19 @@ const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/svg+xml'];
     IonAvatar,
     IonImg,
     DecimalPipe,
-    IonSpinner
+    IonSpinner,
   ],
   templateUrl: './file-upload.component.html',
   styleUrl: './file-upload.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [FileUploadStore]
+  providers: [FileUploadStore],
 })
 export class FileUploadComponent implements ControlValueAccessor {
-  label = input('Upload image')
+  label = input('Upload image');
+  initialLoad = true;
   uploadedFilesStore = inject(FileUploadStore);
   fileUploadsWithIcons = this.uploadedFilesStore.fileUploadsWithIcons;
-  isUploading = this.uploadedFilesStore.isUploading
+  isUploading = this.uploadedFilesStore.isUploading;
 
   ionInput = viewChild.required(IonInput);
 
@@ -80,7 +81,6 @@ export class FileUploadComponent implements ControlValueAccessor {
     untracked(() => {
       this.uploadedFilesStore.setMultiple(multiple);
     });
-
   });
 
   allowedFileTypes = ALLOWED_FILE_TYPES;
@@ -88,13 +88,19 @@ export class FileUploadComponent implements ControlValueAccessor {
 
   fileUploadChangeEffect = effect(() => {
     this.uploadedFilesStore.fileUploads();
-    const val = this.uploadedFilesStore.fileUploads().map(x => x.fileUpload);
+    const val = this.uploadedFilesStore.fileUploads().map((x) => x.fileUpload);
 
-    if (val) {
-      this.onChanges?.(val as { id: string }[]);
-    } else {
-      this.onChanges?.([]);
-    }
+    untracked(() => {
+      if (!this.initialLoad) {
+        if (val) {
+          this.onChanges?.(val as { id: string }[]);
+        } else if (!this.initialLoad) {
+          this.onChanges?.([]);
+        }
+      }
+
+      this.initialLoad = false;
+    });
   });
 
   writeValue(obj: { id: string }[]): void {
@@ -105,7 +111,9 @@ export class FileUploadComponent implements ControlValueAccessor {
     });
   }
 
-  registerOnChange(fn: (param: { id: string }[] | { id: string }) => void): void {
+  registerOnChange(
+    fn: (param: { id: string }[] | { id: string }) => void
+  ): void {
     this.onChanges = fn;
   }
 
@@ -133,10 +141,7 @@ export class FileUploadComponent implements ControlValueAccessor {
         header: 'Replace file',
         message: `This action will replace existing file, continue?`,
         cssClass: 'alert alert-danger',
-        buttons: [
-          'Cancel',
-          { role: 'destructive', text: 'Yes Replace' }
-        ]
+        buttons: ['Cancel', { role: 'destructive', text: 'Yes Replace' }],
       });
 
       await alertDialog.present();
@@ -154,10 +159,7 @@ export class FileUploadComponent implements ControlValueAccessor {
       header: 'Remove file',
       message: `Are you sure you want to remove this image?`,
       cssClass: 'alert alert-danger',
-      buttons: [
-        'Cancel',
-        { role: 'destructive', text: 'Yes Remove' }
-      ]
+      buttons: ['Cancel', { role: 'destructive', text: 'Yes Remove' }],
     });
 
     await alertDialog.present();

@@ -8,5 +8,5 @@ export class DeleteSettingInputDto {
     message: (validationArguments) =>
       `Setting with id  ${validationArguments.value}" not found`,
   })
-  id = 0;
+  id = '';
 }

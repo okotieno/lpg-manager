@@ -7,22 +7,24 @@ import {
   Root,
 } from '@nestjs/graphql';
 import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
-import { DispatchModel, IQueryParam, UserModel } from '@lpg-manager/db';
+import { DispatchModel, IQueryParam, OrderModel, UserModel } from '@lpg-manager/db';
 import { DispatchService } from '@lpg-manager/dispatch-service';
 import { TransporterService } from '@lpg-manager/transporter-service';
 import { DriverService } from '@lpg-manager/driver-service';
 import { VehicleService } from '@lpg-manager/vehicle-service';
-import { OrderService } from '@lpg-manager/order-service';
+import { OrderService, ConsolidatedOrderService } from '@lpg-manager/order-service';
 import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
 import { CreateDispatchInputDto } from '../dto/create-dispatch-input.dto';
 import { UpdateDispatchInputDto } from '../dto/update-dispatch-input.dto';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IPermissionEnum } from '@lpg-manager/types';
 import { ScanConfirmDto } from '../dto/scan-confirm.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { IScanAction } from '@lpg-manager/types';
+import { DispatchEvent } from '../events/dispatch.event';
 
 @Resolver(() => DispatchModel)
 export class DispatchResolver {
@@ -32,12 +34,13 @@ export class DispatchResolver {
     private driverService: DriverService,
     private vehicleService: VehicleService,
     private orderService: OrderService,
+    private consolidatedOrderService: ConsolidatedOrderService,
     private eventEmitter: EventEmitter2
   ) {}
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateDispatch)
+  @Permissions(IPermissionEnum.CreateDispatch)
   async createDispatch(
     @Body('params', new ValidationPipe()) params: CreateDispatchInputDto
   ) {
@@ -51,21 +54,21 @@ export class DispatchResolver {
 
   @Query()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ViewDispatch)
+  @Permissions(IPermissionEnum.ViewDispatch)
   async dispatches(@Args('query') query: IQueryParam) {
     return this.dispatchService.findAll(query);
   }
 
   @Query()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ViewDispatch)
+  @Permissions(IPermissionEnum.ViewDispatch)
   async dispatch(@Args('id') id: string) {
     return this.dispatchService.findById(id);
   }
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateDispatch)
+  @Permissions(IPermissionEnum.UpdateDispatch)
   async updateDispatch(
     @Body(new ValidationPipe()) { id, params }: UpdateDispatchInputDto
   ) {
@@ -78,7 +81,7 @@ export class DispatchResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeleteDispatch)
+  @Permissions(IPermissionEnum.DeleteDispatch)
   async deleteDispatch(@Args('id') id: string) {
     await this.dispatchService.deleteById(id);
 
@@ -102,32 +105,38 @@ export class DispatchResolver {
     return this.vehicleService.findById(dispatch.vehicleId);
   }
 
-  @ResolveField('orders')
+  @ResolveField('consolidatedOrders')
   async getOrders(@Root() dispatch: DispatchModel) {
-    return this.orderService.model.findAll({
+    return this.consolidatedOrderService.model.findAll({
       where: { dispatchId: dispatch.id },
+      include: [OrderModel]
     });
   }
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ConfirmViaScanning)
+  @Permissions(IPermissionEnum.ConfirmViaScanning)
   async scanConfirm(
     @Args('params') params: ScanConfirmDto,
     @CurrentUser() currentUser: UserModel
   ) {
-    const dispatch = await this.dispatchService.scanConfirm(
-      params.dispatchId,
-      params.scannedCanisters,
-      params.dispatchStatus,
-      params.driverInventories,
-      params.driverInventoryStatus
-    );
+    const actions: Record<string, string> = {
+      [IScanAction.DepotToDriverConfirmed]: 'dispatch.depotToDriverConfirmed',
+    };
 
-    this.eventEmitter.emit('dispatch.completed', {
-      dispatch,
-      userId: currentUser.id,
+    const dispatch = await this.dispatchService.scanConfirm({
+      dispatchId: params.dispatchId,
+      inventoryItems: params.inventoryItems,
+      scanAction: params.scanAction,
+      dealer: params.dealer
     });
+
+    if (actions[params.scanAction]) {
+      this.eventEmitter.emit(
+        actions[params.scanAction],
+        new DispatchEvent(dispatch, currentUser.id)
+      );
+    }
 
     return {
       message: 'Dispatch completed successfully',

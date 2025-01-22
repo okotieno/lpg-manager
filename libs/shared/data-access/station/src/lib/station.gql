@@ -53,3 +53,10 @@ mutation UpdateStation($id: UUID!, $params: UpdateStationInput!) {
     }
   }
 }
+
+query GetStationCount {
+  stationCount {
+    count
+  }
+}
+

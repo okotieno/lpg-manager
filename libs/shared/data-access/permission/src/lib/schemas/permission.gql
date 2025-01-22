@@ -1,8 +1,8 @@
 mutation CreatePermission(
-  $name: String!
+  $params: CreatePermissionInput!
 ) {
   createPermission(
-    name: $name
+    params: $params
   ) {
     message
     data {

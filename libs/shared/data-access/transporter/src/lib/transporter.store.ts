@@ -11,6 +11,10 @@ import {
 } from './transporter.generated';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 
+export type ITransporterItem = NonNullable<
+  NonNullable<IGetTransportersQuery['transporters']['items']>[number]
+>;
+
 export const TransporterStore = signalStore(
   withProps(() => ({
     _createItemGQL: inject(ICreateTransporterGQL),

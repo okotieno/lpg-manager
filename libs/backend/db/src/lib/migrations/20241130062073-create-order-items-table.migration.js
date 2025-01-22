@@ -49,7 +49,7 @@ module.exports = {
       pricePerUnit: {
         field: 'price_per_unit',
         type: Sequelize.DECIMAL(10, 2),
-        allowNull: false,
+        allowNull: true,
       },
       createdAt: {
         field: 'created_at',
@@ -75,4 +75,4 @@ module.exports = {
   async down(queryInterface) {
     await queryInterface.dropTable('order_items');
   }
-}; 
+};

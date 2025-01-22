@@ -15,11 +15,12 @@ import { UpdateTransporterInputDto } from '../dto/update-transporter-input.dto';
 import {
   PermissionGuard,
   Permissions,
-  PermissionsEnum,
 } from '@lpg-manager/permission-service';
+import { IDefaultRoles, IPermissionEnum } from '@lpg-manager/types';
 import { DriverService } from '@lpg-manager/driver-service';
 import { VehicleService } from '@lpg-manager/vehicle-service';
 import { UserService } from '@lpg-manager/user-service';
+import { RoleService } from '@lpg-manager/role-service';
 
 @Resolver(() => TransporterModel)
 export class TransporterResolver {
@@ -27,12 +28,13 @@ export class TransporterResolver {
     private transporterService: TransporterService,
     private driverService: DriverService,
     private userService: UserService,
-    private vehicleService: VehicleService
+    private vehicleService: VehicleService,
+    private roleService: RoleService
   ) {}
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.CreateTransporter)
+  @Permissions(IPermissionEnum.CreateTransporter)
   async createTransporter(@Body('params') params: CreateTransporterInputDto) {
     const transporter = await this.transporterService.create({
       name: params.name,
@@ -61,9 +63,10 @@ export class TransporterResolver {
             firstName: driver.name.split(' ')[0],
             lastName: driver.name.split(' ')[1],
             phone: driver.phone,
-            role: 'DRIVER',
             password: Math.random().toString(36).slice(-8), // Generate random password
           });
+
+          await this.roleService.assignRoleToUser(user.id as string, IDefaultRoles.Driver)
 
           // Create driver record
           const driverCreated = await this.driverService.model.create({
@@ -85,21 +88,21 @@ export class TransporterResolver {
 
   @Query()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ViewTransporter)
+  @Permissions(IPermissionEnum.ViewTransporter)
   async transporters(@Args('query') query: IQueryParam) {
     return this.transporterService.findAll(query);
   }
 
   @Query()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.ViewTransporter)
+  @Permissions(IPermissionEnum.ViewTransporter)
   async transporter(@Args('id') id: string) {
     return this.transporterService.findById(id);
   }
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.UpdateTransporter)
+  @Permissions(IPermissionEnum.UpdateTransporter)
   async updateTransporter(
     @Body(new ValidationPipe()) { id, params }: UpdateTransporterInputDto
   ) {
@@ -250,7 +253,7 @@ export class TransporterResolver {
 
   @Mutation()
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @Permissions(PermissionsEnum.DeleteTransporter)
+  @Permissions(IPermissionEnum.DeleteTransporter)
   async deleteTransporter(@Args('id') id: string) {
     await this.transporterService.deleteById(id);
 
@@ -268,9 +271,14 @@ export class TransporterResolver {
 
   @ResolveField('vehicles')
   async getVehicles(@Root() transporter: TransporterModel) {
-    console.log(transporter);
     return this.vehicleService.model.findAll({
       where: { transporterId: transporter.id },
     });
+  }
+
+  @Query()
+  async transporterCount() {
+    const count = await this.transporterService.model.count();
+    return { count };
   }
 }

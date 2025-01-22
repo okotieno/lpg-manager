@@ -2,12 +2,13 @@ import {
   IsArray,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsPhoneNumber,
   IsString,
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { RoleModel, StationModel, UserModel } from '@lpg-manager/db';
+import { RoleModel, StationModel, TransporterModel, UserModel } from '@lpg-manager/db';
 import { DoesntExist, Exists } from '@lpg-manager/validators';
 import { Type } from 'class-transformer';
 
@@ -23,15 +24,27 @@ class UserRoleDto {
   roleId!: string;
 
   @IsUUID()
+  @IsOptional()
   @Exists(StationModel, 'id', {
     message: (validationArguments) =>
       `Station with id ${validationArguments.value}" not found`,
   })
-  stationId!: string;
+  stationId?: string;
+
+  @IsUUID()
+  @IsOptional()
+  @Exists(TransporterModel, 'id', {
+    message: (validationArguments) =>
+      `Transporter with id ${validationArguments.value}" not found`,
+  })
+  transporterId?: string;
+
+  @IsString()
+  @IsOptional()
+  licenseNumber?: string;
 }
 
 export class CreateUserInputDto {
-
   @IsString()
   @IsNotEmpty()
   firstName = '';
