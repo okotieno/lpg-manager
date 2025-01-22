@@ -1445,8 +1445,10 @@ export type IQuery = {
   setting?: Maybe<ISettingModel>;
   settings: IPaginatedSetting;
   station?: Maybe<IStationModel>;
+  stationCount?: Maybe<IStationCount>;
   stations: IPaginatedStation;
   transporter?: Maybe<ITransporterModel>;
+  transporterCount: ITransporterCount;
   transporters: IPaginatedTransporter;
   user?: Maybe<IUserModel>;
   userCount: IUserCount;
@@ -1771,6 +1773,10 @@ export enum ISortByEnum {
   Desc = 'DESC'
 }
 
+export type IStationCount = {
+  count: Scalars['Int']['output'];
+};
+
 export type IStationModel = {
   brands?: Maybe<Array<IBrandModel>>;
   id: Scalars['UUID']['output'];
@@ -1803,6 +1809,10 @@ export type ISubscriptionResetPasswordNotificationArgs = {
 export type ISuccessResponse = {
   message: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
+};
+
+export type ITransporterCount = {
+  count: Scalars['Int']['output'];
 };
 
 export type ITransporterDriverInput = {

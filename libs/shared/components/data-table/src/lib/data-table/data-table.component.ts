@@ -255,9 +255,9 @@ export class DataTableComponent<T extends { id: string }> {
         filter(() => fieldType === 'uuid'),
         tap((value) => {
           if (value === IQueryOperatorEnum.Equals) {
-            control.get('value')?.addValidators([validateUUID]);
+            control.get('value')?.setValidators([Validators.required, validateUUID]);
           } else {
-            control.get('value')?.removeValidators([validateUUID]);
+            control.get('value')?.setValidators([Validators.required]);
           }
         }),
         takeUntilDestroyed(this.#destroyRef)

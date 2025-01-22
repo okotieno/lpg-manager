@@ -275,4 +275,10 @@ export class TransporterResolver {
       where: { transporterId: transporter.id },
     });
   }
+
+  @Query()
+  async transporterCount() {
+    const count = await this.transporterService.model.count();
+    return { count };
+  }
 }

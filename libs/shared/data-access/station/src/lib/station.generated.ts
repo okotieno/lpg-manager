@@ -39,6 +39,11 @@ export type IUpdateStationMutationVariables = Types.Exact<{
 
 export type IUpdateStationMutation = { updateStation?: { message: string, data: { id: string } } | null };
 
+export type IGetStationCountQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type IGetStationCountQuery = { stationCount?: { count: number } | null };
+
 export const CreateStationDocument = gql`
     mutation CreateStation($params: CreateStationInput!) {
   createStation(params: $params) {
@@ -143,6 +148,24 @@ export const UpdateStationDocument = gql`
   })
   export class IUpdateStationGQL extends Apollo.Mutation<IUpdateStationMutation, IUpdateStationMutationVariables> {
     override document = UpdateStationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetStationCountDocument = gql`
+    query GetStationCount {
+  stationCount {
+    count
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class IGetStationCountGQL extends Apollo.Query<IGetStationCountQuery, IGetStationCountQueryVariables> {
+    override document = GetStationCountDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

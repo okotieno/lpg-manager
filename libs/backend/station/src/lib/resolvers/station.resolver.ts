@@ -111,4 +111,10 @@ export class StationResolver {
     }
     return [];
   }
+
+  @Query()
+  async stationCount() {
+    const count = await this.stationService.model.count();
+    return { count };
+  }
 }

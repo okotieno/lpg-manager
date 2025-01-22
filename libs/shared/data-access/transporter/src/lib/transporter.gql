@@ -85,3 +85,9 @@ mutation UpdateTransporter($id: UUID!, $params: UpdateTransporterInput!) {
     }
   }
 }
+
+query GetTransporterCount {
+  transporterCount {
+    count
+  }
+}

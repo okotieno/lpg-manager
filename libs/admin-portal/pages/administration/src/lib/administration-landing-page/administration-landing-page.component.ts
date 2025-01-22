@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -12,6 +12,10 @@ import {
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { IGetBrandCountGQL } from '@lpg-manager/brand-store';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
+import { IGetTransporterCountGQL } from '@lpg-manager/transporter-store';
+import { IGetStationCountGQL } from '@lpg-manager/station-store';
 
 @Component({
   selector: 'lpg-user-table',
@@ -32,18 +36,38 @@ import { IGetBrandCountGQL } from '@lpg-manager/brand-store';
   styles: ``,
 })
 export default class UserTableComponent {
-  private getUserCountGQL = inject(IGetBrandCountGQL);
-  brandCount = signal(0);
+  private getBrandCountGQL = inject(IGetBrandCountGQL);
+  private getTransporterCountGQL = inject(IGetTransporterCountGQL);
+  private getStationCountGQL = inject(IGetStationCountGQL);
+  brandCount = toSignal(
+    this.getBrandCountGQL.fetch().pipe(
+      map((response) => {
+        if (response.data?.brandCount) {
+          return response.data.brandCount.count;
+        }
+        return 0;
+      })
+    )
+  );
 
-  constructor() {
-    this.loadUserCount();
-  }
-
-  loadUserCount() {
-    this.getUserCountGQL.fetch().subscribe((response) => {
-      if (response.data?.brandCount) {
-        this.brandCount.set(response.data.brandCount.count);
-      }
-    });
-  }
+  transporterCount = toSignal(
+    this.getTransporterCountGQL.fetch().pipe(
+      map((response) => {
+        if (response.data?.transporterCount) {
+          return response.data.transporterCount.count;
+        }
+        return 0;
+      })
+    )
+  );
+  stationCount = toSignal(
+    this.getStationCountGQL.fetch().pipe(
+      map((response) => {
+        if (response.data?.stationCount) {
+          return response.data.stationCount.count;
+        }
+        return 0;
+      })
+    )
+  );
 }

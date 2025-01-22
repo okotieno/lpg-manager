@@ -7,14 +7,16 @@ import {
   PaginatedResource,
 } from '@lpg-manager/data-table';
 import { IQueryOperatorEnum, IUserModel } from '@lpg-manager/types';
-import { IonContent } from '@ionic/angular/standalone';
+import { IonCol, IonContent, IonRow } from '@ionic/angular/standalone';
 
 @Component({
   standalone: true,
   imports: [
     ReactiveFormsModule,
     DataTableComponent,
-    IonContent
+    IonContent,
+    IonRow,
+    IonCol,
   ],
   templateUrl: './users-page.component.html',
   styleUrl: './users-page.component.css',
