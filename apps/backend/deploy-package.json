@@ -1,0 +1,15 @@
+{
+  "name": "@tahiniwa/source",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "db:migrate": "nx db:migrate backend",
+    "db:migrate:undo": "nx db:migrate:undo backend",
+    "db:migrate:undo:all": "nx db:migrate:undo:all backend",
+    "db:seed:all": "nx db:seed:all backend",
+    "db:seed:undo:all": "nx db:seed:undo:all backend"
+  },
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {}
+}
