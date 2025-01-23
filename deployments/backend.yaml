@@ -167,5 +167,5 @@ spec:
   ports:
     - protocol: TCP
       port: 3000
-      nodePort: 30006
+      nodePort: 30016
   type: LoadBalancer
