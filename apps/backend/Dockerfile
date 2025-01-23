@@ -15,7 +15,7 @@ COPY dist/apps/backend/package.json backend/package.json
 RUN npm i -g pnpm
 
 # Install build and runtime dependencies
-RUN pnpm add -D nx@latest pg sequelize-cli sequelize
+RUN pnpm add -D nx@latest pg sequelize-cli sequelize @nestjs/config
 
 #Change working directory to backend
 WORKDIR /app/backend
