@@ -116,16 +116,6 @@ spec:
                 secretKeyRef:
                   name: lpg-secrets
                   key: LPG_MINIO_BUCKET
-            - name: LPG_GOOGLE_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: lpg-secrets
-                  key: LPG_GOOGLE_CLIENT_ID
-            - name: LPG_GOOGLE_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: lpg-secrets
-                  key: LPG_GOOGLE_CLIENT_SECRET
             - name: LPG_REDIS_HOST
               valueFrom:
                 secretKeyRef:
