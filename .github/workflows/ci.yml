@@ -237,8 +237,8 @@ jobs:
           port: 22
           script: |
             export KUBECONFIG=/etc/kubernetes/admin.conf
-            kubectl delete deployment tahiniwa-backend
-            kubectl delete svc tahiniwa-backend-service
+            kubectl delete deployment lpg-manager-backend
+            kubectl delete svc  lpg-manager-backend-service
             kubectl apply -f ~/lpg_manager_deployments/deployments/backend.yaml
 
   deploy-dashboard-contabo:
