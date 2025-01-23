@@ -156,6 +156,8 @@ spec:
                 secretKeyRef:
                   name: lpg-manager-secrets
                   key: LPG_JWT_SECRET
+      imagePullSecrets:
+        - name: github-container-registry-owen
 ---
 apiVersion: v1
 kind: Service
