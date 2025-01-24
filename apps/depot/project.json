@@ -108,12 +108,6 @@
         "commands": ["./apps/depot/copy-icons.sh"]
       }
     },
-    "ionic:cap:copy:android": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["cd apps/depot && ionic cap copy android --prod"]
-      }
-    },
     "ionic:cap:build:android": {
       "executor": "nx:run-commands",
       "options": {

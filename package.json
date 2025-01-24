@@ -36,7 +36,6 @@
     "@apollo/client": "^3.11.10",
     "@as-integrations/fastify": "^2.1.1",
     "@capacitor/android": "6.2.0",
-    "@capacitor/barcode-scanner": "^1.0.4",
     "@capacitor/camera": "^6.1.2",
     "@capacitor/preferences": "^6.0.3",
     "@capawesome/capacitor-file-picker": "^6.2.0",
