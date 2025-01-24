@@ -5,10 +5,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { PermissionsEnum } from '../enums/permission.enum';
 import { PERMISSIONS_KEY } from '../decorators/permission.decorator';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { I18nContext, I18nService } from 'nestjs-i18n';
+import { IPermissionEnum } from '@lpg-manager/types';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
@@ -18,7 +18,7 @@ export class PermissionGuard implements CanActivate {
   ) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.getAllAndOverride<PermissionsEnum[]>(
+    const requiredRoles = this.reflector.getAllAndOverride<IPermissionEnum[]>(
       PERMISSIONS_KEY,
       [context.getHandler(), context.getClass()]
     );
