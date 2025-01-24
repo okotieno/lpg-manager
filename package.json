@@ -19,6 +19,7 @@
     "db:seed:all": "nx db:seed:all backend",
     "db:seed:undo:all": "nx db:seed:undo:all backend",
     "graphql:codegen": "nx run-many -t graphql-codegen",
+    "cap:build:android": "nx run-many -t ionic:cap:build:android",
     "postinstall": "node modify-web.js"
   },
   "private": true,

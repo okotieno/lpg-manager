@@ -111,7 +111,13 @@
     "ionic:cap:build:android": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["pnpm nx build depot && npx cap sync android"]
+        "commands": ["pnpm nx build depot --configuration production && npx cap sync android"]
+      }
+    },
+    "ionic:cap:open:android": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["npx cap open android"]
       }
     }
   }

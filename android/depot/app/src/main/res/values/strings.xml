@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">LPG-Manager</string>
+    <string name="title_activity_main">LPG-Manager</string>
+    <string name="package_name">com.depot.lpgmanager.app</string>
+    <string name="custom_url_scheme">com.depot.lpgmanager.app</string>
+</resources>
