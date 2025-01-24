@@ -20,6 +20,10 @@
     "db:seed:undo:all": "nx db:seed:undo:all backend",
     "graphql:codegen": "nx run-many -t graphql-codegen",
     "cap:build:android": "nx run-many -t ionic:cap:build:android",
+    "ionic:cap:open:android:depot": "nx ionic:cap:open:android depot",
+    "ionic:cap:open:android:dealer": "nx ionic:cap:open:android dealer",
+    "ionic:cap:open:android:driver": "nx ionic:cap:open:android driver-app",
+    "capacitor-assets:generate:android": "nx run-many -t capacitor-assets:generate:android",
     "postinstall": "node modify-web.js"
   },
   "private": true,
@@ -99,6 +103,7 @@
     "@angular/cli": "~19.0.5",
     "@angular/compiler-cli": "~19.0.5",
     "@angular/language-service": "~19.0.5",
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^6.2.0",
     "@eslint/js": "^9.8.0",
     "@graphql-codegen/cli": "^5.0.3",

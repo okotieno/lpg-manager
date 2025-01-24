@@ -119,6 +119,12 @@
       "options": {
         "commands": ["npx cap open android"]
       }
+    },
+    "capacitor-assets:generate:android": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["capacitor-assets generate --androidProject android/driver --android"]
+      }
     }
   }
 }
