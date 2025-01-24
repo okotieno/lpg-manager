@@ -41,6 +41,8 @@ spec:
                 secretKeyRef:
                   name: tahiniwa-secrets
                   key: LPG_GOOGLE_CLIENT_ID
+      imagePullSecrets:
+        - name: github-container-registry-owen
 ---
 apiVersion: v1
 kind: Service
