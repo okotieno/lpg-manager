@@ -28,6 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: jwtSecret,
       passReqToCallback: true,
     });
+    console.log({ jwtSecret });
   }
 
   async validate(req: FastifyRequest, payload: JWTPayload) {
