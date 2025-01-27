@@ -24,23 +24,18 @@ spec:
             - name: LPG_ENVIRONMENT
               valueFrom:
                 secretKeyRef:
-                  name: tahiniwa-secrets
+                  name: lpg-secrets
                   key: LPG_ENVIRONMENT
             - name: LPG_APP_URL
               valueFrom:
                 secretKeyRef:
-                  name: tahiniwa-secrets
+                  name: lpg-secrets
                   key: LPG_APP_URL
             - name: LPG_BACKEND_URL
               valueFrom:
                 secretKeyRef:
-                  name: tahiniwa-secrets
+                  name: lpg-secrets
                   key: LPG_BACKEND_URL
-            - name: LPG_GOOGLE_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: tahiniwa-secrets
-                  key: LPG_GOOGLE_CLIENT_ID
       imagePullSecrets:
         - name: github-container-registry-owen
 ---
