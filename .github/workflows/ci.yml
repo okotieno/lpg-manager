@@ -60,7 +60,7 @@ permissions:
 
 jobs:
 
-  build-dashboard:
+  build-admin-portal:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -86,7 +86,7 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: dashboard-build-output
+          name: admin-portal-build-output
           path: dist/
 
   build-backend:
@@ -119,9 +119,9 @@ jobs:
           name: backend-build-output
           path: dist/
 
-  push-dashboard-to-registry:
+  push-admin-portal-to-registry:
     runs-on: ubuntu-latest
-    needs: [build-dashboard]
+    needs: [build-admin-portal]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -131,7 +131,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v3
         with:
-          name: dashboard-build-output
+          name: admin-portal-build-output
           path: ./dist
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -241,9 +241,9 @@ jobs:
             kubectl delete svc  lpg-manager-backend-service
             kubectl apply -f ~/lpg_manager_deployments/deployments/backend.yaml
 
-  deploy-dashboard-contabo:
+  deploy-admin-portal-contabo:
     runs-on: ubuntu-latest
-    needs: [push-dashboard-to-registry]
+    needs: [push-admin-portal-to-registry]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -253,7 +253,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v3
         with:
-          name: dashboard-build-output
+          name: admin-portal-build-output
           path: ./dist
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -271,7 +271,7 @@ jobs:
       - name: Copy deployment file to server
         uses: appleboy/scp-action@v0.1.3
         with:
-          source: './deployments/dashboard.yaml'
+          source: './deployments/admin-portal.yaml'
           target: '~/lpg_manager_deployments'
           host: ${{ secrets.REMOTE_SERVER }}
           username: ${{ secrets.REMOTE_USER }}
