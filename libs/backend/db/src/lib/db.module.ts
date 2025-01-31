@@ -32,6 +32,7 @@ import {
   InventoryItemModel,
   DriverInventoryModel,
   ConsolidatedOrderModel,
+  CatalogueFileUploadModel
 } from './models';
 import { SequelizeOptions } from 'sequelize-typescript';
 
@@ -80,6 +81,7 @@ import { SequelizeOptions } from 'sequelize-typescript';
           InventoryItemModel,
           DriverInventoryModel,
           ConsolidatedOrderModel,
+          CatalogueFileUploadModel
         ],
       }),
     }),

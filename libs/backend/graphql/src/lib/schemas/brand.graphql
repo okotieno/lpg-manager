@@ -13,6 +13,7 @@ input CreateBrandCatalogueInput {
   pricePerUnit: Float
   unit: CatalogueUnit!
   quantityPerUnit: Float!
+  images: [SelectCategory]!
 }
 
 input UpdateBrandCatalogueInput {
@@ -22,6 +23,7 @@ input UpdateBrandCatalogueInput {
   pricePerUnit: Float
   unit: CatalogueUnit!
   quantityPerUnit: Float!
+  images: [SelectCategory]!
 }
 
 input CreateBrandInput {

@@ -111,13 +111,14 @@ export default class BrandFormComponent
         companyName: companyName as string,
         images: images?.map((x) => ({ id: x?.id as string })),
         catalogues: this.brandItems().map(
-          ({ id, pricePerUnit, quantityPerUnit, name, unit, description }) => ({
+          ({ id, pricePerUnit, quantityPerUnit, name, unit, description, images: catalogueImage }) => ({
             id,
             pricePerUnit,
             quantityPerUnit,
             name,
             unit,
             description,
+            images: catalogueImage?.map((x) => ({ id: x?.id as string })),
           })
         ),
       };

@@ -1,24 +1,5 @@
 :root {
   --ion-font-family: verdana;
-
-  --ion-color-primary: #A32A29;
-  --ion-color-primary-rgb: 163, 42, 41;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #8f2524;
-  --ion-color-primary-tint: #ac3f3e;
-
-  --ion-text-color: #221F1F;
-  --ion-text-color-rgb: 34, 31, 31;
-  --ion-background-color: #ffffff;
-  --ion-background-color-rgb: 255, 255, 255;
-
-  --ion-color-success: #2F9803;
-  --ion-color-success-rgb: 47, 152, 3;
-  --ion-color-success-contrast: #ffffff;
-  --ion-color-success-contrast-rgb: 255, 255, 255;
-  --ion-color-success-shade: #298603;
-  --ion-color-success-tint: #44a21c;
 }
 
 :root .dark {
@@ -39,6 +20,34 @@
   --ion-color-success-contrast: #000000;
   --ion-color-success-contrast-rgb: 0, 0, 0;
   //--ion-item-border-color: rgba(255,555,555 , 0.2);
+
+  --ion-color-step-850: var(--ion-text-color);
+  --ion-color-step-50: var(--ion-background-color);
+  --ion-color-step-100: rgba(var(--ion-text-color-rgb), 0.05);
+  --ion-color-step-150: rgba(var(--ion-text-color-rgb), 0.1);
+  ion-card {
+    --background: #04040040;
+  }
+}
+:root .light {
+  --ion-color-primary: #A32A29;
+  --ion-color-primary-rgb: 163, 42, 41;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #8f2524;
+  --ion-color-primary-tint: #ac3f3e;
+
+  --ion-text-color: #221F1F;
+  --ion-text-color-rgb: 34, 31, 31;
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
+
+  --ion-color-success: #2F9803;
+  --ion-color-success-rgb: 47, 152, 3;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #298603;
+  --ion-color-success-tint: #44a21c;
 
   --ion-color-step-850: var(--ion-text-color);
   --ion-color-step-50: var(--ion-background-color);

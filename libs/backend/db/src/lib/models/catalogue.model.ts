@@ -1,14 +1,15 @@
 import {
-  BelongsTo,
+  BelongsTo, BelongsToMany,
   Column,
   DataType,
   ForeignKey,
   HasMany,
   Model,
-  Table,
+  Table
 } from 'sequelize-typescript';
 import { BrandModel } from './brand.model';
 import { InventoryModel } from './inventory.model';
+import { FileUploadModel } from './file-upload.model';
 
 @Table({
   tableName: 'catalogues',
@@ -67,4 +68,12 @@ export class CatalogueModel extends Model {
 
   @HasMany(() => InventoryModel)
   inventories!: InventoryModel[];
+
+  @BelongsToMany(() => FileUploadModel, {
+    through: 'catalogue_file_uploads',
+    foreignKey: 'catalogue_id',
+    otherKey: 'file_upload_id',
+  })
+  images!: FileUploadModel[];
+
 }

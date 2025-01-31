@@ -143,6 +143,7 @@ export type ICreateActivityLogSuccessResponse = {
 export type ICreateBrandCatalogueInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['UUID']['input'];
+  images: Array<InputMaybe<ISelectCategory>>;
   name: Scalars['String']['input'];
   pricePerUnit?: InputMaybe<Scalars['Float']['input']>;
   quantityPerUnit: Scalars['Float']['input'];
@@ -1849,6 +1850,7 @@ export type IUpdateActivityLogInput = {
 export type IUpdateBrandCatalogueInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['UUID']['input'];
+  images: Array<InputMaybe<ISelectCategory>>;
   name: Scalars['String']['input'];
   pricePerUnit?: InputMaybe<Scalars['Float']['input']>;
   quantityPerUnit: Scalars['Float']['input'];

@@ -30,7 +30,7 @@ export class FileUploadService extends CrudAbstractService<FileUploadModel> {
     file: BufferedFile;
     baseBucket?: string;
   }) {
-    const allowedFileTypes = ['image/jpeg', 'image/png'];
+    const allowedFileTypes = ['image/jpeg', 'image/png', 'image/webp'];
 
     if (!allowedFileTypes.includes(file.mimetype)) {
       throw new HttpException(

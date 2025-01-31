@@ -287,6 +287,6 @@ jobs:
           port: 22
           script: |
             export KUBECONFIG=/etc/kubernetes/admin.conf
-            kubectl delete deployment lpg-manger-admin-portal
+            kubectl delete deployment lpg-manager-admin-portal
             kubectl delete svc lpg-manger-admin-portal-service
             kubectl apply -f ~/lpg_manager_deployments/deployments/admin-portal.yaml

@@ -19,7 +19,7 @@ import {
   CatalogueModel,
   IQueryParam,
   QueryOperatorEnum,
-  SortByDirectionEnum, UserModel, BrandFileUploadModel
+  SortByDirectionEnum, BrandFileUploadModel
 } from '@lpg-manager/db';
 import { CatalogueService } from '@lpg-manager/catalogue-service';
 import { IPermissionEnum } from '@lpg-manager/types';
@@ -57,12 +57,25 @@ export class BrandResolver {
 
     // Handle catalogue creation
     if (params.catalogues?.length) {
-      const cataloguePromises = params.catalogues.map((catalogue) =>
-        this.catalogueService.create({
+      const cataloguePromises = params.catalogues.map(async (catalogue) => {
+        const createdCatalogue = await this.catalogueService.create({
           ...catalogue,
           brandId: brand.id,
-        })
-      );
+        });
+
+        // Handle catalogue images if present
+        if (catalogue.images?.length) {
+          await this.catalogueService.model.sequelize?.models['CatalogueFileUploadModel'].bulkCreate(
+            catalogue.images.map((img) => ({
+              id: uuidv4(),
+              catalogueId: createdCatalogue.id,
+              fileUploadId: img.id,
+            }))
+          );
+        }
+
+        return createdCatalogue;
+      });
       await Promise.all(cataloguePromises);
     }
 
@@ -96,6 +109,7 @@ export class BrandResolver {
 
   @ResolveField('catalogues')
   async getCatalogues(@Root() brand: BrandModel): Promise<CatalogueModel[]> {
+    console.log('works')
     return this.catalogueService
       .findAll({
         sortBy: 'createdAt',

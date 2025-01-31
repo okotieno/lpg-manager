@@ -36,6 +36,11 @@ export class CreateBrandCatalogueDto {
 
   @IsNotEmpty()
   quantityPerUnit!: number;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => FileUploadDto)
+  images: FileUploadDto[] = [];
 }
 
 export class CreateBrandInputDto {

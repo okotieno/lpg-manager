@@ -16,7 +16,6 @@ export class PermissionGuard implements CanActivate {
     private reflector: Reflector,
     private readonly i18n: I18nService
   ) {
-    console.log('Permission Guard Called...')
   }
 
   canActivate(context: ExecutionContext): boolean {

@@ -79,10 +79,11 @@ export class CatalogueResolver {
   async getImages(
     @Root() catalogue: CatalogueModel
   ): Promise<FileUploadModel[]> {
-    return [];
-    // const catalogueWithImages = await this.catalogueService.findById(catalogue.id, {
-    //   include: [FileUploadModel]
-    // });
-    // return catalogueWithImages?.images || [];
+
+    const catalogueWithImages = await this.catalogueService.model.findOne({
+      where: { id: catalogue.id },
+      include: [ FileUploadModel ]
+    });
+    return catalogueWithImages?.images || [];
   }
 }

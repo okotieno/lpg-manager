@@ -28,11 +28,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: jwtSecret,
       passReqToCallback: true,
     });
-    console.log({ jwtSecret });
   }
 
   async validate(req: FastifyRequest, payload: JWTPayload) {
-    console.log('JWT validate called');
     const permissions = await this.userService.getUserPermissions(
       payload.email,
     );
@@ -40,19 +38,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ? 'mobile'
       : 'web';
 
-    console.log('JWT validate called 1', deviceType);
     const redisInfo = await this.keyvRedis.get(
       `session:${payload.sub}:${deviceType}`,
     );
 
-    console.log('JWT validate called 2', redisInfo);
     if (!redisInfo || redisInfo !== payload.sessionId) {
       throw new UnauthorizedException(
         'This session is invalid, please try again.',
       );
     }
 
-    console.log('JWT validate called 3', payload);
 
     if (payload.type === 'AuthToken') {
       return {
@@ -62,7 +57,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       };
     }
 
-    console.log('JWT validate called 4');
     return false;
   }
 }

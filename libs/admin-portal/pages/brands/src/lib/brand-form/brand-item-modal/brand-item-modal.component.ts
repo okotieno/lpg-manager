@@ -23,6 +23,8 @@ import {
   IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
+import { FileUploadComponent } from '@lpg-manager/file-upload-component';
+import { ISelectCategory } from '@lpg-manager/types';
 
 export interface IBrandItem {
   id?: string;
@@ -47,6 +49,7 @@ export interface IBrandItem {
     IonSelect,
     IonSelectOption,
     IonNote,
+    FileUploadComponent,
   ],
   templateUrl: './brand-item-modal.component.html',
   styles: `
@@ -64,6 +67,8 @@ export class BrandItemModalComponent {
     unit: ['KG', Validators.required],
     pricePerUnit: [null, [Validators.min(0)]],
     quantityPerUnit: [null, [Validators.min(0)]],
+    images: [[] as ISelectCategory[]],
+
   });
   isEditing = signal(false);
   item = input<IBrandItem>();

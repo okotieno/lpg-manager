@@ -38,6 +38,7 @@ export class ThemeService {
       this.applySystemTheme();
     } else {
       this.document.querySelector('body')?.classList.toggle('dark', theme === 'dark');
+      this.document.querySelector('body')?.classList.toggle('light', theme === 'light');
     }
   }
 
