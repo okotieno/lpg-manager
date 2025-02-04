@@ -2,14 +2,21 @@ import { Component, computed, inject } from '@angular/core';
 import {
   IonButton,
   IonButtons,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonCol,
   IonContent,
+  IonGrid,
   IonHeader,
   IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonMenuButton,
-  IonPopover, IonRouterOutlet,
+  IonPopover,
+  IonRouterOutlet,
   IonRow,
   IonText,
   IonToolbar
@@ -17,6 +24,14 @@ import {
 import { ThemeService } from '@lpg-manager/theme-service';
 import { Router } from '@angular/router';
 import { AuthStore } from '@lpg-manager/auth-store';
+
+interface AppLink {
+  name: string;
+  description: string;
+  icon: string;
+  url: string;
+  color: string;
+}
 
 @Component({
   selector: 'lpg-dashboard',
@@ -28,26 +43,57 @@ import { AuthStore } from '@lpg-manager/auth-store';
     IonButtons,
     IonButton,
     IonIcon,
-    IonMenuButton,
     IonList,
     IonItem,
     IonLabel,
     IonPopover,
     IonRow,
     IonText,
-    IonRouterOutlet,
+    IonGrid,
+    IonCol,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
   ],
   templateUrl: './dashboard-page.component.html',
-  styles: `
-    :host {
-      height: 100%;
-    }
-  `,
+  styleUrl: './dashboard-page.component.scss',
 })
 export default class DashboardComponent {
   #themeService = inject(ThemeService);
   #router = inject(Router);
   #authStore = inject(AuthStore);
+
+  apps: AppLink[] = [
+    {
+      name: 'Admin Portal',
+      description: 'System administration and user management',
+      icon: 'users-gear',
+      url: 'https://admin.lpg-manager.com',
+      color: 'primary'
+    },
+    {
+      name: 'Depot Portal',
+      description: 'Manage depot operations and inventory',
+      icon: 'warehouse',
+      url: 'https://depot.lpg-manager.com',
+      color: 'success'
+    },
+    {
+      name: 'Dealer Portal',
+      description: 'Order management and sales operations',
+      icon: 'store',
+      url: 'https://dealer.lpg-manager.com',
+      color: 'warning'
+    },
+    {
+      name: 'Driver Portal',
+      description: 'Delivery management and tracking',
+      icon: 'truck',
+      url: 'https://driver.lpg-manager.com',
+      color: 'tertiary'
+    }
+  ];
 
   currentThemeIcon = computed(() => {
     switch (this.#themeService.theme()) {
@@ -74,5 +120,9 @@ export default class DashboardComponent {
 
   goToProfile() {
     this.#router.navigate(['/dashboard', 'profile']);
+  }
+
+  openApp(url: string) {
+    window.location.href = url;
   }
 }

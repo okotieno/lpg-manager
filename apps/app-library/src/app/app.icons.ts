@@ -5,5 +5,9 @@ export const APP_ICONS = [
   'desktop',
   'sun',
   'gear',
-  'moon'
+  'moon',
+  'users-gear',
+  'warehouse',
+  'store',
+  'truck'
 ];

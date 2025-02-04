@@ -1,0 +1,24 @@
+:host {
+  height: 100%;
+}
+
+.app-card {
+  cursor: pointer;
+  transition: transform 0.2s;
+  height: 100%;
+  background-image: url("/bg-pattern.svg"), linear-gradient(90deg, rgba(68,30,47,.1) 17%, rgba(var(--ion-color-primary-rgb), 0.1) 71%);
+}
+
+.app-card:hover {
+  transform: translateY(-5px);
+}
+
+.app-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.app-description {
+  color: var(--ion-color-medium);
+  font-size: 0.9rem;
+}

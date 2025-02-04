@@ -5,3 +5,7 @@ gear
 sun
 moon
 desktop
+users-gear
+warehouse
+store
+truck
