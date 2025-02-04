@@ -8,21 +8,15 @@ import {
   IonItem,
   IonLabel,
   IonList,
-  IonListHeader,
-  IonMenu,
   IonMenuButton,
   IonPopover, IonRouterOutlet,
   IonRow,
   IonText,
-  IonTitle,
   IonToolbar
 } from '@ionic/angular/standalone';
 import { ThemeService } from '@lpg-manager/theme-service';
-import { Router, RouterLink } from '@angular/router';
-import { BreadcrumbComponent, BreadcrumbStore } from '@lpg-manager/breadcrumb';
-import { TitleCasePipe } from '@angular/common';
+import { Router } from '@angular/router';
 import { AuthStore } from '@lpg-manager/auth-store';
-import { NotificationBellComponent } from '@lpg-manager/notification-component';
 
 @Component({
   selector: 'lpg-dashboard',
@@ -31,23 +25,16 @@ import { NotificationBellComponent } from '@lpg-manager/notification-component';
     IonContent,
     IonHeader,
     IonToolbar,
-    IonTitle,
     IonButtons,
     IonButton,
     IonIcon,
-    IonMenu,
     IonMenuButton,
     IonList,
     IonItem,
     IonLabel,
     IonPopover,
-    IonListHeader,
-    RouterLink,
-    BreadcrumbComponent,
     IonRow,
     IonText,
-    TitleCasePipe,
-    NotificationBellComponent,
     IonRouterOutlet,
   ],
   templateUrl: './dashboard-page.component.html',
@@ -60,10 +47,7 @@ import { NotificationBellComponent } from '@lpg-manager/notification-component';
 export default class DashboardComponent {
   #themeService = inject(ThemeService);
   #router = inject(Router);
-  #breadcrumbStore = inject(BreadcrumbStore);
   #authStore = inject(AuthStore);
-
-  pageTitle = this.#breadcrumbStore.pageTitle;
 
   currentThemeIcon = computed(() => {
     switch (this.#themeService.theme()) {

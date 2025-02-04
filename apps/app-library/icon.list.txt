@@ -1,1 +1,7 @@
 house
+right-from-bracket
+user-tie
+gear
+sun
+moon
+desktop
