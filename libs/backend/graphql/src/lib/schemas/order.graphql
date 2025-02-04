@@ -71,9 +71,15 @@ type PaginatedOrder {
   meta: Pagination
 }
 
+type OrderStats {
+  pendingOrders: Int!
+  completedOrders: Int!
+}
+
 extend type Query {
   orders(query: QueryParams): PaginatedOrder!
   order(id: UUID!): OrderModel
+  orderStats: OrderStats!
 }
 
 extend type Mutation {

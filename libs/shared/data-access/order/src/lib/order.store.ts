@@ -9,6 +9,7 @@ import {
   IGetOrdersQuery,
   IGetOrdersQueryVariables,
   IUpdateOrderStatusGQL,
+  IGetOrderStatsGQL,
 } from './order.generated';
 import { withPaginatedItemsStore } from '@lpg-manager/data-table';
 import { lastValueFrom } from 'rxjs';
@@ -25,6 +26,7 @@ export const OrderStore = signalStore(
     _getItemsGQL: inject(IGetOrdersGQL),
     _deleteItemWithIdGQL: inject(IDeleteOrderByIdGQL),
     _updateOrderStatusGQL: inject(IUpdateOrderStatusGQL),
+    _getOrderStatsGQL: inject(IGetOrderStatsGQL),
   })),
   withPaginatedItemsStore<
     ICreateOrderMutation,
@@ -64,5 +66,16 @@ export const OrderStore = signalStore(
         throw error;
       }
     },
+    async getOrderStats() {
+      try {
+        const result = await lastValueFrom(
+          store._getOrderStatsGQL.fetch()
+        );
+        return result.data?.orderStats;
+      } catch (error) {
+        console.error('Error fetching order stats:', error);
+        throw error;
+      }
+    }
   }))
 );

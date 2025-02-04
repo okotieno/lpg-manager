@@ -5,6 +5,9 @@ import {
   ResolveField,
   Resolver,
   Root,
+  Field,
+  ObjectType,
+  Int,
 } from '@nestjs/graphql';
 import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
 import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
@@ -35,6 +38,15 @@ import {
 } from '../events/order.event';
 import { DispatchService } from '@lpg-manager/dispatch-service';
 import { DriverInventoryService } from '@lpg-manager/inventory-service';
+
+@ObjectType()
+class OrderStats {
+  @Field(() => Int)
+  pendingOrders!: number;
+
+  @Field(() => Int)
+  completedOrders!: number;
+}
 
 @Resolver(() => OrderModel)
 export class OrderResolver {
@@ -202,5 +214,12 @@ export class OrderResolver {
       message: 'Order status updated successfully',
       data: order,
     };
+  }
+
+  @Query(() => OrderStats)
+  @UseGuards(JwtAuthGuard)
+  async orderStats() {
+    const stats = await this.orderService.getOrderStats();
+    return stats;
   }
 }

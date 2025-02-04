@@ -110,4 +110,24 @@ export class OrderService extends CrudAbstractService<OrderModel> {
       throw error;
     }
   }
+
+  async getOrderStats() {
+    const [pendingOrders, completedOrders] = await Promise.all([
+      this.orderModel.count({
+        where: {
+          status: 'PENDING'
+        }
+      }),
+      this.orderModel.count({
+        where: {
+          status: 'COMPLETED'
+        }
+      })
+    ]);
+
+    return {
+      pendingOrders,
+      completedOrders
+    };
+  }
 }

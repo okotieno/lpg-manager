@@ -1178,6 +1178,11 @@ export type IOrderModel = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type IOrderStats = {
+  completedOrders: Scalars['Int']['output'];
+  pendingOrders: Scalars['Int']['output'];
+};
+
 export enum IOrderStatus {
   Cancelled = 'CANCELLED',
   Completed = 'COMPLETED',
@@ -1434,6 +1439,7 @@ export type IQuery = {
   notification?: Maybe<INotificationModel>;
   notifications: IPaginatedNotification;
   order?: Maybe<IOrderModel>;
+  orderStats: IOrderStats;
   orders: IPaginatedOrder;
   otp?: Maybe<IOtpModel>;
   otps: IPaginatedOtp;

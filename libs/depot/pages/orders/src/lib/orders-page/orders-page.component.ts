@@ -1,4 +1,12 @@
-import { Component, computed, effect, inject, untracked } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  Signal,
+  untracked,
+} from '@angular/core';
 import { OrderStore } from '@lpg-manager/order-store';
 import {
   IonAccordion,
@@ -17,7 +25,11 @@ import {
   ModalController,
 } from '@ionic/angular/standalone';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { IOrderStatus, IQueryOperatorEnum } from '@lpg-manager/types';
+import {
+  IOrderStatus,
+  IQueryOperatorEnum,
+  IQueryParamsFilter,
+} from '@lpg-manager/types';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { GET_ITEMS_INCLUDE_FIELDS } from '@lpg-manager/data-table';
 import { ConfirmDispatchModalComponent } from '../components/confirm-dispatch-modal.component';
@@ -70,12 +82,31 @@ export default class OrdersPageComponent {
       )}-rgb), 0.05)`,
     }))
   );
+
+  status = input<IOrderStatus>();
+
+  statusFilter: Signal<IQueryParamsFilter[]> = computed(() => {
+    const status = this.status();
+    if (status) {
+      return [
+        {
+          field: 'status',
+          operator: IQueryOperatorEnum.Equals,
+          value: status,
+        },
+      ];
+    } else {
+      return [];
+    }
+  });
   activeStationId = computed(() => this.#authStore.activeStation()?.id);
   activeStationChangeEffect = effect(() => {
+    const statusFilter = this.statusFilter();
     const activeStationId = this.activeStationId();
     untracked(() => {
       if (activeStationId) {
         this.#orderStore.setFilters([
+          ...statusFilter,
           {
             field: 'depotId',
             operator: IQueryOperatorEnum.Equals,
@@ -83,6 +114,8 @@ export default class OrdersPageComponent {
             values: [],
           },
         ]);
+      } else {
+        this.#orderStore.setFilters([]);
       }
     });
   });

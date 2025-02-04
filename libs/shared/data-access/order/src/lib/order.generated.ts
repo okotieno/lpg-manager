@@ -53,6 +53,11 @@ export type IUpdateOrderStatusMutationVariables = Types.Exact<{
 
 export type IUpdateOrderStatusMutation = { updateOrderStatus: { message: string, data: { id: string, status: Types.IOrderStatus } } };
 
+export type IGetOrderStatsQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type IGetOrderStatsQuery = { orderStats: { pendingOrders: number, completedOrders: number } };
+
 export const OrderDealerFragmentFragmentDoc = gql`
     fragment orderDealerFragment on OrderModel {
   dealer {
@@ -224,6 +229,25 @@ export const UpdateOrderStatusDocument = gql`
   })
   export class IUpdateOrderStatusGQL extends Apollo.Mutation<IUpdateOrderStatusMutation, IUpdateOrderStatusMutationVariables> {
     override document = UpdateOrderStatusDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetOrderStatsDocument = gql`
+    query GetOrderStats {
+  orderStats {
+    pendingOrders
+    completedOrders
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class IGetOrderStatsGQL extends Apollo.Query<IGetOrderStatsQuery, IGetOrderStatsQueryVariables> {
+    override document = GetOrderStatsDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

@@ -1,7 +1,7 @@
 <ion-grid class="ion-no-margin">
   <ion-row class="ion-justify-content-start ion-padding-horizontal">
     <ion-col size="12" sizeMd="6" sizeXl="3">
-      <ion-card class="home-card" [routerLink]="['orders/pending']">
+      <ion-card class="home-card" [routerLink]="['orders']" [queryParams]="{status: pendingOrderStatus}">
         <ion-card-content>
           <ion-row class="ion-justify-content-between ion-align-items-center">
             <ion-icon color="warning" name="hourglass"></ion-icon>
@@ -17,7 +17,7 @@
     </ion-col>
 
     <ion-col size="12" sizeMd="6" sizeXl="3">
-      <ion-card class="home-card" [routerLink]="['orders/completed']">
+      <ion-card class="home-card" [routerLink]="['orders']" [queryParams]="{status: completedOrderStatus}">
         <ion-card-content>
           <ion-row class="ion-justify-content-between ion-align-items-center">
             <ion-icon color="success" name="circle-check"></ion-icon>

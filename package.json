@@ -6,8 +6,9 @@
     "node": "22.4"
   },
   "scripts": {
-    "serve": "concurrently \"pnpm nx serve backend\" \"pnpm serve:admin-portal\" \"pnpm serve:depot\" \"pnpm serve:dealer\" \"pnpm serve:driver-app\"",
+    "serve": "concurrently \"pnpm nx serve backend\" \"pnpm serve:admin-portal\" \"pnpm serve:depot\" \"pnpm serve:dealer\" \"pnpm serve:driver-app\" \"pnpm serve:app-library\"",
     "serve:admin-portal": "pnpm nx copy:icons admin-portal && pnpm nx serve admin-portal",
+    "serve:app-library": "pnpm nx copy:icons app-library && pnpm nx serve app-library",
     "serve:depot": "pnpm nx copy:icons depot && pnpm nx serve depot",
     "serve:dealer": "pnpm nx copy:icons dealer && pnpm nx serve dealer",
     "serve:driver-app": "pnpm nx copy:icons driver-app && pnpm nx serve driver-app",
@@ -119,7 +120,7 @@
     "@nx/js": "20.2.2",
     "@nx/nest": "20.1.4",
     "@nx/node": "20.1.4",
-    "@nx/web": "20.1.4",
+    "@nx/web": "20.2.2",
     "@nx/webpack": "20.1.4",
     "@nx/workspace": "20.1.4",
     "@schematics/angular": "~19.0.5",

@@ -109,3 +109,10 @@ mutation UpdateOrderStatus($id: UUID!, $params: UpdateOrderStatusInput!) {
     }
   }
 }
+
+query GetOrderStats {
+  orderStats {
+    pendingOrders
+    completedOrders
+  }
+}
