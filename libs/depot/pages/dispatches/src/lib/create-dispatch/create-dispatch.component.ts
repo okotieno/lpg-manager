@@ -121,6 +121,7 @@ export default class CreateDispatchComponent implements ViewDidEnter {
     }
   });
 
+  // TODO: Filter from backend
   confirmedOrders = computed(() =>
     this.#orderStore.items().filter((order) => order.status === 'CONFIRMED')
   );

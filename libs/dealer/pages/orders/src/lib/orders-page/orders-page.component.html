@@ -4,8 +4,14 @@
       @for (order of ordersDisplayed(); track order.id) {
         <ion-accordion style="border-radius: 7px">
           <ion-item slot="header" style="border-left: 10px solid" [style.border-color]="order.varColor">
+            @if (order.consolidatedOrder?.status === IConsolidatedOrderStatus.DriverToDealerConfirmed) {
+              <ion-icon class="ion-margin" slot="start" color="warning" name="circle-exclamation"></ion-icon>
+            }
             <ion-label class="ion-padding">
-              <h2>Order #{{ order.id.slice(-8) }}</h2>
+
+              <h2>
+                Order <span [lpgUUID]="order.id"></span>
+              </h2>
               <ion-text color="medium">
                 <p>{{ order.createdAt | date:'medium' }}</p>
               </ion-text>
@@ -59,12 +65,21 @@
               </ion-item>
             }
             <ion-item lines="none" class="ion-padding-vertical">
-              @if (order?.dispatchStatus === driverToDealerConfirmed) {
-                <ion-button [routerLink]="['/dashboard', 'dispatches', order.dispatch?.id, 'receive-dispatch' ]" slot="end" color="primary"
+
+              @if (order.consolidatedOrder?.status === IConsolidatedOrderStatus.DriverToDealerConfirmed) {
+                <ion-button [routerLink]="['/dashboard', 'dispatches', order.dispatch?.id, 'receive-dispatch' ]"
+                            slot="end" color="primary"
                             fill="outline">
                   Receive dispatch
                 </ion-button>
               }
+
+              <ion-button [routerLink]="['/dashboard', 'dispatches', order.dispatch?.id, 'dispatch-empty-cylinder' ]"
+                          slot="end" color="primary"
+                          fill="outline">
+                Dispatch empty cylinders
+              </ion-button>
+
             </ion-item>
           </ion-list>
 

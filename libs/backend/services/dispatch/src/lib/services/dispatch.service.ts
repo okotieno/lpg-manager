@@ -167,11 +167,11 @@ export class DispatchService extends CrudAbstractService<DispatchModel> {
         //
         case IScanAction.DriverFromDepotConfirmed:
           updates.driverFromDepotConfirmedAt = new Date();
-          updates.status = IDispatchStatus.InTransit;
+          updates.status = IDispatchStatus.Delivering;
           await this.driverInventoryService.updateStatus(
             dispatch.driverId,
             inventoryItems.map(({ id }) => id),
-            IDriverInventoryStatus.InTransit
+            IDriverInventoryStatus.Delivering
           );
           break;
         case IScanAction.DriverToDealerConfirmed:

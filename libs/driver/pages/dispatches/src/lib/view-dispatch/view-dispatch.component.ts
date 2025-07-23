@@ -20,6 +20,7 @@ import { DatePipe, CurrencyPipe } from '@angular/common';
 import { DispatchStore, IGetDispatchByIdQuery } from '@lpg-manager/dispatch-store';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
 import { RouterLink } from '@angular/router';
+import { IConsolidatedOrderStatus } from '@lpg-manager/types';
 
 @Component({
   selector: 'lpg-view-dispatch',
@@ -105,10 +106,13 @@ import { RouterLink } from '@angular/router';
                     <ion-label>
                       <ion-row class="ion-justify-content-between">
                         <h3>Order <span [lpgUUID]="order.id"></span></h3>
-
+                        <ion-badge [color]="getStatusColor($any(consolidatedOrder.status))">
+                          {{consolidatedOrderStatusMapping[consolidatedOrder.status]}}
+                        </ion-badge>
                         <ion-badge [color]="getStatusColor($any(order.status))">
                           {{ order.status }}
                         </ion-badge>
+
                       </ion-row>
                       <p>Total Amount: {{ order.totalPrice | currency }}</p>
                     </ion-label>
@@ -138,10 +142,19 @@ import { RouterLink } from '@angular/router';
 export default class ViewDispatchComponent {
 
   dispatch = input.required<IGetDispatchByIdQuery['dispatch']>()
+  consolidatedOrderStatusMapping: Record<IConsolidatedOrderStatus, string> = {
+    [IConsolidatedOrderStatus.DriverToDealerConfirmed]: 'Pending dealer confirmation',
+    [IConsolidatedOrderStatus.Created]: 'Pending dealer confirmation',
+    [IConsolidatedOrderStatus.Completed]: 'Pending dealer confirmation',
+    [IConsolidatedOrderStatus.DealerFromDriverConfirmed]: 'Pending dealer confirmation',
+  }
 
+  // TODO: figure out why colors are not being applied
   getStatusColor(status: string): string {
     switch (status) {
       case 'PENDING':
+        return 'warning';
+      case 'DEALER_FROM_DRIVER_CONFIRMED':
         return 'warning';
       case 'IN_TRANSIT':
         return 'primary';

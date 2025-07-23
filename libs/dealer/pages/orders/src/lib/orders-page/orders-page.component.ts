@@ -4,7 +4,7 @@ import {
   IonAccordion,
   IonAccordionGroup,
   IonBadge, IonButton,
-  IonContent,
+  IonContent, IonIcon,
   IonItem,
   IonItemDivider,
   IonLabel,
@@ -12,10 +12,11 @@ import {
   IonText
 } from '@ionic/angular/standalone';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { IOrderDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
+import { IConsolidatedOrderStatus, IOrderDispatchStatus, IQueryOperatorEnum } from '@lpg-manager/types';
 import { AuthStore } from '@lpg-manager/auth-store';
 import { GET_ITEMS_INCLUDE_FIELDS } from '@lpg-manager/data-table';
 import { RouterLink } from '@angular/router';
+import { UUIDDirective } from '@lpg-manager/uuid-pipe';
 
 @Component({
   selector: 'lpg-orders',
@@ -36,6 +37,8 @@ import { RouterLink } from '@angular/router';
     IonItemDivider,
     IonButton,
     RouterLink,
+    UUIDDirective,
+    IonIcon,
   ],
   providers: [
     OrderStore,
@@ -43,6 +46,7 @@ import { RouterLink } from '@angular/router';
       provide: GET_ITEMS_INCLUDE_FIELDS,
       useValue: {
         includeDispatch: true,
+        includeConsolidatedOrder: true,
       },
     },
   ],
@@ -91,4 +95,6 @@ export default class OrdersPageComponent {
         return 'medium';
     }
   }
+
+  protected readonly IConsolidatedOrderStatus = IConsolidatedOrderStatus;
 }

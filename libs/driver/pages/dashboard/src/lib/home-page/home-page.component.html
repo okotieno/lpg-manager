@@ -19,8 +19,8 @@
               }
 
             </ion-label>
-
-            @if (dispatch.status === dispatchStatus.Initiated) {
+<!--            {{ dispatch.status }}-->
+            @if (dispatch.status === dispatchStatus.Pending) {
               <ion-buttons>
                 <ion-button
                   slot="end"
@@ -34,7 +34,7 @@
               </ion-buttons>
             }
 
-            @if (dispatch.status === dispatchStatus.InTransit) {
+            @if (dispatch.status === dispatchStatus.Delivering) {
               <ion-buttons>
                 <ion-button
                   slot="end"

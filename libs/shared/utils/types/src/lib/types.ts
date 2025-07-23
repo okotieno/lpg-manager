@@ -454,6 +454,7 @@ export enum IDriverInventoryStatus {
   Assigned = 'ASSIGNED',
   DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
   Delivered = 'DELIVERED',
+  Delivering = 'DELIVERING',
   DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED',
   InTransit = 'IN_TRANSIT',
   Returned = 'RETURNED'
@@ -1147,7 +1148,9 @@ export enum IOrderDispatchStatus {
   Cancelled = 'CANCELLED',
   Completed = 'COMPLETED',
   DealerFromDriverConfirmed = 'DEALER_FROM_DRIVER_CONFIRMED',
+  Delivering = 'DELIVERING',
   DriverToDealerConfirmed = 'DRIVER_TO_DEALER_CONFIRMED',
+  InTransit = 'IN_TRANSIT',
   Pending = 'PENDING',
   Rejected = 'REJECTED'
 }
@@ -1165,6 +1168,7 @@ export type IOrderItemInput = {
 };
 
 export type IOrderModel = {
+  consolidatedOrder?: Maybe<IConsolidatedOrderModel>;
   createdAt: Scalars['DateTime']['output'];
   dealer: IStationModel;
   depot: IStationModel;

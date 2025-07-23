@@ -19,13 +19,10 @@ export class PermissionGuard implements CanActivate {
   }
 
   canActivate(context: ExecutionContext): boolean {
-    console.log('Reached 1');
     const requiredRoles = this.reflector.getAllAndOverride<IPermissionEnum[]>(
       PERMISSIONS_KEY,
       [context.getHandler(), context.getClass()]
     );
-
-    console.log('Reached 2', requiredRoles);
 
     if (!requiredRoles) {
       return true;
@@ -34,24 +31,17 @@ export class PermissionGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context);
     const user = ctx.getContext().req.user;
 
-    console.log('Reached 3', user);
-
     const userHasPermission = requiredRoles.some((permission) =>
       user.permissions?.includes(permission)
     );
 
-    console.log('Reached 4', userHasPermission);
-
     if (!userHasPermission) {
-      console.log('Reached 5');
       throw new UnauthorizedException(
         this.i18n.t('alert.notAuthorised', {
           lang: I18nContext.current()?.lang,
         })
       );
     }
-
-    console.log('Reached 6');
 
     return true;
   }

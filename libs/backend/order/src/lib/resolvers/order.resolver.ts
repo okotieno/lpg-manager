@@ -1,31 +1,32 @@
 import {
   Args,
+  Field,
+  Int,
   Mutation,
+  ObjectType,
   Query,
   ResolveField,
   Resolver,
   Root,
-  Field,
-  ObjectType,
-  Int,
 } from '@nestjs/graphql';
 import { Body, UseGuards, ValidationPipe } from '@nestjs/common';
 import { CurrentUser, JwtAuthGuard } from '@lpg-manager/auth';
-import {
-  PermissionGuard,
-  Permissions,
-} from '@lpg-manager/permission-service';
+import { PermissionGuard, Permissions } from '@lpg-manager/permission-service';
 import { IPermissionEnum } from '@lpg-manager/types';
-import { OrderService } from '@lpg-manager/order-service';
+import {
+  ConsolidatedOrderService,
+  OrderService,
+} from '@lpg-manager/order-service';
 import {
   CatalogueModel,
-  DispatchModel, DriverInventoryModel,
+  DispatchModel,
+  DriverInventoryModel,
   InventoryModel,
   IQueryParam,
   OrderItemModel,
   OrderModel,
   StationModel,
-  UserModel
+  UserModel,
 } from '@lpg-manager/db';
 import { CreateOrderInputDto } from '../dto/create-order-input.dto';
 import { UpdateOrderStatusInput } from '../dto/update-order-status.dto';
@@ -37,7 +38,6 @@ import {
   OrderRejectedEvent,
 } from '../events/order.event';
 import { DispatchService } from '@lpg-manager/dispatch-service';
-import { DriverInventoryService } from '@lpg-manager/inventory-service';
 
 @ObjectType()
 class OrderStats {
@@ -53,6 +53,7 @@ export class OrderResolver {
   constructor(
     private orderService: OrderService,
     private dispatchService: DispatchService,
+    private consolidatedOrderService: ConsolidatedOrderService,
     private eventEmitter: EventEmitter2
   ) {}
 
@@ -159,6 +160,13 @@ export class OrderResolver {
       include: [DispatchModel],
     });
     return order?.dispatch;
+  }
+
+  @ResolveField('consolidatedOrder')
+  async getConsolidatedOrder(@Root() orderModel: OrderModel) {
+    return await this.consolidatedOrderService.model.findOne({
+      where: { id: orderModel.consolidatedOrderId },
+    });
   }
 
   @ResolveField('dispatchStatus')

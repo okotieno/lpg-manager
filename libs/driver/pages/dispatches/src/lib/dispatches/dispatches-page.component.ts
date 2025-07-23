@@ -11,7 +11,7 @@ import {
   IonIcon,
   IonRow, IonText
 } from '@ionic/angular/standalone';
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { DispatchStore } from '@lpg-manager/dispatch-store';
 import { UUIDDirective } from '@lpg-manager/uuid-pipe';
 
@@ -34,6 +34,7 @@ import { UUIDDirective } from '@lpg-manager/uuid-pipe';
     IonCardContent,
     IonText,
     UUIDDirective,
+    JsonPipe,
   ],
   providers: [DispatchStore],
 })

@@ -67,16 +67,16 @@ export default class DashboardComponent {
         value: this.driverId(),
         values: [],
       },
-      {
-        field: 'status',
-        operator: IQueryOperatorEnum.In,
-        value: '',
-        values: [
-          IDispatchStatus.InTransit,
-          IDispatchStatus.Initiated,
-          IDispatchStatus.Delivering,
-        ],
-      },
+      // {
+      //   field: 'status',
+      //   operator: IQueryOperatorEnum.In,
+      //   value: '',
+      //   values: [
+      //     IDispatchStatus.InTransit,
+      //     IDispatchStatus.Initiated,
+      //     IDispatchStatus.Delivering,
+      //   ],
+      // },
     ]);
   }
 }

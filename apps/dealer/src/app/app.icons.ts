@@ -37,5 +37,6 @@ export const APP_ICONS = [
   'arrow-left',
   'circle-info',
   'bell-slash',
-  'copy'
+  'copy',
+  'circle-exclamation',
 ];

@@ -9,6 +9,8 @@ enum OrderStatus {
 }
 
 enum OrderDispatchStatus {
+  IN_TRANSIT
+  DELIVERING
   PENDING
   ASSIGNED
   DRIVER_TO_DEALER_CONFIRMED
@@ -37,6 +39,7 @@ type OrderModel {
   updatedAt: DateTime!
   dispatch: DispatchModel
   dispatchStatus: OrderDispatchStatus
+  consolidatedOrder: ConsolidatedOrderModel
 }
 
 input CreateOrderInput {

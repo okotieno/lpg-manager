@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
 export type IOrderDealerFragmentFragment = { dealer: { id: string, name: string } };
 
+export type IConsolidatedOrderFragmentFragment = { consolidatedOrder?: { id: string, status: Types.IConsolidatedOrderStatus } | null };
+
 export type IDispatchDealerFragmentFragment = { dispatchStatus?: Types.IOrderDispatchStatus | null, dispatch?: { id: string, status: Types.IDispatchStatus, driver: { id: string, user: { firstName: string, lastName: string, phone?: string | null } }, transporter: { id: string, name: string }, vehicle: { id: string, registrationNumber: string } } | null };
 
 export type ICreateOrderMutationVariables = Types.Exact<{
@@ -25,10 +27,11 @@ export type IGetOrdersQueryVariables = Types.Exact<{
   query?: Types.InputMaybe<Types.IQueryParams>;
   includeDealer?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
   includeDispatch?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
+  includeConsolidatedOrder?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
 }>;
 
 
-export type IGetOrdersQuery = { orders: { items?: Array<{ id: string, createdAt: string, totalPrice: number, status: Types.IOrderStatus, dispatchStatus?: Types.IOrderDispatchStatus | null, depot: { name: string }, items: Array<{ id: string, quantity: number, catalogue: { pricePerUnit?: number | null, quantityPerUnit: number, unit: Types.ICatalogueUnit, id: string, name: string } } | null>, dealer: { id: string, name: string }, dispatch?: { id: string, status: Types.IDispatchStatus, driver: { id: string, user: { firstName: string, lastName: string, phone?: string | null } }, transporter: { id: string, name: string }, vehicle: { id: string, registrationNumber: string } } | null } | null> | null, meta?: { totalItems: number } | null } };
+export type IGetOrdersQuery = { orders: { items?: Array<{ id: string, createdAt: string, totalPrice: number, status: Types.IOrderStatus, dispatchStatus?: Types.IOrderDispatchStatus | null, depot: { name: string }, items: Array<{ id: string, quantity: number, catalogue: { pricePerUnit?: number | null, quantityPerUnit: number, unit: Types.ICatalogueUnit, id: string, name: string } } | null>, dealer: { id: string, name: string }, dispatch?: { id: string, status: Types.IDispatchStatus, driver: { id: string, user: { firstName: string, lastName: string, phone?: string | null } }, transporter: { id: string, name: string }, vehicle: { id: string, registrationNumber: string } } | null, consolidatedOrder?: { id: string, status: Types.IConsolidatedOrderStatus } | null } | null> | null, meta?: { totalItems: number } | null } };
 
 export type IDeleteOrderByIdMutationVariables = Types.Exact<{
   id: Types.Scalars['UUID']['input'];
@@ -63,6 +66,14 @@ export const OrderDealerFragmentFragmentDoc = gql`
   dealer {
     id
     name
+  }
+}
+    `;
+export const ConsolidatedOrderFragmentFragmentDoc = gql`
+    fragment consolidatedOrderFragment on OrderModel {
+  consolidatedOrder {
+    id
+    status
   }
 }
     `;
@@ -131,7 +142,7 @@ export const GetOrderByIdDocument = gql`
     }
   }
 export const GetOrdersDocument = gql`
-    query GetOrders($query: QueryParams, $includeDealer: Boolean = true, $includeDispatch: Boolean = true) {
+    query GetOrders($query: QueryParams, $includeDealer: Boolean = true, $includeDispatch: Boolean = true, $includeConsolidatedOrder: Boolean = false) {
   orders(query: $query) {
     items {
       id
@@ -143,6 +154,7 @@ export const GetOrdersDocument = gql`
       }
       ...orderDealerFragment @include(if: $includeDealer)
       ...dispatchDealerFragment @include(if: $includeDispatch)
+      ...consolidatedOrderFragment @include(if: $includeConsolidatedOrder)
       items {
         id
         quantity
@@ -161,7 +173,8 @@ export const GetOrdersDocument = gql`
   }
 }
     ${OrderDealerFragmentFragmentDoc}
-${DispatchDealerFragmentFragmentDoc}`;
+${DispatchDealerFragmentFragmentDoc}
+${ConsolidatedOrderFragmentFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'

@@ -5,6 +5,13 @@ fragment orderDealerFragment on OrderModel {
   }
 }
 
+fragment consolidatedOrderFragment on OrderModel {
+  consolidatedOrder {
+    id
+    status
+  }
+}
+
 fragment dispatchDealerFragment on OrderModel {
   dispatchStatus
   dispatch {
@@ -52,6 +59,7 @@ query GetOrders(
   $query: QueryParams,
   $includeDealer: Boolean = true
   $includeDispatch: Boolean = true
+  $includeConsolidatedOrder: Boolean = false
 ) {
   orders(query: $query) {
     items {
@@ -64,6 +72,7 @@ query GetOrders(
       }
       ...orderDealerFragment @include(if: $includeDealer)
       ...dispatchDealerFragment @include(if: $includeDispatch)
+      ...consolidatedOrderFragment @include(if: $includeConsolidatedOrder)
       items {
         id
         quantity

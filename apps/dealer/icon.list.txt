@@ -37,3 +37,4 @@ arrow-left
 bell-slash
 circle-info
 copy
+circle-exclamation
